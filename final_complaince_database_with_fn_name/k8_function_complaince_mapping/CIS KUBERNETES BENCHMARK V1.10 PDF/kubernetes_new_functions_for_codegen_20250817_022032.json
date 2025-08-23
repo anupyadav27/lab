@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-17T02:20:32.222216",
+    "total_new_functions": 9,
+    "description": "New Kubernetes security functions suggested by compliance mapper for Python code generation"
+  },
+  "new_functions": [
+    {
+      "function_name": "super_admin_conf_file_permissions",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "To check the permissions of the super-admin.conf file",
+      "compliance_id": "1.1.13",
+      "compliance_title": "Ensure that the default administrative credential file permissions are set to 600",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'admin_conf_file_permissions' covers the requirement for the admin.conf file. However, there is no existing function to check the permissions of the super-admin.conf file, hence a new function 'super_admin_conf_file_permissions' is suggested."
+    },
+    {
+      "function_name": "super_admin_conf_file_ownership",
+      "service": "apiserver",
+      "kubernetes_api": "ls -l /etc/kubernetes/pki/",
+      "rationale": "To check the ownership of the super-admin.conf file",
+      "compliance_id": "1.1.14",
+      "compliance_title": "Ensure that the default administrative credential file ownership is set to root:root",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_admin_conf_file_ownership' covers the check for admin.conf file but there is no existing function to check the ownership of super-admin.conf file. Hence, a new function 'super_admin_conf_file_ownership' is suggested."
+    },
+    {
+      "function_name": "apiserver_audit_policy_minimal_check",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get --raw /apis/audit.k8s.io/v1alpha1/auditpolicies",
+      "rationale": "To ensure that the audit policy created is minimal and does not log unnecessary or sensitive information",
+      "compliance_id": "3.2.1",
+      "compliance_title": "Ensure that a minimal audit policy is created",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_audit_policy_file_set' checks if the audit policy file is set, but does not ensure that the policy is minimal. Hence, a new function 'apiserver_audit_policy_minimal_check' is suggested to check the minimal nature of the audit policy."
+    },
+    {
+      "function_name": "kube_proxy_metrics_bind_to_localhost",
+      "service": "kube-proxy",
+      "kubernetes_api": "kubectl get pods -n kube-system -l k8s-app=kube-proxy -o jsonpath='{.items[*].spec.containers[*].command}'",
+      "rationale": "This function is needed to ensure that the kube-proxy metrics service is only bound to the localhost, preventing exposure to non-loopback addresses.",
+      "compliance_id": "4.3.1",
+      "compliance_title": "Ensure that the kube-proxy metrics service is bound to localhost",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirement of ensuring that the kube-proxy metrics service is bound to localhost. A new function, kube_proxy_metrics_bind_to_localhost, is proposed to fill this gap."
+    },
+    {
+      "function_name": "rbac_minimize_hostpath_mount_in_pod_creation",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.volumes[*].hostPath.path}{\"\\n\"}'",
+      "rationale": "To ensure that the creation of pods does not allow for the mounting of sensitive hostPaths",
+      "compliance_id": "5.1.4",
+      "compliance_title": "Minimize access to create pods",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions partially cover the compliance requirement of minimizing access to create pods. However, there are no functions that specifically check for the restriction of hostPath mounts and privileged service account assignments during pod creation, hence the need for new functions."
+    },
+    {
+      "function_name": "rbac_minimize_service_account_assignment_in_pod_creation",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.serviceAccountName}{\"\\n\"}'",
+      "rationale": "To ensure that the creation of pods does not allow for the assignment of privileged service accounts",
+      "compliance_id": "5.1.4",
+      "compliance_title": "Minimize access to create pods",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions partially cover the compliance requirement of minimizing access to create pods. However, there are no functions that specifically check for the restriction of hostPath mounts and privileged service account assignments during pod creation, hence the need for new functions."
+    },
+    {
+      "function_name": "namespace_network_policy_enforcement_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get networkpolicies --all-namespaces",
+      "rationale": "To ensure that all namespaces have network policies defined and enforced",
+      "compliance_id": "5.3.2",
+      "compliance_title": "Ensure that all Namespaces have Network Policies defined",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide partial coverage as they check for network policies at the namespace level but do not ensure that all namespaces have network policies defined. A new function is suggested to check for network policy enforcement across all namespaces."
+    },
+    {
+      "function_name": "namespace_creation_and_usage_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get namespaces",
+      "rationale": "To ensure namespaces are being created and used correctly for resource isolation",
+      "compliance_id": "5.7.1",
+      "compliance_title": "Create administrative boundaries between resources using namespaces",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide checks for namespace isolation but do not cover the creation and usage of namespaces for administrative boundaries. New functions are suggested to cover these aspects."
+    },
+    {
+      "function_name": "namespace_boundaries_enforcement_check",
+      "service": "rbac",
+      "kubernetes_api": "kubectl get rolebindings,clusterrolebindings --all-namespaces",
+      "rationale": "To ensure administrative boundaries are enforced between namespaces",
+      "compliance_id": "5.7.1",
+      "compliance_title": "Create administrative boundaries between resources using namespaces",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide checks for namespace isolation but do not cover the creation and usage of namespaces for administrative boundaries. New functions are suggested to cover these aspects."
+    }
+  ]
+}

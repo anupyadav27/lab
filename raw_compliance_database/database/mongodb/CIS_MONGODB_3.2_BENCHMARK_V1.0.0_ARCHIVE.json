@@ -1,0 +1,479 @@
+[
+  {
+    "id": "1.1",
+    "title": "Ensure the appropriate MongoDB software version/patches are installed",
+    "assessment": "Scored",
+    "description": "The MongoDB installation version, along with the patch level, should be the most recent that is compatible with the organization's operational needs.",
+    "rationale": "Using the most recent MongoDB software version along with all applicable patches helps limit the possibilities for vulnerabilities in the software. The installation version and/or patches applied should be selected according to the needs of the organization. At minimum, the software version should be supported. Note: As of October 2016, only MongoDB versions 3.0 and 3.2 are still supported.   9 | P a g e",
+    "audit": "Run the following command from within the MongoDB shell to determine if the MongoDB software version complies with your organization\u2019s operational needs: > db.version()",
+    "remediation": "Upgrade to the latest version of the MongoDB software: 1. Backup the data set. 2. Download the binaries for the latest MongoDB revision from the MongoDB Download Page and store the binaries in a temporary location. The binaries download as compressed files that extract to the directory structure used by the MongoDB installation. 3. Shutdown the MongoDB instance. 4. Replace the existing MongoDB binaries with the downloaded binaries. 5. Restart the MongoDB instance. Default Value: Patches are not installed by default. References: 1. http://docs.mongodb.org/manual/tutorial/upgrade-revision/ 2. https://docs.mongodb.com/manual/release-notes/ 3. https://www.mongodb.com/download-center#community 4. https://www.mongodb.com/support-policy",
+    "function_names": [
+      "mongodb_instance_version_current",
+      "mongodb_instance_patches_updated",
+      "mongodb_instance_version_compatible",
+      "mongodb_instance_patches_recent",
+      "mongodb_instance_version_approved"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/manual/tutorial/upgrade-revision/ 2. https://docs.mongodb.com/manual/release-notes/ 3. https://www.mongodb.com/download-center#community 4. https://www.mongodb.com/support-policy"
+  },
+  {
+    "id": "2.1",
+    "title": "Ensure that authentication is enabled for MongoDB databases",
+    "assessment": "Scored",
+    "description": "This setting ensures that all clients, users, and/or servers are required to authenticate prior to being granted access to the MongoDB database.",
+    "rationale": "Failure to authenticate clients, users, and/or servers can enable unauthorized access to the MongoDB database and can prevent tracing actions back to their sources.",
+    "audit": "Run the following command to verify whether authentication is enabled (Auth value set to True) on the MongoDB server. cat /etc/mongod.conf | grep \u201cAuth=\u201d   11 | P a g e",
+    "remediation": "The authentication mechanism should be implemented before anyone accesses the MongoDB Server. To enable the authentication mechanism: \u2022 Start the MongoDB instance without authentication. mongod --port 27017 --dbpath /data/db1] \u2022 Create the system user administrator, ensuring that its password meets organizationally- defined password complexity requirements. use admin db.createUser( { user: \"siteUserAdmin\", pwd: \"password\", roles: [ { role: \"userAdminAnyDatabase\", db: \"admin\" } ] } ) \u2022 Restart the MongoDB instance with authentication enabled. mongod --auth --config /etc/mongod.conf Default Value: Not configured References: 1. https://www.mongodb.com/blog/post/improved-password-based-authentication- mongodb-30-scram-explained-part-1 2. https://www.owasp.org/index.php/Authentication_Cheat_Sheet",
+    "function_names": [
+      "mongodb_database_authentication_enabled",
+      "mongodb_database_authentication_required",
+      "mongodb_database_authentication_enforced",
+      "mongodb_database_authentication_mandatory",
+      "mongodb_database_authentication_active"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. https://www.mongodb.com/blog/post/improved-password-based-authentication- mongodb-30-scram-explained-part-1 2. https://www.owasp.org/index.php/Authentication_Cheat_Sheet"
+  },
+  {
+    "id": "2.2",
+    "title": "Ensure that MongoDB does not bypass authentication via the localhost exception",
+    "assessment": "Scored",
+    "description": "MongoDB should not be set to bypass authentication via the localhost exception. The localhost exception allows you to enable authorization before creating the first user in the system. Note: This recommendation only applies when there are no users created in the MongoDB instance.",
+    "rationale": "Disabling this exception will prevent unauthorized local access to the MongoDB database. It will also ensure traceability of each database activity to a specific user.",
+    "audit": "To verify the localhost exception is disabled, run the following command to ensure that enableLocalhostAuthBypass is set to 0 (false): cat /etc/mongod.conf |grep \"enableLocalhostAuthBypass\"",
+    "remediation": "Since enableLocalhostAuthBypass is not available using the setParameter database command, use the setParameter option in the configuration file to set it to false. setParameter: enableLocalhostAuthBypass: false Default Value: Not configured References: 1. http://docs.mongodb.org/manual/core/authentication/#localhost-exception   13 | P a g e Notes: The --setParameter option on the command line may also be used to configure this; however, having it in the config file may provide greater confidence that this setting is configured correctly in every instance.",
+    "function_names": [
+      "mongodb_instance_authentication_required",
+      "mongodb_instance_localhost_exception_disabled",
+      "mongodb_instance_authorization_enabled",
+      "mongodb_instance_first_user_required",
+      "mongodb_instance_default_auth_bypass_disabled"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/manual/core/authentication/#localhost-exception   13 | P a g e Notes: The --setParameter option on the command line may also be used to configure this; however, having it in the config file may provide greater confidence that this setting is configured correctly in every instance."
+  },
+  {
+    "id": "2.3",
+    "title": "Ensure authentication is enabled in the sharded cluster",
+    "assessment": "Scored",
+    "description": "Authentication is enabled in a sharded cluster when keyfiles are created and configured for all components. This ensures that every client that accesses the cluster must provide credentials, to include MongoDB instances that access each other within the cluster.",
+    "rationale": "Enforcing a key on a sharded cluster prevents unauthorized access to the MongoDB database and provides traceability of database activities to a specific user or component.",
+    "audit": "Run the following command to verify that the keyfile parameter is configured: cat /etc/mongod.conf | grep \u201ckeyFile=\u201d",
+    "remediation": "To enable authentication in the sharded cluster, perform the following steps: \u2022 Generate a key file. \u2022 On each component in the shared cluster, enable authentication by doing one of the following: o In the configuration file /etc/mongod.conf, set the keyFile option to the key file\u2019s path and then start the component with this command: keyFile = /srv/mongodb/keyfile \u2022 When starting the component, set --keyFile option, which is an option for both mongos instances and mongod instances. Set the --keyFile to the key file\u2019s path.   15 | P a g e Default Value: Not configured References: 1. http://docs.mongodb.org/v2.2/administration/sharded-clusters/",
+    "function_names": [
+      "mongodb_cluster_authentication_enabled",
+      "mongodb_shard_keyfile_configured",
+      "mongodb_cluster_credentials_required",
+      "mongodb_shard_internal_auth_enabled",
+      "mongodb_cluster_keyfile_auth_enabled"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/v2.2/administration/sharded-clusters/"
+  },
+  {
+    "id": "2.4",
+    "title": "Ensure an industry standard authentication mechanism is used",
+    "assessment": "Scored",
+    "description": "Using one or more industry standard authentication mechanisms helps organizations enforce their account and password policies for their MongoDB users.",
+    "rationale": "Without an industry standard authentication mechanism in place, account and password management is more tedious, and authentication may not align with the organization's policies.",
+    "audit": "To verify the authentication mechanism in use for MongoDB, run the following commands: cat /etc/mongod.conf | grep \u201cclusterAuthMode:\u201d cat /etc/mongod.conf | grep \u201cmode:\u201d cat /etc/mongod.conf | grep \u201cauthorization:\" cat /etc/mongod.conf | grep \u201cauthenticationMechanisms:\u201d",
+    "remediation": "In order to implement an industry standard authentication mechanism, use the corresponding sample from the list below as a model for specifying the authentication mechanisms in the MongoDB configuration file. x.509 Certificates for Client Authentication: security: clusterAuthMode: x509 net: ssl: mode: requireSSL PEMKeyFile: <path to TLS/SSL certificate and key PEM file> CAFile: <path to root CA PEM file> See the reference section for a link to a detailed procedure for generating the PEMKeyFile and CAFile.   17 | P a g e MongoDB with Kerberos Authentication on Linux: security: authorization: enabled setParameter: authenticationMechanisms: GSSAPI storage: dbPath: /opt/mongodb/data See the reference section for a link to a detailed procedure for establishing the Kerberos service principal and keytab file. References: 1. https://docs.mongodb.com/v3.2/tutorial/configure-x509-client-authentication/ 2. https://docs.mongodb.com/v3.2/tutorial/control-access-to-mongodb-with-kerberos- authentication/ 3. https://docs.mongodb.com/v3.2/core/kerberos/#kerberos-service-principal 4. https://docs.mongodb.com/v3.2/core/kerberos/#keytab-files Notes: Configuring the X.509 certificate and deploying Kerberos is beyond the scope of the document.",
+    "function_names": [
+      "mongodb_user_standard_auth_enabled",
+      "mongodb_user_password_policy_compliant",
+      "mongodb_auth_mechanism_industry_standard",
+      "mongodb_user_account_policy_enforced",
+      "mongodb_auth_mechanism_scram_sha_enabled",
+      "mongodb_auth_mechanism_x509_enabled",
+      "mongodb_auth_mechanism_ldap_enabled",
+      "mongodb_user_credentials_secure_auth",
+      "mongodb_auth_mechanism_kerberos_enabled",
+      "mongodb_user_auth_policy_compliant"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/v3.2/tutorial/configure-x509-client-authentication/ 2. https://docs.mongodb.com/v3.2/tutorial/control-access-to-mongodb-with-kerberos- authentication/ 3. https://docs.mongodb.com/v3.2/core/kerberos/#kerberos-service-principal 4. https://docs.mongodb.com/v3.2/core/kerberos/#keytab-files Notes: Configuring the X.509 certificate and deploying Kerberos is beyond the scope of the document."
+  },
+  {
+    "id": "3.1",
+    "title": "Ensure that role-based access control is enabled and configured appropriately",
+    "assessment": "Scored",
+    "description": "Role-based access control (RBAC) is a method of regulating access to resources based on the roles of individual users within an enterprise. A user is granted one or more roles that determine the user\u2019s access to database resources and operations. Outside of role assignments, the user has no access to the system. MongoDB can use RBAC to govern access to MongoDB systems. MongoDB does not enable authorization by default.",
+    "rationale": "When properly implemented, RBAC enables users to carry out a wide range of authorized tasks by dynamically regulating their actions according to flexible functions. This allows an organization to control employees\u2019 access to all database tables through RBAC.",
+    "audit": "Connect to MongoDB with the appropriate privileges and run the following command: mongo --port 27017 -u <siteUserAdmin> -p <password> --authenticationDatabase <database name> Identify users' roles and privileges: > db.getUser() > db.getRole() Verify that the appropriate role or roles have been configured for each user.   19 | P a g e",
+    "remediation": "1. Establish roles for MongoDB. 2. Assign the appropriate privileges to each role. 3. Assign the appropriate users to each role. 4. Remove any individual privileges assigned to users that are now addressed by the roles. 5. See the reference below for more Information. References: 1. http://docs.mongodb.org/manual/tutorial/manage-users-and-roles/",
+    "function_names": [
+      "mongodb_database_rbac_enabled",
+      "mongodb_database_default_auth_disabled",
+      "mongodb_database_role_assignments_restricted",
+      "mongodb_database_user_roles_defined",
+      "mongodb_database_admin_privileges_restricted",
+      "mongodb_database_custom_roles_configured",
+      "mongodb_database_anonymous_access_disabled",
+      "mongodb_database_authentication_enabled",
+      "mongodb_database_role_permissions_minimized",
+      "mongodb_database_system_roles_audited"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/manual/tutorial/manage-users-and-roles/"
+  },
+  {
+    "id": "3.2",
+    "title": "Ensure that MongoDB only listens for network connections on authorized interfaces",
+    "assessment": "Scored",
+    "description": "Ensuring that MongoDB runs in a trusted network environment involves limiting the network interfaces on which MongoDB instances listen for incoming connections. Any untrusted network connections should be dropped by MongoDB.",
+    "rationale": "This configuration blocks connections from untrusted networks, leaving only systems on authorized and trusted networks able to attempt to connect to the MongoDB. If not configured, this may lead to unauthorized connections from untrusted networks to MongoDB.",
+    "audit": "1. Verify that network exposure is limited, review the settings in the MongoDB configuration file: cat /etc/mongod.conf |grep \u2013A12 \u201cnet\u201d | grep \u201cbindIp\" 2. Verify the relevant network settings on the Linux system itself: iptables \u2013L",
+    "remediation": "Configure the MongoDB configuration file to limit its exposure to only the network interfaces on which MongoDB instances should listen for incoming connections. Default Value: Not configured   21 | P a g e References: 1. http://docs.mongodb.org/manual/tutorial/configure-linux-iptables-firewall/ 2. http://docs.mongodb.org/manual/tutorial/configure-windows-netsh-firewall/",
+    "function_names": [
+      "mongodb_instance_authorized_interfaces_only",
+      "mongodb_network_restricted_listeners",
+      "mongodb_connection_authorized_interfaces",
+      "mongodb_listener_untrusted_dropped",
+      "mongodb_interface_trusted_network_only"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/manual/tutorial/configure-linux-iptables-firewall/ 2. http://docs.mongodb.org/manual/tutorial/configure-windows-netsh-firewall/"
+  },
+  {
+    "id": "3.3",
+    "title": "Ensure that MongoDB is run using a non-privileged, dedicated service account",
+    "assessment": "Scored",
+    "description": "The MongoDB service should not be run using a privileged account such as 'root' because this unnecessarily exposes the operating system to high risk.",
+    "rationale": "Using a non-privileged, dedicated service account restricts the database from accessing the critical areas of the operating system which are not required by the MongoDB. This will also mitigate the potential for unauthorized access via a compromised, privileged account on the operating system.",
+    "audit": "Run the following command to get listing of all mongo instances, the PID number, and the PID owner. ps -ef | grep -E \"mongos|mongod\"",
+    "remediation": "1. Create a dedicated user for performing MongoDB database activity. 2. Set the Database data files, the keyfile, and the SSL private key files to only be readable by the mongod/mongos user. 3. Set the log files to only be writable by the mongod/mongos user and readable only by root. Default Value: Not configured   23 | P a g e References: 1. http://docs.mongodb.org/manual/tutorial/manage-users-and-roles/",
+    "function_names": [
+      "mongodb_service_account_non_privileged",
+      "mongodb_service_account_dedicated",
+      "mongodb_service_account_no_root",
+      "mongodb_service_account_secure",
+      "mongodb_service_account_least_privilege"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/manual/tutorial/manage-users-and-roles/"
+  },
+  {
+    "id": "3.4",
+    "title": "Ensure that each role for each MongoDB database is needed and grants only the necessary privileges",
+    "assessment": "Scored",
+    "description": "Reviewing all roles periodically and eliminating unneeded roles as well as unneeded privileges from necessary roles helps minimize the privileges that each user has.",
+    "rationale": "Although role-based access control (RBAC) has many advantages for regulating access to resources, over time some roles may no longer be needed, and some roles may grant privileges that are no longer needed.",
+    "audit": "Perform the following command to view all roles on the database on which the command runs, including both built-in and user-defined roles, as well as the privileges granted by each role. Ensure that only necessary roles are listed and only the necessary privileges are listed for each role. db.runCommand( { rolesInfo: 1, showPrivileges: true, showBuiltinRoles: true } )",
+    "remediation": "To revoke specified privileges from the user-defined role on the database where the command is run. The revokePrivilegesFromRole command has the following syntax: { revokePrivilegesFromRole: \"<role> \", privileges: [ { resource: { <resource> }, actions: [ \u201c <action> \", ... ] }, ... ], }   25 | P a g e References: 1. https://docs.mongodb.com/v3.2/reference/method/db.revokePrivilegesFromRole/ 2. https://docs.mongodb.com/v3.2/reference/command/revokePrivilegesFromRole/#dbcmd.r evokePrivilegesFromRole Notes: You must have the dropRole action on a database to drop a role from that database.",
+    "function_names": [
+      "mongodb_role_unused_removed",
+      "mongodb_role_privileges_minimized",
+      "mongodb_role_privileges_reviewed_periodically",
+      "mongodb_role_unnecessary_removed",
+      "mongodb_role_privileges_least_privilege",
+      "mongodb_role_access_reviewed",
+      "mongodb_role_privileges_audited",
+      "mongodb_role_privileges_restricted"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/v3.2/reference/method/db.revokePrivilegesFromRole/ 2. https://docs.mongodb.com/v3.2/reference/command/revokePrivilegesFromRole/#dbcmd.r evokePrivilegesFromRole Notes: You must have the dropRole action on a database to drop a role from that database."
+  },
+  {
+    "id": "3.5",
+    "title": "Review User-Defined Roles",
+    "assessment": "Scored",
+    "description": "Reviewing all roles periodically and removing all users from those roles who do not need to belong to them helps minimize the privileges that each user has.",
+    "rationale": "Although role-based access control (RBAC) has many advantages for regulating access to resources, over time some users may be assigned to roles that are no longer necessary, such as a user changing jobs within the organization. Users who have excessive privileges pose unnecessary risk to the organization.",
+    "audit": "Check each role for each database using one of the following commands. To specify a role from the current database, specify the role by its name: db.runCommand( { rolesInfo: \" <rolename> \" } ) To specify a role from another database, specify the role by a document that specifies the role and database: db.runCommand( { rolesInfo: { role: \" <rolename> \", db: \" <database> \" } } )",
+    "remediation": "To remove a user from one or more roles on the current database, use the following command: use <dbName> db.revokeRolesFromUser( \" <username> \", [ <roles> ]) References: 1. https://docs.mongodb.com/manual/reference/method/db.revokeRolesFromUser/ 2. https://docs.mongodb.com/manual/reference/command/rolesInfo/ 3. https://docs.mongodb.com/manual/reference/privilege-actions/#authr.revokeRole   27 | P a g e Notes: Logged-in user must have the revokeRole action on a database to revoke a role on that database.   Also, roleInfo works for both user-defined roles and built-in roles.",
+    "function_names": [
+      "iam_role_unused_permissions_removed",
+      "iam_role_user_membership_reviewed",
+      "iam_role_minimal_privileges_enforced",
+      "iam_role_unnecessary_users_removed",
+      "iam_role_periodic_review_required"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/manual/reference/method/db.revokeRolesFromUser/ 2. https://docs.mongodb.com/manual/reference/command/rolesInfo/ 3. https://docs.mongodb.com/manual/reference/privilege-actions/#authr.revokeRole   27 | P a g e Notes: Logged-in user must have the revokeRole action on a database to revoke a role on that database.   Also, roleInfo works for both user-defined roles and built-in roles."
+  },
+  {
+    "id": "3.6",
+    "title": "Review Superuser/Admin Roles",
+    "assessment": "Scored",
+    "description": "Roles provide several advantages that make it easier to manage privileges in a database system. Security administrators can control access to their databases in a way that mirrors the structure of their organizations (they can create roles in the database that map directly to the job functions in their organizations). The assignment of privileges is simplified. Instead of granting the same set of privileges to each individual user in a particular job function, the administrator can grant this set of privileges to a role representing that job function and then grant that role to each user in that job function.",
+    "rationale": "Reviewing the Superuser/Admin roles within a database helps minimize the possibility of privileged unwanted access.",
+    "audit": "Superuser roles provide the ability to assign any user any privilege on any database, which means that users with one of these roles can assign themselves any privilege on any database: db.runCommand( { rolesInfo: \"dbOwner\" } ) db.runCommand( { rolesInfo: \"userAdmin\" } ) db.runCommand( { rolesInfo: \"userAdminAnyDatabase\" } ) Root role provides access to the operations and all the resources of the readWriteAnyDatabase, dbAdminAnyDatabase, userAdminAnyDatabase, clusterAdmin roles, restore combined. db.runCommand( { rolesInfo: \"readWriteAnyDatabase\" } ) db.runCommand( { rolesInfo: \"dbAdminAnyDatabase\" } ) db.runCommand( { rolesInfo: \"userAdminAnyDatabase\" } ) db.runCommand( { rolesInfo: \"clusterAdmin\" } ) Cluster Administration Roles are used for administering the whole system rather than just a single database. db.runCommand( { rolesInfo: \"hostManager\" } )   29 | P a g e",
+    "remediation": "To remove a user from one or more roles on the current database. use <dbName> db.revokeRolesFromUser( \" <username> \", [ <roles> ]) References: 1. https://docs.mongodb.com/v3.0/reference/built-in-roles/#built-in-roles 2. https://docs.mongodb.com/manual/reference/method/db.revokeRolesFromUser/",
+    "function_names": [
+      "iam_role_no_admin_privileges",
+      "iam_role_min_privilege",
+      "iam_role_no_superuser",
+      "iam_role_privilege_reviewed",
+      "iam_role_privilege_audited",
+      "iam_role_privilege_least_privilege",
+      "iam_role_privilege_org_mapping",
+      "iam_role_privilege_job_function",
+      "iam_role_privilege_granular",
+      "iam_role_privilege_secure_assignment"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/v3.0/reference/built-in-roles/#built-in-roles 2. https://docs.mongodb.com/manual/reference/method/db.revokeRolesFromUser/"
+  },
+  {
+    "id": "4.1",
+    "title": "Ensure TLS or SSL protects all network communications",
+    "assessment": "Scored",
+    "description": "Use TLS or SSL to protect all incoming and outgoing connections. This should include using TLS or SSL to encrypt communication between mongod and mongos components of a MongoDB client as well as between all applications and MongoDB. Most MongoDB distributions include support for SSL or TLS.",
+    "rationale": "This prevents sniffing of cleartext traffic between MongoDB components or performing a man-in-the-middle attack for MongoDB.",
+    "audit": "To verify that the server requires SSL or TLS use (net.ssl.mode value set to requireSSL), run one of the following commands: cat /etc/mongos.conf | grep \u2013A20 \u2018net\u2019 | grep \u2013A10 \u2018ssl\u2019 | grep \u2018mode\u2019",
+    "remediation": "Configure MongoDB servers to require the use of SSL or TLS to encrypt all MongoDB network communications. To implement SSL or TLS to encrypt all MongoDB network communication, perform the following steps:   31 | P a g e For mongod (\u201cPrimary daemon process for the MongoDB system\u201d) In the configuration file /etc/mongod.conf, set the PEMKeyFile option to the certificate file\u2019s path and then start the component with this command: ssl: mode: requireSSL PEMKeyFile: /etc/ssl/mongodb.pem CAFile: /etc/ssl/ca.pem And restart monogdb instance with mongod --config /etc/mongod.conf Or mongod --sslMode requireSSL --sslPEMKeyFile /etc/ssl/mongodb.pem --sslCAFile /etc/ssl/ca.pem Default Value: Not configured References: 1. http://docs.mongodb.org/manual/tutorial/configure-ssl/ Notes: Value Description disabled The server does not use TLS/SSL. allowSSL Connections between servers do not use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL. preferSSL Connections between servers use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL. requireSSL The server uses and accepts only TLS/SSL encrypted connections.",
+    "function_names": [
+      "mongodb_instance_tls_enabled",
+      "mongodb_client_tls_enabled",
+      "mongodb_network_communication_encrypted",
+      "mongodb_connection_tls_required",
+      "mongodb_component_tls_protected",
+      "mongodb_application_tls_enabled",
+      "mongodb_communication_ssl_enabled",
+      "mongodb_network_traffic_encrypted",
+      "mongodb_tls_certificate_valid",
+      "mongodb_ssl_protocol_enabled"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/manual/tutorial/configure-ssl/ Notes: Value Description disabled The server does not use TLS/SSL. allowSSL Connections between servers do not use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL. preferSSL Connections between servers use TLS/SSL. For incoming connections, the server accepts both TLS/SSL and non-TLS/non-SSL. requireSSL The server uses and accepts only TLS/SSL encrypted connections."
+  },
+  {
+    "id": "4.2",
+    "title": "Ensure Federal Information Processing Standard (FIPS) is enabled",
+    "assessment": "Scored",
+    "description": "The Federal Information Processing Standard (FIPS) is a computer security standard used to certify software modules and libraries that encrypt and decrypt data securely. You can configure MongoDB to run with a FIPS 140-2 certified library for OpenSSL.",
+    "rationale": "FIPS is industry standard that dictates how data should be encrypted in rest and during transmission.",
+    "audit": "To verify that the server uses FIPS Mode (net.ssl.FIPSMode value set to true), run following commands: mongos --config /etc/mongos.conf net: ssl: FIPSMode: true or To verify FIPS mode is running, check the server log file for a message that FIPS is active: FIPS 140-2 mode activated   33 | P a g e",
+    "remediation": "Configuring FIPS mode, ensure that your certificate is FIPS compliant. Run mongod or mongos instance in FIPS mode. Make changes to configuration file, to configure your mongod or mongos instance to use FIPS mode, shut down the instance and update the configuration file with the following setting: net: ssl: FIPSMode: true Start mongod or mongos instance with a configuration file. mongod --config /etc/mongod.conf Default Value: Not configured References: 1. https://docs.mongodb.com/v3.2/tutorial/configure-fips/",
+    "function_names": [
+      "mongodb_instance_fips_enabled",
+      "mongodb_cluster_fips_enabled",
+      "mongodb_connection_fips_enabled",
+      "mongodb_tls_fips_enabled",
+      "mongodb_encryption_fips_enabled",
+      "mongodb_ssl_fips_enabled",
+      "mongodb_cryptography_fips_enabled",
+      "mongodb_network_fips_enabled"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/v3.2/tutorial/configure-fips/"
+  },
+  {
+    "id": "5.1",
+    "title": "Ensure that system activity is audited",
+    "assessment": "Scored",
+    "description": "Track access and changes to database configurations and data. MongoDB Enterprise includes a system auditing facility that can record system events (e.g. user operations, connection events) on a MongoDB instance. These audit records permit forensic analysis and allow administrators to verify proper controls.",
+    "rationale": "System level logs can be handy while troubleshooting an operational problem or handling a security incident.",
+    "audit": "To verify that system activity is being audited for MongoDB, run the following command to confirm the auditLog.destination value is set correctly: cat /etc/mongod.conf |grep \u2013A4 \"auditLog\" | grep \"destination\"",
+    "remediation": "Set the value of auditLog.destination to the appropriate value from the following options: syslog To enable auditing and print audit events to syslog mongod --dbpath data/db --auditDestination syslog console To enable auditing and print audit events to standard output (i.e., stdout) mongod --dbpath data/db --auditDestination console  35 | P a g e Json File To enable auditing and print audit events to a file in JSON format. Printing audit events to file in JSON format degrades server performance more than printing to a file in BSON format. mongod --dbpath data/db --auditDestination file --auditFormat JSON -- auditPath data/db/auditLog.json Bson File To enable auditing and print audit events to a file in BSON binary format mongod --dbpath data/db --auditDestination file --auditFormat BSON -- auditPath data/db/auditLog.bson Default Value: Not configured References: 1. http://docs.mongodb.org/manual/tutorial/configure-auditing/",
+    "function_names": [
+      "mongodb_instance_audit_logging_enabled",
+      "mongodb_instance_audit_logging_all_events",
+      "mongodb_instance_audit_logging_retention_over_90d",
+      "mongodb_instance_audit_logging_immutable",
+      "mongodb_instance_audit_logging_encrypted",
+      "mongodb_instance_audit_logging_user_operations",
+      "mongodb_instance_audit_logging_connection_events",
+      "mongodb_instance_audit_logging_centralized",
+      "mongodb_instance_audit_logging_read_write_events",
+      "mongodb_instance_audit_logging_admin_operations"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. http://docs.mongodb.org/manual/tutorial/configure-auditing/"
+  },
+  {
+    "id": "5.2",
+    "title": "Ensure that audit filters are configured properly",
+    "assessment": "Scored",
+    "description": "MongoDB Enterprise supports auditing of various operations. When enabled, the audit facility, by default, records all auditable operations as detailed in Audit Event Actions, Details, and Results. To specify which events to record, the audit feature includes the -- auditFilter option. This check is only for Enterprise editions.",
+    "rationale": "All operations carried out on the database are logged. This helps in backtracking and tracing any incident that occurs.",
+    "audit": "To verify that audit filters are configured on MongoDB as per the organization\u2019s requirements, run the following command: cat /etc/mongod.conf |grep \u2013A10 \"auditLog\" | grep \"filter\"",
+    "remediation": "Set the audit filters based on the organization\u2019s requirements. Default Value: Not configured References: 1. https://docs.mongodb.com/manual/reference/audit-message/ 2. https://docs.mongodb.com/manual/tutorial/configure-audit-filters/   37 | P a g e",
+    "function_names": [
+      "mongodb_audit_log_filter_enabled",
+      "mongodb_audit_log_filter_configured",
+      "mongodb_audit_log_filter_all_events",
+      "mongodb_audit_log_filter_custom_events",
+      "mongodb_audit_log_filter_enterprise_edition",
+      "mongodb_audit_log_filter_event_actions",
+      "mongodb_audit_log_filter_event_details",
+      "mongodb_audit_log_filter_event_results",
+      "mongodb_audit_log_filter_operation_types",
+      "mongodb_audit_log_filter_properly_configured"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/manual/reference/audit-message/ 2. https://docs.mongodb.com/manual/tutorial/configure-audit-filters/   37 | P a g e"
+  },
+  {
+    "id": "5.3",
+    "title": "Ensure that logging captures as much information as possible",
+    "assessment": "Not Scored",
+    "description": "The SystemLog.quiet option stops logging of information such as: \u2022 connection events \u2022 authentication events \u2022 replication sync activities \u2022 evidence of some potentially impactful commands being run (eg: drop, dropIndexes, validate) This information should be logged whenever possible. This check is only for Enterprise editions.",
+    "rationale": "The use of SystemLog.quiet makes troubleshooting problems and investigating possible security incidents much more difficult.",
+    "audit": "To verify that the SystemLog.quiet option is disabled (value of False), run the following command: cat /etc/mongod.conf |grep \"SystemLog.quiet\"",
+    "remediation": "Set SystemLog.quiet to False in the /etc/mongod.conf file to disable it. References: 1. https://docs.mongodb.com/manual/reference/configuration-options/#systemLog.quiet   39 | P a g e",
+    "function_names": [
+      "mongodb_database_logging_quiet_disabled",
+      "mongodb_database_logging_verbose_enabled",
+      "mongodb_database_logging_connection_events_enabled",
+      "mongodb_database_logging_authentication_events_enabled",
+      "mongodb_database_logging_replication_sync_enabled",
+      "mongodb_database_logging_impactful_commands_enabled"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/manual/reference/configuration-options/#systemLog.quiet   39 | P a g e"
+  },
+  {
+    "id": "5.4",
+    "title": "Ensure that new entries are appended to the end of the log file",
+    "assessment": "Not Scored",
+    "description": "By default, new log entries will overwrite old entries after a restart of the mongod or Mongols service. Enabling the systemLog.logAppend setting causes new entries to be appended to the end of the log file rather than overwriting the existing content of the log when the mongos or mongod instance restarts.",
+    "rationale": "Allowing old entries to be overwritten by new entries instead of appending new entries to the end of the log may destroy old log data that is needed for a variety of purposes.",
+    "audit": "To verify that new log entries will be appended to the end of the log file after a restart (systemLog.logAppend value set to true), run the following command: cat /etc/mongod.conf |grep \"systemLog.logAppend\"",
+    "remediation": "Set systemLog.logAppend to true in the /etc/mongod.conf file. References: 1. https://docs.mongodb.com/manual/reference/configuration- options/#systemLog.logAppend",
+    "function_names": [
+      "mongodb_log_append_enabled",
+      "mongodb_system_log_append_only",
+      "mongodb_log_rotation_append",
+      "mongodb_log_persistence_append",
+      "mongodb_log_file_append_mode"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/manual/reference/configuration- options/#systemLog.logAppend"
+  },
+  {
+    "id": "6.1",
+    "title": "Mongodb Database Running with Least Privileges",
+    "assessment": "Scored",
+    "description": "This setting ensures that monogd service run as least privilege user.",
+    "rationale": "Anyone who has been a victim of viruses, worms, and other malicious software (malware) will appreciate the security principle of \u201cleast privilege.\u201d If all processes ran with the smallest set of privileges needed to perform the user's tasks, it would be more difficult for malicious and annoying software to infect a machine and propagate to other machines.",
+    "audit": "Connect MongoDB Service mongod --port 27017 --dbpath /data/db1 It will highlight if the service is running as root privilege or not.",
+    "remediation": "Create a user which is only used for running Mongodb and directly related processes. This user must not have administrative rights to the system. Steps to create user useradd -m -d /home/mongodb -s /bin/bash -g mongodb -u 1234 mongodb And then set ownership to mongodb user only sudo chown -R mongodb:mongodb /data/db   42 | P a g e",
+    "function_names": [
+      "mongodb_service_least_privilege_user",
+      "mongodb_process_non_root_user",
+      "mongodb_service_minimal_permissions",
+      "mongodb_instance_restricted_user",
+      "mongodb_daemon_low_privilege_account"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux"
+  },
+  {
+    "id": "6.2",
+    "title": "Ensure that MongoDB uses a non-default port",
+    "assessment": "Scored",
+    "description": "Changing the port used by MongoDB makes it harder for attackers to find the database and target it.",
+    "rationale": "Standard ports are used in automated attacks and by attackers to verify which applications are running on a server.",
+    "audit": "To verify the port number used by MongoDB, execute the following command and ensure that the port number is not 27017: cat /etc/mongod.conf |grep \u201cport\u201d",
+    "remediation": "Change the port for MongoDB server to a number other than 27017. Impact: Hackers frequently scan IP addresses for commonly used ports, so it's not uncommon to use a different port to \"fly under the radar\". This is just to avoid detection, other than that there is no added safety by using a different port. References: 1. https://docs.mongodb.com/manual/reference/default-mongodb-port/",
+    "function_names": [
+      "mongodb_instance_non_default_port",
+      "mongodb_instance_port_not_27017",
+      "mongodb_network_default_port_disabled",
+      "mongodb_connection_custom_port_required",
+      "mongodb_instance_port_changed_from_default"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "impact": "Hackers frequently scan IP addresses for commonly used ports, so it's not uncommon to use a different port to \"fly under the radar\". This is just to avoid detection, other than that there is no added safety by using a different port.",
+    "references": "1. https://docs.mongodb.com/manual/reference/default-mongodb-port/"
+  },
+  {
+    "id": "6.3",
+    "title": "Ensure that operating system resource limits are set for MongoDB",
+    "assessment": "Not Scored",
+    "description": "Operating systems provide ways to limit and control the usage of system resources such as threads, files, and network connections on a per-process and per-user basis",
+    "rationale": "These ulimits prevent a single user from consuming too many system resources.",
+    "audit": "To verify the resource limits set for MongoDB, run the following commands. Extract the process ID for MongoDB: ps -ef|grep mongod View the limits associated with that process number: cat /proc/1322/limits",
+    "remediation": "Every deployment may have unique requirements and settings. Recommended thresholds and settings are particularly important for MongoDB deployments: \u2022 f (file size): unlimited \u2022 t (cpu time): unlimited \u2022 v (virtual memory): unlimited [1] \u2022 n (open files): 64000 \u2022 m (memory size): unlimited [1] [2] \u2022 u (processes/threads): 64000 Restart the mongod and mongos instances after changing the ulimit settings to ensure that the changes take effect.   45 | P a g e Default Value: Not configured References: 1. https://docs.mongodb.com/manual/reference/ulimit/#recommended-ulimit-settings  46 | P a g e",
+    "function_names": [
+      "mongodb_process_thread_limits_set",
+      "mongodb_process_file_limits_set",
+      "mongodb_process_network_limits_set",
+      "mongodb_user_thread_limits_set",
+      "mongodb_user_file_limits_set",
+      "mongodb_user_network_limits_set",
+      "mongodb_resource_limits_configured",
+      "mongodb_system_resource_limits_enabled"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/manual/reference/ulimit/#recommended-ulimit-settings  46 | P a g e"
+  },
+  {
+    "id": "6.4",
+    "title": "Ensure that server-side scripting is disabled if not needed",
+    "assessment": "Not Scored",
+    "description": "MongoDB supports the execution of JavaScript code for certain server-side operations: mapReduce, group, and $where. If you do not use these operations, server-side scripting should be disabled.",
+    "rationale": "If server-side scripting is not needed and is not disabled, this introduces unnecessary risk that an attacker may take advantage of insecure coding.",
+    "audit": "If server-side scripting is not required, verify that it is disabled (javascriptEnabled value of false) using the following command: cat /etc/mongod.conf |grep \u2013A10 \"security\" | grep \"javascriptEnabled\"",
+    "remediation": "If server-side scripting is not required, disable it by using the --noscripting option on the command line. Default Value: Enabled",
+    "function_names": [
+      "mongodb_instance_server_side_scripting_disabled",
+      "mongodb_database_server_side_scripting_disabled",
+      "mongodb_collection_server_side_scripting_disabled",
+      "mongodb_server_side_scripting_disabled_unused_operations",
+      "mongodb_server_side_scripting_disabled_if_unnecessary"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux"
+  },
+  {
+    "id": "6.5",
+    "title": "Ensure The 'test' database is not installed",
+    "assessment": "Not Scored",
+    "description": "The default MongoDB installation comes with an unused database called 'test'. It is recommended that the test database be dropped.",
+    "rationale": "The test database can be accessed by all users and can be used to consume system resources. Dropping the test database will reduce the attack surface of the MongoDB server.",
+    "audit": "Execute the following query to determine if the test database is present: show dbs",
+    "remediation": "Execute the following command mongoshell to drop the test database: use test db.dropDatabase()",
+    "function_names": [
+      "mongodb_database_test_not_installed",
+      "mongodb_database_test_removed",
+      "mongodb_database_test_dropped",
+      "mongodb_database_test_disabled",
+      "mongodb_database_test_absent"
+    ],
+    "profile_applicability": "\u2022 Level 2 - MongoDB on Linux"
+  },
+  {
+    "id": "7.1",
+    "title": "Ensure that key file permissions are set correctly",
+    "assessment": "Scored",
+    "description": "The key file is used for authentication in the sharded cluster. Implementing proper file permissions on the key file will prevent unauthorized access to it.",
+    "rationale": "Protecting the key file strengthens authentication in the sharded cluster and prevents unauthorized access to the MongoDB database.",
+    "audit": "To verify the permissions for the MongoDB key file, run the following command: cat /etc/mongod.conf | grep \u201ckeyFile=\u201d",
+    "remediation": "Set the keyFile ownership to mongodb user and remove other permissions by executing these commands: chmod 600 /keyfile sudo chown mongodb:mongodb /keyfile   49 | P a g e Default Value: Not configured References: 1. https://docs.mongodb.com/v3.0/tutorial/enable-internal-authentication/",
+    "function_names": [
+      "compute_key_file_permissions_correct",
+      "compute_key_file_permissions_restricted",
+      "compute_key_file_permissions_secure",
+      "compute_key_file_permissions_no_world_readable",
+      "compute_key_file_permissions_no_world_writable",
+      "compute_key_file_permissions_owner_only",
+      "compute_key_file_permissions_no_group_access",
+      "compute_key_file_permissions_no_other_access"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux",
+    "references": "1. https://docs.mongodb.com/v3.0/tutorial/enable-internal-authentication/"
+  },
+  {
+    "id": "7.2",
+    "title": "Ensure that database file permissions are set correctly",
+    "assessment": "Scored",
+    "description": "MongoDB database files need to be protected using file permissions.",
+    "rationale": "This will restrict unauthorized users from accessing the database.",
+    "audit": "To verify that the permissions for the MongoDB database file are configured securely, run the following commands. Find out the database location using the following command: cat /etc/mongod.conf |grep \"dbpath\" Use the database location as part of the following command to view and verify the permissions set for the database file: ls \u2013l /var/lib/mongodb",
+    "remediation": "Set ownership of the database file to mongodb user and remove other permissions using the following commands: chmod 600 /var/lib/mongodb sudo chown mongodb:mongodb /var/lib/mongodb Default Value: Not configured",
+    "function_names": [
+      "mongodb_database_file_permissions_restricted",
+      "mongodb_data_directory_permissions_secure",
+      "mongodb_file_ownership_correct",
+      "mongodb_directory_access_restricted",
+      "mongodb_config_file_permissions_secure",
+      "mongodb_log_file_permissions_restricted",
+      "mongodb_data_file_group_ownership_correct",
+      "mongodb_file_permissions_no_world_writable",
+      "mongodb_directory_permissions_no_world_readable",
+      "mongodb_file_permissions_no_world_executable"
+    ],
+    "profile_applicability": "\u2022 Level 1 - MongoDB on Linux"
+  }
+]

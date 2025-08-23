@@ -1,0 +1,3228 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-16T21:51:44.147986",
+    "compliance_framework": "CIS_AWS_DATABASE_SERVICES_BENCHMARK_V1.0.0.json",
+    "prowler_database_functions": 894,
+    "processing_stats": {
+      "total_items": 82,
+      "processed": 79,
+      "skipped_manual": 3,
+      "mapped_complete": 10,
+      "mapped_partial": 56,
+      "mapped_none": 13,
+      "new_functions_suggested": 143
+    }
+  },
+  "mapping_results": [
+    {
+      "compliance_id": "2.1",
+      "title": "Ensure Amazon VPC (Virtual Private Cloud) has been created",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "vpc_exists_check",
+          "boto3_api": "ec2.describe_vpcs()",
+          "service": "ec2",
+          "rationale": "This function is needed to check if a VPC exists in the AWS account"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function 'vpc_exists_check' is suggested to check if a VPC exists in the AWS account."
+    },
+    {
+      "compliance_id": "2.2",
+      "title": "Ensure the Use of Security Groups",
+      "existing_functions_mapped": [
+        "ec2_instance_custom_security_group_assigned",
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_port_mongodb_27017_27018",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_ftp_port_20_21",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_3389",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_cassandra_7199_9160_8888",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_elasticsearch_kibana_9200_9300_5601",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_kafka_9092",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_memcached_11211",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_mongodb_27017_27018",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_mysql_3306",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_oracle_1521_2483",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_postgres_5432",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_redis_6379",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_sql_server_1433_1434"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "rds_instance_security_group_assigned",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure that RDS instances have security groups assigned"
+        },
+        {
+          "name": "rds_security_group_inbound_outbound_rules_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To check the inbound and outbound rules of the security groups associated with RDS instances"
+        }
+      ],
+      "mapping_notes": "Existing functions related to EC2 security groups were mapped as they are relevant to the compliance item. However, as the compliance item specifically mentions RDS DB instances, new functions are suggested to check the assignment and rules of security groups for RDS instances."
+    },
+    {
+      "compliance_id": "2.3",
+      "title": "Ensure Data at Rest is Encrypted",
+      "existing_functions_mapped": [
+        "aurora_instance_storage_encrypted"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'aurora_instance_storage_encrypted' checks if the storage for Aurora instances is encrypted, which aligns with the compliance requirement of ensuring data at rest is encrypted."
+    },
+    {
+      "compliance_id": "2.4",
+      "title": "Ensure Data in Transit is Encrypted",
+      "existing_functions_mapped": [
+        "aurora_instance_ssl_encryption_enabled",
+        "dms_endpoint_ssl_enabled",
+        "dms_endpoint_redis_in_transit_encryption_enabled",
+        "dynamodb_accelerator_cluster_in_transit_encryption_enabled",
+        "dynamodb_table_in_transit_encryption_enabled",
+        "ec2_instance_in_transit_encryption_enabled",
+        "awslambda_function_variables_encryption_in_transit_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "aurora_data_in_transit_encryption_check",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if SSL is enabled for Aurora DB instances to ensure data in transit is encrypted"
+        },
+        {
+          "name": "s3_data_in_transit_encryption_check",
+          "boto3_api": "s3.get_bucket_policy()",
+          "service": "s3",
+          "rationale": "To check if SSL is enforced for S3 data transfers to ensure data in transit is encrypted"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to check for SSL or in-transit encryption for various AWS services. However, there are gaps in coverage for services like RDS Aurora and S3, hence the need for new functions."
+    },
+    {
+      "compliance_id": "2.5",
+      "title": "Ensure IAM Roles and Policies are Created",
+      "existing_functions_mapped": [
+        "awslambda_function_iam_role_check",
+        "aurora_iam_least_privilege_policy_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_roles_and_policies_existence_check",
+          "boto3_api": "iam.list_roles(), iam.list_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM roles and policies are created and exist in the AWS environment"
+        }
+      ],
+      "mapping_notes": "Existing functions only check for IAM roles and policies in the context of specific services (Lambda and Aurora). A new function is needed to check for the existence of IAM roles and policies across all services."
+    },
+    {
+      "compliance_id": "2.6",
+      "title": "Ensure Database Audit Logging is Enabled",
+      "existing_functions_mapped": [
+        "cloudtrail_aws_organizations_changes_logging_enabled",
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "cloudtrail_multi_region_enabled",
+        "cloudtrail_multi_region_enabled_logging_management_events",
+        "cloudtrail_root_account_usage_monitoring",
+        "cloudtrail_s3_dataevents_read_enabled",
+        "cloudtrail_s3_dataevents_write_enabled",
+        "cloudtrail_security_group_changes_logging_enabled",
+        "cloudtrail_threat_detection_enumeration",
+        "cloudtrail_threat_detection_llm_jacking",
+        "cloudtrail_threat_detection_privilege_escalation",
+        "cloudtrail_timestream_activities_logging_enabled",
+        "cloudtrail_vpc_changes_logging_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "aurora_database_audit_logging_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if audit logging is enabled for Aurora databases"
+        }
+      ],
+      "mapping_notes": "Existing functions related to CloudTrail logging were mapped as they provide audit logging capabilities. However, a specific function to check if audit logging is enabled for Aurora databases is missing, hence a new function is suggested."
+    },
+    {
+      "compliance_id": "2.7",
+      "title": "Ensure Passwords are Regularly Rotated",
+      "existing_functions_mapped": [
+        "aurora_password_rotation_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_user_access_keys_rotation_check",
+          "boto3_api": "iam.list_access_keys()",
+          "service": "iam",
+          "rationale": "This function is needed to check if the IAM user access keys are regularly rotated as per the compliance requirement"
+        }
+      ],
+      "mapping_notes": "The existing function 'aurora_password_rotation_check' covers the password rotation for Aurora databases. However, there is no existing function to check the rotation of IAM user access keys. Hence, a new function 'iam_user_access_keys_rotation_check' is suggested."
+    },
+    {
+      "compliance_id": "2.9",
+      "title": "Ensure Least Privilege Access",
+      "existing_functions_mapped": [
+        "aurora_database_user_role_least_privilege_check",
+        "aurora_iam_least_privilege_policy_check",
+        "awslambda_function_least_privilege_policy_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_user_least_privilege_policy_check",
+          "boto3_api": "iam.list_attached_user_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM users are granted least privilege access"
+        },
+        {
+          "name": "iam_role_least_privilege_policy_check",
+          "boto3_api": "iam.list_attached_role_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM roles are granted least privilege access"
+        }
+      ],
+      "mapping_notes": "Existing functions cover least privilege access for Aurora and Lambda. New functions are suggested to cover IAM users and roles."
+    },
+    {
+      "compliance_id": "2.10",
+      "title": "Ensure Automatic Backups and Retention Policies are configured",
+      "existing_functions_mapped": [
+        "backup_plans_exist",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "backup_vaults_exist",
+        "backup_window_configured",
+        "documentdb_cluster_backup_enabled",
+        "documentdb_cluster_backup_retention_period",
+        "dlm_ebs_snapshot_lifecycle_policy_exists",
+        "ec2_ebs_volume_protected_by_backup_plan",
+        "dynamodb_table_protected_by_backup_plan"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "aurora_automatic_backups_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if automatic backups are enabled for Aurora DB instances"
+        },
+        {
+          "name": "aurora_backup_retention_period_configured",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if a backup retention period is configured for Aurora DB instances"
+        }
+      ],
+      "mapping_notes": "Existing functions cover backup and retention policies for various AWS services, but none specifically for Aurora DB. New functions are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "2.11",
+      "title": "Ensure Multi-Factor Authentication (MFA) is in use",
+      "existing_functions_mapped": [
+        "cognito_user_pool_mfa_enabled",
+        "directoryservice_supported_mfa_radius_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_mfa_enabled_for_all_users",
+          "boto3_api": "iam.list_mfa_devices()",
+          "service": "iam",
+          "rationale": "To ensure MFA is enabled for all IAM users"
+        },
+        {
+          "name": "root_account_mfa_enabled",
+          "boto3_api": "iam.get_account_summary()",
+          "service": "iam",
+          "rationale": "To ensure MFA is enabled for the root account"
+        }
+      ],
+      "mapping_notes": "Existing functions cover MFA for Cognito User Pools and Directory Service. New functions are suggested to cover MFA for IAM users and the root account."
+    },
+    {
+      "compliance_id": "3.2",
+      "title": "Ensure to Create The Appropriate Deployment Configuration",
+      "existing_functions_mapped": [
+        "autoscaling_group_multiple_az",
+        "awslambda_function_vpc_multi_az",
+        "ec2_instance_multi_az_deployment_check",
+        "dynamodb_accelerator_cluster_multi_az",
+        "dms_instance_multi_az_enabled",
+        "documentdb_cluster_multi_az_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_deployment_configuration_check",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To check if the EC2 instances are deployed in single or multi-AZ configuration"
+        },
+        {
+          "name": "rds_deployment_configuration_check",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if the RDS instances are deployed in single or multi-AZ configuration"
+        }
+      ],
+      "mapping_notes": "Existing functions cover multi-AZ deployment checks for several services, but not all. New functions are suggested to cover EC2 and RDS services."
+    },
+    {
+      "compliance_id": "3.3",
+      "title": "Ensure to Create a Virtual Private Cloud (VPC)",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "vpc_exists_check",
+          "boto3_api": "ec2.describe_vpcs()",
+          "service": "ec2",
+          "rationale": "This function is needed to check if a VPC exists in the AWS account"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the creation or existence of a VPC. A new function 'vpc_exists_check' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.4",
+      "title": "Ensure to Configure Security Groups",
+      "existing_functions_mapped": [
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_port_mongodb_27017_27018",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_ftp_port_20_21",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_3389",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_cassandra_7199_9160_8888",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_elasticsearch_kibana_9200_9300_5601",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_kafka_9092",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_memcached_11211",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_mongodb_27017_27018",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_mysql_3306",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_oracle_1521_2483",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_postgres_5432",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_redis_6379",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_sql_server_1433_1434"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_securitygroup_egress_rules_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that egress rules are properly configured for security groups"
+        },
+        {
+          "name": "ec2_securitygroup_ingress_rules_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that ingress rules are properly configured for security groups"
+        }
+      ],
+      "mapping_notes": "Existing functions cover the aspect of checking if certain ports are exposed to the internet. However, they do not cover the general configuration of security groups, including the configuration of ingress and egress rules. Therefore, new functions are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.5",
+      "title": "Enable Encryption at Rest",
+      "existing_functions_mapped": [
+        "aurora_instance_storage_encrypted",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "codebuild_project_s3_logs_encrypted",
+        "documentdb_cluster_storage_encrypted",
+        "dynamodb_accelerator_cluster_encryption_enabled",
+        "dynamodb_table_encryption_enabled",
+        "dynamodb_tables_kms_cmk_encryption_enabled",
+        "ec2_ami_encryption_check",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_volume_encryption"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_encryption_at_rest_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To check if encryption at rest is enabled for S3 buckets"
+        },
+        {
+          "name": "rds_instance_encryption_at_rest_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if encryption at rest is enabled for RDS instances"
+        },
+        {
+          "name": "dynamodb_table_encryption_at_rest_enabled",
+          "boto3_api": "dynamodb.describe_table()",
+          "service": "dynamodb",
+          "rationale": "To check if encryption at rest is enabled for DynamoDB tables"
+        }
+      ],
+      "mapping_notes": "Mapped existing functions that check for encryption at rest for various resources. However, there are gaps for resources like S3 buckets, RDS instances, and DynamoDB tables, hence new functions are suggested."
+    },
+    {
+      "compliance_id": "3.6",
+      "title": "Enable Encryption in Transit",
+      "existing_functions_mapped": [
+        "aurora_instance_ssl_encryption_enabled",
+        "dms_endpoint_ssl_enabled",
+        "dms_endpoint_redis_in_transit_encryption_enabled",
+        "dynamodb_accelerator_cluster_in_transit_encryption_enabled",
+        "dynamodb_table_in_transit_encryption_enabled",
+        "ec2_instance_in_transit_encryption_enabled",
+        "awslambda_function_variables_encryption_in_transit_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "rds_instance_ssl_encryption_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if SSL/TLS encryption is enabled for RDS instances"
+        }
+      ],
+      "mapping_notes": "Existing functions cover encryption in transit for several AWS services, but there is a gap for RDS. A new function is suggested to cover this."
+    },
+    {
+      "compliance_id": "3.7",
+      "title": "Ensure to Implement Access Control and Authentication",
+      "existing_functions_mapped": [
+        "authentication_settings_regular_review",
+        "aurora_password_rotation_check",
+        "cognito_user_pool_mfa_enabled",
+        "cognito_user_pool_password_policy_lowercase",
+        "cognito_user_pool_password_policy_minimum_length_14",
+        "cognito_user_pool_password_policy_number",
+        "cognito_user_pool_password_policy_symbol",
+        "cognito_user_pool_password_policy_uppercase",
+        "cognito_user_pool_self_registration_disabled",
+        "cognito_user_pool_temporary_password_expiration",
+        "documentdb_instance_iam_authentication_enabled",
+        "dms_endpoint_mongodb_authentication_enabled",
+        "dms_endpoint_neptune_iam_authorization_enabled",
+        "dms_endpoint_ssl_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "database_access_control_check",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if the database has access control implemented"
+        },
+        {
+          "name": "database_authentication_check",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if the database has authentication enabled"
+        }
+      ],
+      "mapping_notes": "The existing functions cover the authentication part of the compliance item but there are no functions to check if access control is implemented on the database. Hence, two new functions are suggested to cover this gap."
+    },
+    {
+      "compliance_id": "3.8",
+      "title": "Ensure to Regularly Patch Systems",
+      "existing_functions_mapped": [
+        "aws_cli_version_upgrade_check",
+        "documentdb_cluster_latest_patch_version_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_instance_latest_patch_version_check",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To ensure EC2 instances are regularly patched"
+        },
+        {
+          "name": "rds_instance_latest_patch_version_check",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure RDS instances are regularly patched"
+        },
+        {
+          "name": "lambda_function_latest_runtime_version_check",
+          "boto3_api": "lambda.get_function_configuration()",
+          "service": "lambda",
+          "rationale": "To ensure Lambda functions are using the latest runtime version"
+        }
+      ],
+      "mapping_notes": "Existing functions for CLI version upgrade and DocumentDB cluster patch version check were mapped. New functions are suggested for EC2, RDS, and Lambda to ensure they are regularly patched or using the latest runtime version."
+    },
+    {
+      "compliance_id": "3.9",
+      "title": "Ensure Monitoring and Logging is Enabled",
+      "existing_functions_mapped": [
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_authentication_failures",
+        "cloudwatch_log_metric_filter_aws_organizations_changes",
+        "cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+        "cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
+        "cloudwatch_log_metric_filter_policy_changes",
+        "cloudwatch_log_metric_filter_root_usage",
+        "cloudwatch_log_metric_filter_security_group_changes",
+        "cloudwatch_log_metric_filter_sign_in_without_mfa",
+        "cloudwatch_log_metric_filter_unauthorized_api_calls",
+        "cloudwatch_security_group_changes_alarm_configured",
+        "cloudwatch_timestream_events_monitoring_enabled",
+        "cloudwatch_timestream_logs_monitoring_enabled",
+        "cloudwatch_timestream_metrics_monitoring_enabled",
+        "cloudwatch_vpc_changes_metric_filter_and_alarm"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover various aspects of monitoring and logging, including CloudTrail logging, CloudWatch alarms, log metric filters, and monitoring for various services. Therefore, the coverage is assessed as complete."
+    },
+    {
+      "compliance_id": "3.10",
+      "title": "Ensure to Enable Backup and Recovery",
+      "existing_functions_mapped": [
+        "backup_plans_exist",
+        "backup_recovery_point_encrypted",
+        "backup_reportplans_exist",
+        "backup_vaults_encrypted",
+        "backup_vaults_exist",
+        "backup_window_configured",
+        "documentdb_cluster_backup_enabled",
+        "documentdb_cluster_backup_retention_period",
+        "dynamodb_table_protected_by_backup_plan",
+        "ec2_ebs_volume_protected_by_backup_plan"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "rds_instance_backup_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if backup is enabled for RDS instances"
+        },
+        {
+          "name": "rds_instance_backup_retention_period",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check the backup retention period for RDS instances"
+        }
+      ],
+      "mapping_notes": "Existing functions cover backup and recovery for several AWS services, but there are no specific functions for RDS backup and recovery. New functions are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.11",
+      "title": "Ensure to Regularly Review Security Configuration",
+      "existing_functions_mapped": [
+        "audit_logging_regular_review",
+        "authentication_settings_regular_review",
+        "aurora_database_user_role_least_privilege_check",
+        "aurora_instance_ssl_encryption_enabled",
+        "aurora_instance_storage_encrypted",
+        "documentdb_instance_iam_authentication_enabled",
+        "documentdb_instance_network_acl_configuration_check",
+        "documentdb_instance_security_group_configuration_check",
+        "documentdb_instance_user_roles_permissions_check",
+        "documentdb_instance_vpc_isolation_check",
+        "dynamodb_database_engine_check",
+        "ec2_instance_security_configuration_review"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "rds_instance_security_configuration_review",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To review the security configuration of RDS instances"
+        },
+        {
+          "name": "dynamodb_instance_security_configuration_review",
+          "boto3_api": "dynamodb.describe_table()",
+          "service": "dynamodb",
+          "rationale": "To review the security configuration of DynamoDB tables"
+        },
+        {
+          "name": "s3_bucket_security_configuration_review",
+          "boto3_api": "s3.get_bucket_acl()",
+          "service": "s3",
+          "rationale": "To review the security configuration of S3 buckets"
+        }
+      ],
+      "mapping_notes": "The existing functions cover some aspects of the compliance requirement such as audit logging, authentication settings, and security configurations for Aurora, DocumentDB, DynamoDB, and EC2 instances. However, there are gaps in coverage for other AWS services like RDS, DynamoDB, and S3. Therefore, new functions are suggested to review the security configurations of these services."
+    },
+    {
+      "compliance_id": "4.1",
+      "title": "Ensure AWS Identity and Access Management (IAM) is in use",
+      "existing_functions_mapped": [
+        "awslambda_function_iam_role_check",
+        "ec2_instance_iam_role_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_user_existence_check",
+          "boto3_api": "iam.list_users()",
+          "service": "iam",
+          "rationale": "To ensure IAM is in use, we need to check if there are any IAM users created in the AWS account"
+        },
+        {
+          "name": "iam_policy_existence_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To ensure IAM is in use, we need to check if there are any IAM policies created in the AWS account"
+        },
+        {
+          "name": "iam_role_existence_check",
+          "boto3_api": "iam.list_roles()",
+          "service": "iam",
+          "rationale": "To ensure IAM is in use, we need to check if there are any IAM roles created in the AWS account"
+        }
+      ],
+      "mapping_notes": "Existing functions only check for IAM roles associated with specific services (Lambda and EC2). New functions are suggested to check for the existence of IAM users, policies, and roles to ensure IAM is in use."
+    },
+    {
+      "compliance_id": "4.2",
+      "title": "Ensure Fine-Grained Access Control is implemented",
+      "existing_functions_mapped": [
+        "dynamodb_table_fine_grained_access_control_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'dynamodb_table_fine_grained_access_control_check' directly addresses the requirement of implementing Fine-Grained Access Control on DynamoDB tables."
+    },
+    {
+      "compliance_id": "4.3",
+      "title": "Ensure DynamoDB Encryption at Rest",
+      "existing_functions_mapped": [
+        "dynamodb_table_encryption_enabled",
+        "dynamodb_tables_kms_cmk_encryption_enabled"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'dynamodb_table_encryption_enabled' and 'dynamodb_tables_kms_cmk_encryption_enabled' cover the requirement of ensuring DynamoDB encryption at rest."
+    },
+    {
+      "compliance_id": "4.4",
+      "title": "Ensure DynamoDB Encryption in Transit",
+      "existing_functions_mapped": [
+        "dynamodb_table_in_transit_encryption_enabled"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'dynamodb_table_in_transit_encryption_enabled' directly addresses the compliance requirement of ensuring DynamoDB encryption in transit."
+    },
+    {
+      "compliance_id": "4.5",
+      "title": "Ensure VPC Endpoints are configured",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "vpc_endpoints_configured_check",
+          "boto3_api": "ec2.describe_vpc_endpoints()",
+          "service": "ec2",
+          "rationale": "This function is needed to check if VPC endpoints are configured for secure access to DynamoDB resources within the VPC."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring VPC endpoints are configured. Therefore, a new function 'vpc_endpoints_configured_check' is suggested."
+    },
+    {
+      "compliance_id": "4.6",
+      "title": "Ensure DynamoDB Streams and AWS Lambda for Automated Compliance Checking is Enabled",
+      "existing_functions_mapped": [
+        "dynamodb_streams_enabled_check",
+        "awslambda_function_dynamodb_integration_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "dynamodb_lambda_compliance_check_enabled",
+          "boto3_api": "dynamodbstreams.describe_stream()",
+          "service": "dynamodbstreams",
+          "rationale": "This function is needed to check if AWS Lambda is integrated with DynamoDB Streams for automated compliance checking."
+        }
+      ],
+      "mapping_notes": "The existing functions 'dynamodb_streams_enabled_check' and 'awslambda_function_dynamodb_integration_check' partially cover the compliance requirement. However, there is no existing function to check if AWS Lambda is integrated with DynamoDB Streams for automated compliance checking, hence a new function 'dynamodb_lambda_compliance_check_enabled' is suggested."
+    },
+    {
+      "compliance_id": "4.7",
+      "title": "Ensure Monitor and Audit Activity is enabled",
+      "existing_functions_mapped": [
+        "dynamodb_audit_logging_enabled",
+        "dynamodb_table_activity_monitoring_enabled",
+        "dynamodb_table_audit_logging_enabled"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The compliance requirement is to ensure that monitoring and auditing activity is enabled for Amazon DynamoDB. The existing functions 'dynamodb_audit_logging_enabled', 'dynamodb_table_activity_monitoring_enabled', and 'dynamodb_table_audit_logging_enabled' cover this requirement completely as they check for audit logging and activity monitoring on DynamoDB."
+    },
+    {
+      "compliance_id": "5.1",
+      "title": "Ensure Secure Access to ElastiCache",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_cluster_authentication_enabled",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check if the ElastiCache clusters have authentication enabled"
+        },
+        {
+          "name": "elasticache_cluster_encryption_in_transit_enabled",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check if the ElastiCache clusters have encryption in transit enabled"
+        },
+        {
+          "name": "elasticache_cluster_encryption_at_rest_enabled",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check if the ElastiCache clusters have encryption at rest enabled"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check for authentication and encryption in ElastiCache clusters."
+    },
+    {
+      "compliance_id": "5.2",
+      "title": "Ensure Network Security is Enabled",
+      "existing_functions_mapped": [
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+        "ec2_networkacl_allow_ingress_all_protocols",
+        "ec2_networkacl_allow_ingress_any_port",
+        "ec2_networkacl_allow_ingress_tcp_port_22",
+        "ec2_networkacl_allow_ingress_tcp_port_3389",
+        "ec2_networkacl_unused",
+        "ec2_instance_in_transit_encryption_enabled",
+        "ec2_instance_iam_role_check",
+        "ec2_instance_public_ip",
+        "ec2_instance_security_configuration_review",
+        "ec2_instance_profile_attached",
+        "ec2_instance_multi_az_deployment_check",
+        "ec2_instance_managed_by_ssm",
+        "ec2_instance_imdsv2_enabled",
+        "ec2_instance_custom_security_group_assigned",
+        "ec2_instance_internet_facing_with_instance_profile",
+        "ec2_instance_uses_single_eni",
+        "ec2_instance_data_in_transit_encryption_check",
+        "ec2_instance_secrets_user_data",
+        "ec2_instance_snapshot_exists",
+        "ec2_instance_stopped_for_over_90_days",
+        "ec2_instance_older_than_specific_days",
+        "ec2_instance_account_imdsv2_enabled",
+        "ec2_instance_detailed_monitoring_enabled",
+        "ec2_instance_paravirtual_type",
+        "ec2_ami_encryption_check",
+        "ec2_ami_approved_check",
+        "ec2_ami_naming_convention_check",
+        "ec2_ami_older_than_90_days",
+        "ec2_ami_public",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_public_snapshot",
+        "ec2_ebs_snapshot_account_block_public_access",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_unused_volumes_check",
+        "ec2_ebs_volume_deletion_on_termination",
+        "ec2_ebs_volume_encryption",
+        "ec2_ebs_volume_protected_by_backup_plan",
+        "ec2_ebs_volume_snapshots_exists",
+        "ec2_elastic_ip_shodan",
+        "ec2_elastic_ip_unassigned",
+        "ec2_launch_template_imdsv2_required",
+        "ec2_launch_template_no_public_ip",
+        "ec2_launch_template_no_secrets",
+        "ec2_organizational_tag_policy_created",
+        "ec2_default_security_group_no_inbound_rules",
+        "ec2_default_security_group_no_outbound_rules"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_network_security_check",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To ensure network security for Amazon ElastiCache, we need to check the configuration of VPC, security groups, and network access controls for ElastiCache clusters."
+        }
+      ],
+      "mapping_notes": "The existing functions mapped are related to EC2 instances, security groups, network ACLs, and EBS volumes. However, the compliance item specifically mentions Amazon ElastiCache, for which no existing functions were found. Hence, a new function is suggested to cover this gap."
+    },
+    {
+      "compliance_id": "5.3",
+      "title": "Ensure Encryption at Rest and in Transit is configured",
+      "existing_functions_mapped": [
+        "dms_endpoint_redis_in_transit_encryption_enabled",
+        "dynamodb_accelerator_cluster_encryption_enabled",
+        "dynamodb_accelerator_cluster_in_transit_encryption_enabled",
+        "dynamodb_table_encryption_enabled",
+        "dynamodb_table_in_transit_encryption_enabled",
+        "dynamodb_tables_kms_cmk_encryption_enabled",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_volume_encryption",
+        "ec2_instance_data_in_transit_encryption_check",
+        "ec2_instance_in_transit_encryption_enabled",
+        "cloudfront_distributions_field_level_encryption_enabled",
+        "cloudfront_distributions_origin_traffic_encrypted",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "documentdb_cluster_storage_encrypted",
+        "aurora_instance_storage_encrypted",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "awslambda_function_variables_encryption_in_transit_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_encryption_at_rest_enabled",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check if encryption at rest is enabled for ElastiCache clusters"
+        },
+        {
+          "name": "elasticache_encryption_in_transit_enabled",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check if encryption in transit is enabled for ElastiCache clusters"
+        }
+      ],
+      "mapping_notes": "Existing functions cover encryption at rest and in transit for several AWS services, but not specifically for ElastiCache. New functions are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "5.4",
+      "title": "Ensure Automatic Updates and Patching are Enabled",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_automatic_updates_enabled",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check if automatic updates and patching are enabled for Amazon ElastiCache clusters"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring automatic updates and patching for Amazon ElastiCache. A new function 'elasticache_automatic_updates_enabled' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "5.5",
+      "title": "Ensure Virtual Private Cloud (VPC) is Enabled",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_vpc_enabled_check",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "This function is needed to check if the ElastiCache clusters are configured within a VPC"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring a VPC is enabled for ElastiCache clusters. A new function is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "5.6",
+      "title": "Ensure Monitoring and Logging is Enabled",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_cluster_monitoring_enabled",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check if monitoring is enabled for ElastiCache clusters"
+        },
+        {
+          "name": "elasticache_cluster_logging_enabled",
+          "boto3_api": "elasticache.describe_events()",
+          "service": "elasticache",
+          "rationale": "To check if logging is enabled for ElastiCache clusters"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the monitoring and logging of ElastiCache clusters. Therefore, new functions are suggested."
+    },
+    {
+      "compliance_id": "5.7",
+      "title": "Ensure Security Configurations are Reviewed Regularly",
+      "existing_functions_mapped": [
+        "audit_logging_regular_review",
+        "authentication_settings_regular_review",
+        "ec2_instance_security_configuration_review"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_cluster_security_configuration_review",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "This function is needed to review the security configurations of Amazon ElastiCache clusters regularly"
+        }
+      ],
+      "mapping_notes": "The existing functions cover the regular review of audit logging and authentication settings, as well as EC2 instance security configurations. However, there is a gap in the regular review of Amazon ElastiCache clusters' security configurations, hence the need for a new function."
+    },
+    {
+      "compliance_id": "5.8",
+      "title": "Ensure Authentication and Access Control is Enabled",
+      "existing_functions_mapped": [
+        "accessanalyzer_enabled",
+        "accessanalyzer_enabled_without_findings",
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "awslambda_function_no_admin_privileges",
+        "awslambda_function_not_publicly_accessible",
+        "ec2_instance_iam_role_check",
+        "ec2_instance_profile_attached"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_role_acl_check",
+          "boto3_api": "iam.list_role_policies()",
+          "service": "iam",
+          "rationale": "To check if the IAM roles have specific ACLs that allow only specific individuals to access the resources"
+        },
+        {
+          "name": "iam_user_acl_check",
+          "boto3_api": "iam.list_user_policies()",
+          "service": "iam",
+          "rationale": "To check if the IAM users have specific ACLs that allow only specific individuals to access the resources"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to check for IAM roles and their permissions. However, there are no existing functions that check for specific ACLs for IAM roles and users, hence the need for new functions."
+    },
+    {
+      "compliance_id": "5.9",
+      "title": "Ensure Audit Logging is Enabled",
+      "existing_functions_mapped": [
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_no_secrets_in_logs",
+        "cloudwatch_log_group_not_publicly_accessible",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The compliance requirement is to ensure audit logging is enabled. The existing functions mapped cover all aspects of this requirement, including enabling CloudTrail and CloudWatch logging, ensuring logs are encrypted, validating log files, and setting appropriate access controls and retention policies for logs."
+    },
+    {
+      "compliance_id": "5.10",
+      "title": "Ensure Security Configurations are Reviewed Regularly",
+      "existing_functions_mapped": [
+        "audit_logging_regular_review",
+        "authentication_settings_regular_review",
+        "ec2_instance_security_configuration_review"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "keyspaces_security_configuration_review",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "This function is needed to regularly review the security configuration of Amazon Keyspaces environment"
+        }
+      ],
+      "mapping_notes": "The existing functions cover the regular review of audit logging and authentication settings, as well as EC2 instance security configurations. However, there is no specific function for reviewing the security configuration of Amazon Keyspaces environment, hence a new function is suggested."
+    },
+    {
+      "compliance_id": "6.1",
+      "title": "Ensure Network Security is Enabled",
+      "existing_functions_mapped": [
+        "ec2_instance_in_transit_encryption_enabled",
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_3389",
+        "ec2_networkacl_allow_ingress_all_protocols",
+        "ec2_networkacl_allow_ingress_any_port",
+        "ec2_networkacl_allow_ingress_tcp_port_22",
+        "ec2_networkacl_allow_ingress_tcp_port_3389",
+        "cloudwatch_changes_to_network_acls_alarm_configured",
+        "cloudwatch_changes_to_network_gateways_alarm_configured",
+        "cloudwatch_changes_to_network_route_tables_alarm_configured",
+        "cloudwatch_changes_to_vpcs_alarm_configured",
+        "cloudwatch_vpc_changes_metric_filter_and_alarm"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_network_security_group_default_rules_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that the default security group rules are not overly permissive"
+        },
+        {
+          "name": "ec2_network_acl_default_rules_check",
+          "boto3_api": "ec2.describe_network_acls()",
+          "service": "ec2",
+          "rationale": "To ensure that the default network ACL rules are not overly permissive"
+        }
+      ],
+      "mapping_notes": "The existing functions cover various aspects of network security such as encryption in transit, security group and network ACL rules, and monitoring of changes to network configurations. However, they do not specifically check for the default rules of security groups and network ACLs, hence the need for new functions."
+    },
+    {
+      "compliance_id": "6.2",
+      "title": "Ensure Data at Rest and in Transit is Encrypted",
+      "existing_functions_mapped": [
+        "apigatewayv2_api_encryption_enabled",
+        "aurora_instance_ssl_encryption_enabled",
+        "aurora_instance_storage_encrypted",
+        "awslambda_function_variables_encryption_in_transit_enabled",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "cloudfront_distributions_field_level_encryption_enabled",
+        "cloudfront_distributions_origin_traffic_encrypted",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "codebuild_project_s3_logs_encrypted",
+        "dms_endpoint_ssl_enabled",
+        "documentdb_cluster_storage_encrypted",
+        "dynamodb_accelerator_cluster_encryption_enabled",
+        "dynamodb_accelerator_cluster_in_transit_encryption_enabled",
+        "dynamodb_table_encryption_enabled",
+        "dynamodb_table_in_transit_encryption_enabled",
+        "dynamodb_tables_kms_cmk_encryption_enabled",
+        "ec2_ami_encryption_check",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_volume_encryption",
+        "ec2_instance_data_in_transit_encryption_check",
+        "ec2_instance_in_transit_encryption_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_encryption_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To ensure that data at rest in S3 buckets is encrypted"
+        },
+        {
+          "name": "s3_bucket_in_transit_encryption_enabled",
+          "boto3_api": "s3.get_bucket_policy()",
+          "service": "s3",
+          "rationale": "To ensure that data in transit to/from S3 buckets is encrypted"
+        },
+        {
+          "name": "rds_instance_storage_encrypted",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure that data at rest in RDS instances is encrypted"
+        },
+        {
+          "name": "rds_instance_in_transit_encryption_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure that data in transit to/from RDS instances is encrypted"
+        }
+      ],
+      "mapping_notes": "Mapped functions that check for encryption of data at rest and in transit. However, there are gaps for services like S3 and RDS, hence the need for new functions."
+    },
+    {
+      "compliance_id": "6.3",
+      "title": "Ensure Authentication and Access Control is Enabled",
+      "existing_functions_mapped": [
+        "accessanalyzer_enabled",
+        "accessanalyzer_enabled_without_findings",
+        "account_security_contact_information_is_registered",
+        "account_security_questions_are_registered_in_the_aws_account",
+        "authentication_settings_regular_review",
+        "cognito_user_pool_advanced_security_enabled",
+        "cognito_user_pool_blocks_compromised_credentials_sign_in_attempts",
+        "cognito_user_pool_blocks_potential_malicious_sign_in_attempts",
+        "cognito_user_pool_mfa_enabled",
+        "cognito_user_pool_self_registration_disabled",
+        "cognito_user_pool_waf_acl_attached",
+        "directoryservice_supported_mfa_radius_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_user_access_key_rotation_check",
+          "boto3_api": "iam.list_access_keys()",
+          "service": "iam",
+          "rationale": "To ensure that access keys are being rotated regularly for IAM users"
+        },
+        {
+          "name": "iam_user_mfa_enabled_check",
+          "boto3_api": "iam.list_mfa_devices()",
+          "service": "iam",
+          "rationale": "To ensure that MFA is enabled for all IAM users"
+        },
+        {
+          "name": "iam_role_assume_policy_check",
+          "boto3_api": "iam.get_role()",
+          "service": "iam",
+          "rationale": "To ensure that IAM roles have appropriate assume role policies"
+        }
+      ],
+      "mapping_notes": "Mapped functions related to access control and authentication settings. New functions suggested to cover IAM user and role related checks."
+    },
+    {
+      "compliance_id": "6.4",
+      "title": "Ensure Audit Logging is Enabled",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "memorydb_cluster_audit_logging_enabled",
+          "boto3_api": "memorydb.describe_clusters()",
+          "service": "memorydb",
+          "rationale": "This function is needed to check if audit logging is enabled for Amazon MemoryDB clusters"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of enabling audit logging for Amazon MemoryDB clusters. Therefore, a new function is suggested."
+    },
+    {
+      "compliance_id": "6.5",
+      "title": "Ensure Security Configurations are Reviewed Regularly",
+      "existing_functions_mapped": [
+        "accessanalyzer_enabled",
+        "accessanalyzer_enabled_without_findings",
+        "account_maintain_current_contact_details",
+        "account_maintain_different_contact_details_to_security_billing_and_operations",
+        "account_security_contact_information_is_registered",
+        "account_security_questions_are_registered_in_the_aws_account",
+        "audit_logging_regular_review",
+        "authentication_settings_regular_review",
+        "awsconfig_lambda_config_tracking_enabled",
+        "awsconfig_serverless_config_tracking_enabled",
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "awslambda_function_no_admin_privileges",
+        "awslambda_function_no_secrets_in_code",
+        "awslambda_function_no_secrets_in_variables",
+        "awslambda_function_not_publicly_accessible",
+        "awslambda_function_using_supported_runtimes",
+        "awslambda_function_variables_encryption_in_transit_enabled",
+        "cloudtrail_aws_organizations_changes_logging_enabled",
+        "cloudtrail_bucket_requires_mfa_delete",
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_insights_exist",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "cloudtrail_multi_region_enabled",
+        "cloudtrail_multi_region_enabled_logging_management_events",
+        "cloudtrail_root_account_usage_monitoring",
+        "cloudtrail_s3_dataevents_read_enabled",
+        "cloudtrail_s3_dataevents_write_enabled",
+        "cloudtrail_security_group_changes_logging_enabled",
+        "cloudtrail_threat_detection_enumeration",
+        "cloudtrail_threat_detection_llm_jacking",
+        "cloudtrail_threat_detection_privilege_escalation",
+        "cloudtrail_timestream_activities_logging_enabled",
+        "cloudtrail_vpc_changes_logging_enabled",
+        "cloudwatch_alarm_actions_alarm_state_configured",
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_alarm_all_services_alarm_configured",
+        "cloudwatch_alarm_for_aws_organizations_changes",
+        "cloudwatch_alarm_for_root_account_usage",
+        "cloudwatch_changes_to_network_acls_alarm_configured",
+        "cloudwatch_changes_to_network_gateways_alarm_configured",
+        "cloudwatch_changes_to_network_route_tables_alarm_configured",
+        "cloudwatch_changes_to_vpcs_alarm_configured",
+        "cloudwatch_cross_account_sharing_disabled",
+        "cloudwatch_lambda_insights_enabled",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_no_secrets_in_logs",
+        "cloudwatch_log_group_not_publicly_accessible",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_authentication_failures",
+        "cloudwatch_log_metric_filter_aws_organizations_changes",
+        "cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+        "cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
+        "cloudwatch_log_metric_filter_policy_changes",
+        "cloudwatch_log_metric_filter_root_usage",
+        "cloudwatch_log_metric_filter_security_group_changes",
+        "cloudwatch_log_metric_filter_sign_in_without_mfa",
+        "cloudwatch_log_metric_filter_unauthorized_api_calls",
+        "cloudwatch_security_group_changes_alarm_configured",
+        "cloudwatch_timestream_events_monitoring_enabled",
+        "cloudwatch_timestream_logs_monitoring_enabled",
+        "cloudwatch_timestream_metrics_monitoring_enabled",
+        "cloudwatch_vpc_changes_metric_filter_and_alarm",
+        "config_recorder_all_regions_enabled",
+        "config_recorder_using_aws_service_role"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_role_regular_review",
+          "boto3_api": "iam.list_roles()",
+          "service": "iam",
+          "rationale": "Regular review of IAM roles is necessary to ensure that they are up-to-date and do not have excessive permissions."
+        },
+        {
+          "name": "security_networks_regular_review",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "Regular review of security networks is necessary to ensure that they are up-to-date and do not have excessive permissions."
+        },
+        {
+          "name": "encryption_settings_regular_review",
+          "boto3_api": "kms.list_keys()",
+          "service": "kms",
+          "rationale": "Regular review of encryption settings is necessary to ensure that they are up-to-date and do not have excessive permissions."
+        }
+      ],
+      "mapping_notes": "The existing functions mapped cover a wide range of security configurations, including IAM roles, security networks, encryption settings, audit logging, and authentication. However, there are no specific functions for regular review of these configurations, hence the need for new functions."
+    },
+    {
+      "compliance_id": "6.6",
+      "title": "Ensure Monitoring and Alerting is Enabled",
+      "existing_functions_mapped": [
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_alarm_all_services_alarm_configured",
+        "cloudwatch_log_group_all_services_logging_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "memorydb_cluster_monitoring_enabled",
+          "boto3_api": "memorydb.describe_clusters()",
+          "service": "memorydb",
+          "rationale": "To check if monitoring is enabled for MemoryDB clusters"
+        },
+        {
+          "name": "memorydb_cluster_alerting_enabled",
+          "boto3_api": "cloudwatch.describe_alarms()",
+          "service": "cloudwatch",
+          "rationale": "To check if alerting is enabled for MemoryDB clusters"
+        }
+      ],
+      "mapping_notes": "Existing functions for CloudWatch alarms and logging were mapped as they are relevant for monitoring and alerting. However, there are no specific functions for MemoryDB, hence new functions are suggested."
+    },
+    {
+      "compliance_id": "7.1",
+      "title": "Ensure Network Architecture Planning",
+      "existing_functions_mapped": [
+        "documentdb_instance_network_acl_configuration_check",
+        "documentdb_instance_security_group_configuration_check",
+        "documentdb_instance_vpc_isolation_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "documentdb_instance_vpc_security_group_inbound_outbound_traffic_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that the security groups associated with the DocumentDB instances are configured to control inbound and outbound traffic as per the compliance requirement"
+        }
+      ],
+      "mapping_notes": "The existing functions provide partial coverage for the compliance requirement. They check for the network ACL configuration, security group configuration, and VPC isolation of DocumentDB instances. However, there is no existing function to check the inbound and outbound traffic control of the security groups associated with the DocumentDB instances. Hence, a new function is suggested."
+    },
+    {
+      "compliance_id": "7.2",
+      "title": "Ensure VPC Security is Configured",
+      "existing_functions_mapped": [
+        "documentdb_instance_network_acl_configuration_check",
+        "documentdb_instance_security_group_configuration_check",
+        "documentdb_instance_vpc_isolation_check",
+        "ec2_instance_security_configuration_review",
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "vpc_subnet_configuration_check",
+          "boto3_api": "ec2.describe_subnets()",
+          "service": "ec2",
+          "rationale": "To ensure that subnets within the VPC are properly configured"
+        },
+        {
+          "name": "vpc_security_group_configuration_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that security groups within the VPC are properly configured"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to check the configuration of VPCs, network ACLs, and security groups. However, there are no existing functions that specifically check the configuration of subnets within a VPC, hence the need for new functions."
+    },
+    {
+      "compliance_id": "7.3",
+      "title": "Ensure Encryption at Rest is Enabled",
+      "existing_functions_mapped": [
+        "aurora_instance_storage_encrypted",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "dynamodb_table_encryption_enabled",
+        "dynamodb_tables_kms_cmk_encryption_enabled",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_volume_encryption",
+        "documentdb_cluster_storage_encrypted"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_encryption_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To check if encryption at rest is enabled for S3 buckets"
+        },
+        {
+          "name": "rds_instance_storage_encrypted",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if encryption at rest is enabled for RDS instances"
+        },
+        {
+          "name": "ebs_snapshot_encryption_enabled",
+          "boto3_api": "ec2.describe_snapshots()",
+          "service": "ec2",
+          "rationale": "To check if encryption at rest is enabled for EBS snapshots"
+        }
+      ],
+      "mapping_notes": "Mapped existing functions that check for encryption at rest for various AWS services. However, there are gaps for services like S3, RDS, and EBS snapshots. Hence, new functions are suggested for these services."
+    },
+    {
+      "compliance_id": "7.5",
+      "title": "Ensure to Implement Access Control and Authentication",
+      "existing_functions_mapped": [
+        "documentdb_instance_iam_authentication_enabled",
+        "documentdb_instance_user_roles_permissions_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "documentdb_instance_authentication_mechanisms_check",
+          "boto3_api": "docdb.describe_db_instances()",
+          "service": "docdb",
+          "rationale": "To check if the DocumentDB instances have appropriate authentication mechanisms configured"
+        },
+        {
+          "name": "documentdb_instance_access_control_check",
+          "boto3_api": "docdb.describe_db_instances()",
+          "service": "docdb",
+          "rationale": "To check if the DocumentDB instances have appropriate access control configured"
+        }
+      ],
+      "mapping_notes": "Existing functions partially cover the compliance requirement by checking for IAM authentication and user roles and permissions. However, there are no functions to specifically check for the configuration of authentication mechanisms and access control for DocumentDB instances, hence the need for new functions."
+    },
+    {
+      "compliance_id": "7.6",
+      "title": "Ensure Audit Logging is Enabled",
+      "existing_functions_mapped": [
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "rds_audit_logging_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To check if audit logging is enabled for RDS instances"
+        },
+        {
+          "name": "dynamodb_audit_logging_enabled",
+          "boto3_api": "dynamodb.describe_table()",
+          "service": "dynamodb",
+          "rationale": "To check if audit logging is enabled for DynamoDB tables"
+        }
+      ],
+      "mapping_notes": "Existing functions cover audit logging for CloudTrail and CloudWatch, but there are no functions to check audit logging for other services like RDS and DynamoDB. Hence, new functions are suggested."
+    },
+    {
+      "compliance_id": "7.7",
+      "title": "Ensure Regular Updates and Patches",
+      "existing_functions_mapped": [
+        "documentdb_cluster_latest_patch_version_check",
+        "documentdb_cluster_patch_update_notification_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "documentdb_cluster_apply_latest_patch",
+          "boto3_api": "docdb.modify_db_cluster()",
+          "service": "docdb",
+          "rationale": "This function is needed to ensure that the latest patches are applied to the DocumentDB cluster"
+        }
+      ],
+      "mapping_notes": "The existing functions check for the latest patch version and patch update notifications. However, there is no function to apply these patches, hence the need for a new function."
+    },
+    {
+      "compliance_id": "7.8",
+      "title": "Ensure to Implement Monitoring and Alerting",
+      "existing_functions_mapped": [
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_alarm_all_services_alarm_configured",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_insights_exist",
+        "cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_authentication_failures",
+        "cloudwatch_log_metric_filter_aws_organizations_changes",
+        "cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+        "cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
+        "cloudwatch_log_metric_filter_policy_changes",
+        "cloudwatch_log_metric_filter_root_usage",
+        "cloudwatch_log_metric_filter_security_group_changes",
+        "cloudwatch_log_metric_filter_sign_in_without_mfa",
+        "cloudwatch_log_metric_filter_unauthorized_api_calls"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "cloudwatch_alarm_for_unusual_events",
+          "boto3_api": "cloudwatch.put_metric_alarm()",
+          "service": "cloudwatch",
+          "rationale": "To monitor and alert on unusual events or when a particular threshold has been achieved"
+        },
+        {
+          "name": "cloudwatch_alarm_for_resource_threshold",
+          "boto3_api": "cloudwatch.put_metric_alarm()",
+          "service": "cloudwatch",
+          "rationale": "To monitor and alert when a resource reaches a certain threshold"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to enable monitoring and alerting in AWS. However, there are gaps in monitoring for unusual events and resource thresholds, hence the need for new functions."
+    },
+    {
+      "compliance_id": "7.9",
+      "title": "Ensure to Implement Backup and Disaster Recovery",
+      "existing_functions_mapped": [
+        "documentdb_cluster_backup_enabled",
+        "documentdb_cluster_backup_retention_period",
+        "backup_plans_exist",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "backup_vaults_exist",
+        "backup_window_configured",
+        "documentdb_cluster_cross_region_replication_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "documentdb_cluster_backup_frequency_check",
+          "boto3_api": "docdb.describe_db_cluster_snapshots()",
+          "service": "docdb",
+          "rationale": "To ensure that backups are being taken frequently as per the disaster recovery plan"
+        },
+        {
+          "name": "documentdb_cluster_backup_completeness_check",
+          "boto3_api": "docdb.describe_db_cluster_snapshots()",
+          "service": "docdb",
+          "rationale": "To ensure that all necessary data is included in the backups"
+        },
+        {
+          "name": "documentdb_cluster_disaster_recovery_plan_check",
+          "boto3_api": "docdb.describe_db_clusters()",
+          "service": "docdb",
+          "rationale": "To ensure that a disaster recovery plan is in place and includes data replication across different availability zones or regions"
+        }
+      ],
+      "mapping_notes": "Existing functions provide partial coverage for the compliance item. They ensure that backups are enabled, encrypted, and stored in vaults, and that cross-region replication is enabled for DocumentDB clusters. However, there are no functions to check the frequency and completeness of backups, or to verify the existence of a disaster recovery plan. Therefore, new functions are suggested to fill these gaps."
+    },
+    {
+      "compliance_id": "7.10",
+      "title": "Ensure to Configure Backup Window",
+      "existing_functions_mapped": [
+        "backup_window_configured"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'backup_window_configured' directly addresses the compliance requirement of ensuring a backup window is configured."
+    },
+    {
+      "compliance_id": "7.11",
+      "title": "Ensure to Conduct Security Assessments",
+      "existing_functions_mapped": [
+        "audit_logging_regular_review",
+        "authentication_settings_regular_review",
+        "aws_cli_version_check",
+        "aws_cli_version_upgrade_check",
+        "awsconfig_lambda_config_tracking_enabled",
+        "awsconfig_serverless_config_tracking_enabled",
+        "cloudtrail_aws_organizations_changes_logging_enabled",
+        "cloudtrail_bucket_requires_mfa_delete",
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_insights_exist",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "cloudtrail_multi_region_enabled",
+        "cloudtrail_multi_region_enabled_logging_management_events",
+        "cloudtrail_root_account_usage_monitoring",
+        "cloudtrail_s3_dataevents_read_enabled",
+        "cloudtrail_s3_dataevents_write_enabled",
+        "cloudtrail_security_group_changes_logging_enabled",
+        "cloudtrail_threat_detection_enumeration",
+        "cloudtrail_threat_detection_llm_jacking",
+        "cloudtrail_threat_detection_privilege_escalation",
+        "cloudtrail_timestream_activities_logging_enabled",
+        "cloudtrail_vpc_changes_logging_enabled",
+        "cloudwatch_alarm_actions_alarm_state_configured",
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_alarm_all_services_alarm_configured",
+        "cloudwatch_alarm_for_aws_organizations_changes",
+        "cloudwatch_alarm_for_root_account_usage",
+        "cloudwatch_changes_to_network_acls_alarm_configured",
+        "cloudwatch_changes_to_network_gateways_alarm_configured",
+        "cloudwatch_changes_to_network_route_tables_alarm_configured",
+        "cloudwatch_changes_to_vpcs_alarm_configured",
+        "cloudwatch_cross_account_sharing_disabled",
+        "cloudwatch_lambda_insights_enabled",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_no_secrets_in_logs",
+        "cloudwatch_log_group_not_publicly_accessible",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_authentication_failures",
+        "cloudwatch_log_metric_filter_aws_organizations_changes",
+        "cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+        "cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
+        "cloudwatch_log_metric_filter_policy_changes",
+        "cloudwatch_log_metric_filter_root_usage",
+        "cloudwatch_log_metric_filter_security_group_changes",
+        "cloudwatch_log_metric_filter_sign_in_without_mfa",
+        "cloudwatch_log_metric_filter_unauthorized_api_calls",
+        "cloudwatch_security_group_changes_alarm_configured",
+        "cloudwatch_timestream_events_monitoring_enabled",
+        "cloudwatch_timestream_logs_monitoring_enabled",
+        "cloudwatch_timestream_metrics_monitoring_enabled",
+        "cloudwatch_vpc_changes_metric_filter_and_alarm",
+        "config_recorder_all_regions_enabled",
+        "config_recorder_using_aws_service_role"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "security_assessment_vulnerability_scan",
+          "boto3_api": "inspector.start_assessment_run()",
+          "service": "inspector",
+          "rationale": "To conduct vulnerability assessments periodically"
+        },
+        {
+          "name": "security_assessment_penetration_test",
+          "boto3_api": "n/a",
+          "service": "n/a",
+          "rationale": "Penetration testing requires explicit approval from AWS and cannot be automated"
+        },
+        {
+          "name": "security_configuration_best_practices_review",
+          "boto3_api": "configservice.describe_compliance_by_config_rule()",
+          "service": "configservice",
+          "rationale": "To review security configuration against best practices"
+        }
+      ],
+      "mapping_notes": "The existing functions mapped are those that involve regular review, logging, monitoring, and configuration checks. New functions are suggested for conducting vulnerability assessments and reviewing security configurations against best practices. Penetration testing cannot be automated as it requires explicit approval from AWS."
+    },
+    {
+      "compliance_id": "8.1",
+      "title": "Ensure Keyspace Security is Configured",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "keyspaces_user_authentication_check",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "To ensure that users are required to log in with their AWS credentials to access Amazon Keyspaces"
+        },
+        {
+          "name": "keyspaces_resource_access_check",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "To ensure that users can access the AWS resources and explore the resources that Amazon Keyspaces offers"
+        },
+        {
+          "name": "keyspaces_security_configuration_check",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "To ensure that Amazon Keyspaces offers a lot of security that can mitigate a potential attack"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to the compliance item. New functions are suggested to cover the requirements of the compliance item."
+    },
+    {
+      "compliance_id": "8.2",
+      "title": "Ensure Network Security is Enabled",
+      "existing_functions_mapped": [
+        "ec2_instance_in_transit_encryption_enabled",
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+        "ec2_networkacl_allow_ingress_all_protocols",
+        "ec2_networkacl_allow_ingress_any_port",
+        "ec2_networkacl_allow_ingress_tcp_port_22",
+        "ec2_networkacl_allow_ingress_tcp_port_3389"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "keyspaces_network_parameters_set",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "To ensure that the necessary network parameters are set for Amazon Keyspaces"
+        },
+        {
+          "name": "keyspaces_security_measurements_set",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "To ensure that the necessary security measurements are set for Amazon Keyspaces"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to check for network security settings such as encryption and access control. However, there were no existing functions specific to Amazon Keyspaces, hence the need for new functions."
+    },
+    {
+      "compliance_id": "8.3",
+      "title": "Ensure Data at Rest and in Transit is Encrypted",
+      "existing_functions_mapped": [
+        "aurora_instance_storage_encrypted",
+        "aurora_instance_ssl_encryption_enabled",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "dynamodb_accelerator_cluster_encryption_enabled",
+        "dynamodb_accelerator_cluster_in_transit_encryption_enabled",
+        "dynamodb_table_encryption_enabled",
+        "dynamodb_table_in_transit_encryption_enabled",
+        "dynamodb_tables_kms_cmk_encryption_enabled",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_volume_encryption",
+        "ec2_instance_data_in_transit_encryption_check",
+        "ec2_instance_in_transit_encryption_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "keyspaces_data_at_rest_encryption_check",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "Need to check if data at rest in Amazon Keyspaces is encrypted"
+        },
+        {
+          "name": "keyspaces_data_in_transit_encryption_check",
+          "boto3_api": "keyspaces.describe_keyspaces()",
+          "service": "keyspaces",
+          "rationale": "Need to check if data in transit in Amazon Keyspaces is encrypted"
+        }
+      ],
+      "mapping_notes": "Mapped existing functions that check for encryption at rest and in transit for various AWS services. However, there are no existing functions that specifically check for encryption in Amazon Keyspaces, hence the need for new functions."
+    },
+    {
+      "compliance_id": "9.1",
+      "title": "Ensure Network Security is Enabled",
+      "existing_functions_mapped": [
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+        "ec2_networkacl_allow_ingress_all_protocols",
+        "ec2_networkacl_allow_ingress_any_port",
+        "ec2_networkacl_allow_ingress_tcp_port_22",
+        "ec2_networkacl_allow_ingress_tcp_port_3389",
+        "ec2_instance_in_transit_encryption_enabled",
+        "ec2_instance_security_configuration_review",
+        "ec2_instance_profile_attached",
+        "ec2_instance_iam_role_check",
+        "ec2_instance_public_ip",
+        "ec2_instance_custom_security_group_assigned",
+        "ec2_instance_managed_by_ssm",
+        "ec2_instance_multi_az_deployment_check",
+        "ec2_instance_internet_facing_with_instance_profile",
+        "ec2_instance_uses_single_eni",
+        "ec2_instance_data_in_transit_encryption_check",
+        "ec2_instance_imdsv2_enabled",
+        "ec2_instance_account_imdsv2_enabled",
+        "ec2_default_security_group_no_inbound_rules",
+        "ec2_default_security_group_no_outbound_rules",
+        "ec2_networkacl_unused"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "vpc_security_group_rules_check",
+          "boto3_api": "ec2.describe_security_group_rules()",
+          "service": "ec2",
+          "rationale": "To ensure that the security group rules for VPC are properly configured"
+        },
+        {
+          "name": "vpc_network_acl_rules_check",
+          "boto3_api": "ec2.describe_network_acls()",
+          "service": "ec2",
+          "rationale": "To ensure that the network ACL rules for VPC are properly configured"
+        },
+        {
+          "name": "vpc_flow_logs_enabled_check",
+          "boto3_api": "ec2.describe_flow_logs()",
+          "service": "ec2",
+          "rationale": "To ensure that VPC Flow Logs are enabled for network traffic monitoring"
+        }
+      ],
+      "mapping_notes": "The existing functions mapped are related to network security such as security groups, network ACLs, and instance security configurations. However, there are gaps in checking the specific configurations of VPC security group rules, network ACL rules, and whether VPC Flow Logs are enabled. Hence, new functions are suggested to fill these gaps."
+    },
+    {
+      "compliance_id": "9.2",
+      "title": "Ensure Data at Rest is Encrypted",
+      "existing_functions_mapped": [
+        "aurora_instance_storage_encrypted",
+        "backup_recovery_point_encrypted",
+        "backup_vaults_encrypted",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "dynamodb_tables_kms_cmk_encryption_enabled",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_volume_encryption",
+        "documentdb_cluster_storage_encrypted"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_encryption_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To ensure that data at rest in S3 buckets is encrypted"
+        },
+        {
+          "name": "rds_instance_storage_encrypted",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure that data at rest in RDS instances is encrypted"
+        },
+        {
+          "name": "dynamodb_table_encryption_enabled",
+          "boto3_api": "dynamodb.describe_table()",
+          "service": "dynamodb",
+          "rationale": "To ensure that data at rest in DynamoDB tables is encrypted"
+        }
+      ],
+      "mapping_notes": "Mapped existing functions that check for encryption at rest for various AWS services. However, there are gaps for services like S3, RDS, and DynamoDB, hence the need for new functions."
+    },
+    {
+      "compliance_id": "9.3",
+      "title": "Ensure Data in Transit is Encrypted",
+      "existing_functions_mapped": [
+        "apigatewayv2_api_encryption_enabled",
+        "aurora_instance_ssl_encryption_enabled",
+        "awslambda_function_variables_encryption_in_transit_enabled",
+        "cloudfront_distributions_field_level_encryption_enabled",
+        "cloudfront_distributions_origin_traffic_encrypted",
+        "dms_endpoint_ssl_enabled",
+        "dynamodb_accelerator_cluster_in_transit_encryption_enabled",
+        "dynamodb_table_in_transit_encryption_enabled",
+        "ec2_instance_in_transit_encryption_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_in_transit_encryption_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To ensure data in transit is encrypted for S3 buckets"
+        },
+        {
+          "name": "rds_instance_in_transit_encryption_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure data in transit is encrypted for RDS instances"
+        }
+      ],
+      "mapping_notes": "Mapped existing functions that relate to enabling encryption in transit for various AWS services. However, there are gaps for services like S3 and RDS, hence the need for new functions."
+    },
+    {
+      "compliance_id": "9.4",
+      "title": "Ensure Authentication and Access Control is Enabled",
+      "existing_functions_mapped": [
+        "dms_endpoint_neptune_iam_authorization_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "neptune_db_cluster_iam_roles_check",
+          "boto3_api": "neptune.describe_db_clusters()",
+          "service": "neptune",
+          "rationale": "To check if specific IAM roles are associated with the Neptune DB cluster"
+        },
+        {
+          "name": "neptune_db_cluster_iam_policies_check",
+          "boto3_api": "iam.list_attached_role_policies()",
+          "service": "iam",
+          "rationale": "To check if specific IAM policies are associated with the IAM roles of the Neptune DB cluster"
+        }
+      ],
+      "mapping_notes": "The existing function 'dms_endpoint_neptune_iam_authorization_enabled' partially covers the compliance requirement by checking if IAM authorization is enabled for Neptune DB endpoints. However, it does not check for specific IAM roles and policies associated with the Neptune DB cluster. Therefore, two new functions 'neptune_db_cluster_iam_roles_check' and 'neptune_db_cluster_iam_policies_check' are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "9.5",
+      "title": "Ensure Audit Logging is Enabled",
+      "existing_functions_mapped": [
+        "cloudtrail_aws_organizations_changes_logging_enabled",
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "cloudtrail_multi_region_enabled",
+        "cloudtrail_multi_region_enabled_logging_management_events",
+        "cloudtrail_s3_dataevents_read_enabled",
+        "cloudtrail_s3_dataevents_write_enabled",
+        "cloudtrail_security_group_changes_logging_enabled",
+        "cloudtrail_vpc_changes_logging_enabled",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+        "cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+        "dynamodb_audit_logging_enabled",
+        "dynamodb_table_audit_logging_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_audit_logging_enabled",
+          "boto3_api": "s3.get_bucket_logging()",
+          "service": "s3",
+          "rationale": "To ensure audit logging is enabled for S3 buckets"
+        },
+        {
+          "name": "ec2_instance_audit_logging_enabled",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To ensure audit logging is enabled for EC2 instances"
+        },
+        {
+          "name": "rds_instance_audit_logging_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure audit logging is enabled for RDS instances"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to enable and check audit logging for various AWS services. However, there are gaps in coverage for services like S3, EC2, and RDS, hence the need for new functions."
+    },
+    {
+      "compliance_id": "9.6",
+      "title": "Ensure Security Configurations are Reviewed Regularly",
+      "existing_functions_mapped": [
+        "accessanalyzer_enabled",
+        "accessanalyzer_enabled_without_findings",
+        "account_maintain_current_contact_details",
+        "account_maintain_different_contact_details_to_security_billing_and_operations",
+        "account_security_contact_information_is_registered",
+        "account_security_questions_are_registered_in_the_aws_account",
+        "audit_logging_regular_review",
+        "authentication_settings_regular_review",
+        "awsconfig_lambda_config_tracking_enabled",
+        "awsconfig_serverless_config_tracking_enabled",
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "awslambda_function_no_admin_privileges",
+        "awslambda_function_no_secrets_in_code",
+        "awslambda_function_no_secrets_in_variables",
+        "awslambda_function_not_publicly_accessible",
+        "awslambda_function_variables_encryption_in_transit_enabled",
+        "cloudtrail_aws_organizations_changes_logging_enabled",
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "cloudtrail_multi_region_enabled",
+        "cloudtrail_multi_region_enabled_logging_management_events",
+        "cloudtrail_root_account_usage_monitoring",
+        "cloudtrail_security_group_changes_logging_enabled",
+        "cloudtrail_vpc_changes_logging_enabled",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_no_secrets_in_logs",
+        "cloudwatch_log_group_not_publicly_accessible",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled",
+        "config_recorder_all_regions_enabled",
+        "config_recorder_using_aws_service_role",
+        "ec2_instance_iam_role_check",
+        "ec2_instance_security_configuration_review",
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_role_regular_review",
+          "boto3_api": "iam.list_roles()",
+          "service": "iam",
+          "rationale": "Regular review of IAM roles is necessary to ensure that they are up-to-date and do not have excessive permissions."
+        },
+        {
+          "name": "security_networks_regular_review",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "Regular review of security networks is necessary to ensure that they are up-to-date and do not have excessive permissions."
+        },
+        {
+          "name": "encryption_settings_regular_review",
+          "boto3_api": "kms.list_keys()",
+          "service": "kms",
+          "rationale": "Regular review of encryption settings is necessary to ensure that they are up-to-date and do not have excessive permissions."
+        }
+      ],
+      "mapping_notes": "The existing functions mapped are those that relate to the regular review of security configurations, including IAM roles, security networks, encryption settings, audit logging, and authentication. However, there are no specific functions for regular review of these configurations, hence the need for new functions."
+    },
+    {
+      "compliance_id": "9.7",
+      "title": "Ensure Monitoring and Alerting is Enabled",
+      "existing_functions_mapped": [
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_alarm_all_services_alarm_configured",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_insights_exist",
+        "cloudwatch_lambda_insights_enabled",
+        "cloudwatch_timestream_events_monitoring_enabled",
+        "cloudwatch_timestream_logs_monitoring_enabled",
+        "cloudwatch_timestream_metrics_monitoring_enabled"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover both monitoring and alerting aspects for various AWS services. Therefore, no new functions are needed."
+    },
+    {
+      "compliance_id": "10.1",
+      "title": "Ensure Data Ingestion is Secure",
+      "existing_functions_mapped": [
+        "apigatewayv2_api_encryption_enabled",
+        "awslambda_function_variables_encryption_in_transit_enabled",
+        "cloudfront_distributions_origin_traffic_encrypted",
+        "dms_endpoint_ssl_enabled",
+        "dynamodb_table_in_transit_encryption_enabled",
+        "ec2_instance_in_transit_encryption_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "kinesis_stream_encryption_enabled",
+          "boto3_api": "kinesis.describe_stream()",
+          "service": "kinesis",
+          "rationale": "To ensure data ingestion via Kinesis streams is secure, encryption should be enabled."
+        },
+        {
+          "name": "s3_bucket_encryption_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To ensure data ingestion via S3 buckets is secure, encryption should be enabled."
+        },
+        {
+          "name": "sqs_queue_encryption_enabled",
+          "boto3_api": "sqs.get_queue_attributes()",
+          "service": "sqs",
+          "rationale": "To ensure data ingestion via SQS queues is secure, encryption should be enabled."
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to ensure secure data ingestion by enabling encryption. However, there are gaps in coverage for services like Kinesis, S3, and SQS, hence the need for new functions."
+    },
+    {
+      "compliance_id": "10.2",
+      "title": "Ensure Data at Rest is Encrypted",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "timestream_database_encryption_check",
+          "boto3_api": "timestream.describe_database()",
+          "service": "timestream",
+          "rationale": "This function is needed to check if the Timestream database is encrypted at rest."
+        },
+        {
+          "name": "timestream_kms_key_management_check",
+          "boto3_api": "kms.describe_key()",
+          "service": "kms",
+          "rationale": "This function is needed to check if the KMS keys used for Timestream database encryption are properly managed."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. New functions are suggested to check the encryption at rest for Timestream databases and the management of the KMS keys used for this encryption."
+    },
+    {
+      "compliance_id": "10.3",
+      "title": "Ensure Encryption in Transit is Configured",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "timestream_in_transit_encryption_check",
+          "boto3_api": "timestream.describe_endpoints()",
+          "service": "timestream",
+          "rationale": "This function is needed to check if the Timestream service has in-transit encryption configured."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check if in-transit encryption is configured for Timestream service."
+    },
+    {
+      "compliance_id": "10.4",
+      "title": "Ensure Access Control and Authentication is Enabled",
+      "existing_functions_mapped": [
+        "authentication_settings_regular_review",
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "awslambda_function_no_admin_privileges",
+        "cloudtrail_timestream_activities_logging_enabled",
+        "cloudwatch_timestream_events_monitoring_enabled",
+        "cloudwatch_timestream_logs_monitoring_enabled",
+        "cloudwatch_timestream_metrics_monitoring_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_timestream_access_control_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM policies are properly configured to control access to Timestream resources"
+        },
+        {
+          "name": "iam_timestream_authentication_check",
+          "boto3_api": "iam.get_account_authorization_details()",
+          "service": "iam",
+          "rationale": "To ensure that authentication is properly enabled for Timestream resources"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their relevance to access control, authentication, and Timestream resources. However, there are no existing functions that specifically check for IAM policies related to Timestream resources, hence the need for new functions."
+    },
+    {
+      "compliance_id": "10.5",
+      "title": "Ensure Fine-Grained Access Control is Enabled",
+      "existing_functions_mapped": [
+        "dynamodb_table_fine_grained_access_control_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "timestream_table_fine_grained_access_control_check",
+          "boto3_api": "timestream.describe_table()",
+          "service": "timestream",
+          "rationale": "This function is needed to check if fine-grained access control is enabled on Timestream tables"
+        },
+        {
+          "name": "timestream_row_level_security_check",
+          "boto3_api": "timestream.describe_table()",
+          "service": "timestream",
+          "rationale": "This function is needed to check if row-level security is implemented on Timestream tables"
+        }
+      ],
+      "mapping_notes": "The existing function 'dynamodb_table_fine_grained_access_control_check' partially covers the compliance requirement for DynamoDB, but there are no existing functions for Timestream. New functions are suggested to cover these gaps."
+    },
+    {
+      "compliance_id": "10.6",
+      "title": "Ensure Audit Logging is Enabled",
+      "existing_functions_mapped": [
+        "cloudtrail_timestream_activities_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "audit_logging_regular_review"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The compliance requirement is fully covered by existing functions. 'cloudtrail_timestream_activities_logging_enabled' ensures that AWS CloudTrail is enabled to capture and log API calls and activities related to Amazon Timestream. 'cloudtrail_logs_s3_bucket_is_not_publicly_accessible' ensures that CloudTrail logs are stored in a secure location. 'audit_logging_regular_review' ensures that the logs are regularly reviewed for any unauthorized or suspicious activities."
+    },
+    {
+      "compliance_id": "10.7",
+      "title": "Ensure Regular Updates and Patches are Installed",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "timestream_database_latest_patch_check",
+          "boto3_api": "timestream.describe_endpoints()",
+          "service": "timestream",
+          "rationale": "This function is needed to check if the latest patches and updates are installed for Amazon Timestream"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring regular updates and patches are installed for Amazon Timestream. A new function is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "10.8",
+      "title": "Ensure Monitoring and Alerting is Enabled",
+      "existing_functions_mapped": [
+        "cloudwatch_timestream_events_monitoring_enabled",
+        "cloudwatch_timestream_logs_monitoring_enabled",
+        "cloudwatch_timestream_metrics_monitoring_enabled",
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_alarm_all_services_alarm_configured"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "timestream_database_cloudwatch_alarm_enabled",
+          "boto3_api": "timestream.describe_alarms()",
+          "service": "timestream",
+          "rationale": "To ensure that alarms are set up for Timestream databases"
+        },
+        {
+          "name": "timestream_table_cloudwatch_alarm_enabled",
+          "boto3_api": "timestream.describe_alarms()",
+          "service": "timestream",
+          "rationale": "To ensure that alarms are set up for Timestream tables"
+        }
+      ],
+      "mapping_notes": "Existing functions cover monitoring of Timestream events, logs, and metrics in CloudWatch, as well as general alarm configuration in CloudWatch. However, there are no specific functions for checking that alarms are set up for Timestream databases and tables, hence the need for new functions."
+    },
+    {
+      "compliance_id": "10.9",
+      "title": "Ensure to Review and Update the Security Configuration",
+      "existing_functions_mapped": [
+        "audit_logging_regular_review",
+        "authentication_settings_regular_review",
+        "cloudtrail_timestream_activities_logging_enabled",
+        "cloudwatch_timestream_events_monitoring_enabled",
+        "cloudwatch_timestream_logs_monitoring_enabled",
+        "cloudwatch_timestream_metrics_monitoring_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "timestream_security_configuration_review",
+          "boto3_api": "timestream.describe_table()",
+          "service": "timestream",
+          "rationale": "To review and update the security configuration of Amazon Timestream tables"
+        },
+        {
+          "name": "timestream_access_permissions_review",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To review and update the access permissions of Amazon Timestream"
+        },
+        {
+          "name": "timestream_encryption_settings_review",
+          "boto3_api": "kms.describe_key()",
+          "service": "kms",
+          "rationale": "To review and update the encryption settings of Amazon Timestream"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their relevance to the compliance item. New functions were suggested to cover the gaps in the existing functions, specifically for reviewing and updating the security configuration, access permissions, and encryption settings of Amazon Timestream."
+    },
+    {
+      "compliance_id": "11.1",
+      "title": "Ensure to Implement Identity and Access Management (IAM)",
+      "existing_functions_mapped": [
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "awslambda_function_no_admin_privileges",
+        "aurora_iam_least_privilege_policy_check",
+        "ec2_instance_iam_role_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_user_authentication_check",
+          "boto3_api": "iam.get_account_authorization_details()",
+          "service": "iam",
+          "rationale": "To ensure that only authenticated users have access to the database"
+        },
+        {
+          "name": "iam_role_policy_check",
+          "boto3_api": "iam.list_attached_role_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM roles have the correct policies attached"
+        }
+      ],
+      "mapping_notes": "Existing functions provide partial coverage as they check for IAM roles and least privilege policies. However, there are no functions to check for user authentication and role policy attachment, hence new functions are suggested."
+    },
+    {
+      "compliance_id": "11.2",
+      "title": "Ensure Network Access is Secure",
+      "existing_functions_mapped": [
+        "awslambda_function_inside_vpc",
+        "ec2_instance_in_transit_encryption_enabled",
+        "ec2_networkacl_allow_ingress_all_protocols",
+        "ec2_networkacl_allow_ingress_any_port",
+        "ec2_networkacl_allow_ingress_tcp_port_22",
+        "ec2_networkacl_allow_ingress_tcp_port_3389",
+        "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+        "ec2_securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22",
+        "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_3389",
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_no_secrets_in_logs",
+        "cloudwatch_log_group_not_publicly_accessible"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "vpc_network_acl_check",
+          "boto3_api": "ec2.describe_network_acls()",
+          "service": "ec2",
+          "rationale": "To ensure that the network access control lists (ACLs) are properly configured to allow only specific individuals to access the resources."
+        },
+        {
+          "name": "vpc_security_group_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that the security groups associated with the VPC are properly configured to allow only specific individuals to access the resources."
+        },
+        {
+          "name": "vpc_flow_logs_check",
+          "boto3_api": "ec2.describe_flow_logs()",
+          "service": "ec2",
+          "rationale": "To ensure that VPC Flow Logs are enabled for monitoring and logging the activity within the VPC."
+        }
+      ],
+      "mapping_notes": "The existing functions mapped cover aspects of ensuring secure network access such as checking if functions are inside a VPC, checking if in-transit encryption is enabled, checking if network ACLs and security groups allow ingress from the internet to certain ports, and checking if logging is enabled for all services. However, there are no existing functions that specifically check the configuration of network ACLs and security groups, or if VPC Flow Logs are enabled, hence the need for new functions."
+    },
+    {
+      "compliance_id": "11.3",
+      "title": "Ensure Data at Rest is Encrypted",
+      "existing_functions_mapped": [
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_volume_encryption",
+        "dynamodb_tables_kms_cmk_encryption_enabled",
+        "aurora_instance_storage_encrypted",
+        "backup_vaults_encrypted",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "dynamodb_table_encryption_enabled",
+        "ec2_ami_encryption_check",
+        "ec2_ebs_snapshots_encrypted",
+        "documentdb_cluster_storage_encrypted"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_encryption_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To ensure that data at rest in S3 buckets is encrypted"
+        },
+        {
+          "name": "rds_instance_storage_encrypted",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure that data at rest in RDS instances is encrypted"
+        },
+        {
+          "name": "redshift_cluster_encryption_enabled",
+          "boto3_api": "redshift.describe_clusters()",
+          "service": "redshift",
+          "rationale": "To ensure that data at rest in Redshift clusters is encrypted"
+        }
+      ],
+      "mapping_notes": "Mapped existing functions that check for encryption at rest for various AWS services. However, there are gaps for services like S3, RDS, and Redshift, hence the need for new functions."
+    },
+    {
+      "compliance_id": "11.4",
+      "title": "Ensure Data in Transit is Encrypted",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "qldb_client_tls_encryption_enabled",
+          "boto3_api": "qldb.describe_ledger()",
+          "service": "qldb",
+          "rationale": "To check if the QLDB client is configured to use TLS for secure communication"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring data in transit is encrypted for QLDB instances. A new function is suggested to check if the QLDB client is configured to use TLS for secure communication."
+    },
+    {
+      "compliance_id": "11.5",
+      "title": "Ensure to Implement Access Control and Authentication",
+      "existing_functions_mapped": [
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "awslambda_function_no_admin_privileges",
+        "awslambda_function_not_publicly_accessible"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "qldb_iam_policy_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To check if IAM policies are defined to control which users or roles can perform specific actions on QLDB resources"
+        },
+        {
+          "name": "qldb_cross_service_access_check",
+          "boto3_api": "iam.list_roles()",
+          "service": "iam",
+          "rationale": "To check if IAM roles are leveraged for cross-service access, securely integrating QLDB with other AWS services"
+        }
+      ],
+      "mapping_notes": "Existing functions related to IAM roles and policies for AWS Lambda were mapped as they are relevant to the compliance item. However, specific functions for QLDB's built-in authentication and access control mechanisms are missing, hence new functions are suggested."
+    },
+    {
+      "compliance_id": "11.6",
+      "title": "Ensure Monitoring and Logging is Enabled",
+      "existing_functions_mapped": [
+        "cloudwatch_log_group_all_services_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_not_publicly_accessible",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled",
+        "cloudwatch_alarm_all_services_alarm_configured",
+        "cloudwatch_alarm_actions_enabled",
+        "cloudwatch_alarm_actions_alarm_state_configured"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "qldb_logging_enabled",
+          "boto3_api": "qldb.describe_ledger()",
+          "service": "qldb",
+          "rationale": "To check if QLDB's built-in logging is enabled"
+        },
+        {
+          "name": "qldb_monitor_logs_for_suspicious_activity",
+          "boto3_api": "cloudwatch.describe_alarm_history()",
+          "service": "cloudwatch",
+          "rationale": "To monitor the logs for any suspicious activities or errors"
+        },
+        {
+          "name": "qldb_monitor_logs_for_errors",
+          "boto3_api": "cloudwatch.describe_alarm_history()",
+          "service": "cloudwatch",
+          "rationale": "To monitor the logs for any errors"
+        },
+        {
+          "name": "cloudwatch_alarm_for_qldb",
+          "boto3_api": "cloudwatch.put_metric_alarm()",
+          "service": "cloudwatch",
+          "rationale": "To set up alarms for potential security incidents in QLDB"
+        }
+      ],
+      "mapping_notes": "Existing functions related to CloudWatch logging and alarms were mapped. However, there are no existing functions specific to QLDB logging and monitoring, hence new functions are suggested."
+    },
+    {
+      "compliance_id": "11.7",
+      "title": "Ensure to Enable Backup and Recovery",
+      "existing_functions_mapped": [
+        "backup_plans_exist",
+        "backup_recovery_point_encrypted",
+        "backup_reportplans_exist",
+        "backup_vaults_encrypted",
+        "backup_vaults_exist",
+        "backup_window_configured",
+        "dlm_ebs_snapshot_lifecycle_policy_exists",
+        "ec2_ebs_volume_protected_by_backup_plan",
+        "dynamodb_table_protected_by_backup_plan"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "rds_instance_backup_enabled",
+          "boto3_api": "rds.describe_db_instances()",
+          "service": "rds",
+          "rationale": "To ensure that backup is enabled for all RDS instances"
+        },
+        {
+          "name": "s3_bucket_versioning_enabled",
+          "boto3_api": "s3.get_bucket_versioning()",
+          "service": "s3",
+          "rationale": "To ensure that versioning is enabled for all S3 buckets as a form of backup"
+        },
+        {
+          "name": "ec2_instance_snapshot_exists",
+          "boto3_api": "ec2.describe_snapshots()",
+          "service": "ec2",
+          "rationale": "To ensure that snapshots exist for all EC2 instances as a form of backup"
+        }
+      ],
+      "mapping_notes": "Existing functions cover backup and recovery for some AWS services but not all. New functions are suggested to cover RDS, S3, and EC2 which are commonly used services."
+    }
+  ],
+  "new_functions_suggested": [
+    {
+      "name": "vpc_exists_check",
+      "boto3_api": "ec2.describe_vpcs()",
+      "service": "ec2",
+      "rationale": "This function is needed to check if a VPC exists in the AWS account"
+    },
+    {
+      "name": "rds_instance_security_group_assigned",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure that RDS instances have security groups assigned"
+    },
+    {
+      "name": "rds_security_group_inbound_outbound_rules_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To check the inbound and outbound rules of the security groups associated with RDS instances"
+    },
+    {
+      "name": "aurora_data_in_transit_encryption_check",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if SSL is enabled for Aurora DB instances to ensure data in transit is encrypted"
+    },
+    {
+      "name": "s3_data_in_transit_encryption_check",
+      "boto3_api": "s3.get_bucket_policy()",
+      "service": "s3",
+      "rationale": "To check if SSL is enforced for S3 data transfers to ensure data in transit is encrypted"
+    },
+    {
+      "name": "iam_roles_and_policies_existence_check",
+      "boto3_api": "iam.list_roles(), iam.list_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM roles and policies are created and exist in the AWS environment"
+    },
+    {
+      "name": "aurora_database_audit_logging_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if audit logging is enabled for Aurora databases"
+    },
+    {
+      "name": "iam_user_access_keys_rotation_check",
+      "boto3_api": "iam.list_access_keys()",
+      "service": "iam",
+      "rationale": "This function is needed to check if the IAM user access keys are regularly rotated as per the compliance requirement"
+    },
+    {
+      "name": "iam_user_least_privilege_policy_check",
+      "boto3_api": "iam.list_attached_user_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM users are granted least privilege access"
+    },
+    {
+      "name": "iam_role_least_privilege_policy_check",
+      "boto3_api": "iam.list_attached_role_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM roles are granted least privilege access"
+    },
+    {
+      "name": "aurora_automatic_backups_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if automatic backups are enabled for Aurora DB instances"
+    },
+    {
+      "name": "aurora_backup_retention_period_configured",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if a backup retention period is configured for Aurora DB instances"
+    },
+    {
+      "name": "iam_mfa_enabled_for_all_users",
+      "boto3_api": "iam.list_mfa_devices()",
+      "service": "iam",
+      "rationale": "To ensure MFA is enabled for all IAM users"
+    },
+    {
+      "name": "root_account_mfa_enabled",
+      "boto3_api": "iam.get_account_summary()",
+      "service": "iam",
+      "rationale": "To ensure MFA is enabled for the root account"
+    },
+    {
+      "name": "ec2_deployment_configuration_check",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To check if the EC2 instances are deployed in single or multi-AZ configuration"
+    },
+    {
+      "name": "rds_deployment_configuration_check",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if the RDS instances are deployed in single or multi-AZ configuration"
+    },
+    {
+      "name": "vpc_exists_check",
+      "boto3_api": "ec2.describe_vpcs()",
+      "service": "ec2",
+      "rationale": "This function is needed to check if a VPC exists in the AWS account"
+    },
+    {
+      "name": "ec2_securitygroup_egress_rules_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that egress rules are properly configured for security groups"
+    },
+    {
+      "name": "ec2_securitygroup_ingress_rules_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that ingress rules are properly configured for security groups"
+    },
+    {
+      "name": "s3_bucket_encryption_at_rest_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To check if encryption at rest is enabled for S3 buckets"
+    },
+    {
+      "name": "rds_instance_encryption_at_rest_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if encryption at rest is enabled for RDS instances"
+    },
+    {
+      "name": "dynamodb_table_encryption_at_rest_enabled",
+      "boto3_api": "dynamodb.describe_table()",
+      "service": "dynamodb",
+      "rationale": "To check if encryption at rest is enabled for DynamoDB tables"
+    },
+    {
+      "name": "rds_instance_ssl_encryption_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if SSL/TLS encryption is enabled for RDS instances"
+    },
+    {
+      "name": "database_access_control_check",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if the database has access control implemented"
+    },
+    {
+      "name": "database_authentication_check",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if the database has authentication enabled"
+    },
+    {
+      "name": "ec2_instance_latest_patch_version_check",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To ensure EC2 instances are regularly patched"
+    },
+    {
+      "name": "rds_instance_latest_patch_version_check",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure RDS instances are regularly patched"
+    },
+    {
+      "name": "lambda_function_latest_runtime_version_check",
+      "boto3_api": "lambda.get_function_configuration()",
+      "service": "lambda",
+      "rationale": "To ensure Lambda functions are using the latest runtime version"
+    },
+    {
+      "name": "rds_instance_backup_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if backup is enabled for RDS instances"
+    },
+    {
+      "name": "rds_instance_backup_retention_period",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check the backup retention period for RDS instances"
+    },
+    {
+      "name": "rds_instance_security_configuration_review",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To review the security configuration of RDS instances"
+    },
+    {
+      "name": "dynamodb_instance_security_configuration_review",
+      "boto3_api": "dynamodb.describe_table()",
+      "service": "dynamodb",
+      "rationale": "To review the security configuration of DynamoDB tables"
+    },
+    {
+      "name": "s3_bucket_security_configuration_review",
+      "boto3_api": "s3.get_bucket_acl()",
+      "service": "s3",
+      "rationale": "To review the security configuration of S3 buckets"
+    },
+    {
+      "name": "iam_user_existence_check",
+      "boto3_api": "iam.list_users()",
+      "service": "iam",
+      "rationale": "To ensure IAM is in use, we need to check if there are any IAM users created in the AWS account"
+    },
+    {
+      "name": "iam_policy_existence_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To ensure IAM is in use, we need to check if there are any IAM policies created in the AWS account"
+    },
+    {
+      "name": "iam_role_existence_check",
+      "boto3_api": "iam.list_roles()",
+      "service": "iam",
+      "rationale": "To ensure IAM is in use, we need to check if there are any IAM roles created in the AWS account"
+    },
+    {
+      "name": "vpc_endpoints_configured_check",
+      "boto3_api": "ec2.describe_vpc_endpoints()",
+      "service": "ec2",
+      "rationale": "This function is needed to check if VPC endpoints are configured for secure access to DynamoDB resources within the VPC."
+    },
+    {
+      "name": "dynamodb_lambda_compliance_check_enabled",
+      "boto3_api": "dynamodbstreams.describe_stream()",
+      "service": "dynamodbstreams",
+      "rationale": "This function is needed to check if AWS Lambda is integrated with DynamoDB Streams for automated compliance checking."
+    },
+    {
+      "name": "elasticache_cluster_authentication_enabled",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check if the ElastiCache clusters have authentication enabled"
+    },
+    {
+      "name": "elasticache_cluster_encryption_in_transit_enabled",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check if the ElastiCache clusters have encryption in transit enabled"
+    },
+    {
+      "name": "elasticache_cluster_encryption_at_rest_enabled",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check if the ElastiCache clusters have encryption at rest enabled"
+    },
+    {
+      "name": "elasticache_network_security_check",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To ensure network security for Amazon ElastiCache, we need to check the configuration of VPC, security groups, and network access controls for ElastiCache clusters."
+    },
+    {
+      "name": "elasticache_encryption_at_rest_enabled",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check if encryption at rest is enabled for ElastiCache clusters"
+    },
+    {
+      "name": "elasticache_encryption_in_transit_enabled",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check if encryption in transit is enabled for ElastiCache clusters"
+    },
+    {
+      "name": "elasticache_automatic_updates_enabled",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check if automatic updates and patching are enabled for Amazon ElastiCache clusters"
+    },
+    {
+      "name": "elasticache_vpc_enabled_check",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "This function is needed to check if the ElastiCache clusters are configured within a VPC"
+    },
+    {
+      "name": "elasticache_cluster_monitoring_enabled",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check if monitoring is enabled for ElastiCache clusters"
+    },
+    {
+      "name": "elasticache_cluster_logging_enabled",
+      "boto3_api": "elasticache.describe_events()",
+      "service": "elasticache",
+      "rationale": "To check if logging is enabled for ElastiCache clusters"
+    },
+    {
+      "name": "elasticache_cluster_security_configuration_review",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "This function is needed to review the security configurations of Amazon ElastiCache clusters regularly"
+    },
+    {
+      "name": "iam_role_acl_check",
+      "boto3_api": "iam.list_role_policies()",
+      "service": "iam",
+      "rationale": "To check if the IAM roles have specific ACLs that allow only specific individuals to access the resources"
+    },
+    {
+      "name": "iam_user_acl_check",
+      "boto3_api": "iam.list_user_policies()",
+      "service": "iam",
+      "rationale": "To check if the IAM users have specific ACLs that allow only specific individuals to access the resources"
+    },
+    {
+      "name": "keyspaces_security_configuration_review",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "This function is needed to regularly review the security configuration of Amazon Keyspaces environment"
+    },
+    {
+      "name": "ec2_network_security_group_default_rules_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that the default security group rules are not overly permissive"
+    },
+    {
+      "name": "ec2_network_acl_default_rules_check",
+      "boto3_api": "ec2.describe_network_acls()",
+      "service": "ec2",
+      "rationale": "To ensure that the default network ACL rules are not overly permissive"
+    },
+    {
+      "name": "s3_bucket_encryption_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To ensure that data at rest in S3 buckets is encrypted"
+    },
+    {
+      "name": "s3_bucket_in_transit_encryption_enabled",
+      "boto3_api": "s3.get_bucket_policy()",
+      "service": "s3",
+      "rationale": "To ensure that data in transit to/from S3 buckets is encrypted"
+    },
+    {
+      "name": "rds_instance_storage_encrypted",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure that data at rest in RDS instances is encrypted"
+    },
+    {
+      "name": "rds_instance_in_transit_encryption_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure that data in transit to/from RDS instances is encrypted"
+    },
+    {
+      "name": "iam_user_access_key_rotation_check",
+      "boto3_api": "iam.list_access_keys()",
+      "service": "iam",
+      "rationale": "To ensure that access keys are being rotated regularly for IAM users"
+    },
+    {
+      "name": "iam_user_mfa_enabled_check",
+      "boto3_api": "iam.list_mfa_devices()",
+      "service": "iam",
+      "rationale": "To ensure that MFA is enabled for all IAM users"
+    },
+    {
+      "name": "iam_role_assume_policy_check",
+      "boto3_api": "iam.get_role()",
+      "service": "iam",
+      "rationale": "To ensure that IAM roles have appropriate assume role policies"
+    },
+    {
+      "name": "memorydb_cluster_audit_logging_enabled",
+      "boto3_api": "memorydb.describe_clusters()",
+      "service": "memorydb",
+      "rationale": "This function is needed to check if audit logging is enabled for Amazon MemoryDB clusters"
+    },
+    {
+      "name": "iam_role_regular_review",
+      "boto3_api": "iam.list_roles()",
+      "service": "iam",
+      "rationale": "Regular review of IAM roles is necessary to ensure that they are up-to-date and do not have excessive permissions."
+    },
+    {
+      "name": "security_networks_regular_review",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "Regular review of security networks is necessary to ensure that they are up-to-date and do not have excessive permissions."
+    },
+    {
+      "name": "encryption_settings_regular_review",
+      "boto3_api": "kms.list_keys()",
+      "service": "kms",
+      "rationale": "Regular review of encryption settings is necessary to ensure that they are up-to-date and do not have excessive permissions."
+    },
+    {
+      "name": "memorydb_cluster_monitoring_enabled",
+      "boto3_api": "memorydb.describe_clusters()",
+      "service": "memorydb",
+      "rationale": "To check if monitoring is enabled for MemoryDB clusters"
+    },
+    {
+      "name": "memorydb_cluster_alerting_enabled",
+      "boto3_api": "cloudwatch.describe_alarms()",
+      "service": "cloudwatch",
+      "rationale": "To check if alerting is enabled for MemoryDB clusters"
+    },
+    {
+      "name": "documentdb_instance_vpc_security_group_inbound_outbound_traffic_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that the security groups associated with the DocumentDB instances are configured to control inbound and outbound traffic as per the compliance requirement"
+    },
+    {
+      "name": "vpc_subnet_configuration_check",
+      "boto3_api": "ec2.describe_subnets()",
+      "service": "ec2",
+      "rationale": "To ensure that subnets within the VPC are properly configured"
+    },
+    {
+      "name": "vpc_security_group_configuration_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that security groups within the VPC are properly configured"
+    },
+    {
+      "name": "s3_bucket_encryption_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To check if encryption at rest is enabled for S3 buckets"
+    },
+    {
+      "name": "rds_instance_storage_encrypted",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if encryption at rest is enabled for RDS instances"
+    },
+    {
+      "name": "ebs_snapshot_encryption_enabled",
+      "boto3_api": "ec2.describe_snapshots()",
+      "service": "ec2",
+      "rationale": "To check if encryption at rest is enabled for EBS snapshots"
+    },
+    {
+      "name": "documentdb_instance_authentication_mechanisms_check",
+      "boto3_api": "docdb.describe_db_instances()",
+      "service": "docdb",
+      "rationale": "To check if the DocumentDB instances have appropriate authentication mechanisms configured"
+    },
+    {
+      "name": "documentdb_instance_access_control_check",
+      "boto3_api": "docdb.describe_db_instances()",
+      "service": "docdb",
+      "rationale": "To check if the DocumentDB instances have appropriate access control configured"
+    },
+    {
+      "name": "rds_audit_logging_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To check if audit logging is enabled for RDS instances"
+    },
+    {
+      "name": "dynamodb_audit_logging_enabled",
+      "boto3_api": "dynamodb.describe_table()",
+      "service": "dynamodb",
+      "rationale": "To check if audit logging is enabled for DynamoDB tables"
+    },
+    {
+      "name": "documentdb_cluster_apply_latest_patch",
+      "boto3_api": "docdb.modify_db_cluster()",
+      "service": "docdb",
+      "rationale": "This function is needed to ensure that the latest patches are applied to the DocumentDB cluster"
+    },
+    {
+      "name": "cloudwatch_alarm_for_unusual_events",
+      "boto3_api": "cloudwatch.put_metric_alarm()",
+      "service": "cloudwatch",
+      "rationale": "To monitor and alert on unusual events or when a particular threshold has been achieved"
+    },
+    {
+      "name": "cloudwatch_alarm_for_resource_threshold",
+      "boto3_api": "cloudwatch.put_metric_alarm()",
+      "service": "cloudwatch",
+      "rationale": "To monitor and alert when a resource reaches a certain threshold"
+    },
+    {
+      "name": "documentdb_cluster_backup_frequency_check",
+      "boto3_api": "docdb.describe_db_cluster_snapshots()",
+      "service": "docdb",
+      "rationale": "To ensure that backups are being taken frequently as per the disaster recovery plan"
+    },
+    {
+      "name": "documentdb_cluster_backup_completeness_check",
+      "boto3_api": "docdb.describe_db_cluster_snapshots()",
+      "service": "docdb",
+      "rationale": "To ensure that all necessary data is included in the backups"
+    },
+    {
+      "name": "documentdb_cluster_disaster_recovery_plan_check",
+      "boto3_api": "docdb.describe_db_clusters()",
+      "service": "docdb",
+      "rationale": "To ensure that a disaster recovery plan is in place and includes data replication across different availability zones or regions"
+    },
+    {
+      "name": "security_assessment_vulnerability_scan",
+      "boto3_api": "inspector.start_assessment_run()",
+      "service": "inspector",
+      "rationale": "To conduct vulnerability assessments periodically"
+    },
+    {
+      "name": "security_assessment_penetration_test",
+      "boto3_api": "n/a",
+      "service": "n/a",
+      "rationale": "Penetration testing requires explicit approval from AWS and cannot be automated"
+    },
+    {
+      "name": "security_configuration_best_practices_review",
+      "boto3_api": "configservice.describe_compliance_by_config_rule()",
+      "service": "configservice",
+      "rationale": "To review security configuration against best practices"
+    },
+    {
+      "name": "keyspaces_user_authentication_check",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "To ensure that users are required to log in with their AWS credentials to access Amazon Keyspaces"
+    },
+    {
+      "name": "keyspaces_resource_access_check",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "To ensure that users can access the AWS resources and explore the resources that Amazon Keyspaces offers"
+    },
+    {
+      "name": "keyspaces_security_configuration_check",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "To ensure that Amazon Keyspaces offers a lot of security that can mitigate a potential attack"
+    },
+    {
+      "name": "keyspaces_network_parameters_set",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "To ensure that the necessary network parameters are set for Amazon Keyspaces"
+    },
+    {
+      "name": "keyspaces_security_measurements_set",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "To ensure that the necessary security measurements are set for Amazon Keyspaces"
+    },
+    {
+      "name": "keyspaces_data_at_rest_encryption_check",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "Need to check if data at rest in Amazon Keyspaces is encrypted"
+    },
+    {
+      "name": "keyspaces_data_in_transit_encryption_check",
+      "boto3_api": "keyspaces.describe_keyspaces()",
+      "service": "keyspaces",
+      "rationale": "Need to check if data in transit in Amazon Keyspaces is encrypted"
+    },
+    {
+      "name": "vpc_security_group_rules_check",
+      "boto3_api": "ec2.describe_security_group_rules()",
+      "service": "ec2",
+      "rationale": "To ensure that the security group rules for VPC are properly configured"
+    },
+    {
+      "name": "vpc_network_acl_rules_check",
+      "boto3_api": "ec2.describe_network_acls()",
+      "service": "ec2",
+      "rationale": "To ensure that the network ACL rules for VPC are properly configured"
+    },
+    {
+      "name": "vpc_flow_logs_enabled_check",
+      "boto3_api": "ec2.describe_flow_logs()",
+      "service": "ec2",
+      "rationale": "To ensure that VPC Flow Logs are enabled for network traffic monitoring"
+    },
+    {
+      "name": "s3_bucket_encryption_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To ensure that data at rest in S3 buckets is encrypted"
+    },
+    {
+      "name": "rds_instance_storage_encrypted",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure that data at rest in RDS instances is encrypted"
+    },
+    {
+      "name": "dynamodb_table_encryption_enabled",
+      "boto3_api": "dynamodb.describe_table()",
+      "service": "dynamodb",
+      "rationale": "To ensure that data at rest in DynamoDB tables is encrypted"
+    },
+    {
+      "name": "s3_bucket_in_transit_encryption_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To ensure data in transit is encrypted for S3 buckets"
+    },
+    {
+      "name": "rds_instance_in_transit_encryption_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure data in transit is encrypted for RDS instances"
+    },
+    {
+      "name": "neptune_db_cluster_iam_roles_check",
+      "boto3_api": "neptune.describe_db_clusters()",
+      "service": "neptune",
+      "rationale": "To check if specific IAM roles are associated with the Neptune DB cluster"
+    },
+    {
+      "name": "neptune_db_cluster_iam_policies_check",
+      "boto3_api": "iam.list_attached_role_policies()",
+      "service": "iam",
+      "rationale": "To check if specific IAM policies are associated with the IAM roles of the Neptune DB cluster"
+    },
+    {
+      "name": "s3_bucket_audit_logging_enabled",
+      "boto3_api": "s3.get_bucket_logging()",
+      "service": "s3",
+      "rationale": "To ensure audit logging is enabled for S3 buckets"
+    },
+    {
+      "name": "ec2_instance_audit_logging_enabled",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To ensure audit logging is enabled for EC2 instances"
+    },
+    {
+      "name": "rds_instance_audit_logging_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure audit logging is enabled for RDS instances"
+    },
+    {
+      "name": "iam_role_regular_review",
+      "boto3_api": "iam.list_roles()",
+      "service": "iam",
+      "rationale": "Regular review of IAM roles is necessary to ensure that they are up-to-date and do not have excessive permissions."
+    },
+    {
+      "name": "security_networks_regular_review",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "Regular review of security networks is necessary to ensure that they are up-to-date and do not have excessive permissions."
+    },
+    {
+      "name": "encryption_settings_regular_review",
+      "boto3_api": "kms.list_keys()",
+      "service": "kms",
+      "rationale": "Regular review of encryption settings is necessary to ensure that they are up-to-date and do not have excessive permissions."
+    },
+    {
+      "name": "kinesis_stream_encryption_enabled",
+      "boto3_api": "kinesis.describe_stream()",
+      "service": "kinesis",
+      "rationale": "To ensure data ingestion via Kinesis streams is secure, encryption should be enabled."
+    },
+    {
+      "name": "s3_bucket_encryption_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To ensure data ingestion via S3 buckets is secure, encryption should be enabled."
+    },
+    {
+      "name": "sqs_queue_encryption_enabled",
+      "boto3_api": "sqs.get_queue_attributes()",
+      "service": "sqs",
+      "rationale": "To ensure data ingestion via SQS queues is secure, encryption should be enabled."
+    },
+    {
+      "name": "timestream_database_encryption_check",
+      "boto3_api": "timestream.describe_database()",
+      "service": "timestream",
+      "rationale": "This function is needed to check if the Timestream database is encrypted at rest."
+    },
+    {
+      "name": "timestream_kms_key_management_check",
+      "boto3_api": "kms.describe_key()",
+      "service": "kms",
+      "rationale": "This function is needed to check if the KMS keys used for Timestream database encryption are properly managed."
+    },
+    {
+      "name": "timestream_in_transit_encryption_check",
+      "boto3_api": "timestream.describe_endpoints()",
+      "service": "timestream",
+      "rationale": "This function is needed to check if the Timestream service has in-transit encryption configured."
+    },
+    {
+      "name": "iam_timestream_access_control_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM policies are properly configured to control access to Timestream resources"
+    },
+    {
+      "name": "iam_timestream_authentication_check",
+      "boto3_api": "iam.get_account_authorization_details()",
+      "service": "iam",
+      "rationale": "To ensure that authentication is properly enabled for Timestream resources"
+    },
+    {
+      "name": "timestream_table_fine_grained_access_control_check",
+      "boto3_api": "timestream.describe_table()",
+      "service": "timestream",
+      "rationale": "This function is needed to check if fine-grained access control is enabled on Timestream tables"
+    },
+    {
+      "name": "timestream_row_level_security_check",
+      "boto3_api": "timestream.describe_table()",
+      "service": "timestream",
+      "rationale": "This function is needed to check if row-level security is implemented on Timestream tables"
+    },
+    {
+      "name": "timestream_database_latest_patch_check",
+      "boto3_api": "timestream.describe_endpoints()",
+      "service": "timestream",
+      "rationale": "This function is needed to check if the latest patches and updates are installed for Amazon Timestream"
+    },
+    {
+      "name": "timestream_database_cloudwatch_alarm_enabled",
+      "boto3_api": "timestream.describe_alarms()",
+      "service": "timestream",
+      "rationale": "To ensure that alarms are set up for Timestream databases"
+    },
+    {
+      "name": "timestream_table_cloudwatch_alarm_enabled",
+      "boto3_api": "timestream.describe_alarms()",
+      "service": "timestream",
+      "rationale": "To ensure that alarms are set up for Timestream tables"
+    },
+    {
+      "name": "timestream_security_configuration_review",
+      "boto3_api": "timestream.describe_table()",
+      "service": "timestream",
+      "rationale": "To review and update the security configuration of Amazon Timestream tables"
+    },
+    {
+      "name": "timestream_access_permissions_review",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To review and update the access permissions of Amazon Timestream"
+    },
+    {
+      "name": "timestream_encryption_settings_review",
+      "boto3_api": "kms.describe_key()",
+      "service": "kms",
+      "rationale": "To review and update the encryption settings of Amazon Timestream"
+    },
+    {
+      "name": "iam_user_authentication_check",
+      "boto3_api": "iam.get_account_authorization_details()",
+      "service": "iam",
+      "rationale": "To ensure that only authenticated users have access to the database"
+    },
+    {
+      "name": "iam_role_policy_check",
+      "boto3_api": "iam.list_attached_role_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM roles have the correct policies attached"
+    },
+    {
+      "name": "vpc_network_acl_check",
+      "boto3_api": "ec2.describe_network_acls()",
+      "service": "ec2",
+      "rationale": "To ensure that the network access control lists (ACLs) are properly configured to allow only specific individuals to access the resources."
+    },
+    {
+      "name": "vpc_security_group_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that the security groups associated with the VPC are properly configured to allow only specific individuals to access the resources."
+    },
+    {
+      "name": "vpc_flow_logs_check",
+      "boto3_api": "ec2.describe_flow_logs()",
+      "service": "ec2",
+      "rationale": "To ensure that VPC Flow Logs are enabled for monitoring and logging the activity within the VPC."
+    },
+    {
+      "name": "s3_bucket_encryption_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To ensure that data at rest in S3 buckets is encrypted"
+    },
+    {
+      "name": "rds_instance_storage_encrypted",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure that data at rest in RDS instances is encrypted"
+    },
+    {
+      "name": "redshift_cluster_encryption_enabled",
+      "boto3_api": "redshift.describe_clusters()",
+      "service": "redshift",
+      "rationale": "To ensure that data at rest in Redshift clusters is encrypted"
+    },
+    {
+      "name": "qldb_client_tls_encryption_enabled",
+      "boto3_api": "qldb.describe_ledger()",
+      "service": "qldb",
+      "rationale": "To check if the QLDB client is configured to use TLS for secure communication"
+    },
+    {
+      "name": "qldb_iam_policy_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To check if IAM policies are defined to control which users or roles can perform specific actions on QLDB resources"
+    },
+    {
+      "name": "qldb_cross_service_access_check",
+      "boto3_api": "iam.list_roles()",
+      "service": "iam",
+      "rationale": "To check if IAM roles are leveraged for cross-service access, securely integrating QLDB with other AWS services"
+    },
+    {
+      "name": "qldb_logging_enabled",
+      "boto3_api": "qldb.describe_ledger()",
+      "service": "qldb",
+      "rationale": "To check if QLDB's built-in logging is enabled"
+    },
+    {
+      "name": "qldb_monitor_logs_for_suspicious_activity",
+      "boto3_api": "cloudwatch.describe_alarm_history()",
+      "service": "cloudwatch",
+      "rationale": "To monitor the logs for any suspicious activities or errors"
+    },
+    {
+      "name": "qldb_monitor_logs_for_errors",
+      "boto3_api": "cloudwatch.describe_alarm_history()",
+      "service": "cloudwatch",
+      "rationale": "To monitor the logs for any errors"
+    },
+    {
+      "name": "cloudwatch_alarm_for_qldb",
+      "boto3_api": "cloudwatch.put_metric_alarm()",
+      "service": "cloudwatch",
+      "rationale": "To set up alarms for potential security incidents in QLDB"
+    },
+    {
+      "name": "rds_instance_backup_enabled",
+      "boto3_api": "rds.describe_db_instances()",
+      "service": "rds",
+      "rationale": "To ensure that backup is enabled for all RDS instances"
+    },
+    {
+      "name": "s3_bucket_versioning_enabled",
+      "boto3_api": "s3.get_bucket_versioning()",
+      "service": "s3",
+      "rationale": "To ensure that versioning is enabled for all S3 buckets as a form of backup"
+    },
+    {
+      "name": "ec2_instance_snapshot_exists",
+      "boto3_api": "ec2.describe_snapshots()",
+      "service": "ec2",
+      "rationale": "To ensure that snapshots exist for all EC2 instances as a form of backup"
+    }
+  ]
+}

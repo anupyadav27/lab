@@ -1,0 +1,1848 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-16T23:47:29.007437",
+    "compliance_framework": "CIS_AWS_STORAGE_SERVICES_BENCHMARK_V1.0.0.json",
+    "prowler_database_functions": 1128,
+    "processing_stats": {
+      "total_items": 56,
+      "processed": 55,
+      "skipped_manual": 1,
+      "mapped_complete": 13,
+      "mapped_partial": 17,
+      "mapped_none": 25,
+      "new_functions_suggested": 92
+    }
+  },
+  "mapping_results": [
+    {
+      "compliance_id": "1.1",
+      "title": "AWS Storage Backups",
+      "existing_functions_mapped": [
+        "aurora_automatic_backups_enabled",
+        "aurora_backup_retention_period_configured",
+        "awsbackup_access_credentials_management_check",
+        "awsbackup_alert_communication_check",
+        "awsbackup_disaster_recovery_procedures_check",
+        "awsbackup_service_linked_role_exists",
+        "awsbackup_service_linked_role_permissions_check",
+        "awsbackup_user_awareness_check",
+        "backup_plan_name_specification_check",
+        "backup_plan_template_creation_check",
+        "backup_plans_exist",
+        "backup_recovery_point_encrypted",
+        "backup_reportplans_exist",
+        "backup_rules_definition_check",
+        "backup_vaults_encrypted",
+        "backup_vaults_exist",
+        "backup_window_configured",
+        "disaster_recovery_backup_integrity_verification_check",
+        "disaster_recovery_data_replication_check",
+        "disaster_recovery_failover_execution_check",
+        "disaster_recovery_failover_test_documentation_check",
+        "disaster_recovery_plan_regular_testing_check",
+        "disaster_recovery_plan_regular_update_check",
+        "disaster_recovery_replication_process_monitoring_check",
+        "disaster_recovery_strategy_evaluation_improvement_check",
+        "dlm_ebs_snapshot_lifecycle_policy_exists",
+        "documentdb_cluster_backup_completeness_check",
+        "documentdb_cluster_backup_enabled",
+        "documentdb_cluster_backup_frequency_check",
+        "documentdb_cluster_backup_retention_period",
+        "dynamodb_table_protected_by_backup_plan",
+        "ec2_ebs_volume_protected_by_backup_plan"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover various aspects of AWS Storage Backups including enabling automatic backups, setting up backup retention periods, managing access credentials, alert communication, disaster recovery procedures, service linked roles, user awareness, backup plan creation and specification, existence of backup plans, encryption of recovery points, definition of backup rules, encryption and existence of backup vaults, configuration of backup windows, verification of backup integrity, data replication, failover execution and testing, regular testing and updating of disaster recovery plans, monitoring of replication processes, evaluation and improvement of disaster recovery strategies, existence of EBS snapshot lifecycle policies, completeness, enabling, frequency and retention period of DocumentDB cluster backups, and protection of DynamoDB tables and EC2 EBS volumes by backup plans."
+    },
+    {
+      "compliance_id": "1.2",
+      "title": "Ensure securing AWS Backups",
+      "existing_functions_mapped": [
+        "awsbackup_access_credentials_management_check",
+        "awsbackup_alert_communication_check",
+        "awsbackup_disaster_recovery_procedures_check",
+        "awsbackup_service_linked_role_exists",
+        "awsbackup_service_linked_role_permissions_check",
+        "awsbackup_user_awareness_check",
+        "backup_plan_name_specification_check",
+        "backup_plan_template_creation_check",
+        "backup_plans_exist",
+        "backup_recovery_point_encrypted",
+        "backup_reportplans_exist",
+        "backup_rules_definition_check",
+        "backup_vaults_encrypted",
+        "backup_vaults_exist",
+        "backup_window_configured"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover all the requirements mentioned in the compliance item. These functions ensure the management of access credentials, alert communication, configuration of backup plans, backup recovery capability, inclusion of AWS Backups in disaster recovery procedures, and user awareness of AWS Backups platform usage."
+    },
+    {
+      "compliance_id": "1.3",
+      "title": "Ensure to create backup template and name",
+      "existing_functions_mapped": [
+        "backup_plan_template_creation_check",
+        "backup_plan_name_specification_check",
+        "backup_rules_definition_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'backup_plan_template_creation_check' and 'backup_plan_name_specification_check' cover the requirement of creating a backup plan with a template and a specified name. The function 'backup_rules_definition_check' covers the requirement of defining backup rules according to requirements."
+    },
+    {
+      "compliance_id": "1.4",
+      "title": "Ensure to create AWS IAM Policies",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_policy_creation_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "This function is needed to ensure that IAM policies are being created as per the compliance requirement"
+        },
+        {
+          "name": "iam_policy_permission_check",
+          "boto3_api": "iam.get_policy_version()",
+          "service": "iam",
+          "rationale": "This function is needed to check the permissions specified in the IAM policies"
+        },
+        {
+          "name": "iam_policy_condition_check",
+          "boto3_api": "iam.get_policy_version()",
+          "service": "iam",
+          "rationale": "This function is needed to check the conditions under which permissions are granted in the IAM policies"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check the creation, permissions, and conditions of IAM policies."
+    },
+    {
+      "compliance_id": "1.5",
+      "title": "Ensure to create IAM roles for Backup",
+      "existing_functions_mapped": [
+        "awsbackup_service_linked_role_exists",
+        "awsbackup_service_linked_role_permissions_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'awsbackup_service_linked_role_exists' and 'awsbackup_service_linked_role_permissions_check' cover the compliance requirement of ensuring IAM roles for Backup are created and have the correct permissions."
+    },
+    {
+      "compliance_id": "1.6",
+      "title": "Ensure AWS Backup with Service Linked Roles",
+      "existing_functions_mapped": [
+        "awsbackup_service_linked_role_exists",
+        "awsbackup_service_linked_role_permissions_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'awsbackup_service_linked_role_exists' and 'awsbackup_service_linked_role_permissions_check' provide complete coverage for the compliance requirement of ensuring AWS Backup with Service Linked Roles. The first function checks for the existence of the service linked role, while the second function verifies the permissions of the role."
+    },
+    {
+      "compliance_id": "2.1",
+      "title": "Ensure creating EC2 instance with EBS",
+      "existing_functions_mapped": [
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_volume_creation_check",
+        "ec2_ebs_volume_encryption",
+        "ec2_ebs_volume_encryption_kms_key_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_instance_with_ebs_check",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To ensure that EC2 instances are created with EBS volumes attached"
+        }
+      ],
+      "mapping_notes": "Existing functions cover the encryption and creation of EBS volumes, but there is no function to check if EC2 instances are created with EBS volumes attached. Hence, a new function 'ec2_instance_with_ebs_check' is suggested."
+    },
+    {
+      "compliance_id": "2.2",
+      "title": "Ensure configuring Security Groups",
+      "existing_functions_mapped": [
+        "ec2_default_security_group_no_inbound_rules",
+        "ec2_default_security_group_no_outbound_rules"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_security_group_inbound_rules_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that all inbound rules of security groups are properly configured"
+        },
+        {
+          "name": "ec2_security_group_outbound_rules_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that all outbound rules of security groups are properly configured"
+        }
+      ],
+      "mapping_notes": "Existing functions only check for no inbound and outbound rules in the default security group. New functions are needed to check all security groups and their rules"
+    },
+    {
+      "compliance_id": "2.4",
+      "title": "Ensure the creation of a new volume",
+      "existing_functions_mapped": [
+        "ec2_ebs_volume_creation_check",
+        "ec2_ebs_volume_encryption",
+        "ec2_ebs_volume_encryption_kms_key_check",
+        "ec2_ebs_volume_deletion_on_termination"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover the creation of a new volume, its encryption using AWS KMS, and the setting of 'delete on termination' option to 'no'. Therefore, no new functions are needed."
+    },
+    {
+      "compliance_id": "2.5",
+      "title": "Ensure creating snapshots of EBS volumes",
+      "existing_functions_mapped": [
+        "ec2_ebs_snapshot_creation_check",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_volume_snapshots_exists"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_ebs_snapshot_frequency_check",
+          "boto3_api": "ec2.describe_snapshots()",
+          "service": "ec2",
+          "rationale": "To ensure snapshots are being created at regular intervals"
+        },
+        {
+          "name": "ec2_ebs_snapshot_retention_period_check",
+          "boto3_api": "ec2.describe_snapshots()",
+          "service": "ec2",
+          "rationale": "To ensure snapshots are retained for an adequate period of time"
+        }
+      ],
+      "mapping_notes": "Existing functions cover the creation and encryption of EBS snapshots, but do not ensure they are created at regular intervals or retained for a specific period. New functions are suggested to fill these gaps."
+    },
+    {
+      "compliance_id": "2.6",
+      "title": "Ensure Proper IAM Configuration for EC2 Instances",
+      "existing_functions_mapped": [
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "awslambda_function_no_admin_privileges",
+        "autoscaling_find_secrets_ec2_launch_configuration",
+        "autoscaling_group_using_ec2_launch_template",
+        "ec2_ami_approved_check",
+        "ec2_ami_encryption_check",
+        "ec2_ami_kernel_compatibility_check",
+        "ec2_ami_kernel_downgrade_prerequisites_check",
+        "ec2_ami_naming_convention_check",
+        "ec2_ami_older_than_90_days",
+        "ec2_ami_os_updates_check",
+        "ec2_ami_public",
+        "ec2_autoscaling_group_propagate_tags_check",
+        "ec2_client_vpn_endpoint_connection_logging_enabled",
+        "ec2_default_ip_access_control_group_disassociated",
+        "ec2_default_security_group_no_inbound_rules",
+        "ec2_default_security_group_no_outbound_rules",
+        "ec2_deployment_configuration_check",
+        "ec2_ebs_default_encryption",
+        "ec2_ebs_public_snapshot",
+        "ec2_ebs_snapshot_account_block_public_access",
+        "ec2_ebs_snapshot_creation_check",
+        "ec2_ebs_snapshots_encrypted",
+        "ec2_ebs_unused_volumes_check",
+        "ec2_ebs_volume_creation_check",
+        "ec2_ebs_volume_deletion_on_termination",
+        "ec2_ebs_volume_encryption",
+        "ec2_ebs_volume_encryption_kms_key_check",
+        "ec2_ebs_volume_protected_by_backup_plan",
+        "ec2_ebs_volume_snapshots_exists"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_iam_role_configuration_check",
+          "boto3_api": "ec2.describe_iam_instance_profile_associations()",
+          "service": "ec2",
+          "rationale": "To ensure that IAM roles are properly configured for EC2 instances"
+        },
+        {
+          "name": "ec2_iam_policy_least_privilege_check",
+          "boto3_api": "iam.list_attached_role_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM policies attached to EC2 instances follow the principle of least privilege"
+        }
+      ],
+      "mapping_notes": "Existing functions provide partial coverage for this compliance item. They cover various aspects of EC2 and IAM configuration, but there are gaps in checking the IAM role configuration for EC2 instances and ensuring that IAM policies follow the principle of least privilege. New functions are suggested to fill these gaps."
+    },
+    {
+      "compliance_id": "2.7",
+      "title": "Ensure creating IAM User",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_user_creation_check",
+          "boto3_api": "iam.list_users()",
+          "service": "iam",
+          "rationale": "This function is needed to ensure that IAM users are being created as per the compliance requirement"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the creation of IAM users. A new function 'iam_user_creation_check' is suggested which uses the 'iam.list_users()' boto3 API to check for the existence of IAM users."
+    },
+    {
+      "compliance_id": "2.8",
+      "title": "Ensure the Creation of IAM Groups",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_list_groups_check",
+          "boto3_api": "iam.list_groups()",
+          "service": "iam",
+          "rationale": "This function is needed to ensure that IAM groups are created and exist within the AWS environment"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring the creation of IAM groups. A new function, 'iam_list_groups_check', is suggested to fulfill this requirement."
+    },
+    {
+      "compliance_id": "2.9",
+      "title": "Ensure Granular Policy Creation",
+      "existing_functions_mapped": [
+        "awslambda_function_least_privilege_policy_check",
+        "aurora_iam_least_privilege_policy_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_policy_granularity_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM policies are granular and meticulously tailored to AWS resources"
+        },
+        {
+          "name": "s3_bucket_policy_granularity_check",
+          "boto3_api": "s3.get_bucket_policy()",
+          "service": "s3",
+          "rationale": "To ensure that S3 bucket policies are granular and meticulously tailored to AWS resources"
+        }
+      ],
+      "mapping_notes": "Existing functions only cover granular policy checks for AWS Lambda and Aurora. New functions are suggested to cover IAM and S3, which are commonly used services that require granular access control."
+    },
+    {
+      "compliance_id": "2.10",
+      "title": "Ensure Resource Access via Tag-based Policies",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_policy_tag_based_access_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To check if IAM policies are configured to grant access based on specific tags"
+        },
+        {
+          "name": "ec2_resource_tag_based_access_check",
+          "boto3_api": "ec2.describe_tags()",
+          "service": "ec2",
+          "rationale": "To check if EC2 resources have specific tags that are used in IAM policies for access control"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check if IAM policies are configured to grant access based on specific tags and if EC2 resources have these specific tags."
+    },
+    {
+      "compliance_id": "2.11",
+      "title": "Ensure Secure Password Policy Implementation",
+      "existing_functions_mapped": [
+        "cognito_user_pool_password_policy_lowercase",
+        "cognito_user_pool_password_policy_minimum_length_14",
+        "cognito_user_pool_password_policy_number",
+        "cognito_user_pool_password_policy_symbol",
+        "cognito_user_pool_password_policy_uppercase"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "iam_password_policy_check",
+          "boto3_api": "iam.get_account_password_policy()",
+          "service": "iam",
+          "rationale": "To ensure that the password policy is implemented securely across all IAM users in the account"
+        }
+      ],
+      "mapping_notes": "Existing functions related to Cognito User Pool password policies were mapped. However, a function to check IAM password policies was missing, hence a new function is suggested."
+    },
+    {
+      "compliance_id": "2.12",
+      "title": "Ensure Monitoring EC2 and EBS with CloudWatch",
+      "existing_functions_mapped": [
+        "cloudwatch_ec2_ebs_activity_monitoring_check",
+        "cloudwatch_ec2_ebs_alarm_configuration_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'cloudwatch_ec2_ebs_activity_monitoring_check' and 'cloudwatch_ec2_ebs_alarm_configuration_check' provide complete coverage for the compliance requirement of monitoring EC2 and EBS with CloudWatch."
+    },
+    {
+      "compliance_id": "2.13",
+      "title": "Ensure creating an SNS subscription",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "sns_create_subscription_check",
+          "boto3_api": "sns.list_subscriptions()",
+          "service": "sns",
+          "rationale": "This function is needed to check if an SNS subscription has been created for the system administrator's email address"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'sns_create_subscription_check' is suggested to check if an SNS subscription has been created."
+    },
+    {
+      "compliance_id": "3.1",
+      "title": "EFS",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_file_system_encryption_check",
+          "boto3_api": "efs.describe_file_systems()",
+          "service": "efs",
+          "rationale": "To ensure that all EFS file systems are encrypted at rest"
+        },
+        {
+          "name": "efs_file_system_access_logging_enabled",
+          "boto3_api": "efs.describe_file_systems()",
+          "service": "efs",
+          "rationale": "To ensure that access logging is enabled for all EFS file systems"
+        },
+        {
+          "name": "efs_file_system_backup_enabled",
+          "boto3_api": "efs.describe_file_systems()",
+          "service": "efs",
+          "rationale": "To ensure that backup is enabled for all EFS file systems"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to ensure encryption, access logging, and backup for EFS file systems."
+    },
+    {
+      "compliance_id": "3.2",
+      "title": "Ensure Implementation of EFS",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_file_systems_exist",
+          "boto3_api": "efs.describe_file_systems()",
+          "service": "efs",
+          "rationale": "To ensure the implementation of EFS, we need to check if any EFS file systems exist."
+        },
+        {
+          "name": "efs_file_systems_encrypted",
+          "boto3_api": "efs.describe_file_systems()",
+          "service": "efs",
+          "rationale": "To ensure the security of EFS, we need to check if all EFS file systems are encrypted."
+        },
+        {
+          "name": "efs_file_systems_backup_enabled",
+          "boto3_api": "backup.describe_backup_jobs()",
+          "service": "backup",
+          "rationale": "To ensure the durability of EFS, we need to check if backups are enabled for all EFS file systems."
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check the existence, encryption, and backup of EFS file systems."
+    },
+    {
+      "compliance_id": "3.3",
+      "title": "Ensure EFS and VPC Integration",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_vpc_integration_check",
+          "boto3_api": "efs.describe_mount_targets()",
+          "service": "efs",
+          "rationale": "This function is needed to check if the EFS is integrated with a VPC"
+        },
+        {
+          "name": "efs_high_availability_check",
+          "boto3_api": "efs.describe_mount_targets()",
+          "service": "efs",
+          "rationale": "This function is needed to check if the EFS is available across multiple availability zones"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check the integration of EFS with VPC and its high availability across multiple availability zones."
+    },
+    {
+      "compliance_id": "3.4",
+      "title": "Ensure controlling Network access to EFS Services",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_security_group_configuration_check",
+          "boto3_api": "efs.describe_mount_target_security_groups()",
+          "service": "efs",
+          "rationale": "To check the security group configuration for EFS mount targets"
+        },
+        {
+          "name": "efs_network_acl_configuration_check",
+          "boto3_api": "ec2.describe_network_acls()",
+          "service": "ec2",
+          "rationale": "To check the network ACL configuration for the VPC associated with EFS"
+        },
+        {
+          "name": "efs_iam_policy_check",
+          "boto3_api": "iam.get_policy()",
+          "service": "iam",
+          "rationale": "To check the IAM policies associated with EFS"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check the security group and network ACL configurations for EFS, as well as the associated IAM policies."
+    },
+    {
+      "compliance_id": "3.5",
+      "title": "Ensure using Security Groups for VPC",
+      "existing_functions_mapped": [
+        "ec2_default_security_group_no_inbound_rules",
+        "ec2_default_security_group_no_outbound_rules"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_security_group_association_check",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "To ensure that all EC2 instances are associated with a security group"
+        },
+        {
+          "name": "ec2_security_group_rules_check",
+          "boto3_api": "ec2.describe_security_group_rules()",
+          "service": "ec2",
+          "rationale": "To ensure that the security group rules are properly configured for inbound and outbound traffic"
+        }
+      ],
+      "mapping_notes": "Existing functions only check for the absence of rules in the default security group. New functions are needed to ensure all instances are associated with a security group and that the security group rules are properly configured."
+    },
+    {
+      "compliance_id": "3.6",
+      "title": "Ensure Secure Ports",
+      "existing_functions_mapped": [
+        "ec2_default_security_group_no_inbound_rules",
+        "ec2_default_security_group_no_outbound_rules",
+        "ebs_secure_ports_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "s3_secure_ports_check",
+          "boto3_api": "s3.get_bucket_acl()",
+          "service": "s3",
+          "rationale": "To ensure secure ports for S3 service"
+        },
+        {
+          "name": "efs_secure_ports_check",
+          "boto3_api": "efs.describe_mount_target_security_groups()",
+          "service": "efs",
+          "rationale": "To ensure secure ports for EFS service"
+        }
+      ],
+      "mapping_notes": "Existing functions cover EC2 and EBS services. New functions are suggested to cover S3 and EFS services."
+    },
+    {
+      "compliance_id": "3.7",
+      "title": "Ensure File-Level Access Control with Mount Targets",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_mount_target_access_control_check",
+          "boto3_api": "efs.describe_mount_target_security_groups()",
+          "service": "efs",
+          "rationale": "This function is needed to ensure that the security groups associated with the EFS mount targets are properly configured to control file-level access."
+        },
+        {
+          "name": "efs_mount_target_availability_zone_check",
+          "boto3_api": "efs.describe_mount_targets()",
+          "service": "efs",
+          "rationale": "This function is needed to ensure that mount targets are provisioned in each availability zone associated with the VPC for high availability and redundancy."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring file-level access control with mount targets. Therefore, two new functions are suggested to cover this requirement."
+    },
+    {
+      "compliance_id": "3.8",
+      "title": "Ensure managing mount target security groups",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_mount_target_security_group_management_check",
+          "boto3_api": "efs.describe_mount_target_security_groups()",
+          "service": "efs",
+          "rationale": "This function is needed to ensure that security groups for mount targets are being managed properly, which is essential for controlling access to Amazon EFS file systems."
+        },
+        {
+          "name": "efs_mount_target_security_group_rules_review",
+          "boto3_api": "ec2.describe_security_groups()",
+          "service": "ec2",
+          "rationale": "This function is needed to regularly review and update security group rules for mount targets, maintaining strict access control and protecting data from unauthorized access and potential breaches."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly address the management of mount target security groups for Amazon EFS file systems. Therefore, new functions are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.9",
+      "title": "Ensure using VPC endpoints - EFS",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_vpc_endpoints_check",
+          "boto3_api": "ec2.describe_vpc_endpoints()",
+          "service": "ec2",
+          "rationale": "This function is needed to check if VPC endpoints are being used for EFS."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring the use of VPC endpoints for EFS. A new function 'efs_vpc_endpoints_check' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.10",
+      "title": "Ensure managing AWS EFS access points",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "efs_access_points_configuration_check",
+          "boto3_api": "efs.describe_access_points()",
+          "service": "efs",
+          "rationale": "This function is needed to ensure that EFS access points are properly configured for secure and efficient access."
+        },
+        {
+          "name": "efs_access_points_permission_check",
+          "boto3_api": "efs.describe_access_points()",
+          "service": "efs",
+          "rationale": "This function is needed to check and manage which users have access to specific resources in the EFS environment."
+        }
+      ],
+      "mapping_notes": "No existing functions in the provided list directly relate to the management of AWS EFS access points. Therefore, new functions are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.11",
+      "title": "Ensure accessing Points and IAM Policies",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_policy_efs_access_point_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To check if IAM policies are controlling access to EFS access points"
+        },
+        {
+          "name": "efs_access_point_arn_check",
+          "boto3_api": "efs.describe_access_points()",
+          "service": "efs",
+          "rationale": "To check if the AccessPointArn is being used for the file system mount"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check IAM policies for EFS access point control and to verify the use of AccessPointArn for file system mounts."
+    },
+    {
+      "compliance_id": "3.12",
+      "title": "Ensure configuring IAM for AWS Elastic Disaster Recovery",
+      "existing_functions_mapped": [
+        "aws_edr_api_endpoints_check",
+        "aws_edr_replication_agent_check",
+        "aws_edr_subnet_check",
+        "aws_edr_tcp_port_check",
+        "awsbackup_disaster_recovery_procedures_check",
+        "disaster_recovery_data_replication_check",
+        "disaster_recovery_failover_execution_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "aws_edr_iam_permissions_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To ensure IAM permissions are correctly configured for AWS Elastic Disaster Recovery"
+        },
+        {
+          "name": "aws_edr_iam_users_check",
+          "boto3_api": "iam.list_users()",
+          "service": "iam",
+          "rationale": "To ensure IAM users are correctly configured for AWS Elastic Disaster Recovery"
+        }
+      ],
+      "mapping_notes": "Existing functions provide checks for AWS Elastic Disaster Recovery (EDR) endpoints, replication agent, subnet, and TCP port, as well as general disaster recovery procedures and data replication. However, there are no specific functions for checking IAM permissions and users for EDR, hence the need for new functions."
+    },
+    {
+      "compliance_id": "4.1",
+      "title": "FSX (AWS Elastic File Cache)",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "fsx_file_cache_encryption_enabled",
+          "boto3_api": "fsx.describe_file_systems()",
+          "service": "fsx",
+          "rationale": "To ensure that data at rest is encrypted in FSx file cache"
+        },
+        {
+          "name": "fsx_file_cache_in_transit_encryption_enabled",
+          "boto3_api": "fsx.describe_file_systems()",
+          "service": "fsx",
+          "rationale": "To ensure that data in transit is encrypted in FSx file cache"
+        },
+        {
+          "name": "fsx_file_cache_backup_enabled",
+          "boto3_api": "fsx.describe_backups()",
+          "service": "fsx",
+          "rationale": "To ensure that backups are enabled for FSx file cache"
+        },
+        {
+          "name": "fsx_file_cache_audit_logging_enabled",
+          "boto3_api": "fsx.describe_file_systems()",
+          "service": "fsx",
+          "rationale": "To ensure that audit logging is enabled for FSx file cache"
+        },
+        {
+          "name": "fsx_file_cache_access_control_check",
+          "boto3_api": "fsx.describe_file_systems()",
+          "service": "fsx",
+          "rationale": "To ensure that access control policies are properly configured for FSx file cache"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to cover the security aspects of FSx file cache such as encryption, backup, audit logging, and access control."
+    },
+    {
+      "compliance_id": "4.2",
+      "title": "Amazon Elastic File Cache",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "elastic_file_cache_region_availability_check",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "To check the availability of Amazon Elastic File Cache in the specified regions"
+        },
+        {
+          "name": "fsx_compatible_os_check",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To ensure the operating system of the compute instance is compatible with AWS FSx"
+        },
+        {
+          "name": "fsx_lustre_client_installation_check",
+          "boto3_api": "ssm.describe_instance_information()",
+          "service": "ssm",
+          "rationale": "To verify if the Lustre client is installed on the systems for the FSx service to work"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to the compliance item. New functions are suggested to check the availability of Amazon Elastic File Cache in the specified regions, to ensure the operating system of the compute instance is compatible with AWS FSx, and to verify if the Lustre client is installed on the systems for the FSx service to work."
+    },
+    {
+      "compliance_id": "4.3",
+      "title": "Ensure the creation of an FSX Bucket",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_exists_for_fsx",
+          "boto3_api": "s3.head_bucket()",
+          "service": "s3",
+          "rationale": "To check if the S3 bucket exists for FSX data storage"
+        },
+        {
+          "name": "fsx_s3_bucket_access_check",
+          "boto3_api": "fsx.describe_file_systems()",
+          "service": "fsx",
+          "rationale": "To check if FSX has access to the specified S3 bucket"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. New functions are suggested to check the existence of the S3 bucket and to verify FSX's access to it."
+    },
+    {
+      "compliance_id": "4.4",
+      "title": "Ensure the creation of Elastic File Cache",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "elasticache_cluster_creation_check",
+          "boto3_api": "elasticache.describe_cache_clusters()",
+          "service": "elasticache",
+          "rationale": "This function is needed to ensure that an Elastic File Cache has been created."
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy this compliance requirement. A new function 'elasticache_cluster_creation_check' is suggested to check if an Elastic File Cache has been created."
+    },
+    {
+      "compliance_id": "4.5",
+      "title": "Ensure installation and configuration of Lustre Client",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "ec2_instance_lustre_client_installed",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To check if the Lustre Client is installed on the EC2 instance"
+        },
+        {
+          "name": "ec2_instance_lustre_client_configured",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To check if the Lustre Client is properly configured on the EC2 instance"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. New functions are suggested to check the installation and configuration of Lustre Client on EC2 instances."
+    },
+    {
+      "compliance_id": "4.6",
+      "title": "Ensure EC2 Kernel compatibility with Lustre",
+      "existing_functions_mapped": [
+        "ec2_ami_kernel_compatibility_check",
+        "ec2_ami_kernel_downgrade_prerequisites_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'ec2_ami_kernel_compatibility_check' and 'ec2_ami_kernel_downgrade_prerequisites_check' cover the requirements of this compliance item. The first function checks for kernel compatibility with Lustre, while the second function checks for the prerequisites needed to downgrade the kernel."
+    },
+    {
+      "compliance_id": "4.7",
+      "title": "Ensure mounting FSx cache",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "fsx_cache_mount_check",
+          "boto3_api": "fsx.describe_file_systems()",
+          "service": "fsx",
+          "rationale": "This function is needed to check if the FSx cache is properly mounted to the compute instances"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the FSx cache mounting process. A new function 'fsx_cache_mount_check' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "4.8",
+      "title": "Ensure exporting cache to S3",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_cache_export_check",
+          "boto3_api": "s3.list_objects_v2()",
+          "service": "s3",
+          "rationale": "This function is needed to ensure that cache files are being exported to the specified S3 bucket"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring cache export to S3. A new function is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "4.9",
+      "title": "Ensure cleaning up FSx Resources",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "fsx_unused_file_systems_check",
+          "boto3_api": "fsx.describe_file_systems()",
+          "service": "fsx",
+          "rationale": "To identify unused or unnecessary FSx file systems that can be removed to optimize costs and maintain a secure cloud environment"
+        },
+        {
+          "name": "fsx_redundant_snapshots_check",
+          "boto3_api": "fsx.describe_backups()",
+          "service": "fsx",
+          "rationale": "To identify redundant FSx snapshots that can be deleted to optimize costs and maintain a secure cloud environment"
+        },
+        {
+          "name": "fsx_unused_mount_targets_check",
+          "boto3_api": "fsx.describe_mount_targets()",
+          "service": "fsx",
+          "rationale": "To identify unused FSx mount targets that can be deleted to optimize costs and maintain a secure cloud environment"
+        },
+        {
+          "name": "fsx_data_backup_or_migration_check",
+          "boto3_api": "fsx.describe_data_repository_tasks()",
+          "service": "fsx",
+          "rationale": "To ensure all data is backed up or migrated before deleting FSx resources"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the cleanup of FSx resources. New functions are suggested to cover the requirements of this compliance item."
+    },
+    {
+      "compliance_id": "5.1",
+      "title": "Amazon Simple Storage Service",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_encryption_enabled",
+          "boto3_api": "s3.get_bucket_encryption()",
+          "service": "s3",
+          "rationale": "To ensure that all data stored in S3 is encrypted at rest"
+        },
+        {
+          "name": "s3_bucket_versioning_enabled",
+          "boto3_api": "s3.get_bucket_versioning()",
+          "service": "s3",
+          "rationale": "To ensure that all versions of an object are stored in the bucket"
+        },
+        {
+          "name": "s3_bucket_public_access_block",
+          "boto3_api": "s3.get_public_access_block()",
+          "service": "s3",
+          "rationale": "To ensure that public access to the S3 bucket is blocked"
+        },
+        {
+          "name": "s3_bucket_logging_enabled",
+          "boto3_api": "s3.get_bucket_logging()",
+          "service": "s3",
+          "rationale": "To ensure that bucket logging is enabled for auditing and monitoring purposes"
+        },
+        {
+          "name": "s3_bucket_lifecycle_configuration_check",
+          "boto3_api": "s3.get_bucket_lifecycle_configuration()",
+          "service": "s3",
+          "rationale": "To ensure that lifecycle management is configured for objects in the bucket"
+        }
+      ],
+      "mapping_notes": "No existing functions were found that could satisfy the compliance requirement for Amazon Simple Storage Service (Amazon S3). New functions are suggested to ensure encryption, versioning, public access blocking, logging, and lifecycle configuration for S3 buckets."
+    },
+    {
+      "compliance_id": "5.2",
+      "title": "Ensure direct data addition to S3",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_unique_check",
+          "boto3_api": "s3.head_bucket()",
+          "service": "s3",
+          "rationale": "To ensure the bucket name is unique and not already in use on AWS"
+        },
+        {
+          "name": "s3_bucket_direct_upload_check",
+          "boto3_api": "s3.put_object()",
+          "service": "s3",
+          "rationale": "To ensure data can be directly uploaded to the S3 bucket"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring direct data addition to S3. New functions are suggested to check for unique bucket names and the ability to directly upload data to the S3 bucket."
+    },
+    {
+      "compliance_id": "5.3",
+      "title": "Ensure Storage Classes are Configured",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "s3_bucket_storage_class_configured",
+          "boto3_api": "s3.get_bucket_lifecycle_configuration()",
+          "service": "s3",
+          "rationale": "This function is needed to check if the storage classes for S3 buckets are properly configured according to the data access patterns and retention needs."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring storage classes are configured. A new function 's3_bucket_storage_class_configured' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "6.1",
+      "title": "Ensure Elastic Disaster Recovery is Configured",
+      "existing_functions_mapped": [
+        "awsbackup_disaster_recovery_procedures_check",
+        "disaster_recovery_backup_integrity_verification_check",
+        "disaster_recovery_data_replication_check",
+        "disaster_recovery_failover_execution_check",
+        "disaster_recovery_failover_test_documentation_check",
+        "disaster_recovery_plan_regular_testing_check",
+        "disaster_recovery_plan_regular_update_check",
+        "disaster_recovery_replication_process_monitoring_check",
+        "disaster_recovery_strategy_evaluation_improvement_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover all aspects of the compliance requirement, including disaster recovery procedures, backup integrity verification, data replication, failover execution, failover test documentation, regular testing and updating of the disaster recovery plan, replication process monitoring, and strategy evaluation and improvement."
+    },
+    {
+      "compliance_id": "6.2",
+      "title": "Ensure AWS Disaster Recovery Configuration",
+      "existing_functions_mapped": [
+        "aws_edr_api_endpoints_check",
+        "aws_edr_replication_agent_check",
+        "aws_edr_subnet_check",
+        "aws_edr_tcp_port_check",
+        "disaster_recovery_backup_integrity_verification_check",
+        "disaster_recovery_data_replication_check",
+        "disaster_recovery_failover_execution_check",
+        "disaster_recovery_failover_test_documentation_check",
+        "disaster_recovery_plan_regular_testing_check",
+        "disaster_recovery_plan_regular_update_check",
+        "disaster_recovery_replication_process_monitoring_check",
+        "disaster_recovery_strategy_evaluation_improvement_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "edr_replication_agent_connection_check",
+          "boto3_api": "ec2.describe_network_interfaces()",
+          "service": "ec2",
+          "rationale": "To ensure the replication agent is properly connected to AWS replication servers over TCP port 1500"
+        },
+        {
+          "name": "edr_staging_area_connectivity_check",
+          "boto3_api": "ec2.describe_network_interfaces()",
+          "service": "ec2",
+          "rationale": "To ensure the staging area on AWS is connected to EDR over TCP port 443"
+        },
+        {
+          "name": "edr_s3_connectivity_check",
+          "boto3_api": "s3.get_bucket_acl()",
+          "service": "s3",
+          "rationale": "To ensure connection to S3 over TCP 443 is allowed"
+        },
+        {
+          "name": "edr_ec2_api_endpoint_connectivity_check",
+          "boto3_api": "ec2.describe_vpc_endpoints()",
+          "service": "ec2",
+          "rationale": "To ensure connectivity to EC2 over TCP 443 to connect to API Endpoint"
+        }
+      ],
+      "mapping_notes": "Existing functions provide partial coverage for the compliance item. They cover the checks for EDR endpoints, replication agents, subnets, and TCP ports, as well as various aspects of disaster recovery. However, they do not cover the specific connectivity checks between the local network, staging area, S3, and EC2 API Endpoint. Therefore, new functions are suggested to fill these gaps."
+    },
+    {
+      "compliance_id": "6.3",
+      "title": "Ensure functionality of Endpoint Detection and Response (EDR)",
+      "existing_functions_mapped": [
+        "aws_edr_api_endpoints_check",
+        "aws_edr_replication_agent_check",
+        "aws_edr_subnet_check",
+        "aws_edr_tcp_port_check",
+        "cloudwatch_edr_metrics_anomaly_detection",
+        "cloudwatch_edr_metrics_monitoring_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "edr_software_deployment_check",
+          "boto3_api": "ssm.describe_instance_information()",
+          "service": "ssm",
+          "rationale": "To check if EDR software is deployed on all instances"
+        },
+        {
+          "name": "edr_software_update_check",
+          "boto3_api": "ssm.get_patch_baseline()",
+          "service": "ssm",
+          "rationale": "To ensure EDR software is regularly updated"
+        },
+        {
+          "name": "edr_alerts_and_reports_check",
+          "boto3_api": "cloudwatch.describe_alarms()",
+          "service": "cloudwatch",
+          "rationale": "To ensure EDR system provides real-time alerts and detailed incident reports"
+        }
+      ],
+      "mapping_notes": "Existing functions provide partial coverage, mainly focusing on the network aspects of EDR. New functions are suggested to cover software deployment, updates, and alerting/reporting aspects of EDR."
+    },
+    {
+      "compliance_id": "6.4",
+      "title": "Ensure configuration of replication settings",
+      "existing_functions_mapped": [
+        "disaster_recovery_data_replication_check",
+        "dms_replication_agent_configuration_check",
+        "dms_replication_agent_installation_check",
+        "dms_replication_agent_integration_check",
+        "dms_replication_agent_performance_check",
+        "dms_replication_agent_update_check",
+        "dms_replication_task_bandwidth_limit_check",
+        "dms_replication_task_schedule_check",
+        "dms_replication_task_source_logging_enabled",
+        "dms_replication_task_source_target_location_check",
+        "dms_replication_task_target_logging_enabled",
+        "documentdb_cluster_cross_region_replication_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "dms_replication_settings_regular_review",
+          "boto3_api": "dms.describe_replication_tasks()",
+          "service": "dms",
+          "rationale": "To ensure regular review and update of replication settings to accommodate changes in data volume and network conditions"
+        },
+        {
+          "name": "dms_replication_bandwidth_limits_check",
+          "boto3_api": "dms.describe_replication_tasks()",
+          "service": "dms",
+          "rationale": "To check if bandwidth limits are set to optimize performance during replication processes"
+        }
+      ],
+      "mapping_notes": "Existing functions provide partial coverage for the compliance item. They cover the setup and maintenance of replication settings, including specifying source and target locations, defining replication schedules, and setting bandwidth limits. However, there are no functions for regular review and update of these settings, and for checking bandwidth limits. Therefore, new functions are suggested to fill these gaps."
+    },
+    {
+      "compliance_id": "6.5",
+      "title": "Ensure proper IAM configuration for AWS Elastic Disaster Recovery",
+      "existing_functions_mapped": [
+        "aws_edr_api_endpoints_check",
+        "aws_edr_replication_agent_check",
+        "aws_edr_subnet_check",
+        "aws_edr_tcp_port_check",
+        "awsbackup_service_linked_role_exists",
+        "awsbackup_service_linked_role_permissions_check",
+        "awslambda_function_iam_role_check",
+        "awslambda_function_least_privilege_policy_check",
+        "cloudtrail_security_group_changes_logging_enabled",
+        "cloudtrail_vpc_changes_logging_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "aws_edr_iam_least_privilege_policy_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM policies for AWS Elastic Disaster Recovery follow the principle of least privilege"
+        },
+        {
+          "name": "aws_edr_iam_mfa_enforced_check",
+          "boto3_api": "iam.get_account_summary()",
+          "service": "iam",
+          "rationale": "To ensure that MFA is enforced for AWS Elastic Disaster Recovery"
+        },
+        {
+          "name": "aws_edr_iam_role_for_automated_process_check",
+          "boto3_api": "iam.list_roles()",
+          "service": "iam",
+          "rationale": "To ensure that roles for automated processes are created for AWS Elastic Disaster Recovery"
+        },
+        {
+          "name": "aws_edr_iam_policy_regular_review_check",
+          "boto3_api": "iam.list_policies()",
+          "service": "iam",
+          "rationale": "To ensure that IAM policies for AWS Elastic Disaster Recovery are regularly reviewed and updated"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their relevance to IAM configuration and AWS Elastic Disaster Recovery. New functions are suggested to cover the gaps in IAM policy review, MFA enforcement, least privilege policy, and roles for automated processes."
+    },
+    {
+      "compliance_id": "6.6",
+      "title": "Ensure installation of the AWS Replication Agent",
+      "existing_functions_mapped": [
+        "aws_edr_replication_agent_check",
+        "dms_replication_agent_configuration_check",
+        "dms_replication_agent_installation_check",
+        "dms_replication_agent_integration_check",
+        "dms_replication_agent_performance_check",
+        "dms_replication_agent_update_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover all aspects of the compliance requirement, including checking the installation, configuration, integration, performance, and updates of the AWS Replication Agent."
+    },
+    {
+      "compliance_id": "6.7",
+      "title": "Ensure proper configuration of the Launch Settings",
+      "existing_functions_mapped": [
+        "autoscaling_find_secrets_ec2_launch_configuration",
+        "autoscaling_group_launch_configuration_no_public_ip",
+        "autoscaling_group_launch_configuration_requires_imdsv2",
+        "autoscaling_group_using_ec2_launch_template"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ec2_launch_settings_security_configuration_check",
+          "boto3_api": "ec2.describe_launch_template_versions()",
+          "service": "ec2",
+          "rationale": "To ensure that the security settings of the EC2 launch configurations are properly set up and prevent unauthorized changes."
+        },
+        {
+          "name": "ec2_launch_settings_resource_specification_check",
+          "boto3_api": "ec2.describe_launch_template_versions()",
+          "service": "ec2",
+          "rationale": "To verify that the required resources are correctly specified in the EC2 launch configurations."
+        },
+        {
+          "name": "ec2_launch_settings_regular_review",
+          "boto3_api": "ec2.describe_launch_template_versions()",
+          "service": "ec2",
+          "rationale": "To ensure regular review and update of the EC2 launch settings to align with best practices and organizational requirements."
+        }
+      ],
+      "mapping_notes": "The existing functions provide partial coverage as they only check for secrets in EC2 launch configurations, public IP assignment, IMDSv2 requirement, and usage of EC2 launch templates. New functions are suggested to cover the aspects of security settings, resource specification, and regular review of the EC2 launch settings."
+    },
+    {
+      "compliance_id": "6.8",
+      "title": "Ensure execution of a recovery drill",
+      "existing_functions_mapped": [
+        "awsbackup_disaster_recovery_procedures_check",
+        "disaster_recovery_failover_execution_check",
+        "disaster_recovery_plan_regular_testing_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "aws_elastic_recovery_instance_drill_execution_check",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To check if the recovery drill was executed on the AWS Elastic Recovery Instance"
+        }
+      ],
+      "mapping_notes": "The existing functions cover the disaster recovery procedures check, failover execution check, and regular testing check. However, there is no specific function to ensure the execution of a recovery drill on the AWS Elastic Recovery Instance. Hence, a new function is suggested."
+    },
+    {
+      "compliance_id": "6.9",
+      "title": "Ensure Continuous Disaster Recovery Operations",
+      "existing_functions_mapped": [
+        "awsbackup_disaster_recovery_procedures_check",
+        "disaster_recovery_backup_integrity_verification_check",
+        "disaster_recovery_data_replication_check",
+        "disaster_recovery_failover_execution_check",
+        "disaster_recovery_failover_test_documentation_check",
+        "disaster_recovery_plan_regular_testing_check",
+        "disaster_recovery_plan_regular_update_check",
+        "disaster_recovery_replication_process_monitoring_check",
+        "disaster_recovery_strategy_evaluation_improvement_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover all aspects of the compliance requirement including disaster recovery procedures, backup integrity verification, data replication, failover execution, failover test documentation, regular testing and updating of the disaster recovery plan, monitoring of the replication process, and evaluation and improvement of the disaster recovery strategy."
+    },
+    {
+      "compliance_id": "6.10",
+      "title": "Ensure execution of a Disaster Recovery Failover",
+      "existing_functions_mapped": [
+        "awsbackup_disaster_recovery_procedures_check",
+        "disaster_recovery_failover_execution_check",
+        "disaster_recovery_failover_test_documentation_check",
+        "disaster_recovery_plan_regular_testing_check",
+        "disaster_recovery_plan_regular_update_check",
+        "disaster_recovery_replication_process_monitoring_check",
+        "disaster_recovery_strategy_evaluation_improvement_check",
+        "disaster_recovery_data_replication_check",
+        "disaster_recovery_backup_integrity_verification_check"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover all aspects of the compliance requirement including disaster recovery procedures, failover execution, testing, documentation, regular updates, monitoring of replication process, strategy evaluation and improvement, data replication, and backup integrity verification."
+    },
+    {
+      "compliance_id": "6.11",
+      "title": "Ensure execution of a failback",
+      "existing_functions_mapped": [
+        "disaster_recovery_failover_execution_check",
+        "disaster_recovery_data_replication_check",
+        "disaster_recovery_backup_integrity_verification_check"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "disaster_recovery_failback_execution_check",
+          "boto3_api": "ec2.describe_instances()",
+          "service": "ec2",
+          "rationale": "To ensure that the failback process is executed correctly, a new function is needed to check the state of the primary system after failback."
+        },
+        {
+          "name": "disaster_recovery_failback_data_integrity_check",
+          "boto3_api": "s3.list_objects_v2()",
+          "service": "s3",
+          "rationale": "To ensure that all updated data and configurations are transferred back correctly during the failback process, a new function is needed to check the integrity of the data after failback."
+        }
+      ],
+      "mapping_notes": "Existing functions related to disaster recovery and failover execution were mapped. However, specific functions to check the execution and data integrity of the failback process were not found, hence the need for new functions."
+    },
+    {
+      "compliance_id": "6.12",
+      "title": "Ensure CloudWatch Metrics for AWS EDR",
+      "existing_functions_mapped": [
+        "cloudwatch_edr_metrics_anomaly_detection",
+        "cloudwatch_edr_metrics_monitoring_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "cloudwatch_edr_metrics_detailed_logging_enabled",
+          "boto3_api": "cloudwatch.describe_alarms()",
+          "service": "cloudwatch",
+          "rationale": "To ensure detailed logs and metrics on EDR activities are being collected"
+        },
+        {
+          "name": "cloudwatch_edr_metrics_regular_review",
+          "boto3_api": "cloudwatch.get_metric_statistics()",
+          "service": "cloudwatch",
+          "rationale": "To ensure regular review of these metrics to identify trends, anomalies, and potential security issues"
+        }
+      ],
+      "mapping_notes": "Existing functions partially cover the compliance requirement of setting up and monitoring AWS CloudWatch metrics for EDR. However, there are no existing functions that ensure detailed logs and metrics on EDR activities are being collected and regularly reviewed. Therefore, new functions are suggested."
+    },
+    {
+      "compliance_id": "6.13",
+      "title": "Ensure working of EDR",
+      "existing_functions_mapped": [
+        "aws_edr_api_endpoints_check",
+        "aws_edr_replication_agent_check",
+        "aws_edr_subnet_check",
+        "aws_edr_tcp_port_check",
+        "cloudwatch_edr_metrics_anomaly_detection",
+        "cloudwatch_edr_metrics_monitoring_enabled"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions cover all aspects of ensuring the working of EDR including checking API endpoints, replication agents, subnets, TCP ports, and monitoring of EDR metrics for anomalies."
+    }
+  ],
+  "new_functions_suggested": [
+    {
+      "name": "iam_policy_creation_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "This function is needed to ensure that IAM policies are being created as per the compliance requirement"
+    },
+    {
+      "name": "iam_policy_permission_check",
+      "boto3_api": "iam.get_policy_version()",
+      "service": "iam",
+      "rationale": "This function is needed to check the permissions specified in the IAM policies"
+    },
+    {
+      "name": "iam_policy_condition_check",
+      "boto3_api": "iam.get_policy_version()",
+      "service": "iam",
+      "rationale": "This function is needed to check the conditions under which permissions are granted in the IAM policies"
+    },
+    {
+      "name": "ec2_instance_with_ebs_check",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To ensure that EC2 instances are created with EBS volumes attached"
+    },
+    {
+      "name": "ec2_security_group_inbound_rules_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that all inbound rules of security groups are properly configured"
+    },
+    {
+      "name": "ec2_security_group_outbound_rules_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that all outbound rules of security groups are properly configured"
+    },
+    {
+      "name": "ec2_ebs_snapshot_frequency_check",
+      "boto3_api": "ec2.describe_snapshots()",
+      "service": "ec2",
+      "rationale": "To ensure snapshots are being created at regular intervals"
+    },
+    {
+      "name": "ec2_ebs_snapshot_retention_period_check",
+      "boto3_api": "ec2.describe_snapshots()",
+      "service": "ec2",
+      "rationale": "To ensure snapshots are retained for an adequate period of time"
+    },
+    {
+      "name": "ec2_iam_role_configuration_check",
+      "boto3_api": "ec2.describe_iam_instance_profile_associations()",
+      "service": "ec2",
+      "rationale": "To ensure that IAM roles are properly configured for EC2 instances"
+    },
+    {
+      "name": "ec2_iam_policy_least_privilege_check",
+      "boto3_api": "iam.list_attached_role_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM policies attached to EC2 instances follow the principle of least privilege"
+    },
+    {
+      "name": "iam_user_creation_check",
+      "boto3_api": "iam.list_users()",
+      "service": "iam",
+      "rationale": "This function is needed to ensure that IAM users are being created as per the compliance requirement"
+    },
+    {
+      "name": "iam_list_groups_check",
+      "boto3_api": "iam.list_groups()",
+      "service": "iam",
+      "rationale": "This function is needed to ensure that IAM groups are created and exist within the AWS environment"
+    },
+    {
+      "name": "iam_policy_granularity_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM policies are granular and meticulously tailored to AWS resources"
+    },
+    {
+      "name": "s3_bucket_policy_granularity_check",
+      "boto3_api": "s3.get_bucket_policy()",
+      "service": "s3",
+      "rationale": "To ensure that S3 bucket policies are granular and meticulously tailored to AWS resources"
+    },
+    {
+      "name": "iam_policy_tag_based_access_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To check if IAM policies are configured to grant access based on specific tags"
+    },
+    {
+      "name": "ec2_resource_tag_based_access_check",
+      "boto3_api": "ec2.describe_tags()",
+      "service": "ec2",
+      "rationale": "To check if EC2 resources have specific tags that are used in IAM policies for access control"
+    },
+    {
+      "name": "iam_password_policy_check",
+      "boto3_api": "iam.get_account_password_policy()",
+      "service": "iam",
+      "rationale": "To ensure that the password policy is implemented securely across all IAM users in the account"
+    },
+    {
+      "name": "sns_create_subscription_check",
+      "boto3_api": "sns.list_subscriptions()",
+      "service": "sns",
+      "rationale": "This function is needed to check if an SNS subscription has been created for the system administrator's email address"
+    },
+    {
+      "name": "efs_file_system_encryption_check",
+      "boto3_api": "efs.describe_file_systems()",
+      "service": "efs",
+      "rationale": "To ensure that all EFS file systems are encrypted at rest"
+    },
+    {
+      "name": "efs_file_system_access_logging_enabled",
+      "boto3_api": "efs.describe_file_systems()",
+      "service": "efs",
+      "rationale": "To ensure that access logging is enabled for all EFS file systems"
+    },
+    {
+      "name": "efs_file_system_backup_enabled",
+      "boto3_api": "efs.describe_file_systems()",
+      "service": "efs",
+      "rationale": "To ensure that backup is enabled for all EFS file systems"
+    },
+    {
+      "name": "efs_file_systems_exist",
+      "boto3_api": "efs.describe_file_systems()",
+      "service": "efs",
+      "rationale": "To ensure the implementation of EFS, we need to check if any EFS file systems exist."
+    },
+    {
+      "name": "efs_file_systems_encrypted",
+      "boto3_api": "efs.describe_file_systems()",
+      "service": "efs",
+      "rationale": "To ensure the security of EFS, we need to check if all EFS file systems are encrypted."
+    },
+    {
+      "name": "efs_file_systems_backup_enabled",
+      "boto3_api": "backup.describe_backup_jobs()",
+      "service": "backup",
+      "rationale": "To ensure the durability of EFS, we need to check if backups are enabled for all EFS file systems."
+    },
+    {
+      "name": "efs_vpc_integration_check",
+      "boto3_api": "efs.describe_mount_targets()",
+      "service": "efs",
+      "rationale": "This function is needed to check if the EFS is integrated with a VPC"
+    },
+    {
+      "name": "efs_high_availability_check",
+      "boto3_api": "efs.describe_mount_targets()",
+      "service": "efs",
+      "rationale": "This function is needed to check if the EFS is available across multiple availability zones"
+    },
+    {
+      "name": "efs_security_group_configuration_check",
+      "boto3_api": "efs.describe_mount_target_security_groups()",
+      "service": "efs",
+      "rationale": "To check the security group configuration for EFS mount targets"
+    },
+    {
+      "name": "efs_network_acl_configuration_check",
+      "boto3_api": "ec2.describe_network_acls()",
+      "service": "ec2",
+      "rationale": "To check the network ACL configuration for the VPC associated with EFS"
+    },
+    {
+      "name": "efs_iam_policy_check",
+      "boto3_api": "iam.get_policy()",
+      "service": "iam",
+      "rationale": "To check the IAM policies associated with EFS"
+    },
+    {
+      "name": "ec2_security_group_association_check",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "To ensure that all EC2 instances are associated with a security group"
+    },
+    {
+      "name": "ec2_security_group_rules_check",
+      "boto3_api": "ec2.describe_security_group_rules()",
+      "service": "ec2",
+      "rationale": "To ensure that the security group rules are properly configured for inbound and outbound traffic"
+    },
+    {
+      "name": "s3_secure_ports_check",
+      "boto3_api": "s3.get_bucket_acl()",
+      "service": "s3",
+      "rationale": "To ensure secure ports for S3 service"
+    },
+    {
+      "name": "efs_secure_ports_check",
+      "boto3_api": "efs.describe_mount_target_security_groups()",
+      "service": "efs",
+      "rationale": "To ensure secure ports for EFS service"
+    },
+    {
+      "name": "efs_mount_target_access_control_check",
+      "boto3_api": "efs.describe_mount_target_security_groups()",
+      "service": "efs",
+      "rationale": "This function is needed to ensure that the security groups associated with the EFS mount targets are properly configured to control file-level access."
+    },
+    {
+      "name": "efs_mount_target_availability_zone_check",
+      "boto3_api": "efs.describe_mount_targets()",
+      "service": "efs",
+      "rationale": "This function is needed to ensure that mount targets are provisioned in each availability zone associated with the VPC for high availability and redundancy."
+    },
+    {
+      "name": "efs_mount_target_security_group_management_check",
+      "boto3_api": "efs.describe_mount_target_security_groups()",
+      "service": "efs",
+      "rationale": "This function is needed to ensure that security groups for mount targets are being managed properly, which is essential for controlling access to Amazon EFS file systems."
+    },
+    {
+      "name": "efs_mount_target_security_group_rules_review",
+      "boto3_api": "ec2.describe_security_groups()",
+      "service": "ec2",
+      "rationale": "This function is needed to regularly review and update security group rules for mount targets, maintaining strict access control and protecting data from unauthorized access and potential breaches."
+    },
+    {
+      "name": "efs_vpc_endpoints_check",
+      "boto3_api": "ec2.describe_vpc_endpoints()",
+      "service": "ec2",
+      "rationale": "This function is needed to check if VPC endpoints are being used for EFS."
+    },
+    {
+      "name": "efs_access_points_configuration_check",
+      "boto3_api": "efs.describe_access_points()",
+      "service": "efs",
+      "rationale": "This function is needed to ensure that EFS access points are properly configured for secure and efficient access."
+    },
+    {
+      "name": "efs_access_points_permission_check",
+      "boto3_api": "efs.describe_access_points()",
+      "service": "efs",
+      "rationale": "This function is needed to check and manage which users have access to specific resources in the EFS environment."
+    },
+    {
+      "name": "iam_policy_efs_access_point_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To check if IAM policies are controlling access to EFS access points"
+    },
+    {
+      "name": "efs_access_point_arn_check",
+      "boto3_api": "efs.describe_access_points()",
+      "service": "efs",
+      "rationale": "To check if the AccessPointArn is being used for the file system mount"
+    },
+    {
+      "name": "aws_edr_iam_permissions_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To ensure IAM permissions are correctly configured for AWS Elastic Disaster Recovery"
+    },
+    {
+      "name": "aws_edr_iam_users_check",
+      "boto3_api": "iam.list_users()",
+      "service": "iam",
+      "rationale": "To ensure IAM users are correctly configured for AWS Elastic Disaster Recovery"
+    },
+    {
+      "name": "fsx_file_cache_encryption_enabled",
+      "boto3_api": "fsx.describe_file_systems()",
+      "service": "fsx",
+      "rationale": "To ensure that data at rest is encrypted in FSx file cache"
+    },
+    {
+      "name": "fsx_file_cache_in_transit_encryption_enabled",
+      "boto3_api": "fsx.describe_file_systems()",
+      "service": "fsx",
+      "rationale": "To ensure that data in transit is encrypted in FSx file cache"
+    },
+    {
+      "name": "fsx_file_cache_backup_enabled",
+      "boto3_api": "fsx.describe_backups()",
+      "service": "fsx",
+      "rationale": "To ensure that backups are enabled for FSx file cache"
+    },
+    {
+      "name": "fsx_file_cache_audit_logging_enabled",
+      "boto3_api": "fsx.describe_file_systems()",
+      "service": "fsx",
+      "rationale": "To ensure that audit logging is enabled for FSx file cache"
+    },
+    {
+      "name": "fsx_file_cache_access_control_check",
+      "boto3_api": "fsx.describe_file_systems()",
+      "service": "fsx",
+      "rationale": "To ensure that access control policies are properly configured for FSx file cache"
+    },
+    {
+      "name": "elastic_file_cache_region_availability_check",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "To check the availability of Amazon Elastic File Cache in the specified regions"
+    },
+    {
+      "name": "fsx_compatible_os_check",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To ensure the operating system of the compute instance is compatible with AWS FSx"
+    },
+    {
+      "name": "fsx_lustre_client_installation_check",
+      "boto3_api": "ssm.describe_instance_information()",
+      "service": "ssm",
+      "rationale": "To verify if the Lustre client is installed on the systems for the FSx service to work"
+    },
+    {
+      "name": "s3_bucket_exists_for_fsx",
+      "boto3_api": "s3.head_bucket()",
+      "service": "s3",
+      "rationale": "To check if the S3 bucket exists for FSX data storage"
+    },
+    {
+      "name": "fsx_s3_bucket_access_check",
+      "boto3_api": "fsx.describe_file_systems()",
+      "service": "fsx",
+      "rationale": "To check if FSX has access to the specified S3 bucket"
+    },
+    {
+      "name": "elasticache_cluster_creation_check",
+      "boto3_api": "elasticache.describe_cache_clusters()",
+      "service": "elasticache",
+      "rationale": "This function is needed to ensure that an Elastic File Cache has been created."
+    },
+    {
+      "name": "ec2_instance_lustre_client_installed",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To check if the Lustre Client is installed on the EC2 instance"
+    },
+    {
+      "name": "ec2_instance_lustre_client_configured",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To check if the Lustre Client is properly configured on the EC2 instance"
+    },
+    {
+      "name": "fsx_cache_mount_check",
+      "boto3_api": "fsx.describe_file_systems()",
+      "service": "fsx",
+      "rationale": "This function is needed to check if the FSx cache is properly mounted to the compute instances"
+    },
+    {
+      "name": "s3_bucket_cache_export_check",
+      "boto3_api": "s3.list_objects_v2()",
+      "service": "s3",
+      "rationale": "This function is needed to ensure that cache files are being exported to the specified S3 bucket"
+    },
+    {
+      "name": "fsx_unused_file_systems_check",
+      "boto3_api": "fsx.describe_file_systems()",
+      "service": "fsx",
+      "rationale": "To identify unused or unnecessary FSx file systems that can be removed to optimize costs and maintain a secure cloud environment"
+    },
+    {
+      "name": "fsx_redundant_snapshots_check",
+      "boto3_api": "fsx.describe_backups()",
+      "service": "fsx",
+      "rationale": "To identify redundant FSx snapshots that can be deleted to optimize costs and maintain a secure cloud environment"
+    },
+    {
+      "name": "fsx_unused_mount_targets_check",
+      "boto3_api": "fsx.describe_mount_targets()",
+      "service": "fsx",
+      "rationale": "To identify unused FSx mount targets that can be deleted to optimize costs and maintain a secure cloud environment"
+    },
+    {
+      "name": "fsx_data_backup_or_migration_check",
+      "boto3_api": "fsx.describe_data_repository_tasks()",
+      "service": "fsx",
+      "rationale": "To ensure all data is backed up or migrated before deleting FSx resources"
+    },
+    {
+      "name": "s3_bucket_encryption_enabled",
+      "boto3_api": "s3.get_bucket_encryption()",
+      "service": "s3",
+      "rationale": "To ensure that all data stored in S3 is encrypted at rest"
+    },
+    {
+      "name": "s3_bucket_versioning_enabled",
+      "boto3_api": "s3.get_bucket_versioning()",
+      "service": "s3",
+      "rationale": "To ensure that all versions of an object are stored in the bucket"
+    },
+    {
+      "name": "s3_bucket_public_access_block",
+      "boto3_api": "s3.get_public_access_block()",
+      "service": "s3",
+      "rationale": "To ensure that public access to the S3 bucket is blocked"
+    },
+    {
+      "name": "s3_bucket_logging_enabled",
+      "boto3_api": "s3.get_bucket_logging()",
+      "service": "s3",
+      "rationale": "To ensure that bucket logging is enabled for auditing and monitoring purposes"
+    },
+    {
+      "name": "s3_bucket_lifecycle_configuration_check",
+      "boto3_api": "s3.get_bucket_lifecycle_configuration()",
+      "service": "s3",
+      "rationale": "To ensure that lifecycle management is configured for objects in the bucket"
+    },
+    {
+      "name": "s3_bucket_unique_check",
+      "boto3_api": "s3.head_bucket()",
+      "service": "s3",
+      "rationale": "To ensure the bucket name is unique and not already in use on AWS"
+    },
+    {
+      "name": "s3_bucket_direct_upload_check",
+      "boto3_api": "s3.put_object()",
+      "service": "s3",
+      "rationale": "To ensure data can be directly uploaded to the S3 bucket"
+    },
+    {
+      "name": "s3_bucket_storage_class_configured",
+      "boto3_api": "s3.get_bucket_lifecycle_configuration()",
+      "service": "s3",
+      "rationale": "This function is needed to check if the storage classes for S3 buckets are properly configured according to the data access patterns and retention needs."
+    },
+    {
+      "name": "edr_replication_agent_connection_check",
+      "boto3_api": "ec2.describe_network_interfaces()",
+      "service": "ec2",
+      "rationale": "To ensure the replication agent is properly connected to AWS replication servers over TCP port 1500"
+    },
+    {
+      "name": "edr_staging_area_connectivity_check",
+      "boto3_api": "ec2.describe_network_interfaces()",
+      "service": "ec2",
+      "rationale": "To ensure the staging area on AWS is connected to EDR over TCP port 443"
+    },
+    {
+      "name": "edr_s3_connectivity_check",
+      "boto3_api": "s3.get_bucket_acl()",
+      "service": "s3",
+      "rationale": "To ensure connection to S3 over TCP 443 is allowed"
+    },
+    {
+      "name": "edr_ec2_api_endpoint_connectivity_check",
+      "boto3_api": "ec2.describe_vpc_endpoints()",
+      "service": "ec2",
+      "rationale": "To ensure connectivity to EC2 over TCP 443 to connect to API Endpoint"
+    },
+    {
+      "name": "edr_software_deployment_check",
+      "boto3_api": "ssm.describe_instance_information()",
+      "service": "ssm",
+      "rationale": "To check if EDR software is deployed on all instances"
+    },
+    {
+      "name": "edr_software_update_check",
+      "boto3_api": "ssm.get_patch_baseline()",
+      "service": "ssm",
+      "rationale": "To ensure EDR software is regularly updated"
+    },
+    {
+      "name": "edr_alerts_and_reports_check",
+      "boto3_api": "cloudwatch.describe_alarms()",
+      "service": "cloudwatch",
+      "rationale": "To ensure EDR system provides real-time alerts and detailed incident reports"
+    },
+    {
+      "name": "dms_replication_settings_regular_review",
+      "boto3_api": "dms.describe_replication_tasks()",
+      "service": "dms",
+      "rationale": "To ensure regular review and update of replication settings to accommodate changes in data volume and network conditions"
+    },
+    {
+      "name": "dms_replication_bandwidth_limits_check",
+      "boto3_api": "dms.describe_replication_tasks()",
+      "service": "dms",
+      "rationale": "To check if bandwidth limits are set to optimize performance during replication processes"
+    },
+    {
+      "name": "aws_edr_iam_least_privilege_policy_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM policies for AWS Elastic Disaster Recovery follow the principle of least privilege"
+    },
+    {
+      "name": "aws_edr_iam_mfa_enforced_check",
+      "boto3_api": "iam.get_account_summary()",
+      "service": "iam",
+      "rationale": "To ensure that MFA is enforced for AWS Elastic Disaster Recovery"
+    },
+    {
+      "name": "aws_edr_iam_role_for_automated_process_check",
+      "boto3_api": "iam.list_roles()",
+      "service": "iam",
+      "rationale": "To ensure that roles for automated processes are created for AWS Elastic Disaster Recovery"
+    },
+    {
+      "name": "aws_edr_iam_policy_regular_review_check",
+      "boto3_api": "iam.list_policies()",
+      "service": "iam",
+      "rationale": "To ensure that IAM policies for AWS Elastic Disaster Recovery are regularly reviewed and updated"
+    },
+    {
+      "name": "ec2_launch_settings_security_configuration_check",
+      "boto3_api": "ec2.describe_launch_template_versions()",
+      "service": "ec2",
+      "rationale": "To ensure that the security settings of the EC2 launch configurations are properly set up and prevent unauthorized changes."
+    },
+    {
+      "name": "ec2_launch_settings_resource_specification_check",
+      "boto3_api": "ec2.describe_launch_template_versions()",
+      "service": "ec2",
+      "rationale": "To verify that the required resources are correctly specified in the EC2 launch configurations."
+    },
+    {
+      "name": "ec2_launch_settings_regular_review",
+      "boto3_api": "ec2.describe_launch_template_versions()",
+      "service": "ec2",
+      "rationale": "To ensure regular review and update of the EC2 launch settings to align with best practices and organizational requirements."
+    },
+    {
+      "name": "aws_elastic_recovery_instance_drill_execution_check",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To check if the recovery drill was executed on the AWS Elastic Recovery Instance"
+    },
+    {
+      "name": "disaster_recovery_failback_execution_check",
+      "boto3_api": "ec2.describe_instances()",
+      "service": "ec2",
+      "rationale": "To ensure that the failback process is executed correctly, a new function is needed to check the state of the primary system after failback."
+    },
+    {
+      "name": "disaster_recovery_failback_data_integrity_check",
+      "boto3_api": "s3.list_objects_v2()",
+      "service": "s3",
+      "rationale": "To ensure that all updated data and configurations are transferred back correctly during the failback process, a new function is needed to check the integrity of the data after failback."
+    },
+    {
+      "name": "cloudwatch_edr_metrics_detailed_logging_enabled",
+      "boto3_api": "cloudwatch.describe_alarms()",
+      "service": "cloudwatch",
+      "rationale": "To ensure detailed logs and metrics on EDR activities are being collected"
+    },
+    {
+      "name": "cloudwatch_edr_metrics_regular_review",
+      "boto3_api": "cloudwatch.get_metric_statistics()",
+      "service": "cloudwatch",
+      "rationale": "To ensure regular review of these metrics to identify trends, anomalies, and potential security issues"
+    }
+  ]
+}

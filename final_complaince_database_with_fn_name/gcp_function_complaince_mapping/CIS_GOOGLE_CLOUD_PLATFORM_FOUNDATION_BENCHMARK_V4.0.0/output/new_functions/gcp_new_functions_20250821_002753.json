@@ -1,0 +1,80 @@
+[
+  {
+    "function_name": "iam_user_corporate_login_used",
+    "description": "Checks if corporate login credentials are used instead of consumer accounts",
+    "gcp_api_example": "gcloud iam service-accounts list --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "iam_project_no_service_account_roles",
+    "description": "Checks that IAM users are not assigned the Service Account User or Service Account Token Creator roles at the project level",
+    "gcp_api_example": "gcloud iam roles list --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "iam_api_keys_host_app_restriction",
+    "description": "Checks if API keys are restricted to use by only specified hosts and apps",
+    "gcp_api_example": "gcloud iam api-keys list --filter='name:projects/PROJECT_ID/keys/KEY_ID' --format='value(name,displayName,createTime,validityPeriod,endTime)'",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "cloudfunctions_environment_variables_secret_manager",
+    "description": "Checks if secrets are stored in Cloud Functions environment variables and recommends using Secret Manager",
+    "gcp_api_example": "gcloud functions describe FUNCTION_NAME --format='value(environmentVariables)' --project=PROJECT_ID",
+    "service_category": "Security"
+  },
+  {
+    "function_name": "logging_sink_all_log_entries_configured",
+    "description": "Checks if a sink is configured to export all log entries",
+    "gcp_api_example": "gcloud logging sinks list --project=PROJECT_ID",
+    "service_category": "Monitoring"
+  },
+  {
+    "function_name": "logging_project_ownership_change_alert",
+    "description": "Checks if log metric filters and alerts exist for project ownership assignments/changes",
+    "gcp_api_example": "gcloud logging metrics list --filter='resource.type=project AND protoPayload.methodName:SetIamPolicy AND protoPayload.serviceData.policyDelta.bindingDeltas.role:roles/owner'",
+    "service_category": "Monitoring"
+  },
+  {
+    "function_name": "cloud_asset_inventory_enabled",
+    "description": "Checks if Cloud Asset Inventory is enabled for the project",
+    "gcp_api_example": "gcloud asset search-all-resources --project=PROJECT_ID",
+    "service_category": "Security"
+  },
+  {
+    "function_name": "access_transparency_enabled",
+    "description": "Checks if Access Transparency is enabled for the Google Cloud resources",
+    "gcp_api_example": "gcloud alpha services identity get-access-transparency --project=PROJECT_ID",
+    "service_category": "Security"
+  },
+  {
+    "function_name": "network_default_network_existence",
+    "description": "Checks if the default network exists in a project",
+    "gcp_api_example": "gcloud compute networks list --project=PROJECT_ID",
+    "service_category": "Network"
+  },
+  {
+    "function_name": "compute_legacy_networks_absent",
+    "description": "Checks if any legacy networks exist in the project",
+    "gcp_api_example": "gcloud compute networks list --filter='mode:LEGACY' --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "cloud_dns_dnssec_enabled",
+    "description": "Checks if DNSSEC is enabled for Cloud DNS",
+    "gcp_api_example": "gcloud dns managed-zones describe --project=PROJECT_ID",
+    "service_category": "Network"
+  },
+  {
+    "function_name": "compute_project_oslogin_enabled",
+    "description": "Checks if OS Login is enabled for a GCP project",
+    "gcp_api_example": "gcloud compute project-info describe --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "bigquery_table_data_classification_verified",
+    "description": "Checks if all data in BigQuery tables has been classified",
+    "gcp_api_example": "bq show --format=prettyjson PROJECT_ID:DATASET.TABLE",
+    "service_category": "BigQuery"
+  }
+]

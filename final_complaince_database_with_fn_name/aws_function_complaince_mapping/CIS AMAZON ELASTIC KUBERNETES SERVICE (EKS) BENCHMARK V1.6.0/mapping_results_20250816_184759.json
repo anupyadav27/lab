@@ -1,0 +1,1166 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-16T19:04:47.298866",
+    "compliance_framework": "CIS AMAZON ELASTIC KUBERNETES SERVICE (EKS) BENCHMARK V1.6.0.json",
+    "prowler_database_functions": 563,
+    "processing_stats": {
+      "total_items": 46,
+      "processed": 45,
+      "skipped_manual": 1,
+      "mapped_complete": 3,
+      "mapped_partial": 20,
+      "mapped_none": 22,
+      "new_functions_suggested": 55
+    }
+  },
+  "mapping_results": [
+    {
+      "compliance_id": "2.1.1",
+      "title": "Enable audit Logs",
+      "existing_functions_mapped": [
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudwatch_log_group_kms_encryption_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_control_plane_logs_exported",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check if the control plane logs for a cluster are exported to a CloudWatch Log Group for persistence"
+        }
+      ],
+      "mapping_notes": "Existing functions cover the requirement for enabling audit logs and ensuring they are encrypted. However, there is no specific function to check if the EKS control plane logs are exported to a CloudWatch Log Group. Hence, a new function is suggested."
+    },
+    {
+      "compliance_id": "2.1.2",
+      "title": "Ensure audit logs are collected and managed",
+      "existing_functions_mapped": [
+        "cloudtrail_cloudwatch_logging_enabled",
+        "cloudtrail_kms_encryption_enabled",
+        "cloudtrail_log_file_validation_enabled",
+        "cloudtrail_logs_s3_bucket_access_logging_enabled",
+        "cloudtrail_logs_s3_bucket_is_not_publicly_accessible",
+        "cloudwatch_log_group_kms_encryption_enabled",
+        "cloudwatch_log_group_not_publicly_accessible",
+        "cloudwatch_log_group_retention_policy_specific_days_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "kubernetes_audit_logs_collected_managed",
+          "boto3_api": "N/A",
+          "service": "kubernetes",
+          "rationale": "To ensure that audit logs are collected and managed across all Kubernetes components as per the enterprise's audit log management process"
+        }
+      ],
+      "mapping_notes": "Existing functions related to CloudTrail and CloudWatch logs were mapped as they are relevant to the collection and management of audit logs. However, as the description specifically mentions Kubernetes components, a new function is suggested to cover this aspect."
+    },
+    {
+      "compliance_id": "3.1.1",
+      "title": "Ensure that the kubeconfig file permissions are set to 644 or more restrictive",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_kubeconfig_file_permissions_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check the permissions of the kubeconfig file for the EKS cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the permissions of the kubeconfig file for the EKS cluster."
+    },
+    {
+      "compliance_id": "3.1.2",
+      "title": "Ensure that the kubelet kubeconfig file ownership is set to root:root",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_kubelet_kubeconfig_file_ownership_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check the ownership of the kubelet kubeconfig file in an EKS cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the ownership of the kubelet kubeconfig file in an EKS cluster."
+    },
+    {
+      "compliance_id": "3.1.3",
+      "title": "Ensure that the kubelet configuration file has permissions set to 644 or more restrictive",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_kubelet_config_file_permission_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check the permissions of the kubelet configuration file in an EKS cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the permissions of the kubelet configuration file in an EKS cluster."
+    },
+    {
+      "compliance_id": "3.1.4",
+      "title": "Ensure that the kubelet configuration file ownership is set to root:root",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_kubelet_config_file_ownership_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check the ownership of the kubelet configuration file in the EKS cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function is suggested to check the ownership of the kubelet configuration file in the EKS cluster."
+    },
+    {
+      "compliance_id": "3.2.1",
+      "title": "Ensure that the Anonymous Auth is Not Enabled",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "kubelet_server_anonymous_auth_disabled",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if anonymous authentication is disabled on the Kubelet server"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring anonymous authentication is not enabled on the Kubelet server. A new function 'kubelet_server_anonymous_auth_disabled' is suggested which can be implemented using the 'eks.describe_cluster()' boto3 API to fetch the cluster configuration and check the anonymous authentication settings."
+    },
+    {
+      "compliance_id": "3.2.2",
+      "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "kubernetes_cluster_authorization_mode_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check the authorization mode of the Kubernetes cluster and ensure it is not set to AlwaysAllow"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function is suggested to check the authorization mode of the Kubernetes cluster in AWS EKS service."
+    },
+    {
+      "compliance_id": "3.2.3",
+      "title": "Ensure that a Client CA File is Configured",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_client_ca_file_configured",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if a Client CA File is configured in the EKS cluster as part of the Kubelet authentication process."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring a Client CA File is configured for Kubelet authentication. A new function is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.2.4",
+      "title": "Ensure that the --read-only-port is disabled",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "ecs_task_definitions_read_only_port_disabled",
+          "boto3_api": "ecs.describe_task_definition()",
+          "service": "ecs",
+          "rationale": "This function is needed to check if the read-only port is disabled in ECS task definitions"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring the read-only port is disabled. A new function is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "3.2.5",
+      "title": "Ensure that the --streaming-connection-idle-timeout argument is not set to 0",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "streaming_connection_idle_timeout_check",
+          "boto3_api": "appstream.describe_stacks()",
+          "service": "appstream",
+          "rationale": "This function is needed to check the --streaming-connection-idle-timeout argument in AWS AppStream stacks"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the --streaming-connection-idle-timeout argument in AWS AppStream stacks."
+    },
+    {
+      "compliance_id": "3.2.6",
+      "title": "Ensure that the --make-iptables-util-chains argument is set to true",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "kubelet_make_iptables_util_chains_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if the --make-iptables-util-chains argument is set to true in the Kubelet configuration"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the Kubelet configuration in the EKS service."
+    },
+    {
+      "compliance_id": "3.2.7",
+      "title": "Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "kubelet_config_event_record_qps_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check the --eventRecordQPS argument in the Kubelet configuration to ensure it is set to 0 or a level which ensures appropriate event capture"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function 'kubelet_config_event_record_qps_check' is suggested to check the --eventRecordQPS argument in the Kubelet configuration."
+    },
+    {
+      "compliance_id": "3.2.8",
+      "title": "Ensure that the --rotate-certificates argument is not present or is set to true",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_rotate_certificates_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if the --rotate-certificates argument is not present or is set to true in the EKS cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the --rotate-certificates argument in the EKS cluster."
+    },
+    {
+      "compliance_id": "3.2.9",
+      "title": "Ensure that the RotateKubeletServerCertificate argument is set to true",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_rotate_kubelet_server_certificate_enabled",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if the RotateKubeletServerCertificate argument is set to true in the EKS cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function is suggested to check the RotateKubeletServerCertificate argument in the EKS cluster."
+    },
+    {
+      "compliance_id": "4.1.1",
+      "title": "Ensure that the cluster-admin role is only used where required",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_role_usage_audit",
+          "boto3_api": "iam.list_entities_for_policy()",
+          "service": "iam",
+          "rationale": "This function is needed to identify all AWS entities (users, groups, and roles) that a specified managed policy is attached to."
+        },
+        {
+          "name": "iam_role_cluster_admin_check",
+          "boto3_api": "iam.get_role_policy()",
+          "service": "iam",
+          "rationale": "This function is needed to retrieve the permissions for the specified IAM role, specifically checking for the 'cluster-admin' role."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. New functions are suggested to audit the usage of IAM roles and specifically check for the 'cluster-admin' role."
+    },
+    {
+      "compliance_id": "4.1.2",
+      "title": "Minimize access to secrets",
+      "existing_functions_mapped": [
+        "awslambda_function_no_secrets_in_code",
+        "awslambda_function_no_secrets_in_variables",
+        "cloudformation_stack_outputs_find_secrets",
+        "autoscaling_find_secrets_ec2_launch_configuration",
+        "ec2_instance_secrets_user_data",
+        "ec2_launch_template_no_secrets",
+        "ecs_task_definitions_no_environment_secrets",
+        "codebuild_project_no_secrets_in_variables",
+        "cloudwatch_log_group_no_secrets_in_logs"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_secrets_access_restriction",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check if access to Kubernetes secrets is restricted to a minimal set of users"
+        }
+      ],
+      "mapping_notes": "Existing functions cover the general principle of minimizing access to secrets in various AWS services, but none specifically address the Kubernetes API secrets mentioned in the compliance item. A new function is suggested to cover this gap."
+    },
+    {
+      "compliance_id": "4.1.3",
+      "title": "Minimize wildcard use in Roles and ClusterRoles",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_role_minimize_wildcard_use",
+          "boto3_api": "iam.list_roles()",
+          "service": "iam",
+          "rationale": "This function is needed to list all IAM roles and check if any role uses wildcard '*' in its policy. This will help in minimizing the use of wildcard in roles."
+        },
+        {
+          "name": "kubernetes_clusterrole_minimize_wildcard_use",
+          "boto3_api": "eks.list_cluster_roles()",
+          "service": "eks",
+          "rationale": "This function is needed to list all Kubernetes ClusterRoles and check if any ClusterRole uses wildcard '*' in its policy. This will help in minimizing the use of wildcard in ClusterRoles."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of minimizing wildcard use in IAM roles and Kubernetes ClusterRoles. Therefore, two new functions are suggested to cover this requirement."
+    },
+    {
+      "compliance_id": "4.1.4",
+      "title": "Minimize access to create pods",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_namespace_minimize_pod_creation_access",
+          "boto3_api": "eks.list_namespaces()",
+          "service": "eks",
+          "rationale": "To check the access control on namespaces for pod creation"
+        },
+        {
+          "name": "eks_pod_security_policy_enforcement",
+          "boto3_api": "eks.describe_pod_security_policy()",
+          "service": "eks",
+          "rationale": "To ensure Pod Security Policies are implemented to restrict access"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of minimizing access to create pods in a namespace. New functions are suggested to check the access control on namespaces and to ensure Pod Security Policies are implemented."
+    },
+    {
+      "compliance_id": "4.1.5",
+      "title": "Ensure that default service accounts are not actively used.",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "iam_default_service_accounts_activity_check",
+          "boto3_api": "iam.list_account_aliases()",
+          "service": "iam",
+          "rationale": "This function is needed to check if the default service accounts are actively used."
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of checking the activity of default service accounts. Therefore, a new function 'iam_default_service_accounts_activity_check' is suggested."
+    },
+    {
+      "compliance_id": "4.1.6",
+      "title": "Ensure that Service Account Tokens are only mounted where necessary",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "kubernetes_pod_service_account_token_mount_check",
+          "boto3_api": "eks.list_pods()",
+          "service": "eks",
+          "rationale": "This function is needed to check if service account tokens are mounted in pods where they are not necessary"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the mounting of service account tokens in Kubernetes pods."
+    },
+    {
+      "compliance_id": "4.1.7",
+      "title": "Cluster Access Manager API to streamline and enhance the management of access controls within EKS clusters",
+      "existing_functions_mapped": [
+        "eks_cluster_not_publicly_accessible",
+        "eks_cluster_private_nodes_enabled",
+        "eks_cluster_uses_a_supported_version",
+        "eks_control_plane_logging_all_types_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_access_manager_api_enabled",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check if the Cluster Access Manager API is enabled for the EKS cluster"
+        },
+        {
+          "name": "eks_cluster_access_manager_api_access_policies_assigned",
+          "boto3_api": "eks.list_identity_provider_configs()",
+          "service": "eks",
+          "rationale": "To check if predefined AWS-managed Kubernetes permissions, known as 'access policies,' are assigned to IAM principals"
+        },
+        {
+          "name": "eks_cluster_access_manager_api_audit",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To provide visibility into cluster access configurations, facilitating easier auditing and compliance checks"
+        }
+      ],
+      "mapping_notes": "Existing functions provide some coverage for the compliance item, specifically around EKS cluster access controls. However, there are no existing functions that directly address the use of the Cluster Access Manager API, hence the need for new functions."
+    },
+    {
+      "compliance_id": "4.1.8",
+      "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_limit_bind_permission",
+          "boto3_api": "eks.list_clusters()",
+          "service": "eks",
+          "rationale": "To check if the Bind permission is limited in the Kubernetes cluster"
+        },
+        {
+          "name": "eks_cluster_limit_impersonate_permission",
+          "boto3_api": "eks.list_clusters()",
+          "service": "eks",
+          "rationale": "To check if the Impersonate permission is limited in the Kubernetes cluster"
+        },
+        {
+          "name": "eks_cluster_limit_escalate_permission",
+          "boto3_api": "eks.list_clusters()",
+          "service": "eks",
+          "rationale": "To check if the Escalate permission is limited in the Kubernetes cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. New functions are suggested to check the Bind, Impersonate, and Escalate permissions in the Kubernetes cluster."
+    },
+    {
+      "compliance_id": "4.2.1",
+      "title": "Minimize the admission of privileged containers",
+      "existing_functions_mapped": [
+        "ecs_task_definitions_no_privileged_containers"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_pod_security_policy_no_privileged_containers",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To ensure no privileged containers are admitted in EKS clusters, a Pod Security Policy needs to be enforced that disallows privileged containers."
+        },
+        {
+          "name": "fargate_task_definition_no_privileged_containers",
+          "boto3_api": "ecs.describe_task_definition()",
+          "service": "ecs",
+          "rationale": "To ensure no privileged containers are admitted in Fargate tasks, the task definition needs to be checked for privileged containers."
+        }
+      ],
+      "mapping_notes": "The existing function 'ecs_task_definitions_no_privileged_containers' partially covers the compliance requirement for ECS services. However, for complete coverage, additional checks are needed for EKS clusters and Fargate tasks."
+    },
+    {
+      "compliance_id": "4.2.2",
+      "title": "Minimize the admission of containers wishing to share the host process ID namespace",
+      "existing_functions_mapped": [
+        "ecs_task_definitions_host_namespace_not_shared"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ecs_task_definitions_host_pid_namespace_check",
+          "boto3_api": "ecs.describe_task_definition()",
+          "service": "ecs",
+          "rationale": "This function is needed to check if the hostPID flag is set to true in the task definition, which would allow containers to share the host process ID namespace."
+        }
+      ],
+      "mapping_notes": "The existing function 'ecs_task_definitions_host_namespace_not_shared' partially covers the compliance requirement by checking if the host namespace is not shared. However, it does not specifically check for the hostPID flag. Therefore, a new function 'ecs_task_definitions_host_pid_namespace_check' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "4.2.3",
+      "title": "Minimize the admission of containers wishing to share the host IPC namespace",
+      "existing_functions_mapped": [
+        "ecs_task_definitions_host_namespace_not_shared"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ecs_task_definitions_host_ipc_not_shared",
+          "boto3_api": "ecs.describe_task_definition()",
+          "service": "ecs",
+          "rationale": "To check if the hostIPC flag is set to true in the task definition"
+        }
+      ],
+      "mapping_notes": "The existing function 'ecs_task_definitions_host_namespace_not_shared' partially covers the compliance requirement as it checks for shared host namespace but not specifically for IPC namespace. A new function 'ecs_task_definitions_host_ipc_not_shared' is suggested to check specifically for the hostIPC flag in the task definition."
+    },
+    {
+      "compliance_id": "4.2.4",
+      "title": "Minimize the admission of containers wishing to share the host network namespace",
+      "existing_functions_mapped": [
+        "ecs_task_definitions_host_namespace_not_shared"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'ecs_task_definitions_host_namespace_not_shared' checks if the host namespace is not shared with the ECS task definitions, which aligns with the compliance requirement of minimizing the admission of containers wishing to share the host network namespace."
+    },
+    {
+      "compliance_id": "4.2.5",
+      "title": "Minimize the admission of containers with allowPrivilegeEscalation",
+      "existing_functions_mapped": [
+        "ecs_task_definitions_no_privileged_containers"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ecs_task_definitions_no_allow_privilege_escalation",
+          "boto3_api": "ecs.describe_task_definition()",
+          "service": "ecs",
+          "rationale": "This function is needed to check if the 'allowPrivilegeEscalation' flag is set to true in any of the task definitions. If it is, the function should return a non-compliance."
+        }
+      ],
+      "mapping_notes": "The existing function 'ecs_task_definitions_no_privileged_containers' partially covers the compliance requirement by checking for privileged containers. However, it does not specifically check for the 'allowPrivilegeEscalation' flag. Therefore, a new function 'ecs_task_definitions_no_allow_privilege_escalation' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "4.3.1",
+      "title": "Ensure CNI plugin supports network policies.",
+      "existing_functions_mapped": [
+        "eks_cluster_network_policy_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_cni_plugin_supports_network_policies",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if the CNI plugin used in the EKS cluster supports network policies."
+        }
+      ],
+      "mapping_notes": "The existing function 'eks_cluster_network_policy_enabled' can check if network policies are enabled in the EKS cluster, but it does not check if the CNI plugin used supports network policies. Therefore, a new function 'eks_cni_plugin_supports_network_policies' is suggested."
+    },
+    {
+      "compliance_id": "4.3.2",
+      "title": "Ensure that all Namespaces have Network Policies defined",
+      "existing_functions_mapped": [
+        "eks_cluster_network_policy_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "kubernetes_namespace_network_policy_defined",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if all Kubernetes namespaces have network policies defined"
+        }
+      ],
+      "mapping_notes": "The existing function 'eks_cluster_network_policy_enabled' partially covers the compliance requirement as it checks if network policies are enabled at the cluster level. However, the compliance item specifically requires checking network policies at the namespace level, hence a new function 'kubernetes_namespace_network_policy_defined' is suggested."
+    },
+    {
+      "compliance_id": "4.4.1",
+      "title": "Prefer using secrets as files over secrets as environment variables",
+      "existing_functions_mapped": [
+        "awslambda_function_no_secrets_in_variables",
+        "ecs_task_definitions_no_environment_secrets",
+        "codebuild_project_no_secrets_in_variables"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "kubernetes_secrets_as_files_preferred",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check if Kubernetes secrets are being used as files instead of environment variables"
+        }
+      ],
+      "mapping_notes": "Existing functions cover the aspect of not using secrets in environment variables for AWS Lambda, ECS task definitions, and CodeBuild projects. However, there is no specific function to check if Kubernetes secrets are being used as files instead of environment variables in EKS clusters. Hence, a new function 'kubernetes_secrets_as_files_preferred' is suggested."
+    },
+    {
+      "compliance_id": "4.4.2",
+      "title": "Consider external secret storage",
+      "existing_functions_mapped": [
+        "awslambda_function_no_secrets_in_code",
+        "awslambda_function_no_secrets_in_variables",
+        "cloudformation_stack_outputs_find_secrets",
+        "autoscaling_find_secrets_ec2_launch_configuration",
+        "ec2_instance_secrets_user_data",
+        "ec2_launch_template_no_secrets",
+        "ecs_task_definitions_no_environment_secrets",
+        "codebuild_project_no_secrets_in_variables",
+        "cloudwatch_log_group_no_secrets_in_logs"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "secretsmanager_secret_rotation_enabled",
+          "boto3_api": "secretsmanager.describe_secret()",
+          "service": "secretsmanager",
+          "rationale": "To check if the secret rotation is enabled for the secrets stored in AWS Secrets Manager"
+        },
+        {
+          "name": "secretsmanager_secret_encryption_check",
+          "boto3_api": "secretsmanager.describe_secret()",
+          "service": "secretsmanager",
+          "rationale": "To check if the secrets stored in AWS Secrets Manager are encrypted"
+        },
+        {
+          "name": "secretsmanager_secret_access_audit",
+          "boto3_api": "cloudtrail.lookup_events()",
+          "service": "cloudtrail",
+          "rationale": "To audit the access to and use of secrets stored in AWS Secrets Manager"
+        }
+      ],
+      "mapping_notes": "Existing functions were mapped based on their ability to check for secrets in various AWS resources. However, none of the existing functions specifically address the use of an external secrets storage and management system, hence the coverage assessment is partial. New functions are suggested to cover the gaps related to secret rotation, encryption, and auditing of access to secrets in AWS Secrets Manager."
+    },
+    {
+      "compliance_id": "4.5.1",
+      "title": "Create administrative boundaries between resources using namespaces",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_namespace_isolation_check",
+          "boto3_api": "eks.list_namespaces()",
+          "service": "eks",
+          "rationale": "This function is needed to check if namespaces are being used to isolate Kubernetes objects in EKS clusters"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the use of namespaces for resource isolation in Kubernetes. A new function, eks_namespace_isolation_check, is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "4.5.2",
+      "title": "The default namespace should not be used",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_default_namespace_usage_check",
+          "boto3_api": "eks.list_namespaces()",
+          "service": "eks",
+          "rationale": "This function is needed to check if the default namespace is being used in the EKS cluster"
+        }
+      ],
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of not using the default namespace in Kubernetes. A new function, eks_default_namespace_usage_check, is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "5.1.1",
+      "title": "Ensure Image Vulnerability Scanning using Amazon ECR image scanning or a third party provider",
+      "existing_functions_mapped": [
+        "ecr_repositories_scan_images_on_push_enabled",
+        "ecr_repositories_scan_vulnerabilities_in_latest_image"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'ecr_repositories_scan_images_on_push_enabled' and 'ecr_repositories_scan_vulnerabilities_in_latest_image' cover the requirement of scanning images for vulnerabilities in Amazon ECR. No new functions are needed as the existing ones provide complete coverage."
+    },
+    {
+      "compliance_id": "5.1.2",
+      "title": "Minimize user access to Amazon ECR",
+      "existing_functions_mapped": [
+        "ecr_repositories_not_publicly_accessible"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ecr_user_access_restriction",
+          "boto3_api": "ecr.get_repository_policy()",
+          "service": "ecr",
+          "rationale": "To ensure that only authorized personnel and service accounts have access to ECR repositories"
+        }
+      ],
+      "mapping_notes": "The existing function 'ecr_repositories_not_publicly_accessible' partially covers the compliance requirement by ensuring that ECR repositories are not publicly accessible. However, it does not check for access restrictions among authorized users and service accounts. Therefore, a new function 'ecr_user_access_restriction' is suggested to fill this gap."
+    },
+    {
+      "compliance_id": "5.1.4",
+      "title": "Minimize Container Registries to only those approved",
+      "existing_functions_mapped": [
+        "ecr_repositories_not_publicly_accessible",
+        "ecr_repositories_scan_images_on_push_enabled",
+        "ecr_repositories_scan_vulnerabilities_in_latest_image",
+        "ecr_repositories_tag_immutability"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "ecr_repositories_approved_registry_check",
+          "boto3_api": "ecr.describe_repositories()",
+          "service": "ecr",
+          "rationale": "To ensure that only approved container registries are being used, a new function is needed to check if the repositories in use are part of the approved list."
+        }
+      ],
+      "mapping_notes": "The existing functions mapped provide partial coverage as they ensure that the repositories are not publicly accessible, images are scanned on push, vulnerabilities are scanned in the latest image, and tags are immutable. However, they do not check if the repositories are part of an approved list, hence the need for a new function."
+    },
+    {
+      "compliance_id": "5.2.1",
+      "title": "Prefer using dedicated EKS Service Accounts",
+      "existing_functions_mapped": [
+        "eks_cluster_not_publicly_accessible",
+        "eks_cluster_private_nodes_enabled",
+        "eks_cluster_uses_a_supported_version"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_service_account_dedicated_check",
+          "boto3_api": "eks.list_identity_provider_configs()",
+          "service": "eks",
+          "rationale": "To ensure that each Kubernetes workload is provisioned with a dedicated Service account for authentication to other AWS services using AWS IAM."
+        }
+      ],
+      "mapping_notes": "Existing functions provide some coverage for EKS security, but none specifically address the use of dedicated service accounts for Kubernetes workloads. A new function is proposed to fill this gap."
+    },
+    {
+      "compliance_id": "5.3.1",
+      "title": "Ensure Kubernetes Secrets are encrypted using Customer Master Keys (CMKs) managed in AWS KMS",
+      "existing_functions_mapped": [
+        "eks_cluster_kms_cmk_encryption_in_secrets_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_secrets_encryption_check",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check if the Kubernetes secrets in the EKS cluster are encrypted using CMKs managed in AWS KMS"
+        }
+      ],
+      "mapping_notes": "The existing function 'eks_cluster_kms_cmk_encryption_in_secrets_enabled' partially covers the compliance requirement as it checks for encryption in secrets using KMS CMKs. However, it does not specifically check for Kubernetes secrets encryption during EKS cluster creation. Hence, a new function 'eks_cluster_secrets_encryption_check' is suggested."
+    },
+    {
+      "compliance_id": "5.4.1",
+      "title": "Restrict Access to the Control Plane Endpoint",
+      "existing_functions_mapped": [
+        "eks_cluster_not_publicly_accessible",
+        "eks_cluster_private_nodes_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_control_plane_endpoint_private_access",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if the EKS cluster's control plane endpoint is configured for private access only."
+        }
+      ],
+      "mapping_notes": "The existing functions 'eks_cluster_not_publicly_accessible' and 'eks_cluster_private_nodes_enabled' partially cover the compliance requirement by ensuring that the EKS cluster and its nodes are not publicly accessible. However, there is no existing function to specifically check if the control plane endpoint is restricted to private access. Therefore, a new function 'eks_cluster_control_plane_endpoint_private_access' is suggested."
+    },
+    {
+      "compliance_id": "5.4.2",
+      "title": "Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled",
+      "existing_functions_mapped": [
+        "eks_cluster_not_publicly_accessible",
+        "eks_cluster_private_nodes_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_private_endpoint_enabled",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "This function is needed to check if the private endpoint is enabled for the EKS cluster"
+        }
+      ],
+      "mapping_notes": "The existing functions 'eks_cluster_not_publicly_accessible' and 'eks_cluster_private_nodes_enabled' partially cover the compliance requirement. However, there is no existing function to check if the private endpoint is enabled for the EKS cluster, hence a new function 'eks_cluster_private_endpoint_enabled' is suggested."
+    },
+    {
+      "compliance_id": "5.4.3",
+      "title": "Ensure clusters are created with Private Nodes",
+      "existing_functions_mapped": [
+        "eks_cluster_private_nodes_enabled"
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'eks_cluster_private_nodes_enabled' directly addresses the compliance requirement of ensuring clusters are created with private nodes."
+    },
+    {
+      "compliance_id": "5.4.4",
+      "title": "Ensure Network Policy is Enabled and set as appropriate",
+      "existing_functions_mapped": [
+        "eks_cluster_network_policy_enabled"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_network_policy_type",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check the type of network policy implemented in the EKS cluster"
+        },
+        {
+          "name": "eks_cluster_network_policy_ip_tables_rules",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check the IPTable filter rules set by the network policy"
+        }
+      ],
+      "mapping_notes": "The existing function 'eks_cluster_network_policy_enabled' checks if a network policy is enabled but does not check the type of policy or the specific IPTable filter rules. Therefore, two new functions are suggested to cover these aspects."
+    },
+    {
+      "compliance_id": "5.4.5",
+      "title": "Encrypt traffic to HTTPS load balancers with TLS certificates",
+      "existing_functions_mapped": [
+        "elbv2_ssl_listeners",
+        "elb_ssl_listeners"
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [
+        {
+          "name": "elbv2_tls_certificate_check",
+          "boto3_api": "elbv2.describe_listeners()",
+          "service": "elbv2",
+          "rationale": "To check if the TLS certificates are properly configured for the HTTPS load balancers"
+        },
+        {
+          "name": "elb_tls_certificate_check",
+          "boto3_api": "elb.describe_load_balancers()",
+          "service": "elb",
+          "rationale": "To check if the TLS certificates are properly configured for the HTTPS load balancers"
+        }
+      ],
+      "mapping_notes": "Existing functions 'elbv2_ssl_listeners' and 'elb_ssl_listeners' partially cover the requirement as they check for SSL listeners but do not specifically check for TLS certificates. New functions 'elbv2_tls_certificate_check' and 'elb_tls_certificate_check' are suggested to fill this gap."
+    },
+    {
+      "compliance_id": "5.5.1",
+      "title": "Manage Kubernetes RBAC users with AWS IAM Authenticator for Kubernetes or Upgrade to AWS CLI v1.16.156 or greater",
+      "existing_functions_mapped": [],
+      "coverage_assessment": "none",
+      "new_functions_needed": [
+        {
+          "name": "eks_cluster_iam_authenticator_enabled",
+          "boto3_api": "eks.describe_cluster()",
+          "service": "eks",
+          "rationale": "To check if the AWS IAM Authenticator for Kubernetes is enabled for the EKS cluster"
+        },
+        {
+          "name": "aws_cli_version_check",
+          "boto3_api": "N/A",
+          "service": "awscli",
+          "rationale": "To ensure the AWS CLI version is v1.16.156 or greater. Note: This check might not be possible via boto3 and may require direct system access."
+        }
+      ],
+      "mapping_notes": "No existing functions in the provided list directly relate to the compliance requirement of managing Kubernetes RBAC users with AWS IAM Authenticator for Kubernetes or ensuring AWS CLI version is v1.16.156 or greater. Therefore, two new functions are suggested."
+    }
+  ],
+  "new_functions_suggested": [
+    {
+      "name": "eks_control_plane_logs_exported",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check if the control plane logs for a cluster are exported to a CloudWatch Log Group for persistence"
+    },
+    {
+      "name": "kubernetes_audit_logs_collected_managed",
+      "boto3_api": "N/A",
+      "service": "kubernetes",
+      "rationale": "To ensure that audit logs are collected and managed across all Kubernetes components as per the enterprise's audit log management process"
+    },
+    {
+      "name": "eks_kubeconfig_file_permissions_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check the permissions of the kubeconfig file for the EKS cluster"
+    },
+    {
+      "name": "eks_kubelet_kubeconfig_file_ownership_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check the ownership of the kubelet kubeconfig file in an EKS cluster"
+    },
+    {
+      "name": "eks_kubelet_config_file_permission_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check the permissions of the kubelet configuration file in an EKS cluster"
+    },
+    {
+      "name": "eks_kubelet_config_file_ownership_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check the ownership of the kubelet configuration file in the EKS cluster"
+    },
+    {
+      "name": "kubelet_server_anonymous_auth_disabled",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if anonymous authentication is disabled on the Kubelet server"
+    },
+    {
+      "name": "kubernetes_cluster_authorization_mode_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check the authorization mode of the Kubernetes cluster and ensure it is not set to AlwaysAllow"
+    },
+    {
+      "name": "eks_cluster_client_ca_file_configured",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if a Client CA File is configured in the EKS cluster as part of the Kubelet authentication process."
+    },
+    {
+      "name": "ecs_task_definitions_read_only_port_disabled",
+      "boto3_api": "ecs.describe_task_definition()",
+      "service": "ecs",
+      "rationale": "This function is needed to check if the read-only port is disabled in ECS task definitions"
+    },
+    {
+      "name": "streaming_connection_idle_timeout_check",
+      "boto3_api": "appstream.describe_stacks()",
+      "service": "appstream",
+      "rationale": "This function is needed to check the --streaming-connection-idle-timeout argument in AWS AppStream stacks"
+    },
+    {
+      "name": "kubelet_make_iptables_util_chains_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if the --make-iptables-util-chains argument is set to true in the Kubelet configuration"
+    },
+    {
+      "name": "kubelet_config_event_record_qps_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check the --eventRecordQPS argument in the Kubelet configuration to ensure it is set to 0 or a level which ensures appropriate event capture"
+    },
+    {
+      "name": "eks_cluster_rotate_certificates_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if the --rotate-certificates argument is not present or is set to true in the EKS cluster"
+    },
+    {
+      "name": "eks_cluster_rotate_kubelet_server_certificate_enabled",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if the RotateKubeletServerCertificate argument is set to true in the EKS cluster"
+    },
+    {
+      "name": "iam_role_usage_audit",
+      "boto3_api": "iam.list_entities_for_policy()",
+      "service": "iam",
+      "rationale": "This function is needed to identify all AWS entities (users, groups, and roles) that a specified managed policy is attached to."
+    },
+    {
+      "name": "iam_role_cluster_admin_check",
+      "boto3_api": "iam.get_role_policy()",
+      "service": "iam",
+      "rationale": "This function is needed to retrieve the permissions for the specified IAM role, specifically checking for the 'cluster-admin' role."
+    },
+    {
+      "name": "eks_secrets_access_restriction",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check if access to Kubernetes secrets is restricted to a minimal set of users"
+    },
+    {
+      "name": "iam_role_minimize_wildcard_use",
+      "boto3_api": "iam.list_roles()",
+      "service": "iam",
+      "rationale": "This function is needed to list all IAM roles and check if any role uses wildcard '*' in its policy. This will help in minimizing the use of wildcard in roles."
+    },
+    {
+      "name": "kubernetes_clusterrole_minimize_wildcard_use",
+      "boto3_api": "eks.list_cluster_roles()",
+      "service": "eks",
+      "rationale": "This function is needed to list all Kubernetes ClusterRoles and check if any ClusterRole uses wildcard '*' in its policy. This will help in minimizing the use of wildcard in ClusterRoles."
+    },
+    {
+      "name": "eks_namespace_minimize_pod_creation_access",
+      "boto3_api": "eks.list_namespaces()",
+      "service": "eks",
+      "rationale": "To check the access control on namespaces for pod creation"
+    },
+    {
+      "name": "eks_pod_security_policy_enforcement",
+      "boto3_api": "eks.describe_pod_security_policy()",
+      "service": "eks",
+      "rationale": "To ensure Pod Security Policies are implemented to restrict access"
+    },
+    {
+      "name": "iam_default_service_accounts_activity_check",
+      "boto3_api": "iam.list_account_aliases()",
+      "service": "iam",
+      "rationale": "This function is needed to check if the default service accounts are actively used."
+    },
+    {
+      "name": "kubernetes_pod_service_account_token_mount_check",
+      "boto3_api": "eks.list_pods()",
+      "service": "eks",
+      "rationale": "This function is needed to check if service account tokens are mounted in pods where they are not necessary"
+    },
+    {
+      "name": "eks_cluster_access_manager_api_enabled",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check if the Cluster Access Manager API is enabled for the EKS cluster"
+    },
+    {
+      "name": "eks_cluster_access_manager_api_access_policies_assigned",
+      "boto3_api": "eks.list_identity_provider_configs()",
+      "service": "eks",
+      "rationale": "To check if predefined AWS-managed Kubernetes permissions, known as 'access policies,' are assigned to IAM principals"
+    },
+    {
+      "name": "eks_cluster_access_manager_api_audit",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To provide visibility into cluster access configurations, facilitating easier auditing and compliance checks"
+    },
+    {
+      "name": "eks_cluster_limit_bind_permission",
+      "boto3_api": "eks.list_clusters()",
+      "service": "eks",
+      "rationale": "To check if the Bind permission is limited in the Kubernetes cluster"
+    },
+    {
+      "name": "eks_cluster_limit_impersonate_permission",
+      "boto3_api": "eks.list_clusters()",
+      "service": "eks",
+      "rationale": "To check if the Impersonate permission is limited in the Kubernetes cluster"
+    },
+    {
+      "name": "eks_cluster_limit_escalate_permission",
+      "boto3_api": "eks.list_clusters()",
+      "service": "eks",
+      "rationale": "To check if the Escalate permission is limited in the Kubernetes cluster"
+    },
+    {
+      "name": "eks_pod_security_policy_no_privileged_containers",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To ensure no privileged containers are admitted in EKS clusters, a Pod Security Policy needs to be enforced that disallows privileged containers."
+    },
+    {
+      "name": "fargate_task_definition_no_privileged_containers",
+      "boto3_api": "ecs.describe_task_definition()",
+      "service": "ecs",
+      "rationale": "To ensure no privileged containers are admitted in Fargate tasks, the task definition needs to be checked for privileged containers."
+    },
+    {
+      "name": "ecs_task_definitions_host_pid_namespace_check",
+      "boto3_api": "ecs.describe_task_definition()",
+      "service": "ecs",
+      "rationale": "This function is needed to check if the hostPID flag is set to true in the task definition, which would allow containers to share the host process ID namespace."
+    },
+    {
+      "name": "ecs_task_definitions_host_ipc_not_shared",
+      "boto3_api": "ecs.describe_task_definition()",
+      "service": "ecs",
+      "rationale": "To check if the hostIPC flag is set to true in the task definition"
+    },
+    {
+      "name": "ecs_task_definitions_no_allow_privilege_escalation",
+      "boto3_api": "ecs.describe_task_definition()",
+      "service": "ecs",
+      "rationale": "This function is needed to check if the 'allowPrivilegeEscalation' flag is set to true in any of the task definitions. If it is, the function should return a non-compliance."
+    },
+    {
+      "name": "eks_cni_plugin_supports_network_policies",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if the CNI plugin used in the EKS cluster supports network policies."
+    },
+    {
+      "name": "kubernetes_namespace_network_policy_defined",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if all Kubernetes namespaces have network policies defined"
+    },
+    {
+      "name": "kubernetes_secrets_as_files_preferred",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check if Kubernetes secrets are being used as files instead of environment variables"
+    },
+    {
+      "name": "secretsmanager_secret_rotation_enabled",
+      "boto3_api": "secretsmanager.describe_secret()",
+      "service": "secretsmanager",
+      "rationale": "To check if the secret rotation is enabled for the secrets stored in AWS Secrets Manager"
+    },
+    {
+      "name": "secretsmanager_secret_encryption_check",
+      "boto3_api": "secretsmanager.describe_secret()",
+      "service": "secretsmanager",
+      "rationale": "To check if the secrets stored in AWS Secrets Manager are encrypted"
+    },
+    {
+      "name": "secretsmanager_secret_access_audit",
+      "boto3_api": "cloudtrail.lookup_events()",
+      "service": "cloudtrail",
+      "rationale": "To audit the access to and use of secrets stored in AWS Secrets Manager"
+    },
+    {
+      "name": "eks_namespace_isolation_check",
+      "boto3_api": "eks.list_namespaces()",
+      "service": "eks",
+      "rationale": "This function is needed to check if namespaces are being used to isolate Kubernetes objects in EKS clusters"
+    },
+    {
+      "name": "eks_default_namespace_usage_check",
+      "boto3_api": "eks.list_namespaces()",
+      "service": "eks",
+      "rationale": "This function is needed to check if the default namespace is being used in the EKS cluster"
+    },
+    {
+      "name": "ecr_user_access_restriction",
+      "boto3_api": "ecr.get_repository_policy()",
+      "service": "ecr",
+      "rationale": "To ensure that only authorized personnel and service accounts have access to ECR repositories"
+    },
+    {
+      "name": "ecr_repositories_approved_registry_check",
+      "boto3_api": "ecr.describe_repositories()",
+      "service": "ecr",
+      "rationale": "To ensure that only approved container registries are being used, a new function is needed to check if the repositories in use are part of the approved list."
+    },
+    {
+      "name": "eks_service_account_dedicated_check",
+      "boto3_api": "eks.list_identity_provider_configs()",
+      "service": "eks",
+      "rationale": "To ensure that each Kubernetes workload is provisioned with a dedicated Service account for authentication to other AWS services using AWS IAM."
+    },
+    {
+      "name": "eks_cluster_secrets_encryption_check",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check if the Kubernetes secrets in the EKS cluster are encrypted using CMKs managed in AWS KMS"
+    },
+    {
+      "name": "eks_cluster_control_plane_endpoint_private_access",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if the EKS cluster's control plane endpoint is configured for private access only."
+    },
+    {
+      "name": "eks_cluster_private_endpoint_enabled",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "This function is needed to check if the private endpoint is enabled for the EKS cluster"
+    },
+    {
+      "name": "eks_cluster_network_policy_type",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check the type of network policy implemented in the EKS cluster"
+    },
+    {
+      "name": "eks_cluster_network_policy_ip_tables_rules",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check the IPTable filter rules set by the network policy"
+    },
+    {
+      "name": "elbv2_tls_certificate_check",
+      "boto3_api": "elbv2.describe_listeners()",
+      "service": "elbv2",
+      "rationale": "To check if the TLS certificates are properly configured for the HTTPS load balancers"
+    },
+    {
+      "name": "elb_tls_certificate_check",
+      "boto3_api": "elb.describe_load_balancers()",
+      "service": "elb",
+      "rationale": "To check if the TLS certificates are properly configured for the HTTPS load balancers"
+    },
+    {
+      "name": "eks_cluster_iam_authenticator_enabled",
+      "boto3_api": "eks.describe_cluster()",
+      "service": "eks",
+      "rationale": "To check if the AWS IAM Authenticator for Kubernetes is enabled for the EKS cluster"
+    },
+    {
+      "name": "aws_cli_version_check",
+      "boto3_api": "N/A",
+      "service": "awscli",
+      "rationale": "To ensure the AWS CLI version is v1.16.156 or greater. Note: This check might not be possible via boto3 and may require direct system access."
+    }
+  ]
+}

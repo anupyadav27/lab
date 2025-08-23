@@ -1,0 +1,324 @@
+{
+  "mapping_summary": {
+    "total_items": 10,
+    "timestamp": "2025-08-18T01:12:38.011890",
+    "coverage_breakdown": {
+      "complete": 9,
+      "partial": 1,
+      "none": 0
+    }
+  },
+  "mapping_results": [
+    {
+      "compliance_id": "1.1.1.1",
+      "title": "Ensure mounting of cramfs filesystems is disabled",
+      "existing_functions_mapped": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "filesystem_cramfs_mounting_disabled",
+            "filesystem_cramfs_mount_prohibited",
+            "filesystem_cramfs_usage_blocked",
+            "filesystem_cramfs_load_restricted",
+            "filesystem_cramfs_access_disabled"
+          ],
+          "new_consolidated_function": "filesystem_cramfs_mounting_disabled",
+          "rationale": "Consolidating these functions into one improves efficiency and reduces duplication, as they all address the same compliance requirement regarding the disabling of cramfs filesystems."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The compliance requirement to ensure the mounting of cramfs filesystems is disabled is fully covered by consolidating the existing functions into one named 'filesystem_cramfs_mounting_disabled'. This name follows the required naming standards and clearly describes the desired state."
+    },
+    {
+      "compliance_id": "1.1.2.1",
+      "title": "Ensure /tmp is a separate partition",
+      "existing_functions_mapped": [
+        "compute_filesystem_tmp_separate_partition",
+        "compute_filesystem_tmp_mounted_separately"
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "compute_filesystem_tmp_dedicated_partition",
+            "compute_filesystem_tmp_noexec_enabled",
+            "compute_filesystem_tmp_nodev_enabled",
+            "compute_filesystem_tmp_nosuid_enabled",
+            "compute_filesystem_tmp_restricted_permissions",
+            "compute_filesystem_tmp_world_writable_disabled"
+          ],
+          "new_consolidated_function": "compute_filesystem_tmp_security_hardening",
+          "rationale": "Consolidation improves efficiency by combining multiple checks related to the security and configuration of the /tmp directory into one comprehensive function."
+        }
+      ],
+      "coverage_assessment": "partial",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions 'compute_filesystem_tmp_separate_partition' and 'compute_filesystem_tmp_mounted_separately' cover the requirement of ensuring /tmp is a separate partition. However, additional functions related to security hardening of /tmp were consolidated into 'compute_filesystem_tmp_security_hardening' to ensure comprehensive coverage of the compliance item. This approach minimizes function count while ensuring all aspects of the compliance requirement are addressed."
+    },
+    {
+      "compliance_id": "1.1.2.2",
+      "title": "Ensure nodev option set on /tmp partition",
+      "existing_functions_mapped": [
+        "compute_tmp_partition_nodev_enabled",
+        "compute_mount_nodev_required"
+      ],
+      "functions_to_rename": [
+        {
+          "old_name": "compute_filesystem_nodev_enabled",
+          "new_name": "compute_filesystem_nodev_enabled",
+          "rationale": "This function name is already clear and follows naming standards."
+        },
+        {
+          "old_name": "filesystem_tmp_nodev_set",
+          "new_name": "filesystem_tmp_nodev_enabled",
+          "rationale": "Renaming improves clarity by using 'enabled' to indicate the desired state."
+        },
+        {
+          "old_name": "filesystem_partition_nodev_enabled",
+          "new_name": "filesystem_partition_nodev_enabled",
+          "rationale": "This function name is already clear and follows naming standards."
+        }
+      ],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "compute_filesystem_nodev_enabled",
+            "compute_tmp_partition_nodev_enabled",
+            "filesystem_tmp_nodev_set",
+            "filesystem_partition_nodev_enabled",
+            "compute_mount_nodev_required"
+          ],
+          "new_consolidated_function": "compute_tmp_partition_nodev_enabled",
+          "rationale": "Consolidation reduces duplication and focuses on the specific requirement of ensuring the nodev option is set on the /tmp partition."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'compute_tmp_partition_nodev_enabled' was selected as the best representative for the compliance requirement. The other functions were consolidated into this one to minimize function count while ensuring complete coverage of the requirement. The naming standards were adhered to, ensuring clarity and specificity in the function names."
+    },
+    {
+      "compliance_id": "1.1.2.3",
+      "title": "Ensure nosuid option set on /tmp partition",
+      "existing_functions_mapped": [
+        "filesystem_tmp_nosuid_enabled"
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "filesystem_tmp_partition_nosuid_set",
+            "filesystem_tmp_mount_option_nosuid",
+            "filesystem_tmp_nosuid_configured",
+            "filesystem_tmp_nosuid_restriction_enabled"
+          ],
+          "new_consolidated_function": "filesystem_tmp_nosuid_enabled",
+          "rationale": "Consolidation improves efficiency by reducing duplication of similar checks for the nosuid option on the /tmp partition."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'filesystem_tmp_nosuid_enabled' was identified as covering the compliance requirement. Other similar functions were consolidated into this one to minimize function count while ensuring complete coverage of the requirement."
+    },
+    {
+      "compliance_id": "1.1.3.1",
+      "title": "Ensure nodev option set on /dev/shm partition",
+      "existing_functions_mapped": [
+        "compute_shm_partition_nodev_enabled",
+        "system_shm_partition_nodev_enabled"
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "compute_shm_partition_nodev_enabled",
+            "compute_shm_partition_nodev_set",
+            "compute_dev_shm_nodev_enabled",
+            "compute_dev_shm_nodev_set",
+            "system_shm_partition_nodev_enabled",
+            "system_dev_shm_nodev_enabled"
+          ],
+          "new_consolidated_function": "compute_shm_partition_nodev_enabled",
+          "rationale": "Consolidation improves efficiency by reducing duplication of similar checks for the nodev option on shared memory partitions."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing functions related to the nodev option on /dev/shm were consolidated into one function, `compute_shm_partition_nodev_enabled`, which covers the compliance requirement effectively. This consolidation reduces redundancy and adheres to the naming standards."
+    },
+    {
+      "compliance_id": "1.1.3.2",
+      "title": "Ensure nosuid option set on /dev/shm partition",
+      "existing_functions_mapped": [
+        "compute_shm_nosuid_enabled",
+        "compute_partition_nosuid_enabled",
+        "compute_dev_shm_nosuid_enabled",
+        "linux_shm_nosuid_enabled",
+        "linux_partition_nosuid_enabled"
+      ],
+      "functions_to_rename": [
+        {
+          "old_name": "compute_shm_nosuid_enabled",
+          "new_name": "compute_partition_nosuid_enabled",
+          "rationale": "Renaming to a more general term that covers both /dev/shm and other partitions while following naming standards."
+        },
+        {
+          "old_name": "compute_partition_nosuid_enabled",
+          "new_name": "compute_partition_nosuid_enabled",
+          "rationale": "No change needed, already follows naming standards."
+        },
+        {
+          "old_name": "compute_dev_shm_nosuid_enabled",
+          "new_name": "compute_partition_nosuid_enabled",
+          "rationale": "Consolidating under the general partition check to avoid redundancy."
+        },
+        {
+          "old_name": "linux_shm_nosuid_enabled",
+          "new_name": "compute_partition_nosuid_enabled",
+          "rationale": "Consolidating under the general partition check to avoid redundancy."
+        },
+        {
+          "old_name": "linux_partition_nosuid_enabled",
+          "new_name": "compute_partition_nosuid_enabled",
+          "rationale": "Consolidating under the general partition check to avoid redundancy."
+        }
+      ],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "compute_shm_nosuid_enabled",
+            "compute_partition_nosuid_enabled",
+            "compute_dev_shm_nosuid_enabled",
+            "linux_shm_nosuid_enabled",
+            "linux_partition_nosuid_enabled"
+          ],
+          "new_consolidated_function": "compute_partition_nosuid_enabled",
+          "rationale": "Consolidation improves efficiency by reducing duplication of similar checks across different contexts."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "All existing functions related to nosuid checks have been consolidated into one function, 'compute_partition_nosuid_enabled', which covers the compliance requirement effectively. This consolidation reduces redundancy and adheres to naming standards."
+    },
+    {
+      "compliance_id": "1.1.4",
+      "title": "Disable Automounting",
+      "existing_functions_mapped": [
+        "compute_instance_automount_disabled",
+        "compute_volume_automount_disabled",
+        "compute_device_automount_disabled",
+        "compute_system_automount_disabled",
+        "compute_autofs_disabled",
+        "compute_automount_service_disabled",
+        "compute_autofs_service_disabled",
+        "compute_automount_config_disabled"
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "compute_instance_automount_disabled",
+            "compute_volume_automount_disabled",
+            "compute_device_automount_disabled",
+            "compute_system_automount_disabled",
+            "compute_autofs_disabled",
+            "compute_automount_service_disabled",
+            "compute_autofs_service_disabled",
+            "compute_automount_config_disabled"
+          ],
+          "new_consolidated_function": "compute_automount_disabled",
+          "rationale": "Consolidation improves efficiency by reducing duplication of similar functions that all check for automounting being disabled."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "All existing functions related to automounting have been consolidated into one function, `compute_automount_disabled`, which clearly indicates the requirement to disable automounting across various contexts. This consolidation reduces redundancy and adheres to naming standards."
+    },
+    {
+      "compliance_id": "1.2.1",
+      "title": "Ensure DNF gpgcheck is globally activated",
+      "existing_functions_mapped": [
+        "dnf_global_gpgcheck_activated"
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "dnf_config_gpgcheck_enabled",
+            "dnf_repo_gpgcheck_enabled_all",
+            "dnf_package_signature_validation_enabled",
+            "dnf_repo_files_gpgcheck_enabled"
+          ],
+          "new_consolidated_function": "dnf_gpgcheck_enabled",
+          "rationale": "Consolidation improves efficiency by reducing duplication of similar checks related to gpgcheck across different configurations."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The existing function 'dnf_global_gpgcheck_activated' covers the requirement for ensuring that gpgcheck is globally activated. The consolidation of the other functions into 'dnf_gpgcheck_enabled' allows for a comprehensive check of gpgcheck settings across various configurations, ensuring all aspects of the compliance requirement are met without redundancy."
+    },
+    {
+      "compliance_id": "1.2.2",
+      "title": "Ensure TDNF gpgcheck is globally activated",
+      "existing_functions_mapped": [
+        "package_manager_tdnf_gpgcheck_enabled",
+        "package_manager_repo_gpgcheck_enabled",
+        "package_manager_tdnf_conf_gpgcheck_activated",
+        "package_manager_repo_files_gpgcheck_activated",
+        "package_manager_tdnf_signature_verification_enabled",
+        "package_manager_repo_signature_verification_enabled"
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "package_manager_tdnf_gpgcheck_enabled",
+            "package_manager_repo_gpgcheck_enabled",
+            "package_manager_tdnf_conf_gpgcheck_activated",
+            "package_manager_repo_files_gpgcheck_activated"
+          ],
+          "new_consolidated_function": "package_manager_tdnf_gpgcheck_activated",
+          "rationale": "Consolidating these functions into one improves efficiency by reducing duplication and focuses on the global activation of gpgcheck."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "The compliance requirement to ensure that gpgcheck is globally activated is covered by consolidating existing functions that check the gpgcheck status in various configurations. The consolidated function 'package_manager_tdnf_gpgcheck_activated' effectively captures the essence of the compliance requirement while adhering to naming standards."
+    },
+    {
+      "compliance_id": "1.3.1",
+      "title": "Ensure core dump storage is disabled",
+      "existing_functions_mapped": [
+        "compute_instance_core_dump_disabled",
+        "compute_vm_core_dump_disabled",
+        "compute_system_core_dump_disabled",
+        "compute_kernel_core_dump_disabled",
+        "compute_process_core_dump_disabled",
+        "compute_security_core_dump_disabled",
+        "compute_memory_core_dump_disabled",
+        "compute_os_core_dump_disabled"
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "old_functions": [
+            "compute_instance_core_dump_disabled",
+            "compute_vm_core_dump_disabled",
+            "compute_system_core_dump_disabled",
+            "compute_kernel_core_dump_disabled",
+            "compute_process_core_dump_disabled",
+            "compute_security_core_dump_disabled",
+            "compute_memory_core_dump_disabled",
+            "compute_os_core_dump_disabled"
+          ],
+          "new_consolidated_function": "compute_core_dump_disabled",
+          "rationale": "Consolidation improves efficiency by reducing duplication of similar core dump checks into a single function."
+        }
+      ],
+      "coverage_assessment": "complete",
+      "new_functions_needed": [],
+      "mapping_notes": "All existing functions related to core dump checks have been consolidated into one function, 'compute_core_dump_disabled', which adheres to the naming standards and effectively covers the compliance requirement."
+    }
+  ]
+}

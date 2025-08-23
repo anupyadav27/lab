@@ -1,0 +1,639 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-16T22:49:39.811151",
+    "total_new_functions": 63,
+    "description": "New Kubernetes security functions suggested by compliance mapper for Python code generation"
+  },
+  "new_functions": [
+    {
+      "function_name": "apiserver_pod_spec_file_permissions",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l <file_path>",
+      "rationale": "This function is needed to check the permissions of the API server pod specification file and ensure they are set to 644 or more restrictive.",
+      "compliance_id": "1.1.1",
+      "compliance_title": "Ensure that the API server pod specification file permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'apiserver_pod_spec_file_permissions' is suggested to check the permissions of the API server pod specification file."
+    },
+    {
+      "function_name": "apiserver_pod_spec_file_ownership",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- chown root:root <file_path>",
+      "rationale": "This function is needed to ensure that the API server pod specification file ownership is set to root:root, which is a security best practice to prevent unauthorized modifications.",
+      "compliance_id": "1.1.2",
+      "compliance_title": "Ensure that the API server pod specification file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirement of setting the API server pod specification file ownership to root:root. Therefore, a new function 'apiserver_pod_spec_file_ownership' is suggested."
+    },
+    {
+      "function_name": "controllermanager_pod_spec_file_permissions",
+      "service": "controllermanager",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "This function is needed to check the permissions of the controller manager pod specification file to ensure they are set to 644 or more restrictive",
+      "compliance_id": "1.1.3",
+      "compliance_title": "Ensure that the controller manager pod specification file permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'controllermanager_pod_spec_file_permissions' is suggested to check the permissions of the controller manager pod specification file."
+    },
+    {
+      "function_name": "controllermanager_pod_spec_file_ownership",
+      "service": "controllermanager",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- chown root:root <file_path>",
+      "rationale": "This function is needed to ensure that the controller manager pod specification file ownership is set to root:root, which is a security best practice to prevent unauthorized modifications.",
+      "compliance_id": "1.1.4",
+      "compliance_title": "Ensure that the controller manager pod specification file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'controllermanager_pod_spec_file_ownership' is suggested."
+    },
+    {
+      "function_name": "scheduler_pod_spec_file_permissions",
+      "service": "scheduler",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[?(@.metadata.name==\"kube-scheduler\")].spec.containers[0].volumeMounts[?(@.name==\"kubeconfig\")].readOnly}'",
+      "rationale": "This function is needed to ensure that the scheduler pod specification file permissions are set to 644 or more restrictive",
+      "compliance_id": "1.1.5",
+      "compliance_title": "Ensure that the scheduler pod specification file permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions could be mapped to this compliance requirement. A new function 'scheduler_pod_spec_file_permissions' is suggested to check the permissions of the scheduler pod specification file."
+    },
+    {
+      "function_name": "scheduler_pod_spec_file_ownership",
+      "service": "scheduler",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "To ensure that the scheduler pod specification file ownership is set to root:root",
+      "compliance_id": "1.1.6",
+      "compliance_title": "Ensure that the scheduler pod specification file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'scheduler_pod_spec_file_ownership' is suggested to check the ownership of the scheduler pod specification file."
+    },
+    {
+      "function_name": "etcd_pod_spec_file_permissions",
+      "service": "etcd",
+      "kubernetes_api": "kubectl exec -it etcd-master -- ls -l /etc/kubernetes/manifests/etcd.yaml",
+      "rationale": "This function is needed to check the permissions of the etcd pod specification file and ensure they are set to 644 or more restrictive",
+      "compliance_id": "1.1.7",
+      "compliance_title": "Ensure that the etcd pod specification file permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'etcd_pod_spec_file_permissions' is suggested to check the permissions of the etcd pod specification file."
+    },
+    {
+      "function_name": "etcd_pod_spec_file_ownership",
+      "service": "etcd",
+      "kubernetes_api": "kubectl exec -it etcd-master -- chown root:root /etc/kubernetes/manifests/etcd.yaml",
+      "rationale": "This function is needed to ensure that the etcd pod specification file ownership is set to root:root, which is a security best practice to prevent unauthorized modifications.",
+      "compliance_id": "1.1.8",
+      "compliance_title": "Ensure that the etcd pod specification file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'etcd_pod_spec_file_ownership' is suggested to check and set the ownership of the etcd pod specification file to root:root."
+    },
+    {
+      "function_name": "container_network_interface_file_permissions",
+      "service": "core",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /etc/cni/net.d/",
+      "rationale": "This function is needed to check the permissions of the Container Network Interface files and ensure they are set to 644 or more restrictive.",
+      "compliance_id": "1.1.9",
+      "compliance_title": "Ensure that the Container Network Interface file permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'container_network_interface_file_permissions' is suggested to check the permissions of the Container Network Interface files."
+    },
+    {
+      "function_name": "container_network_interface_file_ownership",
+      "service": "core",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- chown root:root <cni_file_path>",
+      "rationale": "This function is needed to ensure that the Container Network Interface file ownership is set to root:root, which is a security best practice to prevent unauthorized modifications.",
+      "compliance_id": "1.1.10",
+      "compliance_title": "Ensure that the Container Network Interface file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'container_network_interface_file_ownership' is suggested to check and set the ownership of the Container Network Interface files to root:root."
+    },
+    {
+      "function_name": "etcd_data_directory_permissions_check",
+      "service": "etcd",
+      "kubernetes_api": "kubectl exec etcd-master -n kube-system -- sh -c 'stat -c %a /var/lib/etcd'",
+      "rationale": "This function is needed to check the permissions of the etcd data directory and ensure they are set to 700 or more restrictive",
+      "compliance_id": "1.1.11",
+      "compliance_title": "Ensure that the etcd data directory permissions are set to 700 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy the compliance requirement of checking the etcd data directory permissions. A new function 'etcd_data_directory_permissions_check' is suggested."
+    },
+    {
+      "function_name": "etcd_data_directory_ownership_check",
+      "service": "etcd",
+      "kubernetes_api": "kubectl exec etcd-pod -- chown -R etcd:etcd /var/lib/etcd",
+      "rationale": "To ensure that the etcd data directory ownership is set to etcd:etcd as per the compliance requirement",
+      "compliance_id": "1.1.12",
+      "compliance_title": "Ensure that the etcd data directory ownership is set to etcd:etcd",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring the etcd data directory ownership is set to etcd:etcd. Hence, a new function 'etcd_data_directory_ownership_check' is suggested."
+    },
+    {
+      "function_name": "admin_conf_file_permissions",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /etc/kubernetes/admin.conf",
+      "rationale": "This function is needed to check the permissions of the admin.conf file and ensure they are set to 644",
+      "compliance_id": "1.1.13",
+      "compliance_title": "Ensure that the admin.conf file permissions are set to 644",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'admin_conf_file_permissions' is suggested to check the permissions of the admin.conf file."
+    },
+    {
+      "function_name": "apiserver_admin_conf_file_ownership",
+      "service": "apiserver",
+      "kubernetes_api": "ls -l /etc/kubernetes/admin.conf",
+      "rationale": "To ensure that the admin.conf file ownership is set to root:root, a new function is needed that checks the ownership of this file.",
+      "compliance_id": "1.1.14",
+      "compliance_title": "Ensure that the admin.conf file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing function in the database checks the ownership of the admin.conf file. A new function is proposed to fill this gap."
+    },
+    {
+      "function_name": "scheduler_conf_file_permissions",
+      "service": "scheduler",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /etc/kubernetes/scheduler.conf",
+      "rationale": "This function is needed to check the permissions of the scheduler.conf file and ensure they are set to 644 or more restrictive.",
+      "compliance_id": "1.1.15",
+      "compliance_title": "Ensure that the scheduler.conf file permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'scheduler_conf_file_permissions' is suggested to check the permissions of the scheduler.conf file."
+    },
+    {
+      "function_name": "scheduler_conf_file_ownership",
+      "service": "scheduler",
+      "kubernetes_api": "kubectl exec -it <pod_name> -n kube-system -- ls -l /etc/kubernetes/scheduler.conf",
+      "rationale": "This function is needed to check the ownership of the scheduler.conf file and ensure it is set to root:root",
+      "compliance_id": "1.1.16",
+      "compliance_title": "Ensure that the scheduler.conf file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing function in the database matches the compliance requirement of checking the ownership of the scheduler.conf file. A new function 'scheduler_conf_file_ownership' is suggested."
+    },
+    {
+      "function_name": "controllermanager_conf_file_permissions",
+      "service": "controllermanager",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /etc/kubernetes/controller-manager.conf",
+      "rationale": "This function is needed to check the permissions of the controller-manager.conf file and ensure they are set to 644 or more restrictive.",
+      "compliance_id": "1.1.17",
+      "compliance_title": "Ensure that the controller-manager.conf file permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'controllermanager_conf_file_permissions' is suggested to check the permissions of the controller-manager.conf file."
+    },
+    {
+      "function_name": "controllermanager_conf_file_ownership",
+      "service": "controllermanager",
+      "kubernetes_api": "ls -l /etc/kubernetes/controller-manager.conf",
+      "rationale": "To ensure that the controller-manager.conf file ownership is set to root:root",
+      "compliance_id": "1.1.18",
+      "compliance_title": "Ensure that the controller-manager.conf file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing function could be mapped to this compliance requirement. A new function 'controllermanager_conf_file_ownership' is suggested to check the ownership of the controller-manager.conf file."
+    },
+    {
+      "function_name": "kubelet_pki_directory_file_ownership",
+      "service": "kubelet",
+      "kubernetes_api": "kubectl exec -it <node-name> -- chown -R root:root /etc/kubernetes/pki/",
+      "rationale": "This function is needed to ensure that the Kubernetes PKI directory and file ownership is set to root:root, which is a security best practice to prevent unauthorized access or modifications.",
+      "compliance_id": "1.1.19",
+      "compliance_title": "Ensure that the Kubernetes PKI directory and file ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring the Kubernetes PKI directory and file ownership is set to root:root. A new function, kubelet_pki_directory_file_ownership, is suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_pki_cert_file_permissions",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /etc/kubernetes/pki/",
+      "rationale": "To ensure that the Kubernetes PKI certificate files have permissions of 600 or more restrictive",
+      "compliance_id": "1.1.20",
+      "compliance_title": "Ensure that the Kubernetes PKI certificate file permissions are set to 600 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring that the Kubernetes PKI certificate file permissions are set to 600 or more restrictive. A new function 'apiserver_pki_cert_file_permissions' is suggested to fill this gap."
+    },
+    {
+      "function_name": "kubernetes_pki_key_file_permissions_check",
+      "service": "core",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /etc/kubernetes/pki/",
+      "rationale": "This function is needed to ensure that the Kubernetes PKI key files have permissions of 600.",
+      "compliance_id": "1.1.21",
+      "compliance_title": "Ensure that the Kubernetes PKI key file permissions are set to 600",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'kubernetes_pki_key_file_permissions_check' is suggested to check the permissions of Kubernetes PKI key files."
+    },
+    {
+      "function_name": "etcd_certfile_keyfile_set",
+      "service": "etcd",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[*].spec.containers[*].command}'",
+      "rationale": "To ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate, a new function is needed to specifically check these arguments in the etcd configuration.",
+      "compliance_id": "1.2.25",
+      "compliance_title": "Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'apiserver_etcd_tls_config' and 'etcd_tls_encryption' partially cover the compliance requirement by ensuring that etcd is configured to use TLS encryption. However, they do not specifically check the --etcd-certfile and --etcd-keyfile arguments. Therefore, a new function 'etcd_certfile_keyfile_set' is suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_tls_cert_file_set",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[?(@.metadata.labels.component==\"kube-apiserver\")].spec.containers[0].command}' | grep -- '--tls-cert-file'",
+      "rationale": "This function is needed to ensure that the --tls-cert-file argument is set in the API server configuration.",
+      "compliance_id": "1.2.26",
+      "compliance_title": "Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_tls_config' partially covers the compliance requirement as it checks the TLS configuration of the API server. However, it does not specifically check for the --tls-cert-file and --tls-private-key-file arguments. Therefore, two new functions 'apiserver_tls_cert_file_set' and 'apiserver_tls_private_key_file_set' are suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_tls_private_key_file_set",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[?(@.metadata.labels.component==\"kube-apiserver\")].spec.containers[0].command}' | grep -- '--tls-private-key-file'",
+      "rationale": "This function is needed to ensure that the --tls-private-key-file argument is set in the API server configuration.",
+      "compliance_id": "1.2.26",
+      "compliance_title": "Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_tls_config' partially covers the compliance requirement as it checks the TLS configuration of the API server. However, it does not specifically check for the --tls-cert-file and --tls-private-key-file arguments. Therefore, two new functions 'apiserver_tls_cert_file_set' and 'apiserver_tls_private_key_file_set' are suggested to fill this gap."
+    },
+    {
+      "function_name": "controllermanager_terminated_pod_gc_threshold_set",
+      "service": "controllermanager",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "This function is needed to ensure that the --terminated-pod-gc-threshold argument is set as appropriate, which is not covered by the existing functions.",
+      "compliance_id": "1.3.1",
+      "compliance_title": "Ensure that the --terminated-pod-gc-threshold argument is set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'controllermanager_garbage_collection' partially covers the compliance requirement as it checks for the activation of garbage collector. However, it does not specifically check if the --terminated-pod-gc-threshold argument is set as appropriate. Hence, a new function 'controllermanager_terminated_pod_gc_threshold_set' is suggested."
+    },
+    {
+      "function_name": "apiserver_root_ca_file_set",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{range .items[*]}{.spec.containers[*].command}{\"\\n\"}{end}' | grep kube-apiserver | grep -- --root-ca-file",
+      "rationale": "This function is needed to ensure that the --root-ca-file argument is set as appropriate in the API server",
+      "compliance_id": "1.3.5",
+      "compliance_title": "Ensure that the --root-ca-file argument is set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions check if the --client-ca-file argument is set for the API server, controller manager, and kubelet, which is related but not exactly the same as the --root-ca-file argument. Therefore, a new function is needed to specifically check the --root-ca-file argument in the API server."
+    },
+    {
+      "function_name": "etcd_cert_file_and_key_file_set",
+      "service": "etcd",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[*].spec.containers[*].command}'",
+      "rationale": "To ensure that the --cert-file and --key-file arguments are set as appropriate for etcd service",
+      "compliance_id": "2.1",
+      "compliance_title": "Ensure that the --cert-file and --key-file arguments are set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'apiserver_etcd_tls_config' and 'etcd_tls_encryption' partially cover the compliance requirement. However, they do not specifically check if the --cert-file and --key-file arguments are set. Therefore, a new function 'etcd_cert_file_and_key_file_set' is suggested."
+    },
+    {
+      "function_name": "apiserver_no_auto_tls",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[?(@.metadata.labels.component==\"kube-apiserver\")].spec.containers[0].command}'",
+      "rationale": "To ensure that the --auto-tls argument is not set to true in the apiserver",
+      "compliance_id": "2.3",
+      "compliance_title": "Ensure that the --auto-tls argument is not set to true",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'etcd_no_auto_tls' partially covers the compliance requirement. However, it only checks the etcd service. A new function 'apiserver_no_auto_tls' is needed to check the apiserver service."
+    },
+    {
+      "function_name": "etcd_peer_cert_file_set",
+      "service": "etcd",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[*].spec.containers[*].command}' | grep -- --peer-cert-file",
+      "rationale": "To ensure that the --peer-cert-file argument is set as appropriate",
+      "compliance_id": "2.4",
+      "compliance_title": "Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'etcd_peer_tls_config' partially covers the compliance requirement by checking the TLS configuration for etcd peer connections. However, it does not specifically check for the --peer-cert-file and --peer-key-file arguments. Therefore, two new functions 'etcd_peer_cert_file_set' and 'etcd_peer_key_file_set' are suggested to fill this gap."
+    },
+    {
+      "function_name": "etcd_peer_key_file_set",
+      "service": "etcd",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[*].spec.containers[*].command}' | grep -- --peer-key-file",
+      "rationale": "To ensure that the --peer-key-file argument is set as appropriate",
+      "compliance_id": "2.4",
+      "compliance_title": "Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'etcd_peer_tls_config' partially covers the compliance requirement by checking the TLS configuration for etcd peer connections. However, it does not specifically check for the --peer-cert-file and --peer-key-file arguments. Therefore, two new functions 'etcd_peer_cert_file_set' and 'etcd_peer_key_file_set' are suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_disable_user_client_cert_auth",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get --raw /api/v1/nodes/<node>/proxy/configz | jq .componentconfig.authentication",
+      "rationale": "To ensure client certificate authentication is not used for users, a function to disable this feature is needed.",
+      "compliance_id": "3.1.1",
+      "compliance_title": "Client certificate authentication should not be used for users",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'apiserver_auth_mode_include_rbac', 'apiserver_auth_mode_not_always_allow', and 'apiserver_client_ca_file_set' partially cover the compliance requirement as they relate to authentication modes and client certificate settings. However, there is no specific function to disable client certificate authentication for users, hence the need for a new function 'apiserver_disable_user_client_cert_auth'."
+    },
+    {
+      "function_name": "apiserver_disable_service_account_token_for_users",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get serviceaccounts -A",
+      "rationale": "To ensure that service account tokens are not used for user authentication, a function is needed to check and disable this setting.",
+      "compliance_id": "3.1.2",
+      "compliance_title": "Service account token authentication should not be used for users",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions provide partial coverage as they deal with service account tokens but do not specifically address the requirement of not using these tokens for user authentication. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_bootstrap_token_auth_check",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get clusterrolebindings system:controller:bootstrap-signer -o json",
+      "rationale": "To ensure bootstrap tokens are not used for general authentication, we need to check the permissions of the bootstrap-signer controller",
+      "compliance_id": "3.1.3",
+      "compliance_title": "Bootstrap token authentication should not be used for users",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_no_token_auth_file' partially covers the compliance requirement by ensuring that token authentication is not used. However, it does not specifically check for bootstrap token usage. Therefore, a new function 'apiserver_bootstrap_token_auth_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_audit_policy_file_set",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "This function is needed to ensure that the --audit-policy-file flag is set, which is a requirement for enabling logging of requests made to the API server.",
+      "compliance_id": "3.2.1",
+      "compliance_title": "Ensure that a minimal audit policy is created",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions cover the settings for the audit log such as max age, max backup, max size, and log path. However, there is no function that checks if the --audit-policy-file flag is set. Therefore, a new function 'apiserver_audit_policy_file_set' is suggested."
+    },
+    {
+      "function_name": "apiserver_audit_policy_security_concerns_check",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "To ensure that the audit policy covers key security concerns, a function is needed to check the audit policy for specific security concerns.",
+      "compliance_id": "3.2.2",
+      "compliance_title": "Ensure that the audit policy covers key security concerns",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions related to audit logs in the apiserver were mapped as they are relevant to the audit policy. However, none of the existing functions specifically check for coverage of key security concerns in the audit policy, hence the need for a new function."
+    },
+    {
+      "function_name": "kube_proxy_kubeconfig_file_permissions",
+      "service": "kube-proxy",
+      "kubernetes_api": "kubectl exec -it kube-proxy -- ls -l /etc/kubernetes/proxy",
+      "rationale": "This function is needed to check the permissions of the kube-proxy kubeconfig file and ensure they are set to 644 or more restrictive.",
+      "compliance_id": "4.1.3",
+      "compliance_title": "If proxy kubeconfig file exists ensure permissions are set to 644 or more restrictive",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'kube_proxy_kubeconfig_file_permissions' is suggested to check the permissions of the kube-proxy kubeconfig file."
+    },
+    {
+      "function_name": "kube_proxy_kubeconfig_file_ownership",
+      "service": "kube-proxy",
+      "kubernetes_api": "kubectl exec -it kube-proxy -- chown root:root /etc/kubernetes/proxy.conf",
+      "rationale": "This function is needed to ensure the kube-proxy kubeconfig file ownership is set to root:root",
+      "compliance_id": "4.1.4",
+      "compliance_title": "If proxy kubeconfig file exists ensure ownership is set to root:root",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy the compliance requirement of ensuring the kube-proxy kubeconfig file ownership is set to root:root. A new function 'kube_proxy_kubeconfig_file_ownership' is suggested."
+    },
+    {
+      "function_name": "check_ca_file_permissions",
+      "service": "core",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /path/to/ca/file",
+      "rationale": "To ensure that the certificate authorities file permissions are set to 600 or more restrictive, a function to check the file permissions is needed.",
+      "compliance_id": "4.1.7",
+      "compliance_title": "Ensure that the certificate authorities file permissions are set to 600 or more restrictive",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions check if the certificate authorities file is set, but they do not check the file permissions. Therefore, a new function is needed to check the file permissions."
+    },
+    {
+      "function_name": "verify_client_ca_file_ownership",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl exec -it <pod_name> -- ls -l /etc/kubernetes/pki",
+      "rationale": "To ensure that the client certificate authorities file ownership is set to root:root, we need a function that can verify the ownership of the file.",
+      "compliance_id": "4.1.8",
+      "compliance_title": "Ensure that the client certificate authorities file ownership is set to root:root",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'apiserver_client_ca_file_set' and 'kubelet_client_ca_file_set' can be used to check if the client certificate authorities file is set, but they do not verify the ownership of the file. Therefore, a new function 'verify_client_ca_file_ownership' is suggested."
+    },
+    {
+      "function_name": "kubelet_no_hostname_override",
+      "service": "kubelet",
+      "kubernetes_api": "kubectl get nodes -o jsonpath='{.items[*].spec.taints}'",
+      "rationale": "This function is needed to ensure that the --hostname-override argument is not set in kubelet configuration",
+      "compliance_id": "4.2.7",
+      "compliance_title": "Ensure that the --hostname-override argument is not set",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy this compliance requirement. A new function 'kubelet_no_hostname_override' is suggested to check if the --hostname-override argument is not set in kubelet configuration."
+    },
+    {
+      "function_name": "kubelet_set_pod_pid_limit",
+      "service": "kubelet",
+      "kubernetes_api": "kubectl describe node | grep -i 'PodPidsLimit'",
+      "rationale": "This function is needed to ensure that the Kubelet sets limits on the number of PIDs that can be created by pods running on the node.",
+      "compliance_id": "4.2.13",
+      "compliance_title": "Ensure that a limit is set on pod PIDs",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to setting a limit on pod PIDs. A new function 'kubelet_set_pod_pid_limit' is suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_restrict_secrets_access",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get secrets --all-namespaces",
+      "rationale": "To ensure that access to secrets is restricted to the smallest possible group of users",
+      "compliance_id": "5.1.2",
+      "compliance_title": "Minimize access to secrets",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'rbac_minimize_secret_access' partially covers the compliance requirement by minimizing access to secrets through RBAC. However, additional functions are needed to restrict access to secrets at the API server level and to prevent exposure of secrets in environment variables."
+    },
+    {
+      "function_name": "core_no_secrets_in_envs",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{.items[*].spec.containers[*].env[*].valueFrom.secretKeyRef}'",
+      "rationale": "To ensure that secrets are not exposed in environment variables",
+      "compliance_id": "5.1.2",
+      "compliance_title": "Minimize access to secrets",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'rbac_minimize_secret_access' partially covers the compliance requirement by minimizing access to secrets through RBAC. However, additional functions are needed to restrict access to secrets at the API server level and to prevent exposure of secrets in environment variables."
+    },
+    {
+      "function_name": "core_default_service_account_usage_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get serviceaccounts -A",
+      "rationale": "To ensure that default service accounts are not actively used, a function is needed to check the usage of default service accounts across all namespaces.",
+      "compliance_id": "5.1.5",
+      "compliance_title": "Ensure that default service accounts are not actively used.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide controls over service account configuration and token creation, but none specifically checks for the active usage of default service accounts. A new function is proposed to fill this gap."
+    },
+    {
+      "function_name": "core_minimize_service_account_token_mounts",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{\"\\n\"}{\"Pod: \"}{.metadata.name}{\", Namespace: \"}{.metadata.namespace}{\", ServiceAccountToken: \"}{.spec.volumes[*].secret.secretName}{\"\\n\"}'",
+      "rationale": "This function is needed to ensure that Service Account Tokens are only mounted where necessary. It checks all pods in all namespaces for mounted service account tokens and reports any unnecessary mounts.",
+      "compliance_id": "5.1.6",
+      "compliance_title": "Ensure that Service Account Tokens are only mounted where necessary",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirement of minimizing service account token mounts. A new function, 'core_minimize_service_account_token_mounts', is proposed to fill this gap."
+    },
+    {
+      "function_name": "avoid_system_masters_group_usage",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get clusterrolebindings,rolebindings --all-namespaces -o json",
+      "rationale": "This function is needed to check if the system:masters group is used in any role bindings, which is against the compliance requirement",
+      "compliance_id": "5.1.7",
+      "compliance_title": "Avoid use of system:masters group",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of avoiding the use of system:masters group. A new function 'avoid_system_masters_group_usage' is suggested to fill this gap."
+    },
+    {
+      "function_name": "rbac_limit_bind_impersonate_escalate_permissions",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get clusterroles -o json",
+      "rationale": "To ensure that cluster roles and roles do not have the bind, impersonate, or escalate permissions unless strictly required",
+      "compliance_id": "5.1.8",
+      "compliance_title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of limiting the use of bind, impersonate, and escalate permissions in the Kubernetes cluster. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "rbac_minimize_validatingwebhookconfigurations_access",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get validatingwebhookconfigurations --all-namespaces -o json",
+      "rationale": "To ensure that access to validatingwebhookconfigurations is minimized",
+      "compliance_id": "5.1.12",
+      "compliance_title": "Minimize access to webhook configuration objects",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'rbac_minimize_webhook_config_access' partially covers the compliance requirement. However, it does not specifically address access to 'validatingwebhookconfigurations' and 'mutatingwebhookconfigurations'. Therefore, two new functions are suggested to cover these specific aspects."
+    },
+    {
+      "function_name": "rbac_minimize_mutatingwebhookconfigurations_access",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get mutatingwebhookconfigurations --all-namespaces -o json",
+      "rationale": "To ensure that access to mutatingwebhookconfigurations is minimized",
+      "compliance_id": "5.1.12",
+      "compliance_title": "Minimize access to webhook configuration objects",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'rbac_minimize_webhook_config_access' partially covers the compliance requirement. However, it does not specifically address access to 'validatingwebhookconfigurations' and 'mutatingwebhookconfigurations'. Therefore, two new functions are suggested to cover these specific aspects."
+    },
+    {
+      "function_name": "apiserver_check_active_policy_control",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "To ensure that at least one active policy control mechanism is in place",
+      "compliance_id": "5.2.1",
+      "compliance_title": "Ensure that the cluster has at least one active policy control mechanism in place",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions mapped are related to various policy control mechanisms in Kubernetes. However, none of them directly checks if at least one active policy control mechanism is in place, hence the need for a new function."
+    },
+    {
+      "function_name": "core_minimize_admission_hostpath_volumes",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.volumes[*].hostPath.path}{\"\\n\"}{end}'",
+      "rationale": "This function is needed to check if any pod is using hostPath volumes, which is a security risk as it can provide containers with access to the filesystem on the host node.",
+      "compliance_id": "5.2.12",
+      "compliance_title": "Minimize the admission of HostPath volumes",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of minimizing the admission of HostPath volumes. A new function is proposed to fill this gap."
+    },
+    {
+      "function_name": "cni_network_policy_support_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "This function is needed to check if the CNI in use supports Network Policies",
+      "compliance_id": "5.3.1",
+      "compliance_title": "Ensure that the CNI in use supports Network Policies",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to checking the CNI for Network Policy support. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "namespace_network_policy_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get networkpolicies --all-namespaces",
+      "rationale": "This function is needed to ensure that all namespaces have network policies defined to isolate traffic in the cluster network.",
+      "compliance_id": "5.3.2",
+      "compliance_title": "Ensure that all Namespaces have Network Policies defined",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to checking if all namespaces have network policies defined. Therefore, a new function 'namespace_network_policy_check' is suggested that uses the 'kubectl get networkpolicies --all-namespaces' command to fetch all network policies across all namespaces."
+    },
+    {
+      "function_name": "core_secrets_as_files",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods -o jsonpath='{.items[*].spec.volumes[*].secret}'",
+      "rationale": "This function is needed to check if secrets are being used as files, which is the preferred method over environment variables.",
+      "compliance_id": "5.4.1",
+      "compliance_title": "Prefer using secrets as files over secrets as environment variables",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'core_no_secrets_envs' can be used to check if secrets are being used as environment variables. However, there is no existing function to check if secrets are being used as files. Therefore, a new function 'core_secrets_as_files' is suggested."
+    },
+    {
+      "function_name": "external_secret_storage_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get secrets -n kube-system",
+      "rationale": "To ensure that secrets are stored externally and not directly in Kubernetes",
+      "compliance_id": "5.4.2",
+      "compliance_title": "Consider external secret storage",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirements of this compliance item. New functions are suggested to cover the requirements."
+    },
+    {
+      "function_name": "external_secret_storage_authentication_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get secrets -n kube-system",
+      "rationale": "To ensure that the external secret storage requires authentication",
+      "compliance_id": "5.4.2",
+      "compliance_title": "Consider external secret storage",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirements of this compliance item. New functions are suggested to cover the requirements."
+    },
+    {
+      "function_name": "external_secret_storage_audit_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get secrets -n kube-system",
+      "rationale": "To ensure that the external secret storage has auditing of access to and use of secrets",
+      "compliance_id": "5.4.2",
+      "compliance_title": "Consider external secret storage",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirements of this compliance item. New functions are suggested to cover the requirements."
+    },
+    {
+      "function_name": "external_secret_storage_encryption_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get secrets -n kube-system",
+      "rationale": "To ensure that the external secret storage encrypts secrets",
+      "compliance_id": "5.4.2",
+      "compliance_title": "Consider external secret storage",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirements of this compliance item. New functions are suggested to cover the requirements."
+    },
+    {
+      "function_name": "external_secret_storage_rotation_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get secrets -n kube-system",
+      "rationale": "To ensure that the external secret storage supports secret rotation",
+      "compliance_id": "5.4.2",
+      "compliance_title": "Consider external secret storage",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirements of this compliance item. New functions are suggested to cover the requirements."
+    },
+    {
+      "function_name": "apiserver_image_policy_webhook_config",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get --raw /apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations",
+      "rationale": "To ensure that the ImagePolicyWebhook admission controller is properly configured for image provenance",
+      "compliance_id": "5.5.1",
+      "compliance_title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the configuration of ImagePolicyWebhook admission controller for image provenance. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "namespace_isolation_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get namespaces",
+      "rationale": "To ensure that resources are properly isolated using namespaces",
+      "compliance_id": "5.7.1",
+      "compliance_title": "Create administrative boundaries between resources using namespaces",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_namespace_lifecycle_plugin' partially covers the compliance requirement as it ensures the lifecycle of namespaces. However, it does not guarantee the isolation of resources within namespaces. Therefore, a new function 'namespace_isolation_check' is suggested."
+    },
+    {
+      "function_name": "core_apply_security_context_pods_containers",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.securityContext}{\"\\n\"}'",
+      "rationale": "To ensure that all pods and containers have a security context applied",
+      "compliance_id": "5.7.3",
+      "compliance_title": "Apply Security Context to Your Pods and Containers",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide partial coverage for applying security context to pods and containers. However, a new function is needed to ensure that all pods and containers have a security context applied."
+    },
+    {
+      "function_name": "default_namespace_usage_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get all --all-namespaces",
+      "rationale": "This function is needed to check if any resources are being used in the default namespace, which is against the compliance requirement.",
+      "compliance_id": "5.7.4",
+      "compliance_title": "The default namespace should not be used",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of not using the default namespace. A new function 'default_namespace_usage_check' is suggested to fill this gap."
+    }
+  ]
+}

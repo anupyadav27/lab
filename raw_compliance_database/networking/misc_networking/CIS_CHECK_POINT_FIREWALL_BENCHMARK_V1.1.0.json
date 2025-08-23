@@ -1,0 +1,1080 @@
+[
+  {
+    "id": "1.1",
+    "title": "Ensure Minimum Password Length is set to 14 or higher",
+    "assessment": "Automated",
+    "description": "Defines the minimum length a password can be. The minimum number of characters of a password that is to be allowed for users or SNMP users. Does not apply to passwords that have already been set.",
+    "rationale": "Password length has been found to be a primary factor in characterizing password strength. Passwords that are too short yield to brute force attacks as well as to dictionary attacks using words and commonly chosen passwords.",
+    "audit": "Run the following command to verify the Minimum Password Length. CLI: Hostname>show password-controls min-password-length Minimum Password Length 14 GUI: Navigate to User Management > Password Policy Ensure Minimum Password Length is set to 14 or higher.",
+    "remediation": "Run the following command to set the min-password-length setting. CLI: Hostname>set password-controls min-password-length 14 GUI: Navigate to User Management > Password Policy Ensure 'Minimum Password Length' is set to 14 or higher.  12 | P a g e Default Value: 6",
+    "function_names": [
+      "iam_password_policy_min_length_14",
+      "iam_password_policy_min_length_14_or_higher",
+      "iam_account_password_min_length_14",
+      "iam_account_password_min_length_14_or_higher",
+      "iam_user_password_min_length_14",
+      "iam_user_password_min_length_14_or_higher"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.2",
+    "title": "Ensure Disallow Palindromes is selected",
+    "assessment": "Automated",
+    "description": "A palindrome is a sequence of letters, numbers, or characters that can be read the same in each direction. racecar, bob, and noon are some of the famous examples of Palindrome.",
+    "rationale": "The Palindrome words are high on wordlists which are used before any brute-force attacks, and it's simpler to crack using the password cracking tools.",
+    "audit": "Run the following command to verify the Disallow Palindrome setting. CLI: Hostname> show password-controls palindrome-check Password Palindrome Check on GUI: Navigate to User Management > Password Policy Ensure Disallow Palindrome setting is checked.",
+    "remediation": "Run the following command to set the palindrome-check setting. CLI: Hostname>set password-controls palindrome-check on GUI: Navigate to User Management > Password Policy Ensure 'Disallow Palindrome' is checked. Default Value: Selected   14 | P a g e",
+    "function_names": [
+      "iam_password_policy_disallow_palindromes",
+      "iam_password_policy_no_palindrome_sequences",
+      "iam_password_policy_restrict_palindromes",
+      "iam_password_policy_palindrome_protection_enabled",
+      "iam_password_policy_palindrome_check_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.3",
+    "title": "Ensure Password Complexity is set to 3",
+    "assessment": "Automated",
+    "description": "This checks all new passwords to ensure that they meet basic requirements for strong passwords. The required number of character types are: Upper case alphabetic (A-Z), Lower case alphabetic (a-z), Digits (0-9), Other (everything else). A value of \"1\" effectively disables this check. Changes to this setting do not affect existing passwords.",
+    "rationale": "Password complexity recommendations are derived from the USGCB (United States Government Configuration Baseline), Common Weakness Enumeration, and benchmarks published by the CIS (Center for Internet Security). Password complexity adds entropy to a password, in comparison to a simple password of the same length. A complex password is more difficult to attack, either directly against administrative interfaces or cryptographically, against captured password hashes. However, making a password of greater length will generally have a greater impact in this regard, in comparison to making a shorter password more complex.",
+    "audit": "Run the following command to verify the Password Complexity. CLI: Hostname> show password-controls complexity Password Complexity 3 GUI: Navigate to User Management > Password Policy > Password Complexity: Ensure '3 - Require three character types' checked.",
+    "remediation": "Run the following command to set the password-controls complexity setting. CLI: Hostname>set password-controls complexity 3   16 | P a g e GUI: Navigate to User Management > Password Policy > Password Complexity: checked the '3 - Require three character types' setting. Default Value: 2",
+    "function_names": [
+      "iam_password_policy_complexity_min_3",
+      "iam_password_policy_character_types_min_3",
+      "iam_password_policy_strength_requirement_3_types",
+      "iam_password_policy_complexity_requirement_3",
+      "iam_password_policy_character_sets_min_3"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.4",
+    "title": "Ensure Check for Password Reuse is selected and History Length is set to 12 or more",
+    "assessment": "Automated",
+    "description": "Check for reuse of passwords. When a user's password is changed, the new password is checked against the recent passwords for the user. An identical password is not allowed. The number of passwords kept in the record is set by History length. Does not apply to SNMP passwords. Enables or disables password history checking and password history recording, for all users.",
+    "rationale": "The longer a user uses the same password, the greater the chance that an attacker can determine the password through brute force attacks. Also, any accounts that may have been compromised will remain exploitable for as long as the password is left unchanged. If password changes are required but password reuse is not prevented, or if users continually reuse a small number of passwords, the effectiveness of a good password policy is greatly reduced. While current guidance emphasizes password length above frequent password changes, not enforcing password re-use guidance adds the temptation of using a small pool of passwords, which can make an attacker's job easier across an entire infrastructure.",
+    "audit": "Run the following command to verify the Check for Password Reuse and History Length setting. CLI: Hostname> show password-controls history-checking Password History Checking on Hostname> show password-controls history-length Password History Length 12 GUI: Navigate to User Management > Password Policy > Password History: Ensure 'Check for Password Reuse' is checked. Navigate to User Management > Password Policy > Password History: Ensure 'History Length' is set to 12 or more.  18 | P a g e",
+    "remediation": "Run the following command to set tie history-checking setting. CLI: Hostname>set password-controls history-checking on Hostname>set password-controls history-length 12 GUI: Navigate to User Management > Password Policy > Password History: checked the 'Check for Password Reuse' setting. Navigate to User Management > Password Policy > Password History: Set 'History Length' is set to 12 or more. Default Value: Selected",
+    "function_names": [
+      "iam_password_reuse_check_enabled",
+      "iam_password_history_length_min_12"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.5",
+    "title": "Ensure Password Expiration is set to 90 days",
+    "assessment": "Automated",
+    "description": "The number of days for which a password is valid. After that time, the password expires. The count starts when the user changes their passwords. Users are required to change an expired password the next time they log in. If set to never, passwords do not expire. Does not apply to SNMP users.",
+    "rationale": "The window of opportunity for an attacker to leverage compromised credentials or successfully compromise credentials via an online brute force attack is limited by the age of the password. Therefore, reducing the maximum age of a password also reduces an attacker's window of opportunity.",
+    "audit": "Run the following command to verify the Password Expiration setting. CLI: Hostname> show password-controls password-expiration Password Expiration Lifetime 90 GUI: Navigate to User Management > Password Policy > Mandatory Password Changes: Password Expiration: Ensure 'Password expires after' is checked and set to 90 or less.",
+    "remediation": "Run the following command to set the history-length setting. CLI: Hostname>set password-controls history-length 90 GUI: Navigate to User Management > Password Policy > Mandatory Password Changes: Password Expiration: Set 'Password expires after' setting to 90 or less  20 | P a g e Default Value: Password never expire",
+    "function_names": [
+      "iam_user_password_expiration_90d",
+      "iam_password_policy_max_age_90d",
+      "iam_account_password_expiry_90d",
+      "iam_credential_password_expiration_90d",
+      "iam_security_password_lifetime_90d"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.6",
+    "title": "Ensure Warn users before password expiration is set to 7 days",
+    "assessment": "Automated",
+    "description": "The number of days before the password expires that the user starts getting warned they will have to change it. A user that does not log in will not see the warning.",
+    "rationale": "Providing an advance warning that a password will be expiring gives users time to think of a secure password. Users caught unaware may choose a simple password or write it down where it may be discovered.",
+    "audit": "Run the following command to verify the warn users before Password Expiration x days setting. CLI: Hostname> show password-controls expiration-warning-days Password Expiration Warning Days 7 GUI: Navigate to User Management > Password Policy > Mandatory Password Changes Ensure 'Warn users before password expiration' is set to 7 days or less.",
+    "remediation": "Run the following command to set the expiration-warning-days setting. CLI: Hostname>set password-controls expiration-warning-days 7 GUI: Navigate to User Management > Password Policy > Mandatory Password Changes Set 'Warn users before password expiration' is set to 7 days or less.   22 | P a g e Default Value: 7 days",
+    "function_names": [
+      "iam_user_password_expiration_warning_7d",
+      "iam_account_password_policy_warn_before_expiry",
+      "iam_password_policy_expiration_warning_enabled",
+      "iam_user_password_expiry_notification_configured",
+      "iam_account_password_expiry_warning_period_set"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.7",
+    "title": "Ensure Lockout users after password expiration is set to 1",
+    "assessment": "Automated",
+    "description": "Lockout users after password expiration. After a user's password has expired, they have this number of days to log in and change it. If they do change their password within that number of days they will be unable to log in: They are locked out. A value of never allows the user to wait as long as they want to change their password.",
+    "rationale": "User accounts and their passwords are the front-line of defense against malicious users gaining access to critical systems and data. Just as important as ensuring strong passwords are used and changed regularly, unused accounts should be closely monitored and disabled, whenever possible. Inactive accounts could become targets of brute force or dictionary attacks to gain access to the network and critical data/devices attached to it.",
+    "audit": "Run the following command to verify the lockout users after x days setting. CLI: Hostname> show password-controls expiration-lockout-days Password Expiration Lockout Days 1 GUI: Navigate to User Management > Password Policy > Mandatory Password Changes > Lockout users after password expiration: Ensure 'Lockout user after' is checked and set to 1 day.",
+    "remediation": "Run the following command to set the expiration-lockout-days setting. CLI: Hostname>set password-controls expiration-lockout-days 1   24 | P a g e GUI: Navigate to User Management > Password Policy > Mandatory Password Changes > Lockout users after password expiration: Checked 'Lockout user after' setting and set to 1 day. Default Value: Never lockout users after password expires",
+    "function_names": [
+      "iam_user_password_lockout_enabled",
+      "iam_user_password_expiration_lockout_set",
+      "iam_user_password_lockout_days_one",
+      "iam_user_password_expiration_lockout_configured",
+      "iam_user_password_lockout_policy_compliant"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.8",
+    "title": "Ensure Deny access to unused accounts is selected",
+    "assessment": "Automated",
+    "description": "Deny access to unused accounts. If there has been no successful login attempt in a set period of time, the user is locked out and cannot log in.",
+    "rationale": "User accounts that have been unused for over a given period of time can be automatically disabled. Unused accounts pose a threat to system security since the users are not logging in to notice failed login attempts or other anomalies",
+    "audit": "Run the following command to verify the Deny access to unused accounts setting. CLI: Hostname> show password-controls deny-on-nonuse enable Deny Access to Unused Accounts on GUI: Navigate to User Management > Password Policy > Deny access to unused accounts: Ensure 'Deny access to unused accounts' is checked.",
+    "remediation": "Run the following command to set the deny-on-nonuse setting. CLI: Hostname>set password-controls deny-on-nonuse enable on GUI: Navigate to User Management > Password Policy > Deny access to unused accounts: Checked the 'Deny access to unused accounts' setting. Default Value: Not Selected  26 | P a g e",
+    "function_names": [
+      "iam_user_unused_account_denied",
+      "iam_user_inactive_over_90d_denied",
+      "iam_user_last_login_denied",
+      "iam_user_no_recent_activity_denied",
+      "iam_user_dormant_account_denied",
+      "iam_user_inactive_account_locked",
+      "iam_user_unused_credentials_denied",
+      "iam_user_no_login_activity_denied"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.9",
+    "title": "Ensure Days of non-use before lock-out is set to 30",
+    "assessment": "Automated",
+    "description": "Days of non-use before lock-out. The number of days in which a user has not (successfully) logged in before that user is locked out. This only takes effect if Deny access to unused accounts is selected.",
+    "rationale": "User accounts that have been unused for over a given period of time can be automatically disabled. It is recommended that accounts that are unused for 30 days should be disabled. Unused accounts pose a threat to system security since the users are not logging in to notice failed login attempts or other anomalies.",
+    "audit": "Run the following command to verify the Days of non-use before lock-out setting. CLI: Hostname> show password-controls deny-on-nonuse allowed-days Days Nonuse Before Lockout 30 GUI: Navigate to User Management > Password Policy > Deny access to unused accounts: Ensure 'Days of non-use before lock-out' is set to 30 or less. Note: This setting only takes effect if 'Deny access to unused accounts' is enabled.",
+    "remediation": "Run the following command to set the deny-on-nonuse allowed-days setting. CLI: Hostname>set password-controls deny-on-nonuse allowed-days 30    28 | P a g e GUI: Navigate to User Management > Password Policy > Deny access to unused accounts: Set 'Days of non-use before lock-out' to 30 or less. Note: This setting only takes effect if 'Deny access to unused accounts' is enabled. Default Value: 365",
+    "function_names": [
+      "iam_user_lockout_days_set_to_30",
+      "iam_user_inactive_lockout_enabled",
+      "iam_user_unused_account_lockout_30d",
+      "iam_account_lockout_inactive_30d",
+      "iam_user_access_lockout_threshold_30d"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.10",
+    "title": "Ensure Force users to change password at first login after password was changed from Users page is selected",
+    "assessment": "Automated",
+    "description": "Force users to change password at first login after their password was changed using the command set user password or from the WebUI User Management > Users page.",
+    "rationale": "This forces the user to change the password and not to use the password set by the Administrator.",
+    "audit": "Run the following command to verify the Force users to change password at first login after password was changed from Users page setting. CLI: Hostname>show password-controls force-change-when Force Password Change When Password GUI: Navigate to User Management > Password Policy > Mandatory Password Change: Ensure 'Force users to change password at first login after password was changed from Users page' is checked.",
+    "remediation": "Run the following command to set force-change-when setting. CLI: Hostname>set password-controls force-change-when password GUI: Navigate to User Management > Password Policy > Mandatory Password Change: Checked the 'Force users to change password at first login after password was changed from Users page' setting.   30 | P a g e Default Value: Not Selected",
+    "function_names": [
+      "iam_user_password_reset_required",
+      "iam_user_password_change_on_login",
+      "iam_user_password_reset_enforced",
+      "iam_user_password_first_login_reset",
+      "iam_user_password_reset_policy_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.11",
+    "title": "Ensure Deny access after failed login attempts is selected",
+    "assessment": "Automated",
+    "description": "If the configured limit is reached, the user is locked out (unable to log in) for a configurable period of time.",
+    "rationale": "Locking out user IDs after n unsuccessful consecutive login attempts mitigate brute force password attacks against your systems.",
+    "audit": "Run the following command to verify the Deny access after failed login attempts setting. CLI: Hostname> show password-controls deny-on-fail enable Deny Access After Failed Attempts on GUI: Navigate to User Management > Password Policy > Deny Access After Failed Login Attempts: Ensure 'Deny access after failed login attempts' is checked.",
+    "remediation": "Run the following command to set the deny-on-fail setting. CLI: Hostname>set password-controls deny-on-fail enable on GUI: Navigate to User Management > Password Policy > Deny Access After Failed Login Attempts: Checked the 'Deny access after failed login attempts' setting.   32 | P a g e Default Value: Not selected",
+    "function_names": [
+      "iam_user_failed_login_deny_enabled",
+      "iam_user_failed_login_lockout_enabled",
+      "iam_user_failed_login_attempts_deny_enabled",
+      "iam_user_failed_login_lockout_period_enabled",
+      "iam_user_failed_login_attempts_lockout_enabled",
+      "iam_user_failed_login_attempts_deny_lockout_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.12",
+    "title": "Ensure Maximum number of failed attempts allowed is set to 5 or fewer",
+    "assessment": "Automated",
+    "description": "This only takes effect if Deny access after failed attempts is enabled. The number of failed login attempts that a user is allowed before being locked out. After making that many successive failed attempts, future attempts will fail. When one login attempt succeeds, counting of failed attempts stops, and the count is reset to zero.",
+    "rationale": "Repeated failed login attempts could either be a valid user who has forgotten the password, or a malicious attempt to gain access to the system. For this reason, this setting should be as restrictive as possible to mitigate brute force attack attempts to discover a user's password.",
+    "audit": "Run the following command to verify the Deny access after failed login attempts setting. CLI: Hostname> show password-controls deny-on-fail failures-allowed Maximum Failed Attempts 5 GUI: Navigate to User Management > Password Policy > Deny Access After Failed Login Attempts: Ensure ' Maximum number of failed attempts allowed is set to' is set to 5or fewer.",
+    "remediation": "Run the following command to set the deny-on-fail failures-allowed setting. CLI: Hostname>set password-controls deny-on-fail failures-allowed 5   34 | P a g e GUI: Navigate to User Management > Password Policy > Deny Access After Failed Login Attempts: checked and set ' Maximum number of failed attempts allowed is set to' setting to 5 or fewer. Default Value: 10 References: 1. https://sc1.checkpoint.com/documents/R76/CP_R76_Gaia_WebAdmin/73101.htm #o94478 Notes: Looking for input regarding a value for this recommendation. Note from checkpoint documentation.... Warning: Enabling this leaves you open to a \"denial of service\" -- if an attacker issues unsuccessful login attempts often enough you will be locked out. Please consider the advantages and disadvantages of this option, in light of your security policy, before enabling it.",
+    "function_names": [
+      "iam_user_failed_attempts_limit",
+      "iam_user_failed_attempts_limit_max_5",
+      "iam_account_failed_attempts_limit",
+      "iam_account_failed_attempts_limit_max_5",
+      "iam_password_policy_failed_attempts_limit",
+      "iam_password_policy_failed_attempts_limit_max_5"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. https://sc1.checkpoint.com/documents/R76/CP_R76_Gaia_WebAdmin/73101.htm #o94478 Notes: Looking for input regarding a value for this recommendation. Note from checkpoint documentation.... Warning: Enabling this leaves you open to a \"denial of service\" -- if an attacker issues unsuccessful login attempts often enough you will be locked out. Please consider the advantages and disadvantages of this option, in light of your security policy, before enabling it."
+  },
+  {
+    "id": "1.13",
+    "title": "Ensure Allow access again after time is set to 300 or more seconds",
+    "assessment": "Automated",
+    "description": "Allow access again after a user has been locked out (due to failed login attempts). The user is allowed access after the configured time if there have been no login attempts during that time). This setting only takes effect if Deny access after failed login attempts is selected.",
+    "rationale": "Users can accidentally lock themselves out of their accounts if they mistype their password multiple times. To reduce the chance of such accidental lockouts, the Allow access again after time setting determines the number of seconds that must elapse before the counter that tracks failed logon attempts and triggers lockouts is reset to 0.",
+    "audit": "Run the following command to verify the Allow access again after time setting. CLI: Hostname> show password-controls deny-on-fail allow-after Unlock User After Seconds 300 GUI: Navigate to User Management > Password Policy > Deny Access After Failed Login Attempts: Ensure 'Allow access again after time' is set to 300 or more seconds.",
+    "remediation": "Run the following command to set the deny-on-fail allow-afte setting. CLI: Hostname> set password-controls deny-on-fail allow-after 300    36 | P a g e GUI: Navigate to User Management > Password Policy > Deny Access After Failed Login Attempts: Set the 'Allow access again after time' setting to 300 or more seconds. Default Value: 1200 (20 minutes) Notes: Looking for input regarding a value for this recommendation.",
+    "function_names": [
+      "iam_user_lockout_duration_min_300",
+      "iam_account_lockout_duration_min_300",
+      "iam_policy_lockout_duration_min_300",
+      "iam_identity_lockout_duration_min_300",
+      "iam_failed_login_lockout_duration_min_300",
+      "iam_security_lockout_duration_min_300",
+      "iam_access_lockout_duration_min_300",
+      "iam_authentication_lockout_duration_min_300"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.1",
+    "title": "Ensure 'Login Banner' is set",
+    "assessment": "Automated",
+    "description": "Configure a login banner, ideally approved by the organization\u2019s legal team. This banner should, at minimum, prohibit unauthorized access, provide notice of logging or monitoring, and avoid using the word \u201cwelcome\u201d or similar words of invitation.",
+    "rationale": "Through a properly stated login banner, the risk of unintentional access to the device by unauthorized users is reduced. Should legal action take place against a person accessing the device without authorization, the login banner greatly diminishes a defendant\u2019s claim of ignorance.",
+    "audit": "Run the following command to verify the Banner configured on the device and it's status. CLI: Hostname>show configuration message set message banner on set message banner on line msgvalue \"Organization defined Banner\" GUI: Navigate to System Management -> Messages -> Banner message Ensure Banner Message should be checked and \"Organization defined Banner\" should be set.",
+    "remediation": "Run the following command to enable and set the Banner. CLI: Hostname>set message banner on msgvalue \"Organization_Banner\"   39 | P a g e GUI: Navigate to System Management > Messages Checked the Banner message and configured the organization defined banner.",
+    "function_names": [
+      "iam_account_login_banner_configured",
+      "iam_account_login_banner_legal_approved",
+      "iam_account_login_banner_unauthorized_access_prohibited",
+      "iam_account_login_banner_monitoring_notice_included",
+      "iam_account_login_banner_no_welcome_message"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.2",
+    "title": "Ensure 'Message Of The Day (MOTD)' is set",
+    "assessment": "Automated",
+    "description": "Sets the MOTD message.",
+    "rationale": "Network banners are electronic messages that provide notice of legal rights to users of computer networks. From a legal standpoint, banners have four primary functions. \u2022 First, banners may be used to generate consent to real-time monitoring under Title III. \u2022 Second, banners may be used to generate consent to the retrieval of stored files and records pursuant to ECPA. \u2022 Third, in the case of government networks, banners may eliminate any Fourth Amendment \"reasonable expectation of privacy\" that government employees or other users might otherwise retain in their use of the government's network under O'Connor v.",
+    "audit": "Run the following command to verify the MOTD Banner is configured on the device and it's status. CLI: Hostname>show configuration message set message motd on set message motd on line msgvalue \"MOTD BANNER\" GUI: Navigate to System Management -> Messages -> Message of the day Ensure Message of the day should be checked and \"MOTD\" Banner should be set.",
+    "remediation": "Run the following command to enable and configured the MOTD setting. CLI: Hostname> set message motd on msgvalue \"MOTD BANNER\"  41 | P a g e GUI: Navigate to System Management -> Messages -> Message of the day Checked the Message of the day and add \"MOTD Banner\".",
+    "function_names": [
+      "compute_instance_motd_set",
+      "compute_vm_motd_configured",
+      "compute_motd_message_defined",
+      "compute_instance_motd_customized",
+      "compute_vm_motd_standardized"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.3",
+    "title": "Ensure Core Dump is enabled",
+    "assessment": "Automated",
+    "description": "A Core Dump contains the recorded state of the working memory and CPU's contents of the Gaia system at the time that a Gaia process terminated abnormally. The core file is stored in the /var/log/dump/usermode directory.",
+    "rationale": "The Core Dump helps in troubleshooting to identify for which reason the process/system got crashed.",
+    "audit": "Run the following command to check the status of Core Dump. Hostname> show core-dump status GUI: Navigate to System Management > Core Dump",
+    "remediation": "Run the following command to set Core Dump. Hostname> set core-dump enable GUI: Navigate to System Management > Core Dump > select Enable Core Dumps Default Value: enabled     43 | P a g e",
+    "function_names": [
+      "gaia_system_core_dump_enabled",
+      "gaia_process_core_dump_enabled",
+      "gaia_memory_core_dump_enabled",
+      "gaia_system_core_dump_configured",
+      "gaia_core_dump_directory_configured"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.4",
+    "title": "Ensure Config-state is saved",
+    "assessment": "Automated",
+    "description": "The 'Config state' setting provides the detail of the current configuration which is saved or unsaved. Saved state indicates the current configuration of the system is matched with the saved configuration, while unsaved state indicates a configuration change has been made and it has not been saved to the configuration file.",
+    "rationale": "The Unsaved state indicates that some configuration changes are made in the system. Administrator needs to review whether all changes are authorized or not by verifying configuration change logs.",
+    "audit": "Run the following command to check the status of config-state. Hostname> show config-state",
+    "remediation": "Run the following command to save the configuration. Hostname> save config Default Value: NA",
+    "function_names": [
+      "config_state_saved",
+      "config_state_matched",
+      "config_state_unsaved_alert",
+      "config_state_change_detected",
+      "config_state_consistency_verified",
+      "config_state_persistence_enabled",
+      "config_state_sync_required",
+      "config_state_version_control_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.5",
+    "title": "Ensure unused interfaces are disabled",
+    "assessment": "Automated",
+    "description": "Disables the unused interfaces.",
+    "rationale": "Shutting down the unused interfaces is a complement to physical security. In fact, an attacker connecting physically to an unused port of the security appliance can use the interface to gain access to the device if the relevant interface has not been disabled and the source restriction to management access is not enabled.",
+    "audit": "Run the following command to check the status of all interfaces and verify interface state is off if it is not in used. CLI: Hostname> show interfaces all GUI: Navigate to Network Management > Network Interfaces",
+    "remediation": "Run the following command disable the unused interface. CLI: Hostname> set interface <Interface_Number> state off GUI: Navigate to Network Management > Network Interfaces > Open unused Interface > unchecked Enable Default Value: NA   46 | P a g e",
+    "function_names": [
+      "compute_instance_unused_interfaces_disabled",
+      "compute_network_interface_unused_disabled",
+      "compute_vm_unused_interfaces_disabled",
+      "network_interface_unused_disabled",
+      "network_vnic_unused_disabled",
+      "compute_instance_unused_nics_disabled",
+      "compute_vm_unused_nics_disabled",
+      "network_unused_interfaces_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.6",
+    "title": "Ensure DNS server is configured",
+    "assessment": "Automated",
+    "description": "Gaia uses the Domain Name Service (DNS) to translate host names into IP addresses. To enable DNS lookups, you must specify the primary DNS server for your system. You can also specify secondary and tertiary DNS servers. When resolving host names, the system consults the primary name server. If a failure or time-out occurs, the system consults the secondary name server, and if necessary, the tertiary.",
+    "rationale": "The purpose is to perform the resolution of system hostnames to Internet Protocol (IP) addresses.",
+    "audit": "Run the following command to check the Primary, Secondary and tertiary DNS are configured. CLI: Hostname> show dns primary 10.22.1.39 Hostname> show dns secondary 10.88.3.99 Hostname> show dns tertiary 10.10.1.2 GUI: Navigate to Network Management > Hosts and DNS > DNS",
+    "remediation": "Run the following command to set DNS server. CLI: Hostname> set dns primary <IP_Address> Hostname> set dns secondary <IP_Address> Hostname> set dns tertiary <IP_Address>   48 | P a g e GUI: Navigate to Network Management > Hosts and DNS > DNS Set Primary, secondary and tertiary DNS server address. Default Value: Not Configured",
+    "function_names": [
+      "network_dns_server_configured",
+      "network_dns_server_primary_configured",
+      "network_dns_server_secondary_configured",
+      "network_dns_server_tertiary_configured",
+      "network_dns_server_resolver_configured",
+      "network_dns_server_fallback_enabled",
+      "network_dns_server_redundancy_configured"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.7",
+    "title": "Ensure IPv6 is disabled if not used",
+    "assessment": "Automated",
+    "description": "Although IPv6 has many advantages over IPv4, not all organizations have IPv6 or dual stack configurations implemented",
+    "rationale": "If IPv6 or dual stack is not to be used, it is recommended that IPv6 be disabled to reduce the attack surface of the system.",
+    "audit": "Run the following command to check IPv6 status. Hostname> show ipv6-state",
+    "remediation": "Run the following command to enable or disable IPv6. Hostname> set ipv6-state on Hostname> set ipv6-state off Default Value: ipv6 is disabled",
+    "function_names": [
+      "network_interface_ipv6_disabled",
+      "vpc_ipv6_disabled_unused",
+      "subnet_ipv6_disabled_unused",
+      "instance_ipv6_disabled_unused",
+      "load_balancer_ipv6_disabled_unused",
+      "security_group_ipv6_disabled_unused",
+      "route_table_ipv6_disabled_unused",
+      "network_acl_ipv6_disabled_unused"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.8",
+    "title": "Ensure Host Name is set",
+    "assessment": "Automated",
+    "description": "Changes the device default hostname.",
+    "rationale": "The device hostname plays an important role in asset inventory and identification as a security requirement, but also in the public keys and certificate deployments as well as when correlating logs from different systems during an incident handling.",
+    "audit": "Run the following command to check Host Name. CLI: Hostname> show hostname GUI: Navigate to Network Management > Hosts and DNS > System Name > Host Name",
+    "remediation": "Run the following command to set Host Name. CLI: Hostname> set hostname <name> GUI: Navigate to Network Management > Hosts and DNS > System Name > Host Name",
+    "function_names": [
+      "compute_instance_hostname_set",
+      "compute_vm_hostname_configured",
+      "compute_host_hostname_customized",
+      "compute_device_hostname_non_default",
+      "compute_system_hostname_defined"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.9",
+    "title": "Ensure Telnet is disabled",
+    "assessment": "Automated",
+    "description": "Disables the telnet access to the security appliance in the case it has been configured.",
+    "rationale": "Telnet is an unsecure protocol as username and password are conveyed in clear text during the administrator authentication and can be retrieved through network sniffing.",
+    "audit": "Run the following command to check the status of telnet. CLI: Hostname> show net-access telnet GUI: Navigate to System Management > Network Access > Enable Telnet",
+    "remediation": "Run the following command to disable the telnet. CLI: Hostname> set net-access telnet off GUI: Navigate to System Management > Network Access > verify Enable Telnet is unchecked. Default Value: Off    52 | P a g e",
+    "function_names": [
+      "security_appliance_telnet_disabled",
+      "security_appliance_protocol_telnet_disabled",
+      "network_service_telnet_disabled",
+      "appliance_access_telnet_disabled",
+      "security_appliance_insecure_protocol_disabled",
+      "network_service_insecure_protocol_disabled",
+      "appliance_protocol_telnet_disabled",
+      "security_appliance_remote_access_telnet_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.1.10",
+    "title": "Ensure DHCP is disabled",
+    "assessment": "Automated",
+    "description": "Disable the Dynamic Host Configuration Protocol (DHCP) server on your device.",
+    "rationale": "The DHCP server supplies automatic configuration parameters, such as dynamic IP address, to requesting systems. A dedicated server located in a secured management zone should be used to provide DHCP services instead. Attackers can potentially be used for denial-of-service (DoS) attacks.",
+    "audit": "Run the following command to check the status of DHCP Server. CLI: Hostname> show dhcp server status GUI: Navigate to Network Management > DHCP Server > DHCP Server Configuration > Enable DHCP Server",
+    "remediation": "Run the following command to disable the DHCP. CLI: Hostname> set dhcp server disable GUI: Navigate to Network Management > DHCP Server > DHCP Server Configuration > veriify Enable DHCP Server is unchecked Default Value: DHCP Server Disabled   54 | P a g e",
+    "function_names": [
+      "network_dhcp_server_disabled",
+      "network_dhcp_disabled",
+      "vpc_dhcp_options_disabled",
+      "compute_instance_dhcp_disabled",
+      "subnet_dhcp_disabled",
+      "network_interface_dhcp_disabled",
+      "router_dhcp_disabled",
+      "firewall_dhcp_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.2.1",
+    "title": "Ensure SNMP agent is disabled",
+    "assessment": "Automated",
+    "description": "The Simple Network Management Protocol (SNMP) server is used to listen for SNMP commands from an SNMP management system, execute the commands or collect the information and then send results back to the requesting system.",
+    "rationale": "The SNMP server can communicate using SNMP v1, which transmits data in the clear and does not require authentication to execute commands. Unless absolutely necessary, it is recommended that the SNMP service not be used. If SNMP is required the server should be configured to use only SNMPv3.",
+    "audit": "Run the following command to check whether the SNMP agent is configured: CLI: Hostname> show snmp agent SNMP Agent Disabled GUI: Navigate to System Management > SNMP  >  SNMP General Settings Verify Enable SNMP agent is unchecked.",
+    "remediation": "Run the following command to configure the SNMP. CLI: Hostname> set snmp agent off GUI: System Management > SNMP > Unhecked the Enable SNMP Agent  56 | P a g e Default Value: SNMP Agent Disabled",
+    "function_names": [
+      "compute_instance_snmp_agent_disabled",
+      "network_snmp_agent_disabled",
+      "system_snmp_agent_disabled",
+      "os_snmp_agent_disabled",
+      "vm_snmp_agent_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.2.2",
+    "title": "Ensure SNMP version is set to v3-Only",
+    "assessment": "Automated",
+    "description": "Sets the SNMP v3.",
+    "rationale": "SNMP Version 3 provides security enhancements that are not available in SNMP Version 1 or SNMP Version 2c. SNMP Versions 1 and 2c transmit data between the SNMP server and SNMP agent in clear text. SNMP Version 3 adds authentication and privacy options to secure protocol operations. For configuration purposes, the authentication and privacy options are grouped together into security models. Security models apply to users and groups, and are divided into the following three types: \u2022NoAuthPriv\u2014No Authentication and No Privacy, which means that no security is applied to messages. \u2022AuthNoPriv\u2014 Authentication but No Privacy, which means that messages are authenticated. \u2022AuthPriv\u2014 Authentication and Privacy, which means that messages are authenticated and encrypted. It is recommended that packets should be authenticated and encrypted",
+    "audit": "Run the following command to check whether the SNMP agent-version v3-only is configured CLI: Hostname> show snmp agent-version v3-Only GUI: Navigate to System Management > SNMP  >  SNMP General Settings Verify version is set to v3-Only.",
+    "remediation": "Run the following command to configure the SNMP agent-version v3-only CLI: Hostname> set snmp agent-version v3-Only   58 | P a g e GUI: Navigate to System Management > SNMP > Select V3-Only in Version Default Value: Not Configured",
+    "function_names": [
+      "compute_instance_snmp_v3_only",
+      "network_load_balancer_snmp_v3_only",
+      "cloud_cdn_snmp_v3_only",
+      "firewall_snmp_v3_only",
+      "vpc_snmp_v3_only",
+      "router_snmp_v3_only",
+      "switch_snmp_v3_only",
+      "monitoring_snmp_v3_only",
+      "device_snmp_v3_only",
+      "appliance_snmp_v3_only"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.2.3",
+    "title": "Ensure SNMP traps is enabled",
+    "assessment": "Automated",
+    "description": "Enables SNMP traps to be sent to the NMS.",
+    "rationale": "The purpose of the SNMP service is to monitor in real time the events occurring on systems in order to meet the security requirement of availability of systems and services. The traps are SNMP notifications sent to the NMS and should be enabled in order to be sent and processed by the NMS. The NMS will then provide a comprehensive aggregation and reporting of events generated, thus helping administrator.",
+    "audit": "Run the following command to check whether the SNMP traps are configured: CLI: Hostname> show snmp traps enabled-traps authorizationError coldStart configurationChange GUI: Navigate to System Management > SNMP  >  Enabled Traps Verify authorizationError, coldStart, configurationChange, configurationSave, linkUpLinkDown and lowDiskSpace alerts are selected.",
+    "remediation": "Run the following command to Configure the SNMP traps. CLI: Hostname> set snmp traps trap authorizationError enable Hostname> set snmp traps trap coldStart enable Hostname> set snmp traps trap configurationChange enable Hostname> set snmp traps trap configurationSave enable Hostname> set snmp traps trap linkUpLinkDown enable Hostname> set snmp traps trap lowDiskSpace enable   60 | P a g e GUI: Navigate to System Management > SNMP > Enabled Traps > Set and select the following traps uthorizationError, coldStart, configurationChange, configurationSave, linkUpLinkDown and lowDiskSpace Default Value: Not Configured",
+    "function_names": [
+      "network_monitoring_snmp_trap_enabled",
+      "network_monitoring_snmp_trap_nms_integration",
+      "network_monitoring_snmp_trap_configured",
+      "network_monitoring_snmp_trap_active",
+      "network_monitoring_snmp_trap_delivery_verified"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.2.4",
+    "title": "Ensure SNMP traps receivers is set",
+    "assessment": "Automated",
+    "description": "Enables SNMP traps receivers where traps to be sent to.",
+    "rationale": "The purpose of the SNMP service is to monitor in real time the events occurring on systems in order to meet the security requirement of availability of systems and services. The traps are SNMP notifications sent to the NMS or SNMP traps receivers and should be enabled in order to be sent and processed by the NMS. The NMS or SNMP traps receivers will then provide a comprehensive aggregation and reporting of events generated, thus helping administrator.",
+    "audit": "Run the following command to check whether the SNMP traps receivers are configured: CLI: Hostname> show snmp traps receivers Trap Receiver 10.7.26.5 Version v3 GUI: Navigate to System Management > SNMP  >  Trap Receivers Settings Verify Trap Receiver is configured.",
+    "remediation": "Run the following command to Configure the SNMP traps receivers. CLI: Hostname> add snmp traps receiver 10.10.168.86 version v3 GUI: Navigate to System Management > SNMP > Trap Receivers Setting > Add > Add IP Address Version details.   62 | P a g e Default Value: Not Configured",
+    "function_names": [
+      "network_snmp_trap_receiver_enabled",
+      "network_snmp_trap_receiver_configured",
+      "network_snmp_trap_receiver_valid",
+      "network_snmp_trap_receiver_secure",
+      "network_snmp_trap_receiver_active"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.3.1",
+    "title": "Ensure NTP is enabled and IP address is set for Primary and Secondary NTP server",
+    "assessment": "Automated",
+    "description": "These settings enable the use of primary and secondary NTP servers to provide redundancy in case of a failure involving the primary NTP server.",
+    "rationale": "NTP enables the device to maintain accurate time and date when receiving updates from a reliable NTP server. Accurate timestamps are critical when correlating events with other systems, troubleshooting, or performing investigative work. Logs and certain cryptographic functions, such as those utilizing certificates, rely on accurate time and date parameters. In addition, rules referencing a Schedule object will not function as intended if the device\u2019s time and date are incorrect. For additional security, authenticated NTP can be utilized. If Symmetric Key authentication is selected, only SHA1 should be used, as MD5 is considered severely compromised.",
+    "audit": "Run the following command to check the status of NTP. CLI: Hostname> show ntp active Yes Run the following command to verify the IP address is configured for Primary and Secondary NTP server. Hostname> show ntp servers IP Address               Type              Version ------------             -------          --------------- 10.10.22.124             Primary           3 192.169.1.238            Secondary         3   64 | P a g e GUI: Navigate to System Management > Time  >  Set Time and Date Verify Set Time and Date automatically using Network Time Protocol (NTP) option is checked and Primary NTP server and secondary NTP server address is configured.",
+    "remediation": "Run the following command to enable the NTP and configure the Primary & Secondary NTP server. CLI: Hostname> set ntp active on Hostname> set ntp server primary ntpserver.time.com version 3 Hostname> set ntp server primary 10.22.13.33 version 3 GUI: System Management > Time > Set Time and Date > Checked Set Time and Date automatically using Network Time Protocol (NTP) and configured the Primary NTP Server and Secondary NTP server Default Value: No",
+    "function_names": [
+      "compute_instance_ntp_enabled",
+      "compute_instance_primary_ntp_set",
+      "compute_instance_secondary_ntp_set",
+      "compute_instance_ntp_redundancy_enabled",
+      "compute_instance_ntp_servers_configured"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.3.2",
+    "title": "Ensure timezone is properly configured",
+    "assessment": "Automated",
+    "description": "Sets the local time zone information so that the time displayed by the device is more relevant to those who are viewing it.",
+    "rationale": "Having a correct time set on the device is important for two main reasons. The first reason is that digital certificates compare this time to the range defined by their Valid From and Valid To fields to define a specific validity period. The second reason is to have relevant time stamps when logging information. Whether you are sending messages to a Syslog server, sending messages to an SNMP monitoring station, or performing packet captures, timestamps have little usefulness if you cannot be certain of their accuracy.",
+    "audit": "Run the following command to verify the Timezone. CLI: Hostname> show timezone Time Zone: Asia/Kolkata (GMT +05:30) GUI: Navigate to System Management > Time  >  Set Timezone",
+    "remediation": "Run the following command to Configure the Timezone used by the enterprise (GMT, UTC, EDT, PST). CLI: Hostname> set timezone Asia / Kolkata GUI: System Management > Time > Set Time Zone > Time Zone   66 | P a g e Default Value: Time Zone: America/New_York (GMT -05:00)",
+    "function_names": [
+      "system_timezone_configured",
+      "system_timezone_utc_enabled",
+      "system_timezone_localized",
+      "system_timezone_consistent",
+      "system_timezone_synced",
+      "system_timezone_ntp_enabled",
+      "system_timezone_standardized",
+      "system_timezone_correct_offset"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.4.1",
+    "title": "Ensure 'System Backup' is set.",
+    "assessment": "Automated",
+    "description": "List last-successful backup which is taken either locally or on a remote server. The backup can be taken locally on the device and also on a remote server via FTP, tftp or scp. The backup which is taken last is marked with (latest) in backup type.",
+    "rationale": "The backup helps in restoring the configuration in the case of system failure or corruption or in the condition of device replacement.",
+    "audit": "Run the following command to verify the last successful backup. CLI: Hostname>show backup last-successful Backup Type: local ( latest ) Backup file location: /var/log/CPbackup/backups/backup_gw- Checkpoint_28_Dec_2015_15_46.tgz Backup process finished in 00:19 seconds Backup Date: 28-Dec-2015 15:46:43 GUI: Navigate to Maintenance > System Backup        68 | P a g e",
+    "remediation": "Run the following command to Configure the backup. CLI: To take the backup local on the device. Hostname> add backup local To take the backup of FTP or SCP server. Hostname>add backup [ftp|scp] ip [IP Address] path [Path to store backup] username [Username] password [Password] To take the backup on tftp server. Hostname>add backup tftp [IP address of tftp server] GUI: Navigate to Maintenance > System Backup  >  Backup > Select (This appliance | SCP Server | FTP Server | TFTP Server) Default Value: Not Configured",
+    "function_names": [
+      "backup_system_last_successful",
+      "backup_system_remote_enabled",
+      "backup_system_local_enabled",
+      "backup_system_ftp_enabled",
+      "backup_system_tftp_enabled",
+      "backup_system_scp_enabled",
+      "backup_system_latest_marked"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.4.2",
+    "title": "Ensure 'Snapshot' is set",
+    "assessment": "Automated",
+    "description": "An image of the system partition creates when takes the snapshots, includes all the configuration settings, Operating System and Checkpoint files. The locally stored firewall logs are not stored in the snapshots, as log partition is not included in the Snapshots. Snapshots can be restored on the same hardware on which it takes or on the same configuration hardware.",
+    "rationale": "Snapshots are critical to system recovery in the event of a System crash.",
+    "audit": "Run the following command to verify the list of snapshots taken on the system, CLI: Hostname>show snapshots Restore points: --------------- monthlysnapshot Creation of an additional restore point will need 6.272G Amount of space available for restore points is 7.34G GUI: Navigate to Maintenance > Snapshot Management",
+    "remediation": "Run the following command to take the snapshot. CLI: To take the snapshot run the following command on the device. Hostname> add snapshot [snapshot_name] GUI: Navigate to Maintenance > Snapshot Management > New Provide the Name and description for the snapshot  70 | P a g e Default Value: Not Configured",
+    "function_names": [
+      "compute_firewall_snapshot_enabled",
+      "compute_firewall_snapshot_configured",
+      "compute_firewall_snapshot_automated",
+      "compute_firewall_snapshot_logs_excluded",
+      "compute_firewall_snapshot_restore_verified",
+      "compute_firewall_snapshot_hardware_compatible",
+      "compute_firewall_snapshot_os_included",
+      "compute_firewall_snapshot_checkpoint_included"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.4.3",
+    "title": "Configuring Scheduled Backups",
+    "assessment": "Manual",
+    "description": "The backup can be scheduled to take daily, weekly or monthly. The backup can be taken locally on the device and also on a remote server via FTP, tftp or scp. The backup which is taken last is marked with (latest) in backup type.",
+    "rationale": "The backup helps in restoring the configuration in the case of system failure or corruption or in the condition of device replacement.",
+    "audit": "GUI: Navigate to Maintenance > System Backup > Scheduled Backup",
+    "remediation": "GUI: Navigate to Maintenance > System Backup > Scheduled Backup > Add Scheduled Backup Provide the Backup Type and Backup Schedule as per organization's policy.",
+    "function_names": [
+      "backup_schedule_daily_enabled",
+      "backup_schedule_weekly_enabled",
+      "backup_schedule_monthly_enabled",
+      "backup_local_storage_enabled",
+      "backup_remote_server_enabled",
+      "backup_ftp_transfer_enabled",
+      "backup_tftp_transfer_enabled",
+      "backup_scp_transfer_enabled",
+      "backup_latest_version_marked"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.5.1",
+    "title": "Ensure CLI session timeout is set to less than or equal to 10 minutes",
+    "assessment": "Automated",
+    "description": "Set the CLI Session Timeout value for device management to 10 minutes or less to automatically close inactive sessions.",
+    "rationale": "An unattended computer with an open administrative session to the device could allow an unauthorized user access to the firewall\u2019s management interface",
+    "audit": "Run the following command to check Inactivity Timeout for Command Line is set to 10 or less. CLI: Hostname>show inactivity-timeout 10 GUI: Navigate to System Management > Session > Command Line Shell  >  Inactivity Timeout - Set to 10 or less",
+    "remediation": "Run the following command to Configure the Inactivity Timeout for Command Line. CLI: Hostname> set inactivity-timeout 10 GUI: Navigate to System Management > Session > Command Line Shell  >  Inactivity Timeout - Set to 10 or less  73 | P a g e Default Value: 10",
+    "function_names": [
+      "device_management_cli_session_timeout_less_than_10m",
+      "device_management_cli_session_timeout_within_limit",
+      "device_management_cli_session_timeout_compliant",
+      "device_management_cli_session_timeout_enforced",
+      "device_management_cli_session_timeout_secure"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.5.2",
+    "title": "Ensure Web session timeout is set to less than or equal to 10 minutes",
+    "assessment": "Automated",
+    "description": "Set the WebUI Session Timeout value for device management to 10 minutes or less to automatically close inactive sessions.",
+    "rationale": "An unattended computer with an open administrative session to the device could allow an unauthorized user access to the firewall\u2019s management interface",
+    "audit": "Run the following command to check Inactivity Timeout for Web UI is set to 10 or less. CLI: Hostname> show web session-timeout WebSessionTimeout 10 GUI: Navigate to System Management > Session > Web UI  >  Inactivity Timeout - Set to 10 or less",
+    "remediation": "Run the following command to Configure the Inactivity Timeout for Web UI. CLI: Hostname> set web session-timeout 10 GUI: Navigate to System Management > Session > Web UI  >  Inactivity Timeout - Set to 10 or less Default Value: 10  75 | P a g e",
+    "function_names": [
+      "device_management_webui_session_timeout_less_than_10m",
+      "webui_session_timeout_configured_10m_or_less",
+      "device_web_session_timeout_enforced_10m_max",
+      "web_session_timeout_set_10m_or_less",
+      "device_management_session_timeout_compliant_10m"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.5.3",
+    "title": "Ensure Client Authentication is secured.",
+    "assessment": "Automated",
+    "description": "Client Authentication allows a user and device to authenticate to the firewall and inherit pre-configured firewall rules for a set amount of time. By default, these connections are unencrypted yet can travel over unsecured networks. It is recommended that all Client Authentication connections be made using the HTTPS configuration. This both uniquely identifies the gateway and keeps the authentication credentials from being copied when going over the network.",
+    "rationale": "The Client Authentication is used to authenticate a user or device to the firewall and by default, it works on HTTP port 900 and telnet port 259. The setting is stored in $FWDIR/conf/fwauthd.conf file. HTTP and telnet both are non-secure plaintext protocol and there is a number of published vulnerabilities, including the possibility of information disclosure and unauthorized access to the host system, which could permit sensitive data to be compromised. HTTPS configuration for all Client Authentication connections helps in identifying the gateway and keeps the authentication credentials from being copied when passes through the network.",
+    "audit": "Verify telnet is disabled for Client Authentication. Verify following lines are commented out or not present in $FWDIR/conf/fwauthd.conf file. 259    fwssd       in.aclientd     wait    259 Verify Secure HTTP is used for Client Authentication. Verify following lines have SSL setting enabled in $FWDIR/conf/fwauthd.conf. 900     fwssd       in.ahclientd    wait    900 ssl:defaultCert     77 | P a g e",
+    "remediation": "Comment out or remove the following line from $FWDIR/conf/fwauthd.conf file, or disable the telnet service listening on port 259 by default, write a rule that prevents connections to the daemon in the rulebase. #259    fwssd       in.aclientd     wait    259 Edit the following line to include SSL setting in $FWDIR/conf/fwauthd.conf file. 900     fwssd       in.ahclientd    wait    900 ssl:defaultCert Default Value: 259 fwssd in.aclientd wait 259 900 fwssd in.ahclientd wait 900",
+    "function_names": [
+      "firewall_client_authentication_https_enabled",
+      "firewall_client_authentication_encryption_required",
+      "firewall_client_authentication_secure_protocol_enforced",
+      "firewall_client_authentication_tls_enabled",
+      "firewall_client_authentication_unencrypted_connections_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.5.4",
+    "title": "Ensure Radius or TACACS+ server is configured",
+    "assessment": "Automated",
+    "description": "Configured the TACACS-Servers or Radius server for central authentication.",
+    "rationale": "Authentication, authorization and accounting (AAA) scheme provide an authoritative source for managing and monitoring access for devices.",
+    "audit": "Run the following command to check TACACS+ server status and TACACS+ servers list. CLI: Hostname> show aaa tacacs-servers state Hostname> show aaa tacacs-servers list GUI: Navigate to User Management > Authentication Servers > TACACS+ configuration > Enable TACACS+ authentication Navigate to User Management > Authentication Servers > TACACS+ configuration > Enable TACACS+ Servers Run the following command to check radius servers list. CLI: Hostname> show aaa radius-servers list GUI: Navigate to User Management > Authentication Servers > Radius Servers      79 | P a g e",
+    "remediation": "run the following command to enable and add TACACS+ servers. CLI: Hostname> set aaa tacacs-servers state on Hostname> add aaa tacacs-servers priority <priority_value> server <IP_Address> key <Key> timeout <timeout_value> GUI: Navigate to User Management > Authentication Servers > TACACS+ configuration > Ensuere Enable TACACS+ authentication is checked Navigate to User Management > Authentication Servers > TACACS+ configuration > Enable TACACS+ Servers > Add Provide <Server_IP_Address>, <Priority> and <Timeout>. Run the following command to enable and add Radius servers. CLI: Hostname>add aaa radius-servers priority <priority_value> host <IP_Address> secret <Key>  port <Port_number> timeout <timeout_value> GUI: Navigate to User Management > Authentication Servers > Radius Servers > Add Provide <Server_IP_Address>, <Priority>, <UDP_Port> and <Timeout>. Default Value: Not Configured",
+    "function_names": [
+      "network_device_radius_server_configured",
+      "network_device_tacacs_server_configured",
+      "network_device_central_authentication_enabled",
+      "network_device_auth_server_configured",
+      "network_device_radius_or_tacacs_required"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.5.5",
+    "title": "Ensure allowed-client is set to those necessary for device management",
+    "assessment": "Automated",
+    "description": "Permit only the necessary IP addresses to be used to manage the device.",
+    "rationale": "Management access to the device should be restricted to the IP addresses or subnets used by firewall administrators. Permitting management access from other IP addresses increases the risk of unauthorized access through password guessing, stolen credentials, or other means.",
+    "audit": "Run the following command to verify the Device access restrictions. Verify IP Addresses in allowed-client is limited to those necessary for device management. CLI: Hostname> show allowed-client all Type                  Address                                   Mask Length Host                  Any Host                  10.22.2.1 Network               172.16.31.0                               24 GUI: Navigate to System Management > Host Access > Allowed Hosts",
+    "remediation": "Run the following command to remove the IP Address or Network from allowed-client list. CLI: Hostname> delete allowed-client host (ipv4-address | ipv6-address) <IP Address> Hostname> delete allowed-client network (ipv4-address | ipv6-address) <Network>   81 | P a g e GUI: Navigate to System Management > Host Access > Allowed Hosts > Select and Delete the not required IP address or Network Default Value: Any",
+    "function_names": [
+      "device_management_allowed_client_restricted",
+      "device_management_allowed_client_ip_restricted",
+      "device_management_allowed_client_minimal_access",
+      "device_management_allowed_client_whitelisted",
+      "device_management_allowed_client_necessary_only"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "2.6.1",
+    "title": "Ensure mgmtauditlogs is set to on",
+    "assessment": "Automated",
+    "description": "The mgmtauditlogs specifies if the Gaia sends the Gaia audit logs (for configuration changes that authorized users make) to a Check Point Management Server.",
+    "rationale": "The mgmtauditlogs enables the logging functionality for configuration change done by the user. In Gaia os, we can export the Syslog messages from security gateway to Syslog server or security management server, and it can be reviewed as normal logs in SmartView Tracker. This enables organizations to monitor and analyze configuration change made by users.",
+    "audit": "Run the following command to verify the mgmtauditlogs. CLI: Hostname> show syslog mgmtauditlogs Sending audit logs to Management Server is enabled GUI: Navigate to System Management > System Logging > System Logging Verify Send audit logs to management server upon successful configuration is checked",
+    "remediation": "Run the following command to enable the mgmtauditlogs. CLI: Hostname> set syslog mgmtauditlogs on    83 | P a g e GUI: Navigate to System Management > System Logging > System Logging checked the Send audit logs to management server upon successful configuration",
+    "function_names": [
+      "gaia_audit_logs_enabled",
+      "gaia_audit_logs_config_enabled",
+      "gaia_audit_logs_forwarding_enabled",
+      "gaia_audit_logs_to_management_server_enabled",
+      "gaia_audit_logs_configured",
+      "gaia_audit_logs_management_server_integration_enabled",
+      "gaia_audit_logs_export_enabled",
+      "gaia_audit_logs_centralized_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.6.2",
+    "title": "Ensure auditlog is set to permanent",
+    "assessment": "Automated",
+    "description": "The auditlog specifies if the Gaia saves the logs for configuration changes that authorized users have done.",
+    "rationale": "The auditlogs defines how it saves the configuration change logs. The configuration change log helps organizations to monitor and analyze configuration change made by users.",
+    "audit": "Run the following command to verify the auditlog. CLI: Hostname> show syslog auditlog permanent GUI: Navigate to System Management > System Logging > System Logging Verify Send audit logs to syslog upon successful configuration is checked",
+    "remediation": "Run the following command to enable the auditlog. CLI: Hostname> set syslog auditlog permanent GUI: Navigate to System Management > System Logging > System Logging checked the Send audit logs to syslog upon successful configuration     85 | P a g e",
+    "function_names": [
+      "gaia_auditlog_permanent_enabled",
+      "gaia_auditlog_retention_permanent",
+      "gaia_configuration_auditlog_permanent",
+      "gaia_auditlog_immutable_enabled",
+      "gaia_auditlog_preservation_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "2.6.3",
+    "title": "Ensure cplogs is set to on",
+    "assessment": "Automated",
+    "description": "The cplogs specifies if the Gaia sends the Gaia system logs to a Check Point Management Server:",
+    "rationale": "",
+    "audit": "Run the following command to verify the cplogs. CLI: Hostname> show syslog cplogs Sending syslog syslogs to CheckPoint's logs is disabled GUI: Navigate to System Management > System Logging > System Logging Verify Send Syslog messages to management server is checked",
+    "remediation": "Run the following command to enable the cplogs. CLI: Hostname> set syslog cplogs on GUI: Navigate to System Management > System Logging > System Logging checked the Send Syslog messages to management server",
+    "function_names": [
+      "gaia_system_logs_forwarding_enabled",
+      "gaia_cplogs_management_server_enabled",
+      "gaia_system_logs_remote_logging_enabled",
+      "gaia_cplogs_centralized_logging_enabled",
+      "gaia_logs_management_server_integration_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "3.1",
+    "title": "Enable the Firewall Stealth Rule",
+    "assessment": "Automated",
+    "description": "Create a rule to drop Any Service from Any Source or Any VPN that attempts to connect to the gateway.",
+    "rationale": "The stealth rule will limit access to the gateway to the control and service connections enabled as part of the design. As such, it is very important to enable access to the gateway as its role changes, for example, become a client VPN gateway. Another common example is enabling Client Authentication. If ports TCP 259 and 900 are not opened (or if you change the ports in the conf file), access will not work. Organizations with many Check Point gateways may want to document each gateway and the Check Point services it is intended and configured to accept.",
+    "audit": "Login to the Management Server via SmartConsole and create or edit the stealth rule and make sure it is on top of all rules and only allowed sources and services are allowed to access the Gateway.",
+    "remediation": "Login to the Management Server via SmartDashboard and create or edit the stealth rule, allowed only required IP address to manage the gateway and make sure it is on top of all rules.",
+    "function_names": [
+      "firewall_stealth_rule_enabled",
+      "firewall_stealth_rule_any_service_dropped",
+      "firewall_stealth_rule_any_source_blocked",
+      "firewall_stealth_rule_any_vpn_blocked",
+      "firewall_gateway_connection_restricted",
+      "firewall_stealth_rule_all_traffic_dropped",
+      "firewall_stealth_rule_default_deny_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.2",
+    "title": "Configure a Default Drop/Cleanup Rule",
+    "assessment": "Automated",
+    "description": "Ensure that the final rule in the rulebase explicitly drops all services, destinations, etc not specifically allowed in the previous rules. It is important that any access not explicitly allowed be explicitly dropped.",
+    "rationale": "The Clean up rule is necessary to block all the traffic which is not allowed by earlier rules in the firewall. Ideally, Clean up rule be at the bottom in the Firewall rule base. By default an Implied Rule in Checkpoint firewall which does the same thing, but logging is not enabled for this rule.",
+    "audit": "Verify the last rule is present in the rulebase which is denying all traffic from any source to any destination.",
+    "remediation": "Create or edit the last rule in the rulebase which is denying all traffic from any source to any destination.           90 | P a g e",
+    "function_names": [
+      "network_security_group_rulebase_default_drop",
+      "network_security_group_rulebase_cleanup_rule",
+      "network_security_group_rulebase_explicit_deny",
+      "network_security_group_rulebase_final_rule_drop",
+      "network_security_group_rulebase_traffic_deny_all",
+      "network_security_group_rulebase_deny_unmatched",
+      "network_security_group_rulebase_terminating_rule",
+      "network_security_group_rulebase_default_deny",
+      "network_security_group_rulebase_explicit_drop_all",
+      "network_security_group_rulebase_deny_all_unmatched"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.3",
+    "title": "Use Checkpoint Sections and Titles",
+    "assessment": "Manual",
+    "description": "Use Sections to organize rules into related groups, whenever possible. Set each off with a descriptive Section Title.",
+    "rationale": "Rulebase clarity helps all workers and reviewers. By organizing rules, inserting new rules is easier, and all can see the relationships among rules.",
+    "audit": "Verify each rule has a description added and sections are used as per the requirement.",
+    "remediation": "Add a description for each rule.",
+    "function_names": [
+      "compliance_rule_section_titles_defined",
+      "compliance_rule_checkpoint_sections_organized",
+      "compliance_rule_related_groups_structured",
+      "compliance_rule_descriptive_section_titles_used"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "3.4",
+    "title": "Ensure Hit count is Enable for the rules",
+    "assessment": "Automated",
+    "description": "The Hit Count setting shows the number of hits for the rules if enabled. When a new connection crosses a Firewall, hits are incremented for the matching rule.",
+    "rationale": "The Hit Count is a very useful feature which helps in finding the unused rules, which can be reviewed and removed or update the rules accordingly as per the requirement.",
+    "audit": "Go to the following path in Smart Console and verify Enable Hit Count is enabled. Navigate to Global Properties > Hit Count Verify 'Enable Hit Count' is checked",
+    "remediation": "Go to the following path in Smart Console and Enable the Enable Hit Count setting. Navigate to Global Properties > Hit Count Checked the 'Enable Hit Count' setting",
+    "function_names": [
+      "firewall_rule_hit_count_enabled",
+      "firewall_rule_hit_count_logging_enabled",
+      "firewall_rule_hit_count_monitoring_enabled",
+      "firewall_rule_hit_count_tracking_enabled",
+      "firewall_rule_hit_count_visibility_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.5",
+    "title": "Ensure no Allow Rule with Any in Destination filed present in the Firewall Rules",
+    "assessment": "Automated",
+    "description": "The Firewall Rules with Any in Source field allows all the IP Addresses of the Network to access the specified destination configured in the Firewall rules for specific services.",
+    "rationale": "Ideally, the traffic should be explicitly allowed from specific Source to specific Destination for the required services. This provides better control over the traffic passes through the firewall and reduce the chances of an exploit because of service misconfiguration.",
+    "audit": "Verify there are no allowed rules present in the firewall which has Any used in the Source field. If there is any such rule present in the firewall, it should have a business justification and also it should be documented.",
+    "remediation": "Delete the rule from the firewall which has Any used in the Source field.",
+    "function_names": [
+      "firewall_rule_no_any_destination",
+      "firewall_rule_destination_restricted",
+      "firewall_rule_any_destination_denied",
+      "firewall_rule_destination_specific",
+      "firewall_rule_no_unrestricted_destination"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.6",
+    "title": "Ensure no Allow Rule with Any in Source filed present in the Firewall Rules",
+    "assessment": "Automated",
+    "description": "The Firewall Rules with Any in the Destination field allows accessing all the IP Addresses of Network from specified Sources configured in the Firewall rules for specific services.",
+    "rationale": "Ideally, the traffic should be explicitly allowed from the specific Source to specific Destination for the required services. This provides better control over the traffic passes through the firewall and reduce the chances of an exploit because of service misconfiguration.",
+    "audit": "Verify there are no allowed rules present in the firewall which has Any used in the Destination field. If there is any such rule present in the firewall, it should have a business justification and also it should be documented.",
+    "remediation": "Delete the rule from the firewall which has Any used in the Destination field.",
+    "function_names": [
+      "firewall_rule_no_allow_any_source",
+      "firewall_rule_restrict_source_ip",
+      "firewall_rule_destination_ip_specific",
+      "firewall_rule_no_any_source_present",
+      "firewall_rule_source_ip_restricted",
+      "firewall_rule_no_broad_source_allow",
+      "firewall_rule_source_specificity_required",
+      "firewall_rule_no_any_source_allowed"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.7",
+    "title": "Ensure no Allow Rule with Any in Services filed present in the Firewall Rules",
+    "assessment": "Automated",
+    "description": "The Firewall Rules with Any in the Service field allows accessing all the Services from specified Source to specified Destination configured in the Firewall rules.",
+    "rationale": "There are many services like telnet, FTP, TFTP which are having many security issues. Hackers can take advantage of these services to gain the credentials, access to the systems or they can use these services for DoS attacks. These services need to be configured as per the needs of the business.",
+    "audit": "Verify there are no allowed rules present in the firewall which has Any used in the Service field.",
+    "remediation": "Delete the rule from the firewall which has Any used in the Service field.",
+    "function_names": [
+      "firewall_rule_no_allow_any_service",
+      "firewall_rule_restrict_service_scope",
+      "firewall_rule_service_specific_allowed",
+      "firewall_rule_deny_any_service",
+      "firewall_rule_service_field_restricted"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.8",
+    "title": "Logging should be enable for all Firewall Rules",
+    "assessment": "Manual",
+    "description": "The Track Field defines how the events of the rule are captured.",
+    "rationale": "The event log of firewall rules helps in identifying the allowed and blocked traffic and also helps in troubleshooting and forensic investigation. It is always good to enable logging for all the firewall rules, but by logging multiple firewall rules results in a huge log files, which requires huge disk space and management operations. Logs play an important role in security auditing, incident response, system maintenance and forensic investigation, and should be configured as per the business needs.",
+    "audit": "Verify all Track field in all firewall rules should have set to Log.",
+    "remediation": "Set the Track field to Log in all firewall rules.",
+    "function_names": [
+      "firewall_rule_logging_enabled",
+      "firewall_rule_track_field_enabled",
+      "firewall_rule_event_capture_enabled",
+      "firewall_rule_logging_enabled_all_rules",
+      "firewall_rule_tracking_enabled_all"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.9",
+    "title": "Review and Log Implied Rules",
+    "assessment": "Automated",
+    "description": "Rulebase clarity helps all workers and reviewers. Stating rules explicitly in the rulebase makes policy analysis and review significantly easier. Select the \u2017Log Implied Rules\u2018 to ensure all understand when connectivity is denied or allowed through a subtle Implied Rule.",
+    "rationale": "It is recommended to define rules explicitly rather than state them implicitly in the Implied Rules section of Global Properties. If Implied Rules are used, configure logging for implied rules by accessing the \u2017Global Properties\u2018 dialog box.",
+    "audit": "Go to the following path in the Smart Console and verify Log Implied Rules is enabled. Navigate to Global Properties > Firewall Verify Log Implied Rules is enabled",
+    "remediation": "Go to the following path in the Smart Console and enabled the Log Implied Rules. Navigate to Global Properties > Firewall Enable the Log Implied Rules Default Value: Disabled",
+    "function_names": [
+      "network_security_rulebase_implied_rules_logged",
+      "network_security_rulebase_implied_rules_visible",
+      "network_security_rulebase_explicit_rules_required",
+      "network_security_rulebase_implied_rules_audited",
+      "network_security_rulebase_implied_rules_documented",
+      "network_security_rulebase_implied_rules_deny_logged",
+      "network_security_rulebase_implied_rules_allow_logged"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.10",
+    "title": "Ensure Drop Out of State TCP Packets is enabled",
+    "assessment": "Automated",
+    "description": "The Drop out of state TCP Packets setting will drop the out of state or non-synchronized TCP Packets for which firewall does not have a matching state table entry.",
+    "rationale": "Bypassing security setting Drop out of state TCP Packets means that non-synchronized packets which do not belong to an established connection in the Firewall's connections table or non-TCP compliant traffic will not be dropped. This can be potentially used by attackers for Denial-of-service attacks by flooding non-synchronized TCP packets.",
+    "audit": "Go to the following path and verify Drop Out of State TCP Packets and Log on Drop is enabled. SmartConsole > Global Properties > Stateful Inspection Verify Drop Out of State TCP Packets and Log on Drop is checked.",
+    "remediation": "Go to the following path and checked the Drop Out of State TCP Packets and Log on Drop. SmartConsole > Global Properties > Stateful Inspection Checked the Drop Out of State TCP Packets and Log on Drop Default Value: Enabled",
+    "function_names": [
+      "network_firewall_tcp_packet_drop_out_of_state_enabled",
+      "network_firewall_tcp_state_validation_enabled",
+      "network_firewall_non_sync_tcp_packets_dropped",
+      "network_firewall_stateful_packet_inspection_enabled",
+      "network_firewall_tcp_state_table_validation_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.11",
+    "title": "Ensure Drop Out of State ICMP Packets is enabled",
+    "assessment": "Automated",
+    "description": "This drops the out of state ICMP packets.",
+    "rationale": "The Firewall verifies that each ICMP reply packet matches a previous request, and each ICMP error matches an existing connection. Out of State ICMP packets should be dropped and logged.",
+    "audit": "Go to the following path and verify Drop Out of State ICMP Packets and Log on Drop is enabled. SmartConsole > Global Properties > Stateful Inspection Verify Drop Out of State ICMP Packets and Log on Drop is checked.",
+    "remediation": "Go to the following path and checked the Drop Out of State ICMP Packets and Log on Drop. SmartConsole > Global Properties > Stateful Inspection Checked the Drop Out of State ICMP Packets and Log on Drop Default Value: Enabled",
+    "function_names": [
+      "network_acl_icmp_drop_out_of_state_enabled",
+      "network_acl_icmp_stateful_inspection_enabled",
+      "network_acl_icmp_invalid_packet_drop_enabled",
+      "network_acl_icmp_strict_validation_enabled",
+      "network_acl_icmp_security_filtering_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.12",
+    "title": "Ensure Anti-Spoofing is enabled and action is set to Prevent for all Interfaces",
+    "assessment": "Automated",
+    "description": "The Anti-Spoofing is a technique which is used to identify and drop the packets that have a false source IP address. The Anti-Spoofing detect mode is only monitor the Anti-spoofing events while prevent mode drops the Anti-spoofing events.",
+    "rationale": "Hackers change the packet's IP address and make a packet which looks like it is from a trusted source. If your network is not protected with the IP-spoofing, hackers can exploit the vulnerability to gain access to the network.",
+    "audit": "For all managed gateways verify that Anti-Spoofing is enabled, Anti-Spoofing action is set to Prevent and tracking is set to Log. SmartConsole > Gateways & Servers > select managed Gateway > Network Management > Select each interface > General > Modify - Verify Perform Anti-Spoofing based on Interface topology is checked - Verify Anti-Spoofing action is set to Prevent - Verify Spoof Tracking is set to Log",
+    "remediation": "For all managed gateways enable the Anti-Spoofing, set the Anti-Spoofing action to Prevent and set the tracking to Log. SmartConsole > Gateways & Servers > select managed Gateway > Network Management > Select each interface > General > Modify - Checked the Perform Anti-Spoofing based on Interface topology - Set the Anti-Spoofing action to Prevent - Set the Spoof Tracking to Log     101 | P a g e",
+    "function_names": [
+      "network_interface_anti_spoofing_enabled",
+      "network_interface_anti_spoofing_action_prevent",
+      "network_interface_anti_spoofing_monitor_disabled",
+      "network_interface_anti_spoofing_all_interfaces",
+      "network_interface_anti_spoofing_drop_packets_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.13",
+    "title": "Ensure Disk Space Alert is set",
+    "assessment": "Automated",
+    "description": "This is used to generate the Log and Alert when disk space reaches the configured limit.",
+    "rationale": "The device might get inaccessible and the logs are not getting stored once the disk space reaches to the maximum capacity. It is imperative that organizations log critical infrastructure appropriately, store and archive these logs in a central location",
+    "audit": "Verify Disk Space Alert is configured if disk space goes beyond the organization defined configured limit. SmartConsole > Gateways & Servers > Select each Gateway > Logs > Local Storage * When disk space is below is checked and value MBytes or Percentage is configured * Issue alert is set to Log, Popup Alert, Mail or SNMP trap alert.",
+    "remediation": "Go to the following path and configured the Disk Space Alert. SmartConsole > Gateways & Servers > Select each Gateway > Logs > Local Storage * Checked the When disk space is below and value MBytes or Percentage is configured as per the Organization Policy. * Set the Issue alert to Log, Popup Alert, Mail or SNMP trap alert.",
+    "function_names": [
+      "compute_disk_space_alert_enabled",
+      "compute_disk_space_alert_threshold_set",
+      "compute_disk_space_alert_logging_enabled",
+      "compute_disk_space_alert_notification_enabled",
+      "compute_disk_space_alert_min_threshold",
+      "compute_disk_space_alert_max_threshold",
+      "compute_disk_space_alert_all_regions",
+      "compute_disk_space_alert_over_90d"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "3.14",
+    "title": "Ensure Accept RIP is not enabled",
+    "assessment": "Automated",
+    "description": "The Accept RIP is a Global property setting which you can set either to accept or reject the RIP packets which is using UDP Port 520. RIP maintains information about reachable systems and routes to those systems.",
+    "rationale": "The security policy is made up of rules in the Firewall Rule Base. Other than the rules defined by the administrator, The Check Point Security Gateway also creates Implied Rules, which are defined in the Firewall Global Properties. The Check Point Security Gateway places the implied rules first, last, or before last in the Firewall Rule Base. The administrator can decide whether or not to log implied rules. First \u2014 The Implicit rule will be placed before the explicit rules. Last \u2014 The Implicit rule will be placed after the explicit rules. Before Last \u2014 The Implicit rule will be placed before the last explicit rule.",
+    "audit": "Verify Accept RIP under Global Properties is not enabled. SmartConsole > Gateways & Servers > select each Gateway > Firewall Veiry Accept RIP is unchecked.",
+    "remediation": "Go to the following path and Configured the Accept RIP. SmartConsole > Gateways & Servers > select each Gateway > Firewall Unchecked the Accept RIP Default Value: Disabled    104 | P a g e",
+    "function_names": [
+      "network_router_rip_accept_disabled",
+      "network_router_rip_protocol_blocked",
+      "network_router_udp_520_blocked",
+      "network_router_rip_packets_rejected",
+      "network_router_rip_global_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.15",
+    "title": "Ensure Accept Domain Name over TCP (Zone Transfer) is not enabled",
+    "assessment": "Automated",
+    "description": "The 'Domain Name Over TCP (Zone transfer)' is a global property setting which is used to allow or reject all the TCP-type DNS packets to and from anywhere. These rules are considered as rule zero which are executed before any user-defined rules.",
+    "rationale": "If this rule is enabled, it accepts Domain Name (DNS) queries and replies over TCP, to allow downloading of the domain name-resolving tables used for zone transfers between servers. For clients, DNS over TCP is only used if the tables to be transferred are very large. The security policy is made up of rules in the Firewall Rule Base. Other than the rules defined by the administrator, The Check Point Security Gateway also creates Implied Rules, which are defined in the Firewall Global Properties. The Check Point Security Gateway places the implied rules first, last, or before last in the Firewall Rule Base. The administrator can decide whether or not to log implied rules. \u2022 First > The Implicit rule will be placed before the explicit rules. \u2022 Last > The Implicit rule will be placed after the explicit rules. \u2022 Before Last > The Implicit rule will be placed before the last explicit rule.",
+    "audit": "Verify Accept Accept Domain Name over TCP (Zone Transfer) under Global Properties is not enabled. SmartConsole > Gateways & Servers > select each Gateway > Firewall Veiry Accept Accept Domain Name over TCP (Zone Transfer) is unchecked.",
+    "remediation": "Go to the following path and Configured the Accept Accept Domain Name over TCP (Zone Transfer). SmartConsole > Gateways & Servers > select each Gateway > Firewall Unchecked the Accept Accept Domain Name over TCP (Zone Transfer)  106 | P a g e",
+    "function_names": [
+      "cloud_dns_zone_transfer_disabled",
+      "cloud_dns_tcp_transfer_disabled",
+      "cloud_dns_zone_transfer_restricted",
+      "cloud_dns_tcp_zone_transfer_disabled",
+      "cloud_dns_global_transfer_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.16",
+    "title": "Ensure Accept Domain Name over UDP (Queries) is not enabled",
+    "assessment": "Automated",
+    "description": "The 'Domain Name Over UDP (Queries)' is a global property setting which is used to allow or reject all the UDP-type DNS packets to and from anywhere. These rules are considered as rule zero which are execute before any user-defined rules.",
+    "rationale": "If this rule is set to enable it allows the DNS traffic to pass over the firewall without any control. The security policy is made up of rules in the Firewall Rule Base. Other than the rules defined by the administrator, The Check Point Security Gateway also creates Implied Rules, which are defined in the Firewall Global Properties. The Check Point Security Gateway places the implied rules first, last, or before last in the Firewall Rule Base. The administrator can decide whether or not to log implied rules. \u2022 First > The Implicit rule will be placed before the explicit rules. \u2022 Last > The Implicit rule will be placed after the explicit rules. \u2022 Before Last > The Implicit rule will be placed before the last explicit rule.",
+    "audit": "Verify Accept Accept Domain Name over UDP (Queries) under Global Properties is not enabled. SmartConsole > Gateways & Servers > select each Gateway > Firewall Verify Accept Accept Domain Name over UDP (Queries) is unchecked.",
+    "remediation": "Go to the following path and Configured the Accept Accept Domain Name over UDP (Queries). SmartConsole > Gateways & Servers > select each Gateway > Firewall Unchecked the Accept Accept Domain Name over UDP (Queries)   108 | P a g e",
+    "function_names": [
+      "cloud_cdn_domain_udp_queries_disabled",
+      "cloud_cdn_domain_udp_queries_not_enabled",
+      "cloud_cdn_domain_udp_traffic_blocked",
+      "cloud_cdn_domain_udp_protocol_restricted",
+      "cloud_cdn_domain_udp_rule_zero_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.17",
+    "title": "Ensure Accept ICMP Requests is not enabled",
+    "assessment": "Automated",
+    "description": "The 'Accept ICMP requests' is a global property setting which is used to allow the ICMP requests from any location. ICMP is used to send control messages (for example, ping, destination unreachable, source quench, route change) to other systems. These rules are considered as rule zero which are executed before any user-defined rules.",
+    "rationale": "If this rule is enabled, it allows the echo requests, timestamp requests, information requests, and mask requests. This can be used by a malicious user to create a denial of service condition by flooding the network with broadcast echo requests and revealing mask request information. The security policy is made up of rules in the Firewall Rule Base. Other than the rules defined by the administrator, The Check Point Security Gateway also creates Implied Rules, which are defined in the Firewall Global Properties. The Check Point Security Gateway places the implied rules first, last, or before last in the Firewall Rule Base. The administrator can decide whether or not to log implied rules. \u2022 First > The Implicit rule will be placed before the explicit rules. \u2022 Last > The Implicit rule will be placed after the explicit rules. \u2022 Before Last > The Implicit rule will be placed before the last explicit rule.",
+    "audit": "Verify Accept Accept ICMP Requests under Global Properties is not enabled. SmartConsole > Gateways & Servers > select each Gateway > Firewall Verify Accept Accept ICMP Requests is unchecked.",
+    "remediation": "Go to the following path and Configured the Accept Accept ICMP Requests. SmartConsole > Gateways & Servers > select each Gateway > Firewall Unchecked the Accept Accept ICMP Requests  110 | P a g e",
+    "function_names": [
+      "network_security_icmp_requests_disabled",
+      "network_security_icmp_requests_blocked",
+      "network_security_icmp_requests_restricted",
+      "network_security_icmp_requests_denied",
+      "network_security_icmp_requests_protected"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.18",
+    "title": "Ensure Allow bi-directional NAT is enabled",
+    "assessment": "Automated",
+    "description": "Allow bi-directional NAT applies to automatic NAT rules in the NAT Rule Base and allows two automatic NAT rules to match a connection. Without Bidirectional NAT, only one automatic NAT rule can match a connection.",
+    "rationale": "When NAT is defined for a network object, an automatic NAT rule is generated which performs the required translation. If there are two such objects and one is the source of a connection and the other the destination, then without Bidirectional NAT, only one of these objects will be translated, because only one of the automatically generated NAT rules will be applied, and so a connection between the two objects will only be allowed in one direction. With Bidirectional NAT, both automatic NAT rules are applied, and both objects will be translated, so connections between the two objects will be allowed in both directions.",
+    "audit": "Verify Allow bi-directional NAT under Global Properties is enabled. SmartConsole > Gateways & Servers > select each Gateway > NAT - Network Address Translation Verify Allow bi-directional NAT is checked.",
+    "remediation": "Go to the following path and Configured the Allow bi-directional NAT. SmartConsole > Gateways & Servers > select each Gateway > NAT - Network Address Translation Unchecked the Allow bi-directional NAT      111 | P a g e",
+    "function_names": [
+      "network_nat_bidirectional_enabled",
+      "network_nat_rule_bidirectional_enabled",
+      "network_nat_automatic_rule_bidirectional_enabled",
+      "network_nat_connection_bidirectional_enabled",
+      "network_nat_rule_base_bidirectional_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.19",
+    "title": "Ensure Automatic ARP Configuration NAT is enabled",
+    "assessment": "Automated",
+    "description": "Proxy ARP is a mechanism that allows the configuration of a Gateway to respond to ARP requests on behalf of other hosts.",
+    "rationale": "Automatic ARP configuration ensures that ARP requests for a translated (NATed) machine, network or address range are answered by the Check Point Security Gateway. This option removes the requirement for manual ARP configuration for automatic NAT rules (using the arp command in Unix or the local.arp file in Windows). The command fw ctl arp displays the ARP proxy table on Check Point Security Gateways that run on Windows. On Unix, use the arp -a command.",
+    "audit": "Verify Automatic ARP Configuration NAT under Global Properties is enabled. SmartConsole > Gateways & Servers > select each Gateway > NAT - Network Address Translation Verify Automatic ARP Configuration NAT is checked.",
+    "remediation": "Go to the following path and Configured the Automatic ARP Configuration NAT. SmartConsole > Gateways & Servers > select each Gateway > NAT - Network Address Translation Unchecked the Automatic ARP Configuration NAT",
+    "function_names": [
+      "compute_instance_automatic_arp_enabled",
+      "compute_network_automatic_arp_enabled",
+      "compute_gateway_automatic_arp_enabled",
+      "compute_vpc_automatic_arp_enabled",
+      "compute_subnet_automatic_arp_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2"
+  },
+  {
+    "id": "3.20",
+    "title": "Ensure Logging is enabled for Track Options of Global Properties",
+    "assessment": "Automated",
+    "description": "This defines the system-wide logging and alerting of parameters.",
+    "rationale": "This enables the logging and alerting for specific types of parameters. VPN successful key exchange: specifies the action to be taken when VPN keys are successfully exchanged. VPN packet handling errors: specifies the action to be taken when encryption or decryption errors occur. A log entry contains the action performed (Drop or Reject) and a short description of the error cause, for example, scheme or method mismatch. VPN configuration & key exchange errors: specifies the action to be taken when logging configuration or key exchange errors occur, for example, when attempting to establish encrypted communication with a network object inside the same encryption domain. IP Options drop: specifies the action to take when a packet with IP Options is encountered. The Check Point Security Gateway always drops these packets, but you can log them or issue an alert. Administrative notifications: specifies the action to be taken when an administrative event (for example, when a certificate is about to expire) occurs. SLA violation: specifies the action to be taken when an SLA violation occurs, as defined in the Virtual Links window. Connection matched by SAM: specifies the action to be taken when a connection is blocked by SAM (Suspicious Activities Monitoring). Dynamic object resolution failure: specifies the action to be taken when a dynamic object cannot be resolved. Log every authenticated HTTP connection: specifies that a log entry should be generated for every authenticated HTTP connection.  114 | P a g e",
+    "audit": "Verify Logging is set to Log or Popup Alert or Mail Alert or SNMP Trap Alert for the following events SmartConsole > Global Properties > Log and Alert > Track Options VPN successful key exchange VPN packet handling errors VPN configuration & key exchange errors IP Options drop Administrative Notification Connection matched by SAM Dynamic object resolution failure Packet is incorrectly tagged Packet tagging brute force attack Verify Log every authenticated HTTP connection is enabled.",
+    "remediation": "Logging is set to Log or Popup Alert or Mail Alert or SNMP Trap Alert for the following events SmartConsole > Global Properties > Log and Alert > Track Options VPN successful key exchange VPN packet handling errors VPN configuration & key exchange errors IP Options drop Administrative Notification Connection matched by SAM Dynamic object resolution failure Packet is incorrectly tagged Packet tagging brute force attack Checked the  Log every authenticated HTTP connection.   115 | P a g e Appendix: Summary Table Control Set Correctly Yes No 1 Password Policy 1.1 Ensure Minimum Password Length is set to 14 or higher (Automated) \uf06f \uf06f 1.2 Ensure Disallow Palindromes is selected (Automated) \uf06f \uf06f 1.3 Ensure Password Complexity is set to 3 (Automated) \uf06f \uf06f 1.4 Ensure Check for Password Reuse is selected and  History Length is set to 12 or more (Automated) \uf06f \uf06f 1.5 Ensure Password Expiration is set to 90 days (Automated) \uf06f \uf06f 1.6 Ensure Warn users before password expiration is set to 7 days (Automated) \uf06f \uf06f 1.7 Ensure Lockout users after password expiration is set to 1 (Automated) \uf06f \uf06f 1.8 Ensure Deny access to unused accounts is selected (Automated) \uf06f \uf06f 1.9 Ensure Days of non-use before lock-out is set to 30 (Automated) \uf06f \uf06f 1.10 Ensure Force users to change password at first login after password was changed from Users page is selected (Automated) \uf06f \uf06f 1.11 Ensure Deny access after failed login attempts is selected (Automated) \uf06f \uf06f 1.12 Ensure Maximum number of failed attempts allowed is set to 5 or fewer (Automated) \uf06f \uf06f 1.13 Ensure Allow access again after time is set to 300 or more seconds (Automated) \uf06f \uf06f 2 Device Setup 2.1 General Settings 2.1.1 Ensure 'Login Banner' is set (Automated) \uf06f \uf06f 2.1.2 Ensure 'Message Of The Day (MOTD)' is set (Automated) \uf06f \uf06f 2.1.3 Ensure Core Dump is enabled (Automated) \uf06f \uf06f 2.1.4 Ensure Config-state is saved (Automated) \uf06f \uf06f 2.1.5 Ensure unused interfaces are disabled (Automated) \uf06f \uf06f 2.1.6 Ensure DNS server is configured (Automated) \uf06f \uf06f 2.1.7 Ensure IPv6 is disabled if not used (Automated) \uf06f \uf06f 2.1.8 Ensure Host Name is set (Automated) \uf06f \uf06f 2.1.9 Ensure Telnet is disabled (Automated) \uf06f \uf06f 2.1.10 Ensure DHCP is disabled (Automated) \uf06f \uf06f  116 | P a g e 2.2 SNMP 2.2.1 Ensure SNMP agent is disabled (Automated) \uf06f \uf06f 2.2.2 Ensure SNMP version is set to v3-Only (Automated) \uf06f \uf06f 2.2.3 Ensure SNMP traps is enabled (Automated) \uf06f \uf06f 2.2.4 Ensure SNMP traps receivers is set (Automated) \uf06f \uf06f 2.3 NTP 2.3.1 Ensure NTP is enabled and IP address is set for Primary and Secondary NTP server (Automated) \uf06f \uf06f 2.3.2 Ensure timezone is properly configured (Automated) \uf06f \uf06f 2.4 Backup 2.4.1 Ensure 'System Backup' is set. (Automated) \uf06f \uf06f 2.4.2 Ensure 'Snapshot' is set (Automated) \uf06f \uf06f 2.4.3 Configuring Scheduled Backups (Manual) \uf06f \uf06f 2.5 Authentication Settings 2.5.1 Ensure CLI session timeout is set to less than or equal to 10 minutes (Automated) \uf06f \uf06f 2.5.2 Ensure Web session timeout is set to less than or equal to 10 minutes (Automated) \uf06f \uf06f 2.5.3 Ensure Client Authentication is secured. (Automated) \uf06f \uf06f 2.5.4 Ensure Radius or TACACS+ server is configured (Automated) \uf06f \uf06f 2.5.5 Ensure allowed-client is set to those necessary for device management (Automated) \uf06f \uf06f 2.6 Logging 2.6.1 Ensure mgmtauditlogs is set to on (Automated) \uf06f \uf06f 2.6.2 Ensure auditlog is set to permanent (Automated) \uf06f \uf06f 2.6.3 Ensure cplogs is set to on (Automated) \uf06f \uf06f 3 Firewall Secure Settings 3.1 Enable the Firewall Stealth Rule (Automated) \uf06f \uf06f 3.2 Configure a Default Drop/Cleanup Rule (Automated) \uf06f \uf06f 3.3 Use Checkpoint Sections and Titles (Manual) \uf06f \uf06f 3.4 Ensure Hit count is Enable for the rules (Automated) \uf06f \uf06f 3.5 Ensure no Allow Rule with Any in Destination filed present in the Firewall Rules (Automated) \uf06f \uf06f 3.6 Ensure no Allow Rule with Any in Source filed present in the Firewall Rules (Automated) \uf06f \uf06f 3.7 Ensure no Allow Rule with Any in Services filed present in the Firewall Rules (Automated) \uf06f \uf06f 3.8 Logging should be enable for all Firewall Rules (Manual) \uf06f \uf06f 3.9 Review and Log Implied Rules (Automated) \uf06f \uf06f 3.10 Ensure Drop Out of State TCP Packets is enabled (Automated) \uf06f \uf06f  117 | P a g e 3.11 Ensure Drop Out of State ICMP Packets is enabled (Automated) \uf06f \uf06f 3.12 Ensure Anti-Spoofing is enabled and action is set to Prevent for all Interfaces (Automated) \uf06f \uf06f 3.13 Ensure Disk Space Alert is set (Automated) \uf06f \uf06f 3.14 Ensure Accept RIP is not enabled (Automated) \uf06f \uf06f 3.15 Ensure Accept Domain Name over TCP (Zone Transfer) is not enabled (Automated) \uf06f \uf06f 3.16 Ensure Accept Domain Name over UDP (Queries) is not enabled (Automated) \uf06f \uf06f 3.17 Ensure Accept ICMP Requests is not enabled (Automated) \uf06f \uf06f 3.18 Ensure Allow bi-directional NAT is enabled (Automated) \uf06f \uf06f 3.19 Ensure Automatic ARP Configuration NAT is enabled (Automated) \uf06f \uf06f 3.20 Ensure Logging is enabled for Track Options of Global Properties (Automated) \uf06f \uf06f    118 | P a g e  Appendix: Change History Date Version Changes for this version Jun 5, 2018 1.0.0 NEXT _Listing Order, Status_ on **[section] 1.10 Apply latest Gaia OS patches** were updated. Jan 8, 2019 1.1.0 ADD - Create subsection for Restricting Access (Ticket 6082)",
+    "function_names": [
+      "cloud_cdn_global_property_track_options_logging_enabled",
+      "cloud_cdn_property_track_options_logging_enabled",
+      "cloud_cdn_track_options_logging_enabled",
+      "cloud_cdn_global_property_logging_enabled",
+      "cloud_cdn_property_logging_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  }
+]

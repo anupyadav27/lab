@@ -1,0 +1,1187 @@
+[
+  {
+    "compliance_id": "3.1.1",
+    "title": "Ensure that the proxy kubeconfig file permissions are set to 644 or more restrictive",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_proxy_kubeconfig_file_permission_restricted",
+        "description": "Checks if the proxy kubeconfig file permissions are set to 644 or more restrictive",
+        "gcp_api_example": "gcloud container clusters describe --format='get(nodeConfig.proxyConfig)' --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database match the compliance requirement. A new function is proposed to check the permissions of the proxy kubeconfig file in GKE.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_proxy_kubeconfig_file_permission_restricted)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.1.2",
+    "title": "Ensure that the proxy kubeconfig file ownership is set to root:root",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kube_proxy_kubeconfig_ownership_root",
+        "description": "Checks if the kube-proxy kubeconfig file ownership is set to root:root",
+        "gcp_api_example": "gcloud container clusters describe --format=json --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database match the compliance requirement. A new function 'gke_kube_proxy_kubeconfig_ownership_root' is proposed to check if the kube-proxy kubeconfig file ownership is set to root:root. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_kube_proxy_kubeconfig_ownership_root)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.1.3",
+    "title": "Ensure that the kubelet configuration file has permissions set to 644",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_config_file_permission_check",
+        "description": "Checks if the kubelet configuration file has permissions set to 644",
+        "gcp_api_example": "gcloud container clusters describe --format='get(nodeConfig.kubeletConfig)' --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_kubelet_config_file_permission_check' is proposed to fill the gap. This function will use the GCP gcloud command to retrieve the kubelet configuration of a GKE cluster and check if the file permissions are set to 644.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_kubelet_config_file_permission_check)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.1.4",
+    "title": "Ensure that the kubelet configuration file ownership is set to root:root",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_config_file_root_ownership",
+        "description": "Checks if the kubelet configuration file ownership is set to root:root",
+        "gcp_api_example": "gcloud container clusters describe --format=json --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_kubelet_config_file_root_ownership' is proposed to fill the gap. This function will use the 'gcloud container clusters describe' command to fetch the kubelet configuration and check if the file ownership is set to root:root.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_kubelet_config_file_root_ownership)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.1",
+    "title": "Ensure that the Anonymous Auth is Not Enabled Draft",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_anonymous_auth_disabled",
+        "description": "Checks if anonymous requests to the Kubelet server are disabled",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='get(clusterAutoscaling.enableNodeAutoprovisioning)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance requirement. A new function 'gke_kubelet_anonymous_auth_disabled' is proposed to check if anonymous requests to the Kubelet server are disabled. This function is implementable with the GCP gcloud command line tool.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_kubelet_anonymous_auth_disabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.2",
+    "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_authorization_mode_not_always_allow",
+        "description": "Checks that the --authorization-mode argument for GKE clusters is not set to AlwaysAllow",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(clusterAuthConfig.authorizationMode)'",
+        "service_category": "GKE"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database could be mapped to this compliance item. A new function 'gke_cluster_authorization_mode_not_always_allow' is proposed to check the --authorization-mode argument for GKE clusters. The coverage assessment is low (1) as this is a new function and there are no existing functions to map or consolidate.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 392 (iam_roles_permissions_discovery_prevention, iam_policies_legal_compliance_review, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_cluster_authorization_mode_not_always_allow)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.3",
+    "title": "Ensure that a Client CA File is Configured",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_client_ca_file_configured",
+        "description": "Checks if a Client CA File is configured for Kubelet authentication in GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(masterAuth.clientCertificateConfig.issueClientCertificate)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_kubelet_client_ca_file_configured' is proposed to check if a Client CA File is configured for Kubelet authentication in GKE clusters. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 664 (datastore_instance_encryption_enabled, iam_roles_permissions_discovery_prevention, kms_keys_fips_validated_cryptography...)\n- New Functions Proposed: 1 (gke_kubelet_client_ca_file_configured)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.4",
+    "title": "Ensure that the --read-only-port is disabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_read_only_port_disabled",
+        "description": "Checks if the read-only port is disabled in the Kubelet process",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE_NAME --format='value(clusterIpv4Cidr)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions were found in the database that could cover this compliance requirement. A new function 'gke_kubelet_read_only_port_disabled' is proposed to fill this gap. This function will check if the read-only port is disabled in the Kubelet process in GKE clusters.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_kubelet_read_only_port_disabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.5",
+    "title": "Ensure that the --streaming-connection-idle-timeout argument is not set to 0",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "streaming_connection_idle_timeout_set",
+        "description": "Checks if the --streaming-connection-idle-timeout argument is not set to 0",
+        "gcp_api_example": "gcloud alpha pubsub v1 projects.subscriptions.get --subscription=SUBSCRIPTION_ID",
+        "service_category": "Network"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'streaming_connection_idle_timeout_set' is proposed to check if the --streaming-connection-idle-timeout argument is not set to 0. This function is categorized under 'Network' as it deals with connection settings.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (streaming_connection_idle_timeout_set)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.6",
+    "title": "Ensure that the --make-iptables-util-chains argument is set to true",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_make_iptables_util_chains_true",
+        "description": "Checks if the --make-iptables-util-chains argument is set to true in GKE Kubelet",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_ID --zone=ZONE --format='value(clusterIpv4Cidr)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_kubelet_make_iptables_util_chains_true' is proposed to check if the --make-iptables-util-chains argument is set to true in GKE Kubelet. This function is implementable with the GCP gcloud command-line tool.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_kubelet_make_iptables_util_chains_true)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.7",
+    "title": "Ensure that the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_event_record_qps_set",
+        "description": "Checks if the --eventRecordQPS argument is set to 0 or a level which ensures appropriate event capture",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(currentMasterVersion)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database match the compliance requirement. A new function is proposed to check the --eventRecordQPS argument in the Kubelet configuration of GKE clusters.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_kubelet_event_record_qps_set)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.8",
+    "title": "Ensure that the --rotate-certificates argument is not present or is set to true",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_kubelet_client_certificate_rotation_enabled",
+        "description": "Checks if the kubelet client certificate rotation is enabled in GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(name, status, nodeConfig.imageType)' --zone ZONE",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_kubelet_client_certificate_rotation_enabled' is proposed to check if the kubelet client certificate rotation is enabled in GKE clusters. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 326 (datastore_instance_encryption_enabled, kms_keys_fips_validated_cryptography, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_kubelet_client_certificate_rotation_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "3.2.9",
+    "title": "Ensure that the RotateKubeletServerCertificate argument is set to true",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_rotate_kubelet_server_certificate_enabled",
+        "description": "Checks if the RotateKubeletServerCertificate argument is set to true for GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID --zone=ZONE_NAME CLUSTER_NAME --format='value(clusterAutoscaling.enableNodeAutoprovisioning)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_cluster_rotate_kubelet_server_certificate_enabled' is proposed to check if the RotateKubeletServerCertificate argument is set to true for GKE clusters.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 326 (datastore_instance_encryption_enabled, kms_keys_fips_validated_cryptography, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_cluster_rotate_kubelet_server_certificate_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.1",
+    "title": "Ensure that the cluster-admin role is only used where required",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_admin_role_restriction",
+        "description": "Checks if the cluster-admin role is only used where and when needed",
+        "gcp_api_example": "gcloud container clusters get-credentials --project=PROJECT_ID",
+        "service_category": "Security"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_cluster_admin_role_restriction' is proposed to fill the gap. This function will check if the cluster-admin role is only used where and when needed in GKE clusters.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_admin_role_restriction)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.2",
+    "title": "Minimize access to secrets",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_secrets_access_minimized",
+        "description": "Checks if access to secrets stored within the Kubernetes cluster is restricted",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_ID --format='value(masterAuth.username)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of minimizing access to secrets in GKE. Therefore, a new function 'gke_secrets_access_minimized' is proposed to fill this gap. This function would use the GCP API to check if access to secrets stored within the Kubernetes cluster is restricted.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 392 (iam_roles_permissions_discovery_prevention, iam_policies_legal_compliance_review, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_secrets_access_minimized)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.3",
+    "title": "Minimize wildcard use in Roles and ClusterRoles",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_roles_clusterroles_minimize_wildcard_use",
+        "description": "Checks if Kubernetes Roles and ClusterRoles minimize the use of wildcard '*'",
+        "gcp_api_example": "kubectl get roles,clusterroles --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.rules[*].apiGroups}{\"\\n\"}{end}'",
+        "service_category": "Security"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_roles_clusterroles_minimize_wildcard_use' is proposed to check if Kubernetes Roles and ClusterRoles minimize the use of wildcard '*'. This function can be implemented using the 'kubectl' command-line tool to fetch all Roles and ClusterRoles and their associated rules.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_roles_clusterroles_minimize_wildcard_use)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.4",
+    "title": "Ensure that default service accounts are not actively used",
+    "existing_functions_mapped": [
+      "compute_instance_no_default_service_account",
+      "compute_instance_no_default_service_account_full_access",
+      "compute_instance_no_service_account_key",
+      "compute_instance_service_account_attached",
+      "sql_instances_use_default_service_account"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 10,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_no_default_service_account",
+        "description": "Checks if GKE clusters are using default service accounts",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value[separator=\" \"](nodeConfig.serviceAccount)'",
+        "service_category": "GKE"
+      }
+    ],
+    "mapping_notes": "The existing functions cover the compliance requirement for Compute instances and SQL instances. However, there is a gap for GKE clusters. Therefore, a new function 'gke_cluster_no_default_service_account' is proposed to fill this gap.\n\nCoverage Analysis:\n- Coverage Score: 10/10\n- Existing Functions Mapped: 5 (compute_instance_no_default_service_account, compute_instance_no_default_service_account_full_access, compute_instance_no_service_account_key, compute_instance_service_account_attached, sql_instances_use_default_service_account)\n- Unmapped Potential Functions: 387 (iam_roles_permissions_discovery_prevention, iam_policies_legal_compliance_review, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_cluster_no_default_service_account)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.5",
+    "title": "Ensure that Service Account Tokens are only mounted where necessary",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_pod_service_account_token_mount_restriction",
+        "description": "Checks if Service Account Tokens are only mounted in GKE pods where necessary",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_ID --zone=ZONE --format='value(workloadIdentityConfig.workloadPool)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring that Service Account Tokens are only mounted where necessary. Therefore, a new function 'gke_pod_service_account_token_mount_restriction' is proposed. This function will check GKE pods to ensure that Service Account Tokens are only mounted where the workload running in the pod explicitly needs to communicate with the API server, thus meeting the compliance requirement.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 392 (iam_roles_permissions_discovery_prevention, iam_policies_legal_compliance_review, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_pod_service_account_token_mount_restriction)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.6",
+    "title": "Avoid use of system:masters group",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_system_masters_group_restriction",
+        "description": "Checks if the system:masters group is used to grant permissions to any user or service account in GKE clusters",
+        "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone=ZONE --project=PROJECT_ID",
+        "service_category": "Security"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_cluster_system_masters_group_restriction' is proposed to check if the system:masters group is used to grant permissions to any user or service account in GKE clusters. This function can be implemented using the 'gcloud container clusters get-credentials' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 392 (iam_roles_permissions_discovery_prevention, iam_policies_legal_compliance_review, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_cluster_system_masters_group_restriction)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.7",
+    "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_bind_impersonate_escalate_permissions_limited",
+        "description": "Checks if the bind, impersonate and escalate permissions in the Kubernetes cluster are limited",
+        "gcp_api_example": "gcloud container clusters get-credentials --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database match the compliance requirement. A new function is proposed to fill the gap. This function will check if the bind, impersonate and escalate permissions in the Kubernetes cluster are limited, as per the compliance requirement.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_bind_impersonate_escalate_permissions_limited)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.8",
+    "title": "Avoid bindings to system:anonymous",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_role_bindings_system_anonymous_avoided",
+        "description": "Checks if ClusterRoleBindings or RoleBindings are bound to the user system:anonymous in GKE clusters",
+        "gcp_api_example": "gcloud container clusters get-credentials --region=REGION --project=PROJECT_ID",
+        "service_category": "Security"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function is proposed to fill the gap. This function will check if any ClusterRoleBindings or RoleBindings in GKE clusters are bound to the user system:anonymous, which is a security risk as Kubernetes assigns this user to API server requests that have no authentication information provided.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_role_bindings_system_anonymous_avoided)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.9",
+    "title": "Avoid non-default bindings to system:unauthenticated",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_role_binding_system_unauthenticated_check",
+        "description": "Checks for non-default ClusterRoleBindings and RoleBindings with the group system:unauthenticated, except the ClusterRoleBinding system:public-info-viewer",
+        "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone=ZONE --project=PROJECT_ID",
+        "service_category": "Security"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function is proposed to fill the gap. This function will use the GCP gcloud command to retrieve the credentials for the specified cluster, then it will check for non-default ClusterRoleBindings and RoleBindings with the group system:unauthenticated, except the ClusterRoleBinding system:public-info-viewer.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_role_binding_system_unauthenticated_check)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.1.10",
+    "title": "Avoid non-default bindings to system:authenticated",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_clusterrolebindings_system_authenticated_restrictions",
+        "description": "Checks for non-default ClusterRoleBindings and RoleBindings with the group system:authenticated, except the ClusterRoleBindings system:basic-user, system:discovery, and system:public-info-viewer.",
+        "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone=ZONE --project=PROJECT_ID; kubectl get clusterrolebindings,rolebindings -o json",
+        "service_category": "GKE"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_clusterrolebindings_system_authenticated_restrictions' is proposed to check for non-default ClusterRoleBindings and RoleBindings with the group system:authenticated in GKE clusters. The function will use 'gcloud' and 'kubectl' commands to fetch the necessary information.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 740 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_clusterrolebindings_system_authenticated_restrictions)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.2.1",
+    "title": "Ensure that the cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces.",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_pod_security_baseline_enforced",
+        "description": "Checks if the GKE cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(clusterAutoscaling.enableNodeAutoprovisioning)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database can cover this compliance requirement. A new function 'gke_cluster_pod_security_baseline_enforced' is proposed to check if the GKE cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces. This function can be implemented using the GCP gcloud command-line tool.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_pod_security_baseline_enforced)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.3.1",
+    "title": "Ensure that the CNI in use supports Network Policies",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_cni_network_policies_supported",
+        "description": "Checks if the CNI plugin in use by the GKE cluster supports Network Policies",
+        "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID --zone=ZONE_NAME CLUSTER_NAME",
+        "service_category": "Network"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database can cover this compliance requirement. A new function 'gke_cluster_cni_network_policies_supported' is proposed to check if the CNI plugin in use by the GKE cluster supports Network Policies. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_cni_network_policies_supported)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.3.2",
+    "title": "Ensure that all Namespaces have Network Policies defined",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_namespace_network_policy_defined",
+        "description": "Checks if all namespaces in GKE have network policies defined",
+        "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone ZONE --project PROJECT_ID",
+        "service_category": "Network"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database match the compliance requirement. A new function 'gke_namespace_network_policy_defined' is proposed to fill the gap. This function will check if all namespaces in GKE have network policies defined, which is the requirement of the compliance item. The coverage assessment is set to 7 as the new function should provide high coverage for the compliance item, but there might be minor gaps as the function needs to be implemented and tested.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_namespace_network_policy_defined)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.4.1",
+    "title": "Prefer using secrets as files over secrets as environment variables",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_secrets_as_files_preferred",
+        "description": "Checks if Kubernetes secrets are mounted as data volumes instead of environment variables",
+        "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_secrets_as_files_preferred' is proposed to check if Kubernetes secrets are being used as files over environment variables. This function would use the 'gcloud container clusters describe' command to retrieve the configuration of the Kubernetes clusters and check the secrets usage.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_secrets_as_files_preferred)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.4.2",
+    "title": "Consider external secret storage",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "kubernetes_external_secret_storage",
+        "description": "Checks if Kubernetes is using an external secrets storage and management system",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_ID --format='value(addonsConfig.configConnectorConfig.enabled)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "The compliance item requires checking if Kubernetes is using an external secrets storage and management system. However, there are no existing functions in the database that can cover this requirement. Therefore, a new function 'kubernetes_external_secret_storage' is proposed to fill this gap. The function will use the GCP API to describe the Kubernetes cluster and check the configuration of the secrets storage.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 634 (bigquery_dataset_audit_logging_configured, iam_roles_permissions_discovery_prevention, bigquery_dataset_automated_snapshots_enabled...)\n- New Functions Proposed: 1 (kubernetes_external_secret_storage)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.5.1",
+    "title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_image_provenance_configured",
+        "description": "Checks if Image Provenance is configured using ImagePolicyWebhook admission controller in GKE",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE_NAME --format='value(addonsConfig.imagePolicyConfig.enabled)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "There are no existing functions in the database that can cover this compliance requirement. Therefore, a new function 'gke_image_provenance_configured' is proposed to check if Image Provenance is configured using ImagePolicyWebhook admission controller in GKE. The coverage assessment is low (1) as this is a new function and there are no existing functions that can be mapped or consolidated.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 242 (iam_organization_policies_configured, network_load_balancer_ssl_proxy_custom_ssl_policy, storage_bucket_versioning_lifecycle_policy_enabled...)\n- New Functions Proposed: 1 (gke_image_provenance_configured)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.6.1",
+    "title": "Create administrative boundaries between resources using namespaces",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_namespace_isolation_enabled",
+        "description": "Checks if namespaces are used to isolate Kubernetes objects in GKE",
+        "gcp_api_example": "kubectl get namespaces --context=CONTEXT_NAME",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_namespace_isolation_enabled' is proposed to check if namespaces are used for isolation in GKE. This function can be implemented using the 'kubectl get namespaces' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_namespace_isolation_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.6.2",
+    "title": "Ensure that the seccomp profile is set to RuntimeDefault in the pod definitions",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_pod_seccomp_profile_runtime_default",
+        "description": "Checks if the seccomp profile is set to RuntimeDefault in the pod definitions",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(clusterIpv4Cidr)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database match the compliance requirement. A new function 'gke_pod_seccomp_profile_runtime_default' is proposed to check if the seccomp profile is set to RuntimeDefault in the pod definitions. This function falls under the Compute service category.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_pod_seccomp_profile_runtime_default)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.6.3",
+    "title": "Apply Security Context to Pods and Containers",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_pod_container_security_context_applied",
+        "description": "Checks if Security Context is applied to GKE Pods and Containers",
+        "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to the compliance item. A new function 'gke_pod_container_security_context_applied' is proposed to check if Security Context is applied to GKE Pods and Containers. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_pod_container_security_context_applied)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "4.6.4",
+    "title": "The default namespace should not be used",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_namespace_default_usage_restricted",
+        "description": "Checks if the default namespace is not being used in GKE",
+        "gcp_api_example": "kubectl get pods --all-namespaces --context=CONTEXT_NAME",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_namespace_default_usage_restricted' is proposed to check if the default namespace is not being used in GKE. This function can be implemented using the 'kubectl' command-line tool, which is part of the GCP SDK.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_namespace_default_usage_restricted)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.1.1",
+    "title": "Ensure Image Vulnerability Scanning is enabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "container_registry_image_vulnerability_scanning_enabled",
+        "description": "Checks if Image Vulnerability Scanning is enabled for images stored in Google Container Registry",
+        "gcp_api_example": "gcloud artifacts docker images list-tags --project=PROJECT_ID --location=LOCATION --repository=REPOSITORY",
+        "service_category": "Container Registry"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database directly map to the compliance requirement of ensuring Image Vulnerability Scanning is enabled. Therefore, a new function 'container_registry_image_vulnerability_scanning_enabled' is proposed to fill this gap. This function will check if Image Vulnerability Scanning is enabled for images stored in Google Container Registry. The function is implementable with the gcloud command provided.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 360 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (container_registry_image_vulnerability_scanning_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.1.2",
+    "title": "Minimize user access to Container Image repositories",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "container_registry_user_access_minimized",
+        "description": "Checks if user access to Container Image repositories is minimized and only authorized personnel and service accounts can interact with build images.",
+        "gcp_api_example": "gcloud container images list-tags --project=PROJECT_ID",
+        "service_category": "Container"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of minimizing user access to Container Image repositories. Therefore, a new function 'container_registry_user_access_minimized' is proposed to fill this gap. This function will check if user access to Container Image repositories is minimized and only authorized personnel and service accounts can interact with build images.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 392 (iam_roles_permissions_discovery_prevention, iam_policies_legal_compliance_review, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (container_registry_user_access_minimized)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.1.3",
+    "title": "Minimize cluster access to read-only for Container Image repositories",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_service_account_artifact_registry_viewer_role",
+        "description": "Checks if the Cluster Service Account is configured with Artifact Registry Viewer Role to only allow read-only access to AR repositories",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value[separator=\" \"](nodeConfig.serviceAccount)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database can cover this compliance requirement. A new function is proposed to check if the GKE Cluster Service Account is configured with Artifact Registry Viewer Role to only allow read-only access to AR repositories. This function can be implemented using the 'gcloud container clusters describe' command to retrieve the service account associated with a GKE cluster.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 634 (bigquery_dataset_audit_logging_configured, iam_roles_permissions_discovery_prevention, bigquery_dataset_automated_snapshots_enabled...)\n- New Functions Proposed: 1 (gke_cluster_service_account_artifact_registry_viewer_role)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.1.4",
+    "title": "Ensure only trusted container images are used",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "container_registry_trusted_images_only",
+        "description": "Checks if Binary Authorization is configured to allowlist only approved container registries",
+        "gcp_api_example": "gcloud container binauthz policy describe --project=PROJECT_ID",
+        "service_category": "Container"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'container_registry_trusted_images_only' is proposed to check if Binary Authorization is configured to allowlist only approved container registries. This function can be implemented using the 'gcloud container binauthz policy describe' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 449 (iam_roles_permissions_discovery_prevention, kms_keys_fips_validated_cryptography, iam_policies_legal_compliance_review...)\n- New Functions Proposed: 1 (container_registry_trusted_images_only)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.2.1",
+    "title": "Ensure GKE clusters are not running using the Compute Engine default service account",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_no_default_service_account",
+        "description": "Checks if GKE clusters are not running using the Compute Engine default service account",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='value[separator=\" \"](nodeConfig.serviceAccount)' --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database directly map to the compliance requirement. A new function 'gke_cluster_no_default_service_account' is proposed to check if GKE clusters are not running using the Compute Engine default service account. The function uses the 'gcloud container clusters describe' command to retrieve the service account used by the GKE cluster nodes.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 740 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_cluster_no_default_service_account)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.2.2",
+    "title": "Prefer using dedicated GCP Service Accounts and Workload Identity",
+    "existing_functions_mapped": [
+      "iam_service_account_no_admin_privileges",
+      "iam_service_account_no_owner_role",
+      "iam_service_account_no_owner_role_key",
+      "iam_service_account_no_admin_access",
+      "iam_service_account_no_editor_owner_roles"
+    ],
+    "functions_to_rename": [
+      {
+        "old_name": "iam_service_account_no_admin_privileges",
+        "new_name": "gke_workload_identity_no_admin_privileges",
+        "rationale": "The rename focuses on GKE workload identity instead of general service accounts, which is more relevant to the compliance requirement."
+      },
+      {
+        "old_name": "iam_service_account_no_owner_role",
+        "new_name": "gke_workload_identity_no_owner_role",
+        "rationale": "The rename focuses on GKE workload identity instead of general service accounts, which is more relevant to the compliance requirement."
+      },
+      {
+        "old_name": "iam_service_account_no_owner_role_key",
+        "new_name": "gke_workload_identity_no_owner_role_key",
+        "rationale": "The rename focuses on GKE workload identity instead of general service accounts, which is more relevant to the compliance requirement."
+      },
+      {
+        "old_name": "iam_service_account_no_admin_access",
+        "new_name": "gke_workload_identity_no_admin_access",
+        "rationale": "The rename focuses on GKE workload identity instead of general service accounts, which is more relevant to the compliance requirement."
+      },
+      {
+        "old_name": "iam_service_account_no_editor_owner_roles",
+        "new_name": "gke_workload_identity_no_editor_owner_roles",
+        "rationale": "The rename focuses on GKE workload identity instead of general service accounts, which is more relevant to the compliance requirement."
+      }
+    ],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 10,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_workload_identity_dedicated_service_account",
+        "description": "Checks if GKE workloads use dedicated service accounts for authentication to Google Cloud APIs.",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='value(workloadIdentityConfig.workloadPool)'",
+        "service_category": "Identity"
+      }
+    ],
+    "mapping_notes": "The existing functions related to IAM service accounts were mapped and renamed to focus on GKE workload identity, which is the main subject of the compliance requirement. A new function was suggested to check if GKE workloads use dedicated service accounts, which is a specific part of the compliance requirement not covered by the existing functions.\n\nCoverage Analysis:\n- Coverage Score: 10/10\n- Existing Functions Mapped: 5 (iam_service_account_no_admin_privileges, iam_service_account_no_owner_role, iam_service_account_no_owner_role_key, iam_service_account_no_admin_access, iam_service_account_no_editor_owner_roles)\n- Unmapped Potential Functions: 659 (datastore_instance_encryption_enabled, iam_roles_permissions_discovery_prevention, kms_keys_fips_validated_cryptography...)\n- New Functions Proposed: 1 (gke_workload_identity_dedicated_service_account)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.3.1",
+    "title": "Ensure Kubernetes Secrets are encrypted using keys managed in Cloud KMS",
+    "existing_functions_mapped": [
+      "container_gke_secrets_encrypted_with_kms",
+      "container_gke_clusters_secrets_encrypted_with_kms"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 8,
+    "new_functions_needed": [],
+    "mapping_notes": "The existing functions 'container_gke_secrets_encrypted_with_kms' and 'container_gke_clusters_secrets_encrypted_with_kms' are sufficient to cover the compliance requirement of ensuring Kubernetes Secrets are encrypted using keys managed in Cloud KMS. No new functions or renames are needed.\n\nCoverage Analysis:\n- Coverage Score: 8/10\n- Existing Functions Mapped: 2 (container_gke_secrets_encrypted_with_kms, container_gke_clusters_secrets_encrypted_with_kms)\n- Unmapped Potential Functions: 324 (datastore_instance_encryption_enabled, kms_keys_fips_validated_cryptography, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 0 (None)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.4.1",
+    "title": "Ensure the GKE Metadata Server is Enabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_metadata_server_enabled",
+        "description": "Checks if the GKE Metadata Server is enabled for a GKE cluster",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='value(metadataConfig.enableMetadataServer)'",
+        "service_category": "GKE"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can be mapped or renamed to cover this compliance item. A new function 'gke_cluster_metadata_server_enabled' is suggested to check if the GKE Metadata Server is enabled for a GKE cluster. The coverage assessment is set to 7 as the new function should provide high coverage for this compliance item.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 740 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_cluster_metadata_server_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.5.1",
+    "title": "Ensure Container-Optimized OS (cos_containerd) is used for GKE node images",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_node_images_cos_containerd",
+        "description": "Checks if GKE node images are using Container-Optimized OS (cos_containerd)",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(nodeConfig.imageType)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_node_images_cos_containerd' is proposed to check if GKE node images are using Container-Optimized OS (cos_containerd).\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 360 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_node_images_cos_containerd)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.5.2",
+    "title": "Ensure Node Auto-Repair is enabled for GKE nodes",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_node_auto_repair_enabled",
+        "description": "Checks if Node Auto-Repair is enabled for GKE nodes",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(nodePools.autorepair)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_cluster_node_auto_repair_enabled' is proposed to check if Node Auto-Repair is enabled for GKE nodes.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 360 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_cluster_node_auto_repair_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.5.3",
+    "title": "Ensure Node Auto-Upgrade is enabled for GKE nodes",
+    "existing_functions_mapped": [
+      "sql_instances_auto_upgrade_enabled"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_nodes_auto_upgrade_enabled",
+        "description": "Checks if Node Auto-Upgrade is enabled for GKE nodes",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(currentNodeVersion)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "The existing function 'sql_instances_auto_upgrade_enabled' partially covers the compliance requirement as it checks for auto-upgrade but for SQL instances, not GKE nodes. Therefore, a new function 'gke_nodes_auto_upgrade_enabled' is proposed to specifically check if Node Auto-Upgrade is enabled for GKE nodes.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 1 (sql_instances_auto_upgrade_enabled)\n- Unmapped Potential Functions: 359 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_nodes_auto_upgrade_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.5.4",
+    "title": "When creating New Clusters - Automate GKE version management using Release Channels",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 4,
+    "new_functions_needed": [],
+    "mapping_notes": "Failed to process due to API errors. Coverage score 4/10 calculated based on basic analysis."
+  },
+  {
+    "compliance_id": "5.5.5",
+    "title": "Ensure Shielded GKE Nodes are Enabled",
+    "existing_functions_mapped": [
+      "compute_instance_shielded_vm_enabled"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "container_gke_shielded_nodes_enabled",
+        "description": "Checks if Shielded GKE Nodes are enabled for all GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(shieldedNodes.enabled)'",
+        "service_category": "Container"
+      }
+    ],
+    "mapping_notes": "The existing function 'compute_instance_shielded_vm_enabled' partially covers the compliance requirement as it checks for shielded VMs in Compute Engine. However, it does not specifically check for Shielded GKE Nodes. Therefore, a new function 'container_gke_shielded_nodes_enabled' is proposed to specifically check if Shielded GKE Nodes are enabled for all GKE clusters.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 1 (compute_instance_shielded_vm_enabled)\n- Unmapped Potential Functions: 633 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (container_gke_shielded_nodes_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.5.6",
+    "title": "Ensure Integrity Monitoring for Shielded GKE Nodes is Enabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_shielded_nodes_integrity_monitoring_enabled",
+        "description": "Checks if Integrity Monitoring for Shielded GKE Nodes is enabled",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(shieldedNodes.enabled)' --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_shielded_nodes_integrity_monitoring_enabled' is proposed to check if Integrity Monitoring for Shielded GKE Nodes is enabled.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 634 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_shielded_nodes_integrity_monitoring_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.5.7",
+    "title": "Ensure Secure Boot for Shielded GKE Nodes is Enabled",
+    "existing_functions_mapped": [
+      "compute_instance_shielded_vm_enabled"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_node_shielded_secure_boot_enabled",
+        "description": "Checks if Secure Boot for Shielded GKE Nodes is enabled",
+        "gcp_api_example": "gcloud container node-pools describe NODE_POOL_ID --cluster=CLUSTER_ID --zone=ZONE --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "The existing function 'compute_instance_shielded_vm_enabled' partially covers the compliance requirement as it checks for shielded VMs, but it does not specifically check for Secure Boot being enabled on GKE Nodes. Therefore, a new function 'gke_node_shielded_secure_boot_enabled' is proposed to specifically check for Secure Boot on Shielded GKE Nodes.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 1 (compute_instance_shielded_vm_enabled)\n- Unmapped Potential Functions: 359 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_node_shielded_secure_boot_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.6.1",
+    "title": "Enable VPC Flow Logs and Intranode Visibility",
+    "existing_functions_mapped": [
+      "network_vpc_flow_logs_enabled",
+      "network_vpc_logging_enabled",
+      "network_subnet_flow_logs_enabled"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 10,
+    "new_functions_needed": [
+      {
+        "function_name": "network_vpc_intranode_visibility_enabled",
+        "description": "Checks if Intranode Visibility is enabled for VPC to see pod-level traffic within a worker node",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_ID --format='get(networkConfig.intraNodeVisibilityConfig.enabled)'",
+        "service_category": "Network"
+      }
+    ],
+    "mapping_notes": "The existing functions 'network_vpc_flow_logs_enabled', 'network_vpc_logging_enabled', and 'network_subnet_flow_logs_enabled' can be used to check if VPC Flow Logs are enabled. However, there is no existing function to check if Intranode Visibility is enabled. Therefore, a new function 'network_vpc_intranode_visibility_enabled' is proposed to fill this gap.\n\nCoverage Analysis:\n- Coverage Score: 10/10\n- Existing Functions Mapped: 3 (network_vpc_flow_logs_enabled, network_vpc_logging_enabled, network_subnet_flow_logs_enabled)\n- Unmapped Potential Functions: 329 (network_cloud_armor_security_ops_access_configured, network_vpc_services_exposure, network_nat_gateway_associated_authorized_vpc...)\n- New Functions Proposed: 1 (network_vpc_intranode_visibility_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.6.2",
+    "title": "Ensure use of VPC-native clusters",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_vpc_native_enabled",
+        "description": "Checks if the GKE clusters are VPC-native",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(ipAllocationPolicy.useIpAliases)' --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_cluster_vpc_native_enabled' is proposed to check if the GKE clusters are VPC-native.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 332 (network_cloud_armor_security_ops_access_configured, network_vpc_services_exposure, network_nat_gateway_associated_authorized_vpc...)\n- New Functions Proposed: 1 (gke_cluster_vpc_native_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.6.3",
+    "title": "Ensure Control Plane Authorized Networks is Enabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_control_plane_authorized_networks_enabled",
+        "description": "Checks if Control Plane Authorized Networks is enabled for GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(privateClusterConfig.masterAuthorizedNetworksConfig.enabled)' --project=PROJECT_ID",
+        "service_category": "Network"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance item. A new function 'gke_cluster_control_plane_authorized_networks_enabled' is proposed to check if Control Plane Authorized Networks is enabled for GKE clusters. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_control_plane_authorized_networks_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.6.4",
+    "title": "Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_private_endpoint_enabled_public_access_disabled",
+        "description": "Checks if GKE clusters are created with private endpoint enabled and public access disabled",
+        "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID --region=REGION CLUSTER_NAME",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance requirement. A new function 'gke_cluster_private_endpoint_enabled_public_access_disabled' is proposed to check if GKE clusters are created with private endpoint enabled and public access disabled. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_private_endpoint_enabled_public_access_disabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.6.5",
+    "title": "Ensure clusters are created with Private Nodes",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_private_nodes_enabled",
+        "description": "Checks if GKE clusters are created with private nodes",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(privateClusterConfig.enablePrivateNodes)' --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to this compliance requirement. A new function 'gke_cluster_private_nodes_enabled' is proposed to check if GKE clusters are created with private nodes. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_private_nodes_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.6.6",
+    "title": "Consider firewalling GKE worker nodes",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 4,
+    "new_functions_needed": [],
+    "mapping_notes": "Failed to process due to API errors. Coverage score 4/10 calculated based on basic analysis."
+  },
+  {
+    "compliance_id": "5.6.7",
+    "title": "Ensure use of Google-managed SSL Certificates",
+    "existing_functions_mapped": [
+      "network_https_load_balancer_ssl_certificate_google_managed",
+      "network_load_balancer_ssl_certificates_google_managed",
+      "network_load_balancer_backend_https_certificates_google_managed",
+      "network_https_load_balancer_ssl_tls_certificate_compliance",
+      "network_load_balancer_backend_ssl_certificate_google_managed",
+      "network_https_load_balancer_backend_ssl_tls_certificate_google_managed",
+      "network_load_balancer_ssl_google_managed_certificates",
+      "network_load_balancer_backend_google_managed_ssl_required",
+      "network_load_balancer_backend_ssl_google_managed",
+      "network_load_balancer_backends_use_gcp_certificates",
+      "network_load_balancer_backends_use_gcm_ssl_certificates"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 8,
+    "new_functions_needed": [],
+    "mapping_notes": "The compliance requirement to ensure the use of Google-managed SSL Certificates can be covered by existing functions in the database. These functions check for the use of Google-managed SSL certificates in various network load balancer configurations. No new functions or renaming of existing functions are needed as the existing functions provide complete coverage for this compliance requirement.\n\nCoverage Analysis:\n- Coverage Score: 8/10\n- Existing Functions Mapped: 11 (network_https_load_balancer_ssl_certificate_google_managed, network_load_balancer_ssl_certificates_google_managed, network_load_balancer_backend_https_certificates_google_managed, network_https_load_balancer_ssl_tls_certificate_compliance, network_load_balancer_backend_ssl_certificate_google_managed, network_https_load_balancer_backend_ssl_tls_certificate_google_managed, network_load_balancer_ssl_google_managed_certificates, network_load_balancer_backend_google_managed_ssl_required, network_load_balancer_backend_ssl_google_managed, network_load_balancer_backends_use_gcp_certificates, network_load_balancer_backends_use_gcm_ssl_certificates)\n- Unmapped Potential Functions: 570 (network_cloud_armor_security_ops_access_configured, network_vpc_services_exposure, datastore_instance_encryption_enabled...)\n- New Functions Proposed: 0 (None)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.7.1",
+    "title": "Ensure Logging and Cloud Monitoring is Enabled",
+    "existing_functions_mapped": [
+      "logging_audit_logs_export_configured",
+      "monitoring_alert_policy_metric_settings",
+      "logging_cloudsql_audit_logs_severity_enabled",
+      "logging_audit_logs_enable_administrative_activities",
+      "logging_audit_logs_multiregion_enabled",
+      "logging_audit_logs_integrity_checking_enabled",
+      "logging_audit_logs_security_best_practices",
+      "monitoring_cloud_armor_metrics_enabled",
+      "logging_audit_logs_kms_encryption_configured",
+      "logging_audit_logs_continuous_recording",
+      "logging_audit_logs_integrity_verification_enabled",
+      "logging_audit_logs_configured_for_cloud_logging",
+      "logging_auditlog_cloudstorage_dataevents_enabled",
+      "logging_auditlogs_access_transparency_enabled",
+      "logging_cloud_logging_enabled",
+      "logging_audit_logs_configured_to_logging",
+      "logging_audit_logs_enable_multiregional",
+      "logging_auditlog_gcs_data_access_enabled",
+      "logging_audit_logs_configured_for_admin_and_data_access",
+      "logging_audit_logs_integrity_enabled",
+      "logging_audit_logs_encryption_with_kms",
+      "logging_auditlog_cloudstorage_data_events_enabled",
+      "logging_audit_logs_configured_to_cloud_logging",
+      "logging_auditlogs_cmek_configured",
+      "logging_audit_logs_enabled_multiregion",
+      "logging_audit_logs_configured_properly",
+      "logging_audit_logs_enabled"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 8,
+    "new_functions_needed": [],
+    "mapping_notes": "The compliance requirement 'Ensure Logging and Cloud Monitoring is Enabled' is fully covered by existing functions in the database. These functions collectively ensure that logs are exported, integrity checks are performed, multi-region logging is enabled, administrative activities are logged, and encryption is configured for logs. No new functions or renames are needed as the existing functions provide complete coverage.\n\nCoverage Analysis:\n- Coverage Score: 8/10\n- Existing Functions Mapped: 27 (logging_audit_logs_export_configured, monitoring_alert_policy_metric_settings, logging_cloudsql_audit_logs_severity_enabled, logging_audit_logs_enable_administrative_activities, logging_audit_logs_multiregion_enabled, logging_audit_logs_integrity_checking_enabled, logging_audit_logs_security_best_practices, monitoring_cloud_armor_metrics_enabled, logging_audit_logs_kms_encryption_configured, logging_audit_logs_continuous_recording, logging_audit_logs_integrity_verification_enabled, logging_audit_logs_configured_for_cloud_logging, logging_auditlog_cloudstorage_dataevents_enabled, logging_auditlogs_access_transparency_enabled, logging_cloud_logging_enabled, logging_audit_logs_configured_to_logging, logging_audit_logs_enable_multiregional, logging_auditlog_gcs_data_access_enabled, logging_audit_logs_configured_for_admin_and_data_access, logging_audit_logs_integrity_enabled, logging_audit_logs_encryption_with_kms, logging_auditlog_cloudstorage_data_events_enabled, logging_audit_logs_configured_to_cloud_logging, logging_auditlogs_cmek_configured, logging_audit_logs_enabled_multiregion, logging_audit_logs_configured_properly, logging_audit_logs_enabled)\n- Unmapped Potential Functions: 277 (bigquery_dataset_audit_logging_configured, apigateway_logging_enabled_error_or_all, sql_replication_logging_severity_enabled...)\n- New Functions Proposed: 0 (None)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.7.2",
+    "title": "Enable Linux auditd logging",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_node_auditd_logging_enabled",
+        "description": "Checks if the auditd logging daemon is running on GKE nodes running Container-Optimized OS (COS)",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_ID --zone=ZONE --format='value(nodeConfig.imageType)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_node_auditd_logging_enabled' is proposed to check if the auditd logging daemon is running on GKE nodes running Container-Optimized OS (COS). The coverage assessment is low (1) as this is a specific requirement not covered by the existing functions.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 634 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_node_auditd_logging_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.8.1",
+    "title": "Ensure authentication using Client Certificates is Disabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_client_certificates_disabled",
+        "description": "Checks if client certificates are disabled for GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format=json",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database cover this compliance requirement. A new function 'gke_client_certificates_disabled' is proposed to check if client certificates are disabled for GKE clusters.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 664 (datastore_instance_encryption_enabled, iam_roles_permissions_discovery_prevention, kms_keys_fips_validated_cryptography...)\n- New Functions Proposed: 1 (gke_client_certificates_disabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.8.2",
+    "title": "Manage Kubernetes RBAC users with Google Groups for GKE",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_rbac_users_managed_with_google_groups",
+        "description": "Checks if GKE RBAC users are managed using Google Groups",
+        "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone=ZONE --project=PROJECT_ID",
+        "service_category": "GKE"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database directly map to the compliance requirement of managing Kubernetes RBAC users with Google Groups for GKE. Therefore, a new function 'gke_rbac_users_managed_with_google_groups' is proposed to fill this gap. This function will use the 'gcloud container clusters get-credentials' command to fetch the cluster credentials and then check if the RBAC users are managed using Google Groups.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 740 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_rbac_users_managed_with_google_groups)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.8.3",
+    "title": "Ensure Legacy Authorization (ABAC) is Disabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_abac_disabled",
+        "description": "Checks if Attribute-Based Access Control (ABAC) is disabled for GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(legacyAbac.enabled)'",
+        "service_category": "GKE"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can be mapped to this compliance item. A new function 'gke_cluster_abac_disabled' is proposed to check if ABAC is disabled for GKE clusters. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 392 (iam_roles_permissions_discovery_prevention, iam_policies_legal_compliance_review, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 1 (gke_cluster_abac_disabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.9.1",
+    "title": "Enable Customer-Managed Encryption Keys (CMEK) for GKE Persistent Disks (PD)",
+    "existing_functions_mapped": [
+      "compute_persistent_disks_encrypted_with_cmek"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [],
+    "mapping_notes": "The existing function 'compute_persistent_disks_encrypted_with_cmek' directly covers the compliance requirement of enabling Customer-Managed Encryption Keys (CMEK) for GKE Persistent Disks (PD). Therefore, no new functions are needed, and the coverage is complete.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 1 (compute_persistent_disks_encrypted_with_cmek)\n- Unmapped Potential Functions: 649 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 0 (None)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.9.2",
+    "title": "Enable Customer-Managed Encryption Keys (CMEK) for Boot Disks",
+    "existing_functions_mapped": [
+      "compute_persistent_disks_encrypted_with_cmek"
+    ],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 4,
+    "new_functions_needed": [],
+    "mapping_notes": "The existing function 'compute_persistent_disks_encrypted_with_cmek' perfectly covers the compliance requirement of enabling Customer-Managed Encryption Keys (CMEK) for boot disks. Therefore, no new functions or renames are needed.\n\nCoverage Analysis:\n- Coverage Score: 4/10\n- Existing Functions Mapped: 1 (compute_persistent_disks_encrypted_with_cmek)\n- Unmapped Potential Functions: 325 (datastore_instance_encryption_enabled, kms_keys_fips_validated_cryptography, iam_api_keys_rotation_enforced...)\n- New Functions Proposed: 0 (None)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.10.1",
+    "title": "Ensure Kubernetes Web UI is Disabled",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_web_ui_disabled",
+        "description": "Checks if the Kubernetes Web UI (Dashboard) is disabled for GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(addonsConfig.kubernetesDashboard.disabled)' --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_cluster_web_ui_disabled' is proposed to check if the Kubernetes Web UI is disabled for GKE clusters. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 360 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_cluster_web_ui_disabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.10.2",
+    "title": "Ensure that Alpha clusters are not used for production workloads",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_alpha_status_check",
+        "description": "Checks if any GKE clusters are in alpha status",
+        "gcp_api_example": "gcloud container clusters list --project=PROJECT_ID",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided list can be used to check the alpha status of GKE clusters. Therefore, a new function 'gke_cluster_alpha_status_check' is proposed. This function will use the 'gcloud container clusters list' command to retrieve the list of clusters and their statuses. It will then check if any of the clusters are in alpha status, which is not suitable for production workloads.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (gke_cluster_alpha_status_check)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.10.3",
+    "title": "Consider GKE Sandbox for running untrusted workloads",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_sandbox_enabled_for_untrusted_workloads",
+        "description": "Checks if GKE Sandbox is enabled for running untrusted workloads",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='value(cluster.gkeSandboxConfig.enabled)'",
+        "service_category": "Compute"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database could be mapped to this compliance item. A new function 'gke_sandbox_enabled_for_untrusted_workloads' is proposed to check if GKE Sandbox is enabled for running untrusted workloads. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 360 (compute_instance_security_requirements_defined, sql_instance_skip_show_database_flag_on, container_gke_containers_readonly_root_filesystem...)\n- New Functions Proposed: 1 (gke_sandbox_enabled_for_untrusted_workloads)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.10.4",
+    "title": "Ensure use of Binary Authorization",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 6,
+    "new_functions_needed": [
+      {
+        "function_name": "gke_cluster_binary_authorization_enabled",
+        "description": "Checks if Binary Authorization is enabled for GKE clusters",
+        "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(binaryAuthorization.enabled)'",
+        "service_category": "Security"
+      }
+    ],
+    "mapping_notes": "No existing functions in the database can cover this compliance requirement. A new function 'gke_cluster_binary_authorization_enabled' is proposed to check if Binary Authorization is enabled for GKE clusters. This function can be implemented using the 'gcloud container clusters describe' command.\n\nCoverage Analysis:\n- Coverage Score: 6/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 449 (iam_roles_permissions_discovery_prevention, kms_keys_fips_validated_cryptography, iam_policies_legal_compliance_review...)\n- New Functions Proposed: 1 (gke_cluster_binary_authorization_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  },
+  {
+    "compliance_id": "5.10.5",
+    "title": "Enable Security Posture",
+    "existing_functions_mapped": [],
+    "functions_to_rename": [],
+    "functions_to_consolidate": [],
+    "coverage_assessment": 2,
+    "new_functions_needed": [
+      {
+        "function_name": "security_posture_dashboard_enabled",
+        "description": "Checks if the security posture dashboard is enabled for the workload",
+        "gcp_api_example": "gcloud securitycenter settings describe --organization=ORGANIZATION_ID",
+        "service_category": "Security"
+      }
+    ],
+    "mapping_notes": "No existing functions in the provided database could be mapped to the compliance item. A new function 'security_posture_dashboard_enabled' is proposed to check if the security posture dashboard is enabled for the workload. This function can be implemented using the 'gcloud securitycenter settings describe' command.\n\nCoverage Analysis:\n- Coverage Score: 2/10\n- Existing Functions Mapped: 0 (None)\n- Unmapped Potential Functions: 0 (None)\n- New Functions Proposed: 1 (security_posture_dashboard_enabled)\n\nTotal Coverage: The combination of mapped existing functions + unmapped potential functions + new proposed functions should provide comprehensive compliance coverage."
+  }
+]

@@ -1,0 +1,602 @@
+[
+  {
+    "id": "2.1",
+    "title": "Ensure Administration of WorkSpaces is defined using IAM",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_directory_iam_admin_restricted",
+      "workspaces_directory_iam_policy_attached",
+      "workspaces_directory_iam_admin_defined",
+      "workspaces_directory_iam_only_management",
+      "workspaces_directory_iam_admin_required"
+    ]
+  },
+  {
+    "id": "2.2",
+    "title": "Ensure MFA is enabled for WorkSpaces users",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_user_mfa_enabled",
+      "workspaces_user_mfa_required",
+      "workspaces_user_authentication_mfa_enabled",
+      "workspaces_user_security_mfa_enabled",
+      "workspaces_user_access_mfa_enabled"
+    ]
+  },
+  {
+    "id": "2.3",
+    "title": "Ensure WorkSpace volumes are encrypted.",
+    "assessment": "Automated",
+    "remediation": "Perform the following steps to encrypt WorkSpace volumes From the Console: 1. Login to the WorkSpaces console at https://console.aws.amazon.com/workspaces/ 2. Click Launch WorkSpaces and complete the first three steps. 3. For the WorkSpaces Configuration step, do the following: - Select the volumes to encrypt: Root Volume, User Volume, or both volumes. - For Encryption Key, select an AWS KMS CMK. The CMK that you select must be symmetric. 4. Click Next Step. 5. Click Launch WorkSpaces. NOTE: To encrypt existing AWS WorkSpaces data you must re-create the necessary WorkSpaces instances with the volumes encryption feature enabled as outlined above. From the Command line: 1. Run the create-workspaces command aws workspaces create-workspaces --workspaces DirectoryId=`your_directoryID`, UserName=`user_for_workspace`, BundleId=`bundle_to_build`, VolumeEncryptionKey=`AWS_KMS_customer_master_key_(CMK)`, UserVolumeEncryptionEnabled=`true`, RootVolumeEncryptionEnabled='true', WorkspaceProperties={RunningMode=`AUTO_STOP`, RunningModeAutoStopTimeoutInMinutes=`10`, RootVolumeSizeGib=`root_GB`, UserVolumeSizeGib=`user_GB`, ComputeTypeName=`STANDARD`}  2. You will receive output highlighting: - FailedRequests - Will contain information about the WorkSpaces that could not be created, and the command failed - PendingRequests - Will contain information about the WorkSpaces that were created and the command was successful. Default Value: By default, AWS Workspaces utilize Elastic Block Store (AWS EBS)by default to encrypt data at rest (https://docs.aws.amazon.com/workspaces/latest/adminguide/data- protection.html) AWS Workspaces utilizes TLS 1.2 encryption and SigV4 request signing by default to encrypt data in transit. The default port for encrypting data in transit is 4172 (TCP and UDP) and is set to 128bits by default. (https://docs.aws.amazon.com/workspaces/latest/adminguide/data-protection.html) For DCV, streaming and control data in-transit is encrypted using TLS 1.3 encryption for UDP traffic and TLS 1.2 encryption for TCP traffic, with AES-256 ciphers. References: 1. https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt- workspaces.html 2. https://docs.aws.amazon.com/workspaces/latest/adminguide/data-protection.html 3. https://docs.aws.amazon.com/kms/latest/developerguide/viewing-keys- console.html#viewing-console-details CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "workspaces_volume_encryption_enabled",
+      "workspaces_volume_encryption_enabled_all_regions",
+      "workspaces_volume_kms_encryption_enabled",
+      "workspaces_volume_default_encryption_enabled",
+      "workspaces_volume_encryption_key_specified"
+    ]
+  },
+  {
+    "id": "2.4",
+    "title": "Ensure WorkSpaces are deployed in their own virtual private cloud (VPC)",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_vpc_isolated",
+      "workspaces_vpc_dedicated",
+      "workspaces_vpc_no_shared",
+      "workspaces_vpc_separate",
+      "workspaces_vpc_exclusive",
+      "workspaces_vpc_custom",
+      "workspaces_vpc_non_default",
+      "workspaces_vpc_own_network"
+    ]
+  },
+  {
+    "id": "2.5",
+    "title": "Ensure WorkSpaces traffic is controlled and routed through a NAT Gateway.",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_network_nat_gateway_configured",
+      "workspaces_traffic_nat_gateway_routed",
+      "workspaces_connection_nat_gateway_required",
+      "workspaces_network_nat_gateway_enabled",
+      "workspaces_traffic_nat_gateway_enforced"
+    ]
+  },
+  {
+    "id": "2.6",
+    "title": "Ensure Web Access to Workspaces is Disabled",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.aws.amazon.com/workspaces/latest/adminguide/web-access.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 13.5 Manage Access Control for Remote Assets Manage access control for assets remotely connecting to enterprise resources. Determine amount of access to enterprise resources based on: up-to-date anti- malware software installed, configuration compliance with the enterprise’s secure configuration process, and ensuring the operating system and applications are up- to-date. ● ● v7 12.12 Manage All Devices Remotely Logging into Internal Network Scan all enterprise devices remotely logging into the organization's network prior to accessing the network to ensure that each of the organization's security policies has been enforced in the same manner as local network devices. ●",
+    "function_names": [
+      "workspaces_workspace_web_access_disabled",
+      "workspaces_workspace_public_access_blocked",
+      "workspaces_workspace_internet_access_restricted",
+      "workspaces_workspace_external_access_prohibited",
+      "workspaces_workspace_web_portal_disabled"
+    ]
+  },
+  {
+    "id": "2.7",
+    "title": "Ensure access is limited to trusted devices",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "iam_user_trusted_device_required",
+      "iam_role_trusted_device_required",
+      "iam_policy_trusted_device_required",
+      "iam_conditional_trusted_device_required",
+      "iam_session_trusted_device_required",
+      "iam_credential_trusted_device_required",
+      "iam_access_trusted_device_required",
+      "iam_mfa_trusted_device_required",
+      "iam_device_trust_enabled",
+      "iam_device_compliance_required"
+    ]
+  },
+  {
+    "id": "2.8",
+    "title": "Ensure the default IP access control group is disassociated.",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_default_ip_access_control_group_disassociated",
+      "compute_ip_access_control_group_default_disassociated",
+      "compute_access_control_group_default_disassociated",
+      "compute_default_access_control_group_disassociated"
+    ]
+  },
+  {
+    "id": "2.9",
+    "title": "Ensure CloudWatch is set up for WorkSpaces",
+    "assessment": "Manual",
+    "remediation": "Perform the following steps to create a Rule for CloudWatch WorkSpaces Events From the Console: 1. Login to the CloudWatch console at https://console.aws.amazon.com/cloudwatch/ 2. In the left pane click Rules. 3. Click Create rule. 4. For Event Source, do the following: - Click `Event Pattern` and Build event pattern to match events by service (the default). 5. For Service Name, click WorkSpaces. 6. For Event Type, click WorkSpaces Access. 7. For Targets, click Add target - Click and Change the Lambda Function to `CloudWatch log group` 8. For Log Group, enter /aws/events/workspaces_access Note - You can add additional targets for other services to act when a WorkSpaces Access event is detected. 9. Click Configure details. 10. For Rule definition, enter a name and description. 11. Click `Create rule' 12. Click Create rule. Default Value: By default, The CloudWatch dashboard is automatically created when you use your AWS account to configure your WorkSpaces. The dashboard consists of the following features: View historical data using time and date range controls. Add customized dashboard view to the CloudWatch custom dashboards. Monitor the overall health and utilization status of your WorkSpaces by doing the following: View the total number of provisioned WorkSpaces, number of users connected, number of unhealthy and healthy WorkSpace instances. View unhealthy WorkSpaces and their different variables, such as protocol and compute mode. Hover over the line chart to view the number of healthy or unhealthy WorkSpace instances for a specific protocol and running mode over a period of time. Choose the ellipsis menu, then choose View in metrics to view the metrics on a time scale chart. View your connection metrics and their different variables, such as number of connection attempts, successful connections, and failed connections in your WorkSpaces environment at any given time. View InSession latencies that impact your user's experience, such as round trip time (RTT), to determine connection health and packet loss to monitor network health. View host performance and resource utilization to identify and troubleshoot potential performance issues. https://docs.aws.amazon.com/workspaces/latest/adminguide/cloudwatch- dashboard.html References: 1. https://docs.aws.amazon.com/workspaces/latest/adminguide/amazon- workspaces-monitoring.html 2. https://docs.aws.amazon.com/workspaces/latest/adminguide/cloudwatch- events.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloudwatch_workspaces_logging_enabled",
+      "cloudwatch_workspaces_monitoring_enabled",
+      "cloudwatch_workspaces_metrics_collected",
+      "cloudwatch_workspaces_alarms_configured",
+      "cloudwatch_workspaces_log_retention_set",
+      "cloudwatch_workspaces_log_group_exists",
+      "cloudwatch_workspaces_log_stream_active",
+      "cloudwatch_workspaces_log_export_enabled",
+      "cloudwatch_workspaces_log_encryption_enabled",
+      "cloudwatch_workspaces_log_permissions_correct"
+    ]
+  },
+  {
+    "id": "2.10",
+    "title": "Ensure that patches and updates are performed on the operating system for Workstations",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_workstation_patches_updated",
+      "compute_workstation_os_updates_enabled",
+      "compute_workstation_security_patches_installed",
+      "compute_workstation_auto_updates_enabled",
+      "compute_workstation_patch_compliance_verified",
+      "compute_workstation_os_version_current",
+      "compute_workstation_vulnerability_patches_applied",
+      "compute_workstation_update_schedule_configured"
+    ]
+  },
+  {
+    "id": "2.11",
+    "title": "Ensure your WorkSpaces image has the appropriate CIS Operating System Benchmark applied",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://www.cisecurity.org/partners-vendor/ 2. https://docs.aws.amazon.com/workspaces/latest/adminguide/create-custom- bundle.html 3. https://docs.aws.amazon.com/workspaces/latest/adminguide/update-custom- bundle.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4.1 Establish and Maintain a Secure Configuration Process Establish and maintain a secure configuration process for enterprise assets (end-user devices, including portable and mobile, non-computing/IoT devices, and servers) and software (operating systems and applications). Review and update documentation annually, or when significant enterprise changes occur that could impact this Safeguard. ● ● ● v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●",
+    "function_names": [
+      "workspaces_image_cis_benchmark_applied",
+      "workspaces_image_os_benchmark_compliant",
+      "workspaces_image_security_benchmark_enabled",
+      "workspaces_image_cis_os_standard_met",
+      "workspaces_image_os_hardening_enabled"
+    ]
+  },
+  {
+    "id": "2.12",
+    "title": "Restrict WorkSpaces Bundle options to organization approved versions",
+    "assessment": "Manual",
+    "remediation": "Preform the following to limit the bundle type Create the required AWS support case: From the Console: 1. Login in to AWS Support Center dashboard at https://console.aws.amazon.com/support/. 2. Click Create a case. 3. For Case details: - Type, choose `Account` - Category, choose `Other Account Issues` - Subject, \"Limit AWS WorkSpaces instances launch to approved bundle types\". - Description textbox, explain that security and compliance requires the need to limit the provisioning of WorkSpaces instances to an approved bundle type. - Contact options, leave as default or change as needed.  4. Click Submit Default Value: By default, there is no bundle restriction. This is a manual decision that must be made by technology stakeholders in your organization. References: 1. https://aws.amazon.com/workspaces/faqs/ 2. https://docs.aws.amazon.com/workspaces/latest/adminguide/amazon- workspaces-bundles.html 3. https://aws.amazon.com/workspaces/features/ 4. https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_polici es_scps.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "workspaces_bundle_approved_versions",
+      "workspaces_bundle_restricted_to_approved",
+      "workspaces_bundle_organization_approved_only",
+      "workspaces_bundle_version_compliance",
+      "workspaces_bundle_approved_versions_enforced"
+    ]
+  },
+  {
+    "id": "2.13",
+    "title": "Ensure Workspaces images are not older than 90 days.",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_image_recent_over_90d",
+      "workspaces_image_age_within_90d",
+      "workspaces_image_no_older_than_90d",
+      "workspaces_image_freshness_over_90d",
+      "workspaces_image_current_within_90d"
+    ]
+  },
+  {
+    "id": "2.14",
+    "title": "Ensure WorkSpaces that are not being utilized are removed.",
+    "assessment": "Automated",
+    "remediation": "Perform the following to remove unused WorkSpaces based on the output collected from the audit procedure From the Console: 1. Log in to WorkSpaces dashboard at https://console.aws.amazon.com/workspaces/. 2. In the left panel click WorkSpaces 3. Select the WorkSpace ID that you have identified as not being used. 4. Click Actions, Remove WorkSpaces 5. Confirm using the Audit that this is the WorkSpaces ID you should remove. 6. Click Remove WorkSpaces From the Command line: Note that running this command does not prompt you to confirm that you are removing the correct WorkSpaces ID. 1. Run terminate-workspaces command using the ID of the WorkSpaces instance from the Audit that you want to delete: aws workspaces terminate-workspaces --region us-east-1 --terminate-workspace-requests ws-0cgsl1k23 Default Value: By default, Workspaces are not deleted after a defined period of inactivity. References: 1. https://aws.amazon.com/workspaces/faqs/ 2. https://awscli.amazonaws.com/v2/documentation/api/latest/reference/workspace s/index.html#cli-aws-workspaces CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "workspaces_instance_unused_removed",
+      "workspaces_instance_inactive_removed",
+      "workspaces_instance_idle_removed",
+      "workspaces_instance_utilization_removed",
+      "workspaces_instance_no_activity_removed",
+      "workspaces_instance_unused_over_30d_removed",
+      "workspaces_instance_inactive_over_90d_removed"
+    ]
+  },
+  {
+    "id": "2.15",
+    "title": "Ensure primary interface ports for Workspaces are not open to all inbound traffic.",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_interface_port_restricted_inbound",
+      "workspaces_primary_interface_no_public_access",
+      "workspaces_network_acl_inbound_restricted",
+      "workspaces_security_group_inbound_restricted",
+      "workspaces_interface_no_all_traffic_ingress",
+      "workspaces_port_access_restricted_to_trusted",
+      "workspaces_inbound_traffic_restricted_to_known_ips",
+      "workspaces_interface_no_0_0_0_0_inbound",
+      "workspaces_network_inbound_restricted_to_vpc",
+      "workspaces_interface_port_no_public_ingress"
+    ]
+  },
+  {
+    "id": "2.16",
+    "title": "Ensure FIPS Endpoint encryption is enabled for WorkSpaces.",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_connection_fips_encryption_enabled",
+      "workspaces_endpoint_fips_compliance_enabled",
+      "workspaces_network_fips_encryption_required",
+      "workspaces_session_fips_encryption_enabled",
+      "workspaces_data_transfer_fips_encryption_enabled"
+    ]
+  },
+  {
+    "id": "2.17",
+    "title": "Ensure WorkSpaces API requests flow through a VPC Endpoint",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workspaces_api_vpc_endpoint_enabled",
+      "workspaces_api_requests_vpc_endpoint_required",
+      "workspaces_vpc_endpoint_connection_verified",
+      "workspaces_api_traffic_vpc_endpoint_restricted",
+      "workspaces_endpoint_vpc_only_configured"
+    ]
+  },
+  {
+    "id": "2.18",
+    "title": "Ensure Radius server is using the recommended security protocol",
+    "assessment": "Automated",
+    "remediation": "Perform the steps below to set the protocol to MS-CHAPv2 for multi-factor authentication. From the console: For AWS Managed AD based environments; 1. Log in to the Directory Service console at https://console.aws.amazon.com/directoryservicev2 2. In the left pane select Directories. 3. On the Directory details page, select the Networking & security tab. 4. In the Multi-factor authentication section, choose Actions, and then choose Edit. 5. On the Enable multi-factor authentication (MFA) page change the following value: 6. Protocol - MS-CHAPv2 7. Click Save. For directory connector / self-managed AD environments 1. Log in to the AWS Workspaces console at https://console.aws.amazon.com/workspaces 2. In the left pane select Directories. 3. Select the directory ID link for your AWS Managed Microsoft AD directory. 4. On the Directories page, scroll to the Multi-factor authentication section and select Edit. 5. In the Multi-factor authentication section modify the protocol using the dropdown menu to be MS-CHAPv2 from the currently selected option. 6. Click Save once settings are as desired. Default Value: By default, this is dependent on your RADIUS server. References: 1. https://aws.amazon.com/blogs/security/how-to-enable-multi-factor-authentication- for-amazon-workspaces-and-amazon-quicksight-by-using-microsoft-ad-and-on- premises-credentials/ 2. https://docs.aws.amazon.com/directoryservice/latest/admin- guide/ms_ad_mfa.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "radius_server_security_protocol_recommended",
+      "radius_server_protocol_secure",
+      "radius_server_authentication_protocol_compliant",
+      "radius_server_encryption_protocol_enabled",
+      "radius_server_tls_protocol_enforced",
+      "radius_server_secure_protocol_required",
+      "radius_server_protocol_version_valid",
+      "radius_server_security_protocol_configured"
+    ]
+  },
+  {
+    "id": "3.1",
+    "title": "Ensure User Access Logging is enabled",
+    "assessment": "Manual",
+    "remediation": "From the Console: 1. Log in to the Amazon Kinesis console at https://console.aws.amazon.com/kinesis/home 2. In the left pane, click Data Streams then Create data stream. 3. Enter a name for your data stream. The name must be prefixed with amazon- workspaces-web 4. Select the desired data stream capacity and click Create data stream 5. Log into the Amazon WorkSpaces console at https://console.aws.amazon.com/workspaces/v2/home 6. In the left pane click Web Portals 7. Click the link for the web portal you wish to edit. 8. Click Edit 9. Scroll to User access logging and select the Kinesis data stream you created above. 10. Click Save From the Command Line: 1. Run the create-user-access-logging-settings command aws workspaces-web create-user-access-logging-settings --kinesis-stream-arn <kinesis_data_stream_arn>. --output table  2. The output will return a list of settings ----------------------------------------------------------------------------- --------------------------------------------------------------------- | CreateUserAccessLoggingSettings | +------------------------------+--------------------------------------------- --------------------------------------------------------------------+ |  userAccessLoggingSettingsArn|  arn:aws:workspaces- web:[region]:[account]:userAccessLoggingSettings/[guid] | +------------------------------+--------------------------------------------- --------------------------------------------------------------------+ Default Value: By default, user access logging is not enabled. References: 1. https://docs.aws.amazon.com/workspaces-web/latest/adminguide/data- protection-logging.html 4 WorkDocs This section contains recommendations for configuring the WorkDocs service and any additional resources required.",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_distribution_logging_enabled",
+      "cloud_cdn_distribution_access_logging_enabled",
+      "cloud_cdn_distribution_user_access_logging_enabled",
+      "cloud_cdn_distribution_request_logging_enabled",
+      "cloud_cdn_distribution_logging_to_storage_enabled",
+      "cloud_cdn_distribution_logging_retention_enabled",
+      "cloud_cdn_distribution_logging_all_regions_enabled",
+      "cloud_cdn_distribution_logging_min_retention_90d_enabled"
+    ]
+  },
+  {
+    "id": "4.1",
+    "title": "Ensure Administrators of WorkDocs is defined using IAM",
+    "assessment": "Automated",
+    "remediation": "Perform the following to create an IAM group and assign the Amazon WorkDocs Full Access policy to it: From the Console: 1. Log in to the IAM console at https://console.aws.amazon.com/iam/. 2. In the left pane, click Groups and then click Create New Group. 3. In the Group Name box, type the name of the group and then click Next Step. 4. In the list of policies, select the check box for AmazonWorkDocsFullAccess 5. Click Next Step. 6. Click Create Group Perform the following to add a user to a Amazon WorkDocs Full Access group: 1. Log in to the the IAM console at https://console.aws.amazon.com/iam/. 2. In the left pane, click Groups 3. Select the group you created above 4. Click Add Users To Group 5. Select the users to be added to the group 6. Click Add Users Default Value: By default, IAM users and roles don't have permission to create or modify Amazon WorkDocs resources. References: 1. https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces- access-control.html 2. https://docs.aws.amazon.com/workspaces/latest/adminguide/manage- workspaces-users.html 3. https://docs.aws.amazon.com/workdocs/latest/adminguide/security_iam_id- based-policy-examples.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "workdocs_admin_iam_defined",
+      "workdocs_admin_no_inline_policy",
+      "workdocs_admin_managed_policy_used",
+      "workdocs_admin_least_privilege",
+      "workdocs_admin_no_wildcard_permissions",
+      "workdocs_admin_no_root_account",
+      "workdocs_admin_mfa_enabled",
+      "workdocs_admin_no_public_access",
+      "workdocs_admin_no_unused_credentials",
+      "workdocs_admin_no_anonymous_access"
+    ]
+  },
+  {
+    "id": "4.2",
+    "title": "Ensure MFA is enabled for WorkDoc users",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workdocs_user_mfa_enabled",
+      "workdocs_user_mfa_required",
+      "workdocs_user_mfa_enforced",
+      "workdocs_user_mfa_active",
+      "workdocs_user_mfa_configured"
+    ]
+  },
+  {
+    "id": "4.3",
+    "title": "Ensure Workdocs access is limited to a range of allowable IP addresses",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workdocs_site_ip_restricted",
+      "workdocs_site_allowlist_enabled",
+      "workdocs_site_ip_range_restricted",
+      "workdocs_site_access_controlled",
+      "workdocs_site_ip_whitelist_enabled",
+      "workdocs_site_network_restricted",
+      "workdocs_site_ip_based_access",
+      "workdocs_site_allowable_ip_range",
+      "workdocs_site_ip_access_limited",
+      "workdocs_site_secure_ip_restriction"
+    ]
+  },
+  {
+    "id": "4.4",
+    "title": "Utilize site wide activity feed for monitoring.",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloudtrail_trail_logging_enabled",
+      "cloudtrail_trail_all_regions_enabled",
+      "cloudtrail_trail_global_service_events_enabled",
+      "cloudtrail_trail_management_events_enabled",
+      "cloudtrail_trail_data_events_enabled",
+      "cloudtrail_trail_log_file_validation_enabled",
+      "cloudtrail_trail_encryption_enabled",
+      "cloudtrail_trail_log_retention_over_90d",
+      "cloudtrail_trail_multi_region_enabled",
+      "cloudtrail_trail_immutable_logs_enabled"
+    ]
+  },
+  {
+    "id": "4.5",
+    "title": "Ensure new users can only be invited from allowed domains.",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "iam_user_invite_restricted_to_allowed_domains",
+      "iam_user_creation_domain_whitelisted",
+      "iam_invite_domain_restriction_enabled",
+      "iam_new_user_domain_validation_required",
+      "iam_user_invite_allowed_domains_only"
+    ]
+  },
+  {
+    "id": "4.6",
+    "title": "Ensure only specific users are allowed to invite external users",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "iam_user_external_invitation_restricted",
+      "iam_user_external_invitation_restricted_to_specific_users",
+      "iam_user_external_invitation_allowed_users_only",
+      "iam_external_invitation_restricted_to_authorized_users",
+      "iam_external_invitation_specific_users_allowed"
+    ]
+  },
+  {
+    "id": "4.7",
+    "title": "Ensure publicly shareable links is not allowed in WorkDocs",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workdocs_site_sharing_disabled",
+      "workdocs_public_link_sharing_disabled",
+      "workdocs_external_sharing_restricted",
+      "workdocs_share_permission_secure",
+      "workdocs_public_access_blocked"
+    ]
+  },
+  {
+    "id": "4.8",
+    "title": "Ensure any user that has not accessed WorkDocs in 30 days is set to inactive.",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "workdocs_user_inactive_over_30d",
+      "workdocs_user_access_recent",
+      "workdocs_user_session_active",
+      "workdocs_user_account_status_updated",
+      "workdocs_user_last_access_within_30d"
+    ]
+  },
+  {
+    "id": "5.1",
+    "title": "Ensure AppStream is utilizing its own virtual private cloud (VPC)",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "appstream_fleet_vpc_configured",
+      "appstream_fleet_isolated_network",
+      "appstream_fleet_dedicated_vpc",
+      "appstream_fleet_vpc_peering_disabled",
+      "appstream_fleet_vpc_only",
+      "appstream_fleet_private_network",
+      "appstream_fleet_vpc_associated",
+      "appstream_fleet_vpc_required"
+    ]
+  },
+  {
+    "id": "5.2",
+    "title": "Ensure a VPC Endpoint is set for AppStream",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "appstream_vpc_endpoint_enabled",
+      "appstream_vpc_endpoint_configured",
+      "appstream_vpc_endpoint_exists",
+      "appstream_vpc_endpoint_required",
+      "appstream_vpc_endpoint_active"
+    ]
+  },
+  {
+    "id": "5.3",
+    "title": "Ensure maximum session duration is no longer than 10 hours",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "iam_role_max_session_duration_less_than_10h",
+      "iam_user_max_session_duration_less_than_10h",
+      "iam_policy_max_session_duration_less_than_10h",
+      "iam_federation_max_session_duration_less_than_10h",
+      "iam_session_duration_compliance_10h_limit"
+    ]
+  },
+  {
+    "id": "5.4",
+    "title": "Ensure session disconnect timeout is set to 5 minutes or less",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_session_timeout_5m_or_less",
+      "compute_vm_session_disconnect_timeout_5m",
+      "compute_session_disconnect_timeout_configured",
+      "compute_instance_session_disconnect_timeout_compliant",
+      "compute_vm_session_timeout_5m_max"
+    ]
+  },
+  {
+    "id": "5.5",
+    "title": "Ensure session Idle disconnect timeout is set to 10 minutes or less",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_idle_disconnect_timeout_10m",
+      "compute_vm_idle_disconnect_timeout_10m",
+      "desktop_session_idle_disconnect_timeout_10m",
+      "remote_desktop_idle_disconnect_timeout_10m",
+      "vdi_session_idle_disconnect_timeout_10m",
+      "workspace_session_idle_disconnect_timeout_10m",
+      "cloud_desktop_idle_disconnect_timeout_10m",
+      "virtual_machine_idle_disconnect_timeout_10m"
+    ]
+  },
+  {
+    "id": "5.6",
+    "title": "Ensure internet access is granted and managed through your VPC",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "vpc_internet_gateway_attached",
+      "vpc_nat_gateway_configured",
+      "vpc_route_table_internet_access_restricted",
+      "vpc_network_acl_internet_traffic_managed",
+      "vpc_security_group_internet_access_controlled",
+      "vpc_subnet_public_private_segregated",
+      "vpc_endpoint_service_internet_routing_disabled",
+      "vpc_peering_internet_access_restricted",
+      "vpc_flow_logs_internet_traffic_monitored",
+      "vpc_egress_only_internet_gateway_configured"
+    ]
+  },
+  {
+    "id": "5.7",
+    "title": "Ensure Operating system updates are applied to your base image every 30 days.",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_image_os_updates_applied_over_30d",
+      "compute_base_image_os_updates_recent",
+      "compute_image_os_patches_current",
+      "compute_base_image_updates_frequency_30d",
+      "compute_image_os_updates_compliance_30d"
+    ]
+  }
+]

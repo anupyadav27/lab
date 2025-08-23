@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-17T03:37:39.172540",
+    "total_new_functions": 7,
+    "description": "New Kubernetes security functions suggested by compliance mapper for Python code generation"
+  },
+  "new_functions": [
+    {
+      "function_name": "apiserver_audit_log_maxbackup_value_check",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[*].spec.containers[*].command}' | grep audit-log-maxbackup",
+      "rationale": "This function is needed to check if the --audit-log-maxbackup argument is set to 10 or as appropriate",
+      "compliance_id": "1.2.18",
+      "compliance_title": "Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_audit_log_maxbackup_set' can check if the --audit-log-maxbackup argument is set, but it does not validate the value of the argument. Therefore, a new function 'apiserver_audit_log_maxbackup_value_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "apiserver_audit_log_maxsize_value_check",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "This function is needed to ensure that the --audit-log-maxsize argument is set to the correct value of 100 or as appropriate",
+      "compliance_id": "1.2.19",
+      "compliance_title": "Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_audit_log_maxsize_set' checks if the --audit-log-maxsize argument is set, but it does not check the value of the argument. Therefore, a new function 'apiserver_audit_log_maxsize_value_check' is needed to ensure the value is set to 100 or as appropriate."
+    },
+    {
+      "function_name": "apiserver_encryption_provider_config_check",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get configmap -n kube-system kube-apiserver -o jsonpath='{.data.EncryptionProviderConfig}'",
+      "rationale": "To ensure that the encryption provider is not only set but also correctly configured",
+      "compliance_id": "1.2.28",
+      "compliance_title": "Ensure that encryption providers are appropriately configured",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'apiserver_encryption_provider_config_set' checks if the encryption provider is set, but it does not ensure that it is appropriately configured. Therefore, a new function 'apiserver_encryption_provider_config_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "scheduler_bind_address_check",
+      "service": "scheduler",
+      "kubernetes_api": "kubectl get pods -n kube-system -o jsonpath='{.items[*].spec.containers[*].command}'",
+      "rationale": "This function is needed to ensure that the scheduler service is bound to the loopback address (127.0.0.1), enhancing the security of the Kubernetes cluster.",
+      "compliance_id": "1.4.2",
+      "compliance_title": "Ensure that the --bind-address argument is set to 127.0.0.1",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'scheduler_bind_address' can be used to check if the --bind-address argument is set, but it does not ensure that it is set to 127.0.0.1. Therefore, a new function 'scheduler_bind_address_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "rbac_minimize_hostpath_mount_in_pod_creation",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{\"\\t\"}{.spec.volumes[*].hostPath.path}{\"\\n\"}{end}'",
+      "rationale": "This function is needed to check if any pod has hostPath volumes mounted, which can provide access to sensitive data on the host machine.",
+      "compliance_id": "5.1.4",
+      "compliance_title": "Minimize access to create pods",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions cover the restriction of pod creation and the assignment of privileged service accounts to pods. However, there is a gap in checking for hostPath volumes in pod creation, which can provide access to sensitive data. Hence, a new function is suggested."
+    },
+    {
+      "function_name": "apply_security_context_to_pods",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}{\"\\n\"}{end}'",
+      "rationale": "To ensure that all pods have a security context applied",
+      "compliance_id": "5.6.3",
+      "compliance_title": "Apply Security Context to Your Pods and Containers",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'core_security_context_check' partially covers the compliance requirement. However, it does not ensure that the security context is applied to all pods and containers. Therefore, two new functions 'apply_security_context_to_pods' and 'apply_security_context_to_containers' are suggested."
+    },
+    {
+      "function_name": "apply_security_context_to_containers",
+      "service": "core",
+      "kubernetes_api": "kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{range .spec.containers[*]}{.name}{\"\\n\"}{end}{end}'",
+      "rationale": "To ensure that all containers within the pods have a security context applied",
+      "compliance_id": "5.6.3",
+      "compliance_title": "Apply Security Context to Your Pods and Containers",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'core_security_context_check' partially covers the compliance requirement. However, it does not ensure that the security context is applied to all pods and containers. Therefore, two new functions 'apply_security_context_to_pods' and 'apply_security_context_to_containers' are suggested."
+    }
+  ]
+}

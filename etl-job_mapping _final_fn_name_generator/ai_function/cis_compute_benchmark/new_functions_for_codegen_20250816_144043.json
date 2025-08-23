@@ -1,0 +1,519 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-16T14:40:43.183518",
+    "total_new_functions": 51,
+    "description": "New security functions suggested by compliance mapper for Python code generation"
+  },
+  "new_functions": [
+    {
+      "function_name": "ec2_ami_naming_convention_check",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_images()",
+      "rationale": "This function is needed to check if the naming convention for AMIs is followed consistently across the organization.",
+      "compliance_id": "2.1.1",
+      "compliance_title": "Ensure Consistent Naming Convention is used for Organizational AMI",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function 'ec2_ami_naming_convention_check' is suggested which uses the 'ec2.describe_images()' boto3 API to fetch the details of all AMIs and checks if their names follow the documented naming convention."
+    },
+    {
+      "function_name": "ec2_ami_encryption_check",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_images()",
+      "rationale": "This function is needed to directly check if the AMIs are encrypted",
+      "compliance_id": "2.1.2",
+      "compliance_title": "Ensure Amazon Machine Images (AMIs) are encrypted",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'ec2_ebs_default_encryption' and 'ec2_ebs_snapshots_encrypted' partially cover the compliance requirement as they ensure EBS volumes and snapshots are encrypted. However, they do not directly check if the AMIs are encrypted. Hence, a new function 'ec2_ami_encryption_check' is suggested."
+    },
+    {
+      "function_name": "ec2_ami_approved_check",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_images()",
+      "rationale": "This function is needed to check if the AMI used is approved by the organization",
+      "compliance_id": "2.1.3",
+      "compliance_title": "Ensure Only Approved Amazon Machine Images (AMIs) are Used",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'ec2_ami_public' can check if the AMI is public, but it does not ensure that the AMI is approved by the organization. Therefore, a new function 'ec2_ami_approved_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "ec2_ami_older_than_90_days",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_images()",
+      "rationale": "This function is needed to specifically check if any AMIs are older than 90 days",
+      "compliance_id": "2.1.4",
+      "compliance_title": "Ensure Images (AMI) are not older than 90 days",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'ec2_instance_older_than_specific_days' partially covers the requirement as it checks for EC2 instances older than specific days. However, it does not specifically check for AMIs. Therefore, a new function 'ec2_ami_older_than_90_days' is suggested to fully cover the requirement."
+    },
+    {
+      "function_name": "ec2_unused_ebs_volumes_check",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_volumes()",
+      "rationale": "This function is needed to identify and remove any unused EBS volumes in the AWS account",
+      "compliance_id": "2.2.4",
+      "compliance_title": "Ensure unused EBS volumes are removed",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide partial coverage as they check for EBS volume encryption, backup protection, and existence of snapshots. However, there is no function to specifically check for unused EBS volumes, hence a new function is suggested."
+    },
+    {
+      "function_name": "organizations_tag_policies_enabled",
+      "service": "organizations",
+      "boto3_api": "organizations.list_policies(Filter='TAG_POLICY')",
+      "rationale": "This function is needed to check if any tag policies are enabled in the organization.",
+      "compliance_id": "2.3",
+      "compliance_title": "Ensure Tag Policies are Enabled",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the provided list directly relate to checking if tag policies are enabled. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "ec2_organizational_tag_policy_created",
+      "service": "ec2",
+      "boto3_api": "organizations.list_policies()",
+      "rationale": "This function is needed to check if an organizational EC2 tag policy has been created.",
+      "compliance_id": "2.4",
+      "compliance_title": "Ensure an Organizational EC2 Tag Policy has been Created",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring an organizational EC2 tag policy has been created. A new function, ec2_organizational_tag_policy_created, is suggested to fill this gap."
+    },
+    {
+      "function_name": "ec2_instance_custom_security_group_assigned",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_instances()",
+      "rationale": "This function is needed to check if a custom security group is assigned to each EC2 instance at launch.",
+      "compliance_id": "2.7",
+      "compliance_title": "Ensure Default EC2 Security groups are not being used.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'ec2_securitygroup_default_restrict_traffic' can check if the default security group restricts traffic, but it does not ensure that a custom security group is assigned to each EC2 instance. Therefore, a new function 'ec2_instance_custom_security_group_assigned' is suggested."
+    },
+    {
+      "function_name": "ec2_unused_enis_removed",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_network_interfaces()",
+      "rationale": "This function is needed to identify and delete any unused Amazon AWS Elastic Network Interfaces (ENIs) in order to adhere to best practices and to avoid reaching the service limit.",
+      "compliance_id": "2.10",
+      "compliance_title": "Ensure unused ENIs are removed",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function 'ec2_unused_enis_removed' is suggested which uses the 'ec2.describe_network_interfaces()' boto3 API to identify and remove unused ENIs."
+    },
+    {
+      "function_name": "ec2_instance_stopped_for_over_90_days",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_instances()",
+      "rationale": "This function is needed to specifically check if an instance has been stopped for over 90 days",
+      "compliance_id": "2.11",
+      "compliance_title": "Ensure instances stopped for over 90 days are removed",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'ec2_instance_older_than_specific_days' partially covers the compliance requirement as it can check if an instance is older than a specific number of days. However, it does not specifically check if an instance has been stopped for over 90 days, nor does it provide a function to remove such instances. Therefore, two new functions are suggested to fill these gaps."
+    },
+    {
+      "function_name": "ec2_instance_remove_if_stopped_for_over_90_days",
+      "service": "ec2",
+      "boto3_api": "ec2.terminate_instances()",
+      "rationale": "This function is needed to remove instances that have been stopped for over 90 days",
+      "compliance_id": "2.11",
+      "compliance_title": "Ensure instances stopped for over 90 days are removed",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'ec2_instance_older_than_specific_days' partially covers the compliance requirement as it can check if an instance is older than a specific number of days. However, it does not specifically check if an instance has been stopped for over 90 days, nor does it provide a function to remove such instances. Therefore, two new functions are suggested to fill these gaps."
+    },
+    {
+      "function_name": "ec2_ebs_volume_deletion_on_termination",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_instances()",
+      "rationale": "This function is needed to check if the EBS volumes attached to an EC2 instance are marked for deletion upon instance termination.",
+      "compliance_id": "2.12",
+      "compliance_title": "Ensure EBS volumes attached to an EC2 instance is marked for deletion upon instance termination",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring EBS volumes attached to an EC2 instance are marked for deletion upon instance termination. A new function 'ec2_ebs_volume_deletion_on_termination' is suggested which uses the 'ec2.describe_instances()' boto3 API to retrieve the instance details and check the 'DeleteOnTermination' attribute for each attached EBS volume."
+    },
+    {
+      "function_name": "autoscaling_group_propagate_tags",
+      "service": "autoscaling",
+      "boto3_api": "autoscaling.describe_auto_scaling_groups()",
+      "rationale": "This function is needed to check if the Auto Scaling groups are configured to propagate tags to the EC2 instances that they launch.",
+      "compliance_id": "2.14",
+      "compliance_title": "Ensure EC2 Auto Scaling Groups Propagate Tags to EC2 Instances that it launches",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring that EC2 Auto Scaling Groups propagate tags to the EC2 instances that they launch. A new function, 'autoscaling_group_propagate_tags', is suggested to fill this gap."
+    },
+    {
+      "function_name": "ecs_task_definitions_no_root_user_access",
+      "service": "ecs",
+      "boto3_api": "ecs.describe_task_definition()",
+      "rationale": "This function is needed to check if the task definition allows root user access, which is not covered by the existing functions.",
+      "compliance_id": "3.1",
+      "compliance_title": "Ensure Amazon ECS task definitions using 'host' network mode do not allow privileged or root user access to the host",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'ecs_task_definitions_host_networking_mode_users' and 'ecs_task_definitions_no_privileged_containers' partially cover the compliance requirement by checking for host networking mode and privileged containers. However, there is no existing function to check for root user access in the task definition, hence a new function 'ecs_task_definitions_no_root_user_access' is suggested."
+    },
+    {
+      "function_name": "ecs_task_definitions_latest_revision_logging_enabled",
+      "service": "ecs",
+      "boto3_api": "ecs.describe_task_definition()",
+      "rationale": "To ensure that the latest active revision of a task definition has logging configured",
+      "compliance_id": "3.7",
+      "compliance_title": "Ensure logging is configured for Amazon ECS task definitions",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'ecs_task_definitions_logging_enabled' checks if logging is enabled for ECS task definitions but does not specifically check for the latest active revision. Hence, a new function 'ecs_task_definitions_latest_revision_logging_enabled' is suggested to cover this requirement."
+    },
+    {
+      "function_name": "ecs_services_check_tags",
+      "service": "ecs",
+      "boto3_api": "ecs.list_tags_for_resource()",
+      "rationale": "This function is needed to check if all Amazon ECS services have resource tags to facilitate asset management, tracking, and compliance.",
+      "compliance_id": "3.10",
+      "compliance_title": "Ensure Amazon ECS services are tagged",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to checking tags for Amazon ECS services. A new function 'ecs_services_check_tags' is suggested to fill this gap."
+    },
+    {
+      "function_name": "ecs_cluster_resource_tags_check",
+      "service": "ecs",
+      "boto3_api": "ecs.list_tags_for_resource()",
+      "rationale": "This function is needed to check if the ECS clusters have resource tags as per the compliance requirement",
+      "compliance_id": "3.11",
+      "compliance_title": "Ensure Amazon ECS clusters are tagged",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to checking tags for ECS clusters. Hence, a new function is suggested."
+    },
+    {
+      "function_name": "ecs_task_definitions_tagged",
+      "service": "ecs",
+      "boto3_api": "ecs.list_task_definitions()",
+      "rationale": "This function is needed to check if all ECS task definitions are tagged as per the compliance requirement.",
+      "compliance_id": "3.12",
+      "compliance_title": "Ensure Amazon ECS task definitions are tagged",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring ECS task definitions are tagged. Hence, a new function 'ecs_task_definitions_tagged' is suggested which uses the 'ecs.list_task_definitions()' boto3 API to list all task definitions and check if they are tagged."
+    },
+    {
+      "function_name": "ecs_task_definitions_trusted_image_sources",
+      "service": "ecs",
+      "boto3_api": "ecs.describe_task_definition()",
+      "rationale": "To ensure that only trusted container images from verified sources or private repositories are used with Amazon ECS",
+      "compliance_id": "3.13",
+      "compliance_title": "Ensure only trusted images are used with Amazon ECS",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide some coverage for the security of ECS task definitions, but there is no specific function to check that only trusted images are used. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "lightsail_instance_check_for_updates",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance()",
+      "rationale": "This function is needed to check if there are any updates available for the applications running on the Lightsail instance",
+      "compliance_id": "5.1",
+      "compliance_title": "Apply updates to any apps running in Lightsail",
+      "coverage_assessment": "none",
+      "mapping_notes": "There are no existing functions that can be mapped to this compliance requirement. New functions are suggested to check for and apply updates to applications running on Lightsail instances."
+    },
+    {
+      "function_name": "lightsail_instance_apply_updates",
+      "service": "lightsail",
+      "boto3_api": "lightsail.update_instance()",
+      "rationale": "This function is needed to apply updates to the applications running on the Lightsail instance",
+      "compliance_id": "5.1",
+      "compliance_title": "Apply updates to any apps running in Lightsail",
+      "coverage_assessment": "none",
+      "mapping_notes": "There are no existing functions that can be mapped to this compliance requirement. New functions are suggested to check for and apply updates to applications running on Lightsail instances."
+    },
+    {
+      "function_name": "lightsail_instance_default_admin_credentials_changed",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance_access_details()",
+      "rationale": "This function is needed to check if the default administrator login names and passwords have been changed for applications installed on Lightsail instances.",
+      "compliance_id": "5.2",
+      "compliance_title": "Change default Administrator login names and passwords for applications",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of changing default administrator login names and passwords for applications installed on Lightsail instances. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "lightsail_instance_ssh_rdp_ports_disabled",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance_port_states()",
+      "rationale": "This function is needed to check if SSH and RDP ports are disabled for Lightsail instances when not in use.",
+      "compliance_id": "5.3",
+      "compliance_title": "Disable SSH and RDP ports for Lightsail instances when not needed.",
+      "coverage_assessment": "none",
+      "mapping_notes": "The existing functions only check for EC2 instances and not Lightsail instances. Therefore, a new function is needed to check the port states of Lightsail instances."
+    },
+    {
+      "function_name": "lightsail_instance_ssh_access_restricted",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance_port_states()",
+      "rationale": "This function is needed to check if SSH access to Lightsail instances is restricted to specific IP addresses.",
+      "compliance_id": "5.4",
+      "compliance_title": "Ensure SSH is restricted to only IP address that should have this access.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22' can check if SSH access is open to the internet on EC2 instances, but it does not cover Lightsail instances. A new function 'lightsail_instance_ssh_access_restricted' is suggested to cover this gap."
+    },
+    {
+      "function_name": "lightsail_instance_rdp_access_restricted",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance_access_details()",
+      "rationale": "This function is needed to check if RDP access to Lightsail instances is restricted to specific IP addresses.",
+      "compliance_id": "5.5",
+      "compliance_title": "Ensure RDP is restricted to only IP address that should have this access.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions cover the RDP access restriction for EC2 instances but not for Lightsail instances. Hence, a new function is suggested to cover this gap."
+    },
+    {
+      "function_name": "lightsail_disable_ipv6_if_not_in_use",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instances()",
+      "rationale": "This function is needed to check if IPv6 is enabled on any Lightsail instances and disable it if not in use.",
+      "compliance_id": "5.6",
+      "compliance_title": "Disable IPv6 Networking if not in use within your organization.",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of disabling IPv6 networking on Lightsail instances if not in use. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "lightsail_bucket_iam_policy_check",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_bucket_access_control()",
+      "rationale": "This function is needed to check if an IAM policy is used to manage access to buckets in Lightsail.",
+      "compliance_id": "5.7",
+      "compliance_title": "Ensure you are using an IAM policy to manage access to buckets in Lightsail.",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database match the compliance requirement of managing access to buckets in Lightsail using IAM policies. A new function 'lightsail_bucket_iam_policy_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "lightsail_instance_attached_to_bucket",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance() and lightsail.get_bucket()",
+      "rationale": "To ensure that each Lightsail instance is attached to a Lightsail storage bucket",
+      "compliance_id": "5.8",
+      "compliance_title": "Ensure Lightsail instances are attached to the buckets",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring Lightsail instances are attached to the buckets. A new function 'lightsail_instance_attached_to_bucket' is suggested which will use the 'get_instance' and 'get_bucket' boto3 APIs to check the attachment of each Lightsail instance to a Lightsail storage bucket."
+    },
+    {
+      "function_name": "lightsail_buckets_not_publicly_accessible",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_bucket_access()",
+      "rationale": "This function is needed to check if Lightsail buckets are publicly accessible or not",
+      "compliance_id": "5.9",
+      "compliance_title": "Ensure that your Lightsail buckets are not publicly accessible",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the access permissions of Lightsail buckets."
+    },
+    {
+      "function_name": "lightsail_windows_server_instances_security_patches_check",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance()",
+      "rationale": "This function is needed to check if the Windows Server based Lightsail instances are updated with the latest security patches.",
+      "compliance_id": "5.11",
+      "compliance_title": "Ensure your Windows Server based lightsail instances are updated with the latest security patches.",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the security patches of Windows Server based Lightsail instances."
+    },
+    {
+      "function_name": "lightsail_windows_instance_default_password_changed",
+      "service": "lightsail",
+      "boto3_api": "lightsail.get_instance_access_details()",
+      "rationale": "This function is needed to check if the default password of a Windows Server-based instance in Lightsail has been changed.",
+      "compliance_id": "5.12",
+      "compliance_title": "Change the auto-generated password for Windows based instances.",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of changing the auto-generated password for Windows based instances. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "apprunner_vpc_endpoints_for_source_code_access",
+      "service": "ec2",
+      "boto3_api": "ec2.describe_vpc_endpoints()",
+      "rationale": "This function is needed to ensure that VPC endpoints are being used for source code access in App Runner.",
+      "compliance_id": "6.1",
+      "compliance_title": "Ensure you are using VPC Endpoints for source code access",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of using VPC Endpoints for source code access in App Runner. Therefore, a new function is suggested."
+    },
+    {
+      "function_name": "batch_jobs_cloudwatch_logs_configured",
+      "service": "batch",
+      "boto3_api": "batch.describe_jobs()",
+      "rationale": "This function is needed to check if AWS Batch jobs are configured to send log information to CloudWatch Logs.",
+      "compliance_id": "8.1",
+      "compliance_title": "Ensure AWS Batch is configured with AWS Cloudwatch Logs.",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check if AWS Batch jobs are configured with AWS Cloudwatch Logs."
+    },
+    {
+      "function_name": "batch_roles_cross_service_deputy_prevention",
+      "service": "iam",
+      "boto3_api": "iam.list_roles()",
+      "rationale": "This function is needed to list all IAM roles and check if they are configured to prevent cross-service confused deputy problem. It should check if the roles have the necessary permissions and are not overly privileged.",
+      "compliance_id": "8.2",
+      "compliance_title": "Ensure Batch roles are configured for cross-service confused deputy prevention",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring Batch roles are configured for cross-service confused deputy prevention. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "elasticbeanstalk_environment_logs_to_s3",
+      "service": "elasticbeanstalk",
+      "boto3_api": "elasticbeanstalk.describe_environment_resources()",
+      "rationale": "To check if the Elastic Beanstalk environment logs are configured to be stored in S3",
+      "compliance_id": "10.2",
+      "compliance_title": "Ensure Persistent logs is setup and configured to S3",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'elasticbeanstalk_environment_cloudwatch_logging_enabled' checks if CloudWatch logging is enabled for the Elastic Beanstalk environment, which partially covers the compliance requirement. However, there is no existing function to check if the logs are configured to be stored in S3, hence a new function 'elasticbeanstalk_environment_logs_to_s3' is suggested."
+    },
+    {
+      "function_name": "elasticbeanstalk_environment_access_logs_enabled",
+      "service": "elasticbeanstalk",
+      "boto3_api": "elasticbeanstalk.describe_environment_resources()",
+      "rationale": "This function is needed to check if access logs are enabled for Elastic Beanstalk environments",
+      "compliance_id": "10.3",
+      "compliance_title": "Ensure access logs are enabled.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'elb_logging_enabled' and 'elbv2_logging_enabled' cover the requirement for enabling access logs for Elastic Load Balancing. However, there is no existing function to check if access logs are enabled for Elastic Beanstalk environments, hence a new function 'elasticbeanstalk_environment_access_logs_enabled' is suggested."
+    },
+    {
+      "function_name": "ecs_fargate_ephemeral_storage_encryption_check",
+      "service": "ecs",
+      "boto3_api": "ecs.describe_task_definition()",
+      "rationale": "This function is needed to check if the ephemeral storage data for AWS Fargate tasks on Amazon ECS is encrypted using customer-managed keys.",
+      "compliance_id": "11.1",
+      "compliance_title": "Ensure customer-managed keys are used to encrypt AWS Fargate ephemeral storage data for Amazon ECS",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could be mapped to this compliance requirement. A new function is suggested to check the encryption status of ephemeral storage data for AWS Fargate tasks on Amazon ECS."
+    },
+    {
+      "function_name": "awsconfig_lambda_config_tracking_enabled",
+      "service": "configservice",
+      "boto3_api": "configservice.describe_configuration_recorders()",
+      "rationale": "To ensure AWS Config is enabled for tracking changes to Lambda functions",
+      "compliance_id": "12.1",
+      "compliance_title": "Ensure AWS Config is Enabled for Lambda and Serverless",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide partial coverage for this compliance item. They cover the aspects of ensuring AWS Config is enabled and Lambda functions are configured securely. However, there are no specific functions to check if AWS Config is enabled for tracking changes to Lambda and Serverless resources. Hence, two new functions are suggested."
+    },
+    {
+      "function_name": "awsconfig_serverless_config_tracking_enabled",
+      "service": "configservice",
+      "boto3_api": "configservice.describe_configuration_recorders()",
+      "rationale": "To ensure AWS Config is enabled for tracking changes to Serverless resources",
+      "compliance_id": "12.1",
+      "compliance_title": "Ensure AWS Config is Enabled for Lambda and Serverless",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions provide partial coverage for this compliance item. They cover the aspects of ensuring AWS Config is enabled and Lambda functions are configured securely. However, there are no specific functions to check if AWS Config is enabled for tracking changes to Lambda and Serverless resources. Hence, two new functions are suggested."
+    },
+    {
+      "function_name": "cloudwatch_lambda_insights_enabled",
+      "service": "lambda",
+      "boto3_api": "lambda.get_function()",
+      "rationale": "This function is needed to check if CloudWatch Lambda Insights is enabled for each Lambda function",
+      "compliance_id": "12.2",
+      "compliance_title": "Ensure Cloudwatch Lambda insights is enabled",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring CloudWatch Lambda Insights is enabled. A new function 'cloudwatch_lambda_insights_enabled' is suggested to fill this gap."
+    },
+    {
+      "function_name": "secretsmanager_secret_used_by_lambda",
+      "service": "secretsmanager",
+      "boto3_api": "secretsmanager.list_secrets()",
+      "rationale": "To check if any secret in AWS Secrets Manager is being used by Lambda functions",
+      "compliance_id": "12.3",
+      "compliance_title": "Ensure AWS Secrets manager is configured and being used by Lambda for databases",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions only check if secrets are not hardcoded in Lambda function code or environment variables. New functions are needed to check if Secrets Manager is being used for database credentials in Lambda functions."
+    },
+    {
+      "function_name": "lambda_function_uses_secretsmanager_for_db",
+      "service": "lambda",
+      "boto3_api": "lambda.get_function_configuration()",
+      "rationale": "To check if a Lambda function is using Secrets Manager for database credentials",
+      "compliance_id": "12.3",
+      "compliance_title": "Ensure AWS Secrets manager is configured and being used by Lambda for databases",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions only check if secrets are not hardcoded in Lambda function code or environment variables. New functions are needed to check if Secrets Manager is being used for database credentials in Lambda functions."
+    },
+    {
+      "function_name": "awslambda_function_least_privilege_policy",
+      "service": "lambda",
+      "boto3_api": "lambda.get_policy()",
+      "rationale": "To ensure that each Lambda function is using least privilege access, we need to check the IAM policy associated with the function. This function will retrieve and analyze the policy to ensure it adheres to least privilege principles.",
+      "compliance_id": "12.4",
+      "compliance_title": "Ensure least privilege is used with Lambda function access",
+      "coverage_assessment": "partial",
+      "mapping_notes": "Existing functions cover the aspect of ensuring no secrets are stored in code or variables and that the function is not publicly accessible. However, there is no existing function that checks the IAM policy of the Lambda function to ensure least privilege access. Hence, a new function 'awslambda_function_least_privilege_policy' is suggested."
+    },
+    {
+      "function_name": "awslambda_function_iam_role_unique",
+      "service": "iam",
+      "boto3_api": "iam.list_roles()",
+      "rationale": "This function is needed to ensure that each Lambda function has a unique IAM role and that roles are not shared between functions.",
+      "compliance_id": "12.5",
+      "compliance_title": "Ensure every Lambda function has its own IAM Role",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the requirement of ensuring every Lambda function has its own IAM Role. A new function 'awslambda_function_iam_role_unique' is suggested which can use the 'iam.list_roles()' boto3 API to list all IAM roles and check if any role is associated with more than one Lambda function."
+    },
+    {
+      "function_name": "lambda_function_active_execution_role_check",
+      "service": "lambda",
+      "boto3_api": "lambda.get_function()",
+      "rationale": "This function is needed to check if the Lambda function is associated with an active execution role.",
+      "compliance_id": "12.7",
+      "compliance_title": "Ensure Lambda functions are referencing active execution roles.",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring Lambda functions are referencing active execution roles. A new function, lambda_function_active_execution_role_check, is suggested to fill this gap."
+    },
+    {
+      "function_name": "awslambda_function_code_signing_enabled",
+      "service": "lambda",
+      "boto3_api": "lambda.get_function()",
+      "rationale": "This function is needed to check if the Code Signing feature is enabled for each Lambda function.",
+      "compliance_id": "12.8",
+      "compliance_title": "Ensure that Code Signing is enabled for Lambda functions.",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly relate to the compliance requirement of ensuring Code Signing is enabled for Lambda functions. A new function 'awslambda_function_code_signing_enabled' is suggested to fill this gap."
+    },
+    {
+      "function_name": "awslambda_function_no_admin_privileges",
+      "service": "lambda",
+      "boto3_api": "lambda.list_functions()",
+      "rationale": "This function is needed to list all Lambda functions and check if any of them have admin privileges.",
+      "compliance_id": "12.9",
+      "compliance_title": "Ensure there are no Lambda functions with admin privileges within your AWS account",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database directly address the compliance requirement of ensuring no Lambda functions have admin privileges. A new function, awslambda_function_no_admin_privileges, is suggested to fill this gap."
+    },
+    {
+      "function_name": "awslambda_function_cross_account_access_check",
+      "service": "lambda",
+      "boto3_api": "lambda.get_policy()",
+      "rationale": "This function is needed to check if the Lambda function's resource-based policy allows cross-account access.",
+      "compliance_id": "12.10",
+      "compliance_title": "Ensure Lambda functions do not allow unknown cross account access via permission policies.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'awslambda_function_not_publicly_accessible' can partially cover the compliance requirement by ensuring that the Lambda function is not publicly accessible. However, it does not specifically check for cross-account access. Therefore, a new function 'awslambda_function_cross_account_access_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "awslambda_function_runtime_version_check",
+      "service": "lambda",
+      "boto3_api": "lambda.get_function_configuration()",
+      "rationale": "This function is needed to check the runtime version of each Lambda function and ensure it is not using a version that has reached its end of support date.",
+      "compliance_id": "12.11",
+      "compliance_title": "Ensure that the runtime environment versions used for your Lambda functions do not have end of support dates.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'awslambda_function_using_supported_runtimes' partially covers the compliance requirement as it checks if the Lambda function is using a supported runtime. However, it does not check if the runtime version used has an end of support date. Therefore, a new function 'awslambda_function_runtime_version_check' is suggested to fill this gap."
+    },
+    {
+      "function_name": "lambda_environment_variables_in_transit_encryption_enabled",
+      "service": "lambda",
+      "boto3_api": "lambda.get_function()",
+      "rationale": "This function is needed to check if the encryption in transit is enabled for Lambda environment variables",
+      "compliance_id": "12.12",
+      "compliance_title": "Ensure encryption in transit is enabled for Lambda environment variables",
+      "coverage_assessment": "none",
+      "mapping_notes": "No existing functions in the database could satisfy the compliance requirement of ensuring encryption in transit for Lambda environment variables. A new function is suggested to fill this gap."
+    },
+    {
+      "function_name": "app_communication_encryption_check",
+      "service": "elasticbeanstalk",
+      "boto3_api": "describe_applications()",
+      "rationale": "To ensure that the communication between applications and clients is encrypted, we need to check the encryption settings of the applications.",
+      "compliance_id": "16.1",
+      "compliance_title": "Ensure communications between your applications and clients is encrypted.",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions mapped are those that check for encryption in various AWS services. However, none of them specifically checks for encryption in the communication between applications and clients. Therefore, a new function is suggested to fill this gap."
+    }
+  ]
+}

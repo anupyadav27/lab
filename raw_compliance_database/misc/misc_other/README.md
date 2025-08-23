@@ -1,0 +1,57 @@
+# MISC / MISC_OTHER CIS Compliance Documents
+
+This folder contains CIS (Center for Internet Security) compliance benchmark documents for misc_other technologies.
+
+## Contents
+
+Total files: 32
+
+- CIS_JUNIPER_OS_BENCHMARK_V2.1.0 PDF.json
+- CIS_MARIADB_10.11_BENCHMARK_V1.0.0.json
+- CIS_MARIADB_10.6_BENCHMARK_V1.1.0.json
+- CIS_NGINX_BENCHMARK_V2.1.0.json
+- CIS_ORACLE_CLOUD_INFRASTRUCTURE_FOUNDATIONS_BENCHMARK_V3.0.0.json
+- CIS_ORACLE_DATABASE_11G_R2_BENCHMARK_V2.2.0_ARCHIVE.json
+- CIS_ORACLE_DATABASE_12C_BENCHMARK_V3.0.0_ARCHIVE.json
+- CIS_ORACLE_DATABASE_18C_BENCHMARK_V1.1.0_ARCHIVE.json
+- CIS_ORACLE_DATABASE_19C_BENCHMARK_V1.2.0.json
+- CIS_ORACLE_DATABASE_23AI_BENCHMARK_V1.0.0.json
+- CIS_ORACLE_DATABASE_SERVER_11___11G_R2_BENCHMARK_V1.0.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_6_BENCHMARK_V3.0.0_ARCHIVE (1).json
+- CIS_RED_HAT_ENTERPRISE_LINUX_6_BENCHMARK_V3.0.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V1.0.0.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V1.1.0.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V2.0.0.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V2.1.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V2.1.1.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V3.0.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V3.0.1_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V3.1.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V3.1.1_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_BENCHMARK_V4.0.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_STIG_BENCHMARK_V1.0.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_STIG_BENCHMARK_V1.0.1_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_7_STIG_BENCHMARK_V2.0.0_ARCHIVE.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_8_BENCHMARK_V3.0.0.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_9_BENCHMARK_V2.0.0 (1).json
+- CIS_RED_HAT_ENTERPRISE_LINUX_9_BENCHMARK_V2.0.0.json
+- CIS_RED_HAT_ENTERPRISE_LINUX_9_STIG_BENCHMARK_V1.0.0.json
+- CIS_SNOWFLAKE_FOUNDATIONS_BENCHMARK_V1.0.0.json
+- backup_function_boto3_specs.json
+
+
+## Description
+
+These documents provide security configuration benchmarks and best practices for misc_other technologies, helping organizations achieve compliance with industry security standards.
+
+## Usage
+
+Each JSON file contains structured compliance requirements that can be used for:
+- Security audits
+- Compliance assessments  
+- Configuration management
+- Security policy development
+
+## Source
+
+All documents are sourced from the Center for Internet Security (CIS) and represent industry-standard security benchmarks.

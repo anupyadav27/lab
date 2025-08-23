@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-17T01:31:30.294626",
+    "total_new_functions": 5,
+    "description": "New Kubernetes security functions suggested by compliance mapper for Python code generation"
+  },
+  "new_functions": [
+    {
+      "function_name": "apiserver_minimize_secrets_access",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get secrets --all-namespaces",
+      "rationale": "To ensure that access to secrets is minimized, a function to check the access level of all secrets across all namespaces is needed.",
+      "compliance_id": "5.1.2",
+      "compliance_title": "Minimize access to secrets",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions provide some coverage for minimizing access to secrets, but they do not cover all aspects. The 'apiserver_restrict_secrets_access' and 'rbac_minimize_secret_access' functions can help restrict and minimize access to secrets. However, there are no functions to check the access level of all secrets across all namespaces or to check the RBAC policies related to secrets access. Therefore, two new functions 'apiserver_minimize_secrets_access' and 'rbac_limit_secrets_access' are suggested."
+    },
+    {
+      "function_name": "rbac_limit_secrets_access",
+      "service": "rbac",
+      "kubernetes_api": "kubectl get rolebindings,clusterrolebindings --all-namespaces",
+      "rationale": "To minimize access to secrets, a function to check the RBAC policies related to secrets access is needed.",
+      "compliance_id": "5.1.2",
+      "compliance_title": "Minimize access to secrets",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions provide some coverage for minimizing access to secrets, but they do not cover all aspects. The 'apiserver_restrict_secrets_access' and 'rbac_minimize_secret_access' functions can help restrict and minimize access to secrets. However, there are no functions to check the access level of all secrets across all namespaces or to check the RBAC policies related to secrets access. Therefore, two new functions 'apiserver_minimize_secrets_access' and 'rbac_limit_secrets_access' are suggested."
+    },
+    {
+      "function_name": "rbac_minimize_privileged_service_account_pod_assignment",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get serviceaccounts -n kube-system",
+      "rationale": "To ensure that privileged service accounts are not assigned to pods unnecessarily",
+      "compliance_id": "5.1.4",
+      "compliance_title": "Minimize access to create pods",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'rbac_minimize_pod_creation_access' partially covers the compliance requirement of minimizing access to create pods. However, it does not cover the aspects of preventing privileged service account assignment to pods and restricting hostPath mounts in pods. Therefore, two new functions are suggested to cover these aspects."
+    },
+    {
+      "function_name": "rbac_minimize_hostpath_mount_in_pod",
+      "service": "apiserver",
+      "kubernetes_api": "kubectl get pods -n kube-system",
+      "rationale": "To ensure that hostPaths with access to sensitive data are not mounted in pods unnecessarily",
+      "compliance_id": "5.1.4",
+      "compliance_title": "Minimize access to create pods",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing function 'rbac_minimize_pod_creation_access' partially covers the compliance requirement of minimizing access to create pods. However, it does not cover the aspects of preventing privileged service account assignment to pods and restricting hostPath mounts in pods. Therefore, two new functions are suggested to cover these aspects."
+    },
+    {
+      "function_name": "namespace_resource_isolation_check",
+      "service": "core",
+      "kubernetes_api": "kubectl get namespaces",
+      "rationale": "To ensure that resources are properly isolated within their respective namespaces",
+      "compliance_id": "5.7.1",
+      "compliance_title": "Create administrative boundaries between resources using namespaces",
+      "coverage_assessment": "partial",
+      "mapping_notes": "The existing functions 'apiserver_namespace_lifecycle_plugin' and 'namespace_isolation_check' partially cover the compliance requirement. However, a new function 'namespace_resource_isolation_check' is needed to fully ensure that resources are properly isolated within their respective namespaces."
+    }
+  ]
+}

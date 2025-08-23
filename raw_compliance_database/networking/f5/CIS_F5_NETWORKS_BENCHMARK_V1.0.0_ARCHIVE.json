@@ -1,0 +1,579 @@
+[
+  {
+    "id": "1.1.1",
+    "title": "Ensure default password of root is not allowed",
+    "assessment": "Automated",
+    "description": "To assist users in changing default password for \"root\" account",
+    "rationale": "Using Default passwords for 'root' access could cause a compromise to the overall system security Impact: Failure of changing default root's password brings high risk to the system as the root account might be abused by unauthorized users who would have full privilege on F5 systems",
+    "audit": "Attempt to log in as root with default password",
+    "remediation": "- Log in to the Configuration utility. - For System, select Platform. - Under User Administration, choose the Password box for either Root Account or Admin Account. - Enter the new password. - Enter the same password in the Confirm box for the account that you chose in step 3. - Select Update. - If you have updated the password for Admin Account, the system logs you out of the Configuration utility, and you must log in again using the new password. References: 1. https://api-u.f5.com/support/kb-articles/K13121?pdf   11 | P a g e",
+    "function_names": [
+      "iam_root_user_default_password_disallowed",
+      "iam_root_user_password_changed",
+      "iam_root_user_password_not_default",
+      "iam_root_user_secure_credentials",
+      "iam_root_user_password_policy_enforced"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Failure of changing default root's password brings high risk to the system as the root account might be abused by unauthorized users who would have full privilege on F5 systems",
+    "references": "1. https://api-u.f5.com/support/kb-articles/K13121?pdf   11 | P a g e"
+  },
+  {
+    "id": "1.1.2",
+    "title": "Ensure default password of admin is not used",
+    "assessment": "Automated",
+    "description": "To assist users in changing default password for 'admin' account",
+    "rationale": "Using Default passwords for 'admin' access could cause a compromise to the overall system security Impact: Failure of changing default root's password brings high risk to the system as the root account might be abused by unauthorized users who would have full privilege on F5 systems",
+    "audit": "Attempt to log in as admin with default password",
+    "remediation": "- Log in to the Configuration utility. - For System, select Platform. - Under User Administration, choose the Password box for either Root Account or Admin Account. - Enter the new password. - Enter the same password in the Confirm box for the account that you chose in step 3. - Select Update. - If you have updated the password for Admin Account, the system logs you out of the Configuration utility, and you must log in again using the new password. References: 1. https://api-u.f5.com/support/kb-articles/K13121?pdf     13 | P a g e",
+    "function_names": [
+      "iam_user_default_password_changed",
+      "iam_admin_default_password_changed",
+      "iam_user_no_default_credentials",
+      "iam_admin_no_default_password",
+      "iam_user_password_not_default",
+      "iam_admin_password_customized",
+      "iam_user_secure_password_set",
+      "iam_admin_password_not_default"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Failure of changing default root's password brings high risk to the system as the root account might be abused by unauthorized users who would have full privilege on F5 systems",
+    "references": "1. https://api-u.f5.com/support/kb-articles/K13121?pdf     13 | P a g e"
+  },
+  {
+    "id": "1.1.3",
+    "title": "Configure Secure Password Policy",
+    "assessment": "Manual",
+    "description": "To assist users in maintaining strong passwords, ensure that passwords are changed at appropriate intervals and new passwords to be used",
+    "rationale": "Having a weak or non-existent password policy will allow users to use weak or easily cracked passwords. Impact: Without proper password management the users are more likely to select weak passwords or forget complex passwords. This can create security risks as these passwords make it easier for attackers to crack.",
+    "audit": "Secure Password Enforcement Enables or disables enforcement (character) restrictions, and a policy for minimum password length and required characters. When you enable this setting, the Configuration utility displays the Minimum Length and Required Characters settings. The default value is Disabled prior to BIG-IP 14.0.0 and Enabled after BIG-IP 14.0.0. -Minimum Length Specifies the minimum number of characters required for a password. The default value is 6, and the system allows the range of values from 6 through 255. This setting appears in the Configuration utility, and the system only enforces it when you enable the Secure Password Enforcement setting. -Required Characters Specifies the number of numeric, uppercase, lowercase, and other characters required for a password. The default value for each character type is 0, and the system allows the range of values from 0 through 127. This setting appears in the Configuration utility, and the system only enforces it when you enable the Secure Password Enforcement setting. -Password Memory Specifies, for each user account, the number of former passwords that the BIG-IP system retains to prevent the user from reusing a recent password. The default value is 0, and the system allows the range of values from 0 through 127.  15 | P a g e -Minimum Duration Specifies the minimum number of days before users can change their password. The default value is 0, and the system allows the range of values from 0 through 255. Note: Administrators cannot reset their passwords using the Configuration utility while inside the Minimum Duration window. -Maximum Duration Specifies the maximum number of days that users' passwords are valid. The default value is 99999, and the system allows the range of values from 1 through 99999. If a user does not change their password by the time they reach the maximum duration, in versions prior to BIG-IP 13.1.0, an administrator must change the user's password, and in BIG-IP 13.1.0 and after, the user can reset their own password. -Expiration Warning Specifies the number of days prior to password expiration that the system sends a warning message to a users. The default value is 7, and the system allows the range of values from 1 to 255. -Maximum Login Failures Specifies the number of consecutive unsuccessful login attempts the system allows before locking out the user. The default value is 0 where zero value means it is disabled. The valid range is from 0 through 65535. Locked out users must contact a system administrator to reinstate their access. For more information about managing locked out user accounts, refer to K34556595: Managing the login failures for a local user account on the BIG-IP system.",
+    "remediation": "Configuring the password policy using the Configuration utility 1. Log in to the Configuration utility. 2. Navigate to System > Users > Authentication. 3. Under Password Policy, locate the Secure Password Enforcement setting and set it to meet below minimum requirements : Configuring the password policy using tmsh 1. Log in to tmsh by typing the following command: tmsh: modify /auth password-policy The minimum requirements : - Secure Password Enforcement : Enabled - Minimum Password Length is 12 - Required Lowercase is 1 - Required Uppercase is 1 - Required Numeric is 1 - Required Special Characters is 1 - Maximum Duration (in Days): 180 - Minimum Duration (in Days): 90 - Expiration Warning ( in days):14 - EnsurePassword Memory is 24 - Ensure Maximum Login Failures is 3  16 | P a g e - User Lockout :  Automatically enable locked-out users after : 300 seconds **Notice: Some settings can be done through Configuration Utility only while others are done through tmsh only.** References: 1. https://support.f5.com/csp/article/K15497",
+    "function_names": [
+      "iam_password_policy_min_length",
+      "iam_password_policy_require_uppercase",
+      "iam_password_policy_require_lowercase",
+      "iam_password_policy_require_numbers",
+      "iam_password_policy_require_symbols",
+      "iam_password_policy_allow_user_change",
+      "iam_password_policy_max_age",
+      "iam_password_policy_reuse_prevention",
+      "iam_password_policy_expiration_notification",
+      "iam_password_policy_hard_expiry"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Without proper password management the users are more likely to select weak passwords or forget complex passwords. This can create security risks as these passwords make it easier for attackers to crack.",
+    "references": "1. https://support.f5.com/csp/article/K15497"
+  },
+  {
+    "id": "2.1",
+    "title": "Ensure that Remote Radius is used for Authentication Only",
+    "assessment": "Automated",
+    "description": "To specify the authentication mechanism that F5 systems use for external (remote) users",
+    "rationale": "Uncontrolled and illegitimate authentication could provide access to unauthorized users Impact: Uncontrolled and illegitimate authentication mechanism provides access to illegitimates remote users on the systems. It is important to make sure of the right Authentication mechanism used. Radius is configured as Authentication Only. Radius in turns query LDAP for remote users authentication and authorization.",
+    "audit": "On Configuration utility: System > Users > Authentication Under Authentication : Check \"Service Type\"",
+    "remediation": "1-Log in to the Configuration utility using the administrator account. 2-Navigate to System > Users > Authentication. 3-In the Authentication section, click Change. 4-Select Remote - RADIUS from the User Directory drop-down menu. 5-Define the RADIUS server configuration settings, including the port and shared secret settings: 6- For \"Service Type\": select \"Authentication Only\" 7-Click Finished.   18 | P a g e",
+    "function_names": [
+      "f5_auth_remote_radius_only",
+      "f5_auth_radius_enabled",
+      "f5_auth_external_radius_required",
+      "f5_auth_no_local_fallback",
+      "f5_auth_radius_only_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "impact": "Uncontrolled and illegitimate authentication mechanism provides access to illegitimates remote users on the systems. It is important to make sure of the right Authentication mechanism used. Radius is configured as Authentication Only. Radius in turns query LDAP for remote users authentication and authorization."
+  },
+  {
+    "id": "2.2",
+    "title": "Ensure redundant remote authentication servers are configured",
+    "assessment": "Manual",
+    "description": "Having multiple points of authentication is important in the event that the primary remote authentication source goes down.",
+    "rationale": "To make sure the redundant Radius servers are configured Impact: Having a single Authentication server reduce the availability for systems operators and admins to perform their tasks and support when the Radius server is down",
+    "audit": "-On Configuration utility: System > Users > Authentication -You should see RADIUS configuration for Primary server only.",
+    "remediation": "1-Log in to the Configuration utility using the administrator account. 2-Navigate to System > Users > Authentication. 3-In the Authentication section, click Change. 4-Select Remote - RADIUS from the User Directory drop-down menu. 5-Define the RADIUS server configuration settings, including the port and shared secret settings: 6-For \"Service Type\": select \"Authentication Only\" 7-This should be completed for Primary RADIUS server as well as for Secondary RADIUS server. 8-Click Finished.   20 | P a g e References: 1. https://support.f5.com/csp/article/K17403",
+    "function_names": [
+      "iam_remote_authentication_servers_redundant",
+      "iam_authentication_servers_redundant",
+      "iam_remote_auth_servers_redundant",
+      "iam_auth_servers_redundant",
+      "iam_remote_auth_servers_multiple",
+      "iam_auth_servers_multiple",
+      "iam_remote_auth_servers_backup",
+      "iam_auth_servers_backup"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "impact": "Having a single Authentication server reduce the availability for systems operators and admins to perform their tasks and support when the Radius server is down",
+    "references": "1. https://support.f5.com/csp/article/K17403"
+  },
+  {
+    "id": "2.3",
+    "title": "Ensure that \"Fallback to local\" option is disabled for Remote Authentication Settings",
+    "assessment": "Manual",
+    "description": "To prevent the system from checking local DB for remote users authentication",
+    "rationale": "Impact: Though the impact might be low, it is a good practice to segregate remote users from local and to limit local users\u2019 usage.",
+    "audit": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Under Authentication , you should see Fallback to Local \"Disabled\"",
+    "remediation": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Select Change. 4. Select the Fallback to Local check box. 5. Select Finished. References: 1. https://support.f5.com/csp/article/K67025432     22 | P a g e",
+    "function_names": [
+      "iam_remote_auth_fallback_to_local_disabled",
+      "iam_authentication_fallback_local_disabled",
+      "iam_remote_auth_local_fallback_disabled",
+      "iam_auth_settings_local_fallback_disabled",
+      "iam_remote_auth_local_check_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "impact": "Though the impact might be low, it is a good practice to segregate remote users from local and to limit local users\u2019 usage.",
+    "references": "1. https://support.f5.com/csp/article/K67025432     22 | P a g e"
+  },
+  {
+    "id": "2.4",
+    "title": "Ensure External Users' role is set to \"No Access\"",
+    "assessment": "Automated",
+    "description": "To set a default role for remote users Authentication and authorization for remote users are handled by third party system",
+    "rationale": "Impact: Providing remote users with a preconfigured role might allow unauthorized access to these users.",
+    "audit": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Under External Users > Role : a predefined role is set",
+    "remediation": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Under External Users , click \"Change\". 4. Set Role to \"No Access\".         24 | P a g e",
+    "function_names": [
+      "iam_external_user_no_access_role",
+      "iam_user_default_no_access_role",
+      "iam_remote_user_no_access_role",
+      "iam_authentication_no_access_default",
+      "iam_authorization_no_access_default",
+      "iam_external_auth_no_access_role",
+      "iam_third_party_user_no_access_role",
+      "iam_remote_auth_no_access_role"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "impact": "Providing remote users with a preconfigured role might allow unauthorized access to these users."
+  },
+  {
+    "id": "2.5",
+    "title": "Ensure External Users' has access to needed Partitions only",
+    "assessment": "Automated",
+    "description": "To limit access for remote users to needed partitions only granting a user access to \"All Partitions\" might provide the users unauthorized access.",
+    "rationale": "Impact: Though , there is one partition is configured currently on WD F5 systems ( common) , It is a good practice to specify which partition the users allowed to access.",
+    "audit": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Under External Users > Partition Access , you can see no specific partition is defined or it is set to \"All\"",
+    "remediation": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Under External Users , click \"Change\". 4. For Partition Access , specify which partitions are allowed for External Users.       26 | P a g e",
+    "function_names": [
+      "iam_user_partition_access_restricted",
+      "iam_external_user_partition_access_minimized",
+      "iam_user_all_partitions_access_denied",
+      "iam_partition_access_external_user_limited",
+      "iam_user_partition_scope_restricted"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Though , there is one partition is configured currently on WD F5 systems ( common) , It is a good practice to specify which partition the users allowed to access."
+  },
+  {
+    "id": "2.6",
+    "title": "Ensure External Users' Terminal Access is Disabled",
+    "assessment": "Automated",
+    "description": "To prevent remote users from gaining terminal access",
+    "rationale": "",
+    "audit": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Under External Users >  you should see Terminal Access is set to \"Enabled\"",
+    "remediation": "1. Log in to the Configuration utility. 2. Go to System > Users > Authentication. 3. Under External Users , click \"Change\". 4. Set Terminal Access as \"Disabled\"",
+    "function_names": [
+      "iam_user_terminal_access_disabled",
+      "iam_external_user_terminal_access_disabled",
+      "iam_user_ssh_access_disabled",
+      "iam_external_user_ssh_access_disabled",
+      "iam_user_console_access_disabled",
+      "iam_external_user_console_access_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "3.1",
+    "title": "Ensure 'Idle timeout' is less than or equal to 10 minutes for Configuration utility sessions",
+    "assessment": "Automated",
+    "description": "To set an idle timeout for GUI sessions",
+    "rationale": "Unattended administrative sessions may provide illegal access to the device Impact: Indefinite or even long session timeout windows can increase the risk of attackers abusing abandoned sessions.",
+    "audit": "On Configuration utility: System > Preferences, Under Security settings...check the value of Idle Time Before Automatic Logout",
+    "remediation": "On Configuration utility: System > Preferences, Under Security settings...set the value of Idle Time Before Automatic Logout to 600 seconds Default Value: 1200 References: 1. https://support.f5.com/csp/article/K9908   29 | P a g e",
+    "function_names": [
+      "compute_configuration_idle_timeout_less_than_10m",
+      "compute_gui_session_idle_timeout_compliant",
+      "compute_configuration_idle_timeout_enabled",
+      "compute_gui_session_timeout_10m_or_less",
+      "compute_configuration_session_timeout_enforced"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Indefinite or even long session timeout windows can increase the risk of attackers abusing abandoned sessions.",
+    "references": "1. https://support.f5.com/csp/article/K9908   29 | P a g e"
+  },
+  {
+    "id": "3.2",
+    "title": "Ensure access to Configuration utility by clients using TLS version 1.2 or later",
+    "assessment": "Automated",
+    "description": "TLSv1.2 should be used for GUI connections",
+    "rationale": "Restricting the configuration utility to use TLS version 1.2 is recommended Impact: Weak security protocols may expose vulnerability by disclosing data through SSL/TLS sessions",
+    "audit": "Through CLI access, type the following command: tmsh list sys httpd ssl-protocol The output should show only TLSv1.2",
+    "remediation": "If the value is different, execute the following command to modify the protocol used to access GUI: tmsh modify /sys httpd ssl-protocol \"TLSv1.2\" tmsh save sys config Default Value: ssl-protocol \"All -SSLv2 -SSLv3 -TLSv1\" References: 1. https://support.f5.com/csp/article/K02321234   31 | P a g e",
+    "function_names": [
+      "cloud_cdn_configuration_min_tls_1_2",
+      "cloud_cdn_gui_tls_1_2_required",
+      "cloud_cdn_client_tls_1_2_enforced",
+      "cloud_cdn_configuration_tls_1_2_or_later",
+      "cloud_cdn_gui_connection_tls_1_2_minimum"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Weak security protocols may expose vulnerability by disclosing data through SSL/TLS sessions",
+    "references": "1. https://support.f5.com/csp/article/K02321234   31 | P a g e"
+  },
+  {
+    "id": "3.3",
+    "title": "Ensure access to Configuration utility is restricted to needed IP addresses only",
+    "assessment": "Automated",
+    "description": "It is recommended to maintain secure access to the GUI by allowing only trusted IP addresses or range of IP addresses",
+    "rationale": "Any compromised network device within enterprise network would gain illegal access to F5 configuration utility abusing existing unresolved vulnerabilities. Impact: Allowing any IP address to access may expose the management interface of F5 to different types of attacks such as DoS",
+    "audit": "The following command should show the list of allowed IP addresses: tmsh list /sys httpd allow",
+    "remediation": "If the output of the above command show ALL, the following command would be executed to modify the settings: modify modify /sys httpd allow replace-all-with { <IP address or IP address range> } Default Value: ALL References: 1. https://support.f5.com/csp/article/K13309   33 | P a g e",
+    "function_names": [
+      "cloud_cdn_configuration_ip_restricted",
+      "cloud_cdn_gui_access_trusted_ips_only",
+      "cloud_cdn_configuration_utility_ip_filtered",
+      "cloud_cdn_gui_restricted_to_allowed_ips",
+      "cloud_cdn_configuration_access_ip_whitelisted"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Allowing any IP address to access may expose the management interface of F5 to different types of attacks such as DoS",
+    "references": "1. https://support.f5.com/csp/article/K13309   33 | P a g e"
+  },
+  {
+    "id": "4.1",
+    "title": "Ensure Prelogin 'Login Banner' is set",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "Impact: Failure to display adequate warning messages could result in the loss of litigation capabilities.",
+    "audit": "1-Log in to the Configuration utility. 2-Navigate to System > Configuration > Device",
+    "remediation": "1-Log in to the Configuration utility. 2-Navigate to System > Configuration > Device 3-Click SSHD. 4-Enter the desired pre-login message banner in the text box and enable appropriate options. 5-To enable this banner message, check the Show The Security Banner On The Login Screen option. To disable this message banner, clear the Show The Security Banner On The Login Screen option. 6-Click Update. References: 1. https://support.f5.com/csp/article/K6068    35 | P a g e",
+    "function_names": [
+      "iam_account_prelogin_banner_set",
+      "iam_account_login_banner_configured",
+      "iam_account_prelogin_banner_enabled",
+      "iam_account_banner_text_defined",
+      "iam_account_prelogin_message_required"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Failure to display adequate warning messages could result in the loss of litigation capabilities.",
+    "references": "1. https://support.f5.com/csp/article/K6068    35 | P a g e"
+  },
+  {
+    "id": "4.2",
+    "title": "Ensure 'Idle timeout' is less than or equal to 10 minutes for SSH connections",
+    "assessment": "Manual",
+    "description": "To set an idle timeout for SSH sessions",
+    "rationale": "Impact: Indefinite or even long session timeout window increase the risk of attackers abusing abandoned sessions",
+    "audit": "1-Log in to tmsh by typing the following command: tmsh 2-Use the following command syntax: list /sys sshd inactivity-timeout",
+    "remediation": "1-Log in to tmsh by typing the following command: tmsh 2-To configure an automatic logout idle time (10 minutes) for SSH sessions, use the following command syntax: modify /sys sshd inactivity-timeout 600 3-Save the change by typing the following command: save /sys config References: 1. https://support.f5.com/csp/article/K9908      37 | P a g e",
+    "function_names": [
+      "compute_ssh_idle_timeout_less_than_10m",
+      "compute_ssh_session_timeout_compliance",
+      "ssh_connection_idle_timeout_enabled",
+      "compute_ssh_timeout_configuration_valid",
+      "ssh_idle_disconnect_within_10m",
+      "compute_ssh_session_inactivity_limit",
+      "ssh_connection_timeout_compliance",
+      "compute_ssh_idle_session_termination"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Indefinite or even long session timeout window increase the risk of attackers abusing abandoned sessions",
+    "references": "1. https://support.f5.com/csp/article/K9908      37 | P a g e"
+  },
+  {
+    "id": "4.3",
+    "title": "Ensure 'Idle timeout' is less than or equal to 10 minutes for tmsh sessions",
+    "assessment": "Manual",
+    "description": "To set an idle timeout for tmsh sessions",
+    "rationale": "Impact: Indefinite or even long session timeout window increases the risk of attackers abusing abandoned sessions.",
+    "audit": "1- Log in to tmsh by typing the following command: tmsh 2-Issue the following command : list /cli global-settings idle-timeout",
+    "remediation": "1.Log in to tmsh by typing the following command: tmsh 2.To configure an automatic logout idle time for tmsh sessions, use the following command syntax: modify /cli global-settings idle-timeout 10 3.Save the change by typing the following command: save /sys config References: 1. https://support.f5.com/csp/article/K9908#ssh        39 | P a g e",
+    "function_names": [
+      "network_tmsh_session_idle_timeout_less_than_10m",
+      "network_tmsh_session_timeout_enabled",
+      "network_tmsh_session_timeout_configured",
+      "network_tmsh_session_inactivity_timeout_set",
+      "network_tmsh_session_max_idle_time_limited"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Indefinite or even long session timeout window increases the risk of attackers abusing abandoned sessions.",
+    "references": "1. https://support.f5.com/csp/article/K9908#ssh        39 | P a g e"
+  },
+  {
+    "id": "4.4",
+    "title": "Ensure 'Idle timeout' is less than or equal to 10 minutes for serial console sessions",
+    "assessment": "Manual",
+    "description": "To set an idle timeout for serial console sessions.",
+    "rationale": "Impact: Indefinite or even long session timeout window increases the risk of attackers abusing abandoned sessions.",
+    "audit": "1-Log in to tmsh by typing the following command: tmsh 2-Use the following command: list /sys global-settings console-inactivity-timeout",
+    "remediation": "- Log in to tmsh by typing the following command: tmsh - To configure an automatic logout idle time for serial console sessions, use the following command : modify /sys global-settings console-inactivity-timeout 600 - Save the change by typing the following command: save /sys config References: 1. https://support.f5.com/csp/article/K9908#ssh       41 | P a g e",
+    "function_names": [
+      "compute_serial_console_idle_timeout_less_than_10m",
+      "compute_serial_console_session_timeout_configured",
+      "compute_serial_console_idle_timeout_compliant",
+      "compute_serial_console_session_timeout_less_than_10m",
+      "compute_serial_console_idle_timeout_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Indefinite or even long session timeout window increases the risk of attackers abusing abandoned sessions.",
+    "references": "1. https://support.f5.com/csp/article/K9908#ssh       41 | P a g e"
+  },
+  {
+    "id": "4.5",
+    "title": "Ensure minimum SSH Encryption algorithm is set to aes128-cbc",
+    "assessment": "Manual",
+    "description": "To set strong SSH Encryption algorithm.",
+    "rationale": "Impact: Weak encryption algorithms make it possible for attackers to decrypt traffic and reduce the confidentiality capability that SSH provides for remote connections.",
+    "audit": "-Log in to tmsh by typing the following command: tmsh -Type the following command: list /sys sshd all-properties.",
+    "remediation": "1-Log in to tmsh by typing the following command:tmsh 2-To modify the sshd configuration, type the following command to start the vi editor:edit /sys sshd all-properties 3-To change the list of ciphers, you can navigate to the line that starts with the include statement, and use the keyword Ciphers : include \"Ciphers aes128-cbc,aes128-ctr,aes192-ctr,aes256- ctr,arcfour128,arcfour256,arcfour\" References: 1. https://support.f5.com/csp/article/K80425458      43 | P a g e",
+    "function_names": [
+      "compute_ssh_encryption_min_aes128_cbc",
+      "compute_ssh_algorithm_strong_encryption",
+      "compute_ssh_min_encryption_aes128_cbc",
+      "compute_ssh_encryption_algorithm_compliance",
+      "compute_ssh_encryption_strong_config"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Weak encryption algorithms make it possible for attackers to decrypt traffic and reduce the confidentiality capability that SSH provides for remote connections.",
+    "references": "1. https://support.f5.com/csp/article/K80425458      43 | P a g e"
+  },
+  {
+    "id": "4.6",
+    "title": "Ensure to set SSH MAC algorithm to hmac-sha2-256",
+    "assessment": "Manual",
+    "description": "To set strong Hashing algorithm",
+    "rationale": "Impact: Weak MAC algorithms make it possible for attackers to bypass authentication , steal keys and reduce the integrity capability that SSH provides for remote connections.",
+    "audit": "1-Log in to tmsh by typing the following command: tmsh 2-Type the following command: list /sys sshd all-properties",
+    "remediation": "1-Log in to tmsh by typing the following command:tmsh 2-To modify the sshd configuration, type the following command to start the vi editor:edit /sys sshd all-properties 3-To change the list of ciphers, you can navigate to the line that starts with the include statement, and use the keyword MACs ,and adding the list of desired MACs to the 2-line include statement: include \"Ciphers aes128-cbc,aes128-ctr,aes192-ctr,aes256- ctr,arcfour128,arcfour256,arcfour MACs hmac-sha2-256\" References: 1. https://support.f5.com/csp/article/K80425458      45 | P a g e",
+    "function_names": [
+      "compute_instance_ssh_mac_algorithm_hmac_sha2_256",
+      "compute_vm_ssh_mac_algorithm_hmac_sha2_256",
+      "network_ssh_mac_algorithm_hmac_sha2_256",
+      "ssh_config_mac_algorithm_hmac_sha2_256",
+      "instance_ssh_mac_algorithm_hmac_sha2_256",
+      "vm_ssh_mac_algorithm_hmac_sha2_256",
+      "ssh_mac_algorithm_hmac_sha2_256_enabled",
+      "ssh_mac_algorithm_hmac_sha2_256_required"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Weak MAC algorithms make it possible for attackers to bypass authentication , steal keys and reduce the integrity capability that SSH provides for remote connections.",
+    "references": "1. https://support.f5.com/csp/article/K80425458      45 | P a g e"
+  },
+  {
+    "id": "4.7",
+    "title": "Ensure to set Strong SSH KEY Exchange algorithm",
+    "assessment": "Manual",
+    "description": "To set strong Key Exchange algorithm",
+    "rationale": "Impact: Weak Key Exchange algorithms make it possible for attackers to bypass authentication , steal keys and reduce the integrity capability that SSH provides for remote connections .",
+    "audit": "1-Log in to tmsh by typing the following command: tmsh 2-Type the following command: list /sys sshd all-properties",
+    "remediation": "1-Log in to tmsh by typing the following command:tmsh 2-To modify the sshd configuration, type the following command to start the vi editor:edit /sys sshd all-properties 3-Set a Key-Exchange algorithm with key of size 256 or longer  example diffie-hellman-group14-sha256) 4-To change the list of ciphers, you can navigate to the line that starts with the include statement, and use the keyword KexAlgorithms ,and adding the list of desired KexAlgorithms to the 2-line include statement: include \"Ciphers aes128-cbc,aes128-ctr,aes192-ctr,aes256- ctr,arcfour128,arcfour256,arcfour MACs hmac-sha2-256 KexAlgorithms  diffie-hellman-group14-sha256 References: 1. https://support.f5.com/csp/article/K80425458   47 | P a g e",
+    "function_names": [
+      "compute_ssh_key_exchange_strong_algorithm",
+      "compute_ssh_key_exchange_secure_config",
+      "compute_ssh_key_exchange_cis_compliant",
+      "compute_ssh_key_exchange_approved_algorithms",
+      "compute_ssh_key_exchange_minimum_strength"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Weak Key Exchange algorithms make it possible for attackers to bypass authentication , steal keys and reduce the integrity capability that SSH provides for remote connections .",
+    "references": "1. https://support.f5.com/csp/article/K80425458   47 | P a g e"
+  },
+  {
+    "id": "4.8",
+    "title": "Ensure access SSH to CLI interface is restricted to needed IP addresses only",
+    "assessment": "Manual",
+    "description": "To limit ssh access to trusted IPs only",
+    "rationale": "Impact: Restricting access to the system MGT interface is to ensure that even if an attacker gains access to privileged credentials, his/her ability to get in and do damage is still limited.",
+    "audit": "1-Log in to the Configuration utility. 2-Go to System > Platform. 3-For SSH IP Allow , check if there \"All Addresses\" selected.",
+    "remediation": "1-Log in to the Configuration utility. 2-Go to System > Platform. 3-For SSH IP Allow, select Specify Range and then enter the IP addresses or address ranges for the remote systems allowed to use SSH to communicate with this system. References: 1. https://support.f5.com/csp/article/K5380      49 | P a g e",
+    "function_names": [
+      "compute_instance_ssh_ip_restricted",
+      "compute_instance_ssh_access_limited",
+      "compute_instance_ssh_trusted_ips_only",
+      "compute_instance_ssh_restricted_to_needed_ips",
+      "compute_instance_ssh_ip_whitelisted"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Restricting access to the system MGT interface is to ensure that even if an attacker gains access to privileged credentials, his/her ability to get in and do damage is still limited.",
+    "references": "1. https://support.f5.com/csp/article/K5380      49 | P a g e"
+  },
+  {
+    "id": "5.1",
+    "title": "Ensure redundant NTP servers are configured appropriately",
+    "assessment": "Manual",
+    "description": "To ensure redundant NTP servers are configured.",
+    "rationale": "Impact: Failing to connect to an NTP server results on incorrect time zone and date which impacts several functions on BIG-IP systems. It is recommended to have dual NTP servers configured to avoid single point of failure .",
+    "audit": "1-Log in to the Configuration utility. 2-Navigate to System > Configuration > Device 3-Click NTP",
+    "remediation": "1-Log in to the Configuration utility. 2-Navigate to System > Configuration > Device 3-Click NTP : add trusted NTP servers IP addresses .       51 | P a g e",
+    "function_names": [
+      "compute_instance_ntp_servers_redundant",
+      "compute_instance_ntp_servers_configured",
+      "compute_instance_ntp_servers_minimum_count",
+      "compute_instance_ntp_servers_diverse_sources",
+      "compute_instance_ntp_servers_high_availability",
+      "compute_instance_ntp_servers_sync_enabled",
+      "compute_instance_ntp_servers_reliable_sources",
+      "compute_instance_ntp_servers_fallback_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Failing to connect to an NTP server results on incorrect time zone and date which impacts several functions on BIG-IP systems. It is recommended to have dual NTP servers configured to avoid single point of failure ."
+  },
+  {
+    "id": "5.2",
+    "title": "Ensure to exclude inode information from ETags HTTP Header",
+    "assessment": "Manual",
+    "description": "To prevent the disclosure of inode information when accessing Configuration utility (GUI).",
+    "rationale": "Impact: When connecting to the Configuration utility, responses from the Apache server contain an Etag HTTP header that includes the file's inode information.(CVE-2003-1418).",
+    "audit": "1-Log in to tmsh by entering the following command: tmsh 2-check current HTTPD settings : list /sys httpd",
+    "remediation": "1-Log in to tmsh by entering the following command: tmsh 2-To specify the format to be used for the Etag header, enter the following command: 3-modify /sys httpd include \"FileETag MTime Size\" Save the configuration change by entering the following command: 4-save /sys config 5-To restart the httpd service, enter the following command: restart /sys service httpd References: 1. https://support.f5.com/csp/article/K14206     53 | P a g e",
+    "function_names": [
+      "cloud_cdn_distribution_etag_inode_excluded",
+      "cloud_cdn_distribution_etag_inode_disabled",
+      "cloud_cdn_distribution_etag_inode_protected",
+      "cloud_cdn_distribution_etag_inode_hidden",
+      "cloud_cdn_distribution_etag_inode_suppressed"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "When connecting to the Configuration utility, responses from the Apache server contain an Etag HTTP header that includes the file's inode information.(CVE-2003-1418).",
+    "references": "1. https://support.f5.com/csp/article/K14206     53 | P a g e"
+  },
+  {
+    "id": "5.3",
+    "title": "Ensure port lockdown for self IP is set",
+    "assessment": "Manual",
+    "description": "to secure the BIG-IP system from unwanted connection attempts on self-IP.",
+    "rationale": "Impact: Default settings allow BIG-IP to listen on several ports on which some are not needed . Attackers may initiate attacks against the system self IPs on these ports . To reduce the risk , only needed ports should be enabled on self IPs.",
+    "audit": "1-Log in to tmsh by typing the following command: tmsh 2-Type the command : tmsh list net self-allow 3-The output shows what protocols allowed for self-ip",
+    "remediation": "1-Log in to the Configuration utility. 2-Go to Network > Self IPs. 3-Select the relevant self IP address. 4-If the specified interface does not need to listen to incoming connections ( Example BGP ,BDF ..etc) , set \"Port Lockdown\" to \"Allow None\" 5-If the specified interface need to listen for incoming connections , set \"Port Lockdown\" to \"Allow Custom\". Then in the \"Custom List\" add needed ports only. References: 1. https://support.f5.com/csp/article/K17333     55 | P a g e",
+    "function_names": [
+      "network_load_balancer_self_ip_port_lockdown_enabled",
+      "network_load_balancer_self_ip_restricted_ports",
+      "network_load_balancer_self_ip_connection_security_enabled",
+      "network_load_balancer_self_ip_unwanted_connections_blocked",
+      "network_load_balancer_self_ip_access_control_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Default settings allow BIG-IP to listen on several ports on which some are not needed . Attackers may initiate attacks against the system self IPs on these ports . To reduce the risk , only needed ports should be enabled on self IPs.",
+    "references": "1. https://support.f5.com/csp/article/K17333     55 | P a g e"
+  },
+  {
+    "id": "5.4",
+    "title": "Ensure to disable unused services in BIG-IP configuration",
+    "assessment": "Manual",
+    "description": "To disable unused BIG-IP system daemons",
+    "rationale": "Impact: Many systems break-ins are a result of people taking advantage of security holes or problems with these programs. The more services that are running on your system, the more opportunities there are for others to use them, break into or take control of your system through them.",
+    "audit": "1- Log in to the Configuration utility. 2- Go to System > Services > Services List 3-Check running service",
+    "remediation": "1- Log in to the Configuration utility. 2- Go to System > Services > Services List 3-Select the unnecessary services you want to disable , then click \"stop\" 4-Click OK References: 1. https://support.f5.com/csp/article/K05645522      57 | P a g e",
+    "function_names": [
+      "bigip_system_unused_daemons_disabled",
+      "bigip_service_unused_daemons_disabled",
+      "bigip_configuration_unused_services_disabled",
+      "bigip_system_unused_services_disabled",
+      "bigip_daemon_unused_services_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Many systems break-ins are a result of people taking advantage of security holes or problems with these programs. The more services that are running on your system, the more opportunities there are for others to use them, break into or take control of your system through them.",
+    "references": "1. https://support.f5.com/csp/article/K05645522      57 | P a g e"
+  },
+  {
+    "id": "6.1",
+    "title": "Ensure that SNMP access is allowed to trusted agents IPs only",
+    "assessment": "Manual",
+    "description": "To limit access to trusted SNMP agents only",
+    "rationale": "Impact: Failing on restricting access to SNMP may allow unauthorised systems to gain access to the network device.",
+    "audit": "1-Login to Configuration utility 2- Go to System > SNMP > Agent > Configuration 3- Check \"Client Allow List\" under SNMP Access",
+    "remediation": "1-Login to Configuration utility 2- Go to System > SNMP > Agent > Configuration 3- Add trusted IP addresses in \"Client Allow List\" References: 1. https://support.f5.com/csp/article/K13535      59 | P a g e",
+    "function_names": [
+      "network_snmp_access_trusted_ips_only",
+      "network_snmp_agent_restricted_ips",
+      "snmp_community_restricted_access",
+      "snmp_agent_trusted_source_ips",
+      "network_snmp_allowed_ips_only"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Failing on restricting access to SNMP may allow unauthorised systems to gain access to the network device.",
+    "references": "1. https://support.f5.com/csp/article/K13535      59 | P a g e"
+  },
+  {
+    "id": "6.2",
+    "title": "Ensure minimum SNMP version is set to V3 for agent access",
+    "assessment": "Manual",
+    "description": "To disable the usage of weak SNMP protocols",
+    "rationale": "Impact: Abuse of SNMP settings could allow an unauthorised third party to gain access to a network device when weak SNMP protocols are used.These protocols ( prior to v3) lack the ability of authentication and encryption .",
+    "audit": "1-Login to Configuration utility 2- Go to System > SNMP > Agent > SNMP Access (v1, v2c) : check if an entry is listed. 3-Go to System > SNMP > Agent > SNMP Access (v3) : Check if an entry is listed",
+    "remediation": "1-Login to Configuration utility 2- Go to System > SNMP > Agent > SNMP Access (v1, v2c) : Select all listed entries and click \u201cDelete\u201d 3-Go to System > SNMP > Agent > SNMP Access (v3) : Make sure there is one entry at least , otherwise create one. References: 1. https://support.f5.com/csp/article/K13625     61 | P a g e",
+    "function_names": [
+      "snmp_agent_min_version_v3",
+      "snmp_agent_protocol_v3_enabled",
+      "snmp_agent_weak_protocols_disabled",
+      "snmp_agent_version_compliance_v3",
+      "snmp_agent_secure_protocol_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Abuse of SNMP settings could allow an unauthorised third party to gain access to a network device when weak SNMP protocols are used.These protocols ( prior to v3) lack the ability of authentication and encryption .",
+    "references": "1. https://support.f5.com/csp/article/K13625     61 | P a g e"
+  },
+  {
+    "id": "6.3",
+    "title": "Ensure to lockdown access logs to \"Administrator , Resource Administrator and Auditor \" roles only",
+    "assessment": "Manual",
+    "description": "To restrict access to the system logs.",
+    "rationale": "",
+    "audit": "1-Login to Configuration utility 2-Go to System > Logs > Configuration > Options 3-Under \"Log Access\" , check who are allowed to access the logs.",
+    "remediation": "1-Login to Configuration utility 2-Go to System > Logs > Configuration > Options 3- Under Log Access : select \u201cAllow\u201d for: Administrator Resource Administrator Auditor Select \u201cDeny\u201d for other users .",
+    "function_names": [
+      "iam_role_access_logs_restricted_to_admin_roles",
+      "iam_role_access_logs_restricted_to_resource_admin_roles",
+      "iam_role_access_logs_restricted_to_auditor_roles",
+      "iam_role_access_logs_restricted_to_admin_resource_admin_auditor_roles",
+      "iam_access_logs_admin_roles_only",
+      "iam_access_logs_resource_admin_roles_only",
+      "iam_access_logs_auditor_roles_only",
+      "iam_access_logs_admin_resource_admin_auditor_roles_only",
+      "iam_logs_access_restricted_to_admin_roles",
+      "iam_logs_access_restricted_to_resource_admin_roles",
+      "iam_logs_access_restricted_to_auditor_roles",
+      "iam_logs_access_restricted_to_admin_resource_admin_auditor_roles"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "6.4",
+    "title": "Ensure that audit logging for \"MCP, tmsh and GUI\" is set to enabled",
+    "assessment": "Manual",
+    "description": "To enable audit logging on configuration changes that users or services make to the BIG-IP system.",
+    "rationale": "Impact: Audit logging provides a mechanism to investigate security incidents and unauthorised activities . It is also necessary for compliance auditing.",
+    "audit": "1-Login to Configuration utility 2-Go to System > Logs > Configuration > Options 3- Under Audit Logging : check MCP,tmsh and GUI",
+    "remediation": "1-Login to Configuration utility 2-Go to System > Logs > Configuration > Options 3- Under Audit Logging : Select \u201cEnable\u201d for all items : \u201cMCP\u201d , \u201ctmsh\u201d and \"GUI\" References: 1. https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip- external-monitoring-implementations-13-1-0/1.html 2. https://support.f5.com/csp/article/K07592334     64 | P a g e",
+    "function_names": [
+      "bigip_audit_logging_enabled",
+      "bigip_audit_logging_mcp_enabled",
+      "bigip_audit_logging_tmsh_enabled",
+      "bigip_audit_logging_gui_enabled",
+      "bigip_audit_logging_all_interfaces_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "Audit logging provides a mechanism to investigate security incidents and unauthorised activities . It is also necessary for compliance auditing.",
+    "references": "1. https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip- external-monitoring-implementations-13-1-0/1.html 2. https://support.f5.com/csp/article/K07592334     64 | P a g e"
+  },
+  {
+    "id": "6.5",
+    "title": "Ensure that Remote Syslog Servers are configured",
+    "assessment": "Manual",
+    "description": "To ensure that logs are sent to external servers",
+    "rationale": "Impact: In case of hardware failure , logs stored locally can be lost. This impacts the ability of investigating security incidents and be in compliance with the requirements of logs retention period .",
+    "audit": "1-Log in to the Configuration utility. 2-Go to System > Logs > Configuration > Remote Logging. 3-Check \"Remote Syslog Server List\"",
+    "remediation": "1-Log in to the Configuration utility. 2-Go to System > Logs > Configuration > Remote Logging. 3-For Remote IP, enter the destination syslog server IP address, or FQDN. (DNS server configuration required) 4-For Remote Port, enter the remote syslog server UDP port (default is 514). 5-Select Add. 6-Select Update. References: 1. https://support.f5.com/csp/article/K13080    66 | P a g e",
+    "function_names": [
+      "cloudtrail_trail_remote_syslog_enabled",
+      "cloudtrail_trail_syslog_server_configured",
+      "logging_syslog_endpoint_configured",
+      "logging_syslog_server_reachable",
+      "cloudtrail_trail_log_export_enabled",
+      "logging_syslog_tls_encryption_enabled",
+      "cloudtrail_trail_syslog_delivery_verified",
+      "logging_syslog_server_validated"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "impact": "In case of hardware failure , logs stored locally can be lost. This impacts the ability of investigating security incidents and be in compliance with the requirements of logs retention period .",
+    "references": "1. https://support.f5.com/csp/article/K13080    66 | P a g e"
+  }
+]

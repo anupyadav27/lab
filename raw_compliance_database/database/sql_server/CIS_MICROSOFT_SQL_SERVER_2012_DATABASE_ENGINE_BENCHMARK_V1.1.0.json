@@ -1,0 +1,522 @@
+[
+  {
+    "id": "1.1",
+    "title": "Install the Latest SQL Server Service Packs and Hotfixes",
+    "assessment": "Scored",
+    "description": "SQL Server patches contain program updates that fix security and product functionality issues found in the software. These patches can be installed with a hotfix which is a single patch, a cumulative update which is a small group of patches or a service pack which is a large collection of patches. The SQL Server version and patch levels should be the most recent compatible with the organizations' operational needs",
+    "rationale": "Using the most recent SQL Server software, along with all applicable patches can help limit the possibilities for vulnerabilities in the software, the installation version and/or patches applied during setup should be established according to the needs of the organization.",
+    "audit": "To determine your SQL Server service pack level, run the following code snippet. SELECT SERVERPROPERTY('ProductLevel') as SP_installed, SERVERPROPERTY('ProductVersion') as Version; First column returns the installed Service Pack level, the second is the exact build number.",
+    "remediation": "Identify the current version and patch level of your SQL Server instances and ensure they contain the latest security fixes.  Make sure to test these fixes in your test environments before updating production instances. The most recent SQL Server patches can be found here: Hotfixes and Cumulative updates: http://blogs.msdn.com/b/sqlreleaseservices/ 8 | P a g e Service Packs: http://support.microsoft.com/kb/968382 Default Value: Service packs and patches are not installed by default. References: 1. http://support.microsoft.com/sp 2. http://support.microsoft.com/kb/968382",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://support.microsoft.com/sp 2. http://support.microsoft.com/kb/968382",
+    "function_names": [
+      "sql_server_instance_latest_service_pack_installed",
+      "sql_server_instance_latest_hotfix_installed",
+      "sql_server_instance_latest_cumulative_update_installed",
+      "sql_server_instance_patch_level_compatible",
+      "sql_server_instance_version_current",
+      "sql_server_instance_security_patches_installed",
+      "sql_server_instance_functionality_patches_installed",
+      "sql_server_instance_patch_compliance_verified"
+    ]
+  },
+  {
+    "id": "1.2",
+    "title": "Install on dedicated single-function member servers",
+    "assessment": "Not Scored",
+    "description": "It is recommended that SQL Server software be installed on a dedicated server.  This architectural consideration affords security flexibility in that the database server can be placed on a separate subnet allowing access only from particular hosts and over particular protocols.  Degrees of availability are easier to achieve as well - over time, an enterprise can move from a single database server to a failover to a cluster using load balancing or to some combination thereof.",
+    "rationale": "It is easier to manage (i.e. reduce) the attack surface of the server hosting SQL Server software if the only surfaces to consider are the underlying operating system, SQL Server itself, and any security/operational tooling that may additionally be installed.  As noted in the description, availability can be more easily addressed if the database is on a dedicated server.",
+    "audit": "Ensure that no other roles are enabled for the underlying operating system and that no excess tooling is installed, per enterprise policy.",
+    "remediation": "Uninstall excess tooling and/or remove unnecessary roles from the underlying operating system. 9 | P a g e Impact: It is difficult to see any reasonably adverse impact to making this architectural change, once the costs of making the change have been paid.  Custom applications may need to be modified to accommodate database connections over the wire rather than on the host (i.e. using TCP/IP instead of Named Pipes).  Additional hardware and operating system licenses may be required to make these architectural changes. 2 Surface Area Reduction SQL Server offers various configuration options, some of them can be controlled by the sp_configure stored procedures. This section contains the listing of the corresponding recommendations.",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "It is difficult to see any reasonably adverse impact to making this architectural change, once the costs of making the change have been paid.  Custom applications may need to be modified to accommodate database connections over the wire rather than on the host (i.e. using TCP/IP instead of Named Pipes).  Additional hardware and operating system licenses may be required to make these architectural changes. 2 Surface Area Reduction SQL Server offers various configuration options, some of them can be controlled by the sp_configure stored procedures. This section contains the listing of the corresponding recommendations.",
+    "function_names": [
+      "compute_server_dedicated_single_function",
+      "compute_server_specialized_role",
+      "compute_server_restricted_access",
+      "compute_server_subnet_isolation",
+      "compute_server_protocol_restriction",
+      "compute_server_high_availability_configured",
+      "compute_server_failover_enabled",
+      "compute_server_load_balancing_enabled"
+    ]
+  },
+  {
+    "id": "2.1",
+    "title": "Set the 'Ad Hoc Distributed Queries' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "Ad Hoc Distributed Queries Allow users to query data and execute statements on external data sources. This functionality should be disabled.",
+    "rationale": "This feature can be used to remotely access and exploit vulnerabilities on remote SQL Server instances and to run unsafe Visual Basic for Application functions.",
+    "audit": "Run the following T-SQL command: SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'ad hoc distributed queries'; Both value columns must show 0.",
+    "remediation": "Run the following T-SQL command: 10 | P a g e EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE; EXECUTE sp_configure 'Ad Hoc Distributed Queries', 0; RECONFIGURE; GO EXECUTE sp_configure 'show advanced options', 0; RECONFIGURE;  Default Value: 0 (disabled) References: 1. http://msdn.microsoft.com/en-us/library/ms187569(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms187569(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms187569(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms187569(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_ad_hoc_queries_disabled",
+      "sql_server_distributed_queries_blocked",
+      "sql_server_ad_hoc_queries_set_to_zero",
+      "sql_server_external_queries_disabled",
+      "sql_server_ad_hoc_queries_restricted"
+    ]
+  },
+  {
+    "id": "2.2",
+    "title": "Set the 'CLR Enabled' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "The CLR enabled option specifies whether user assemblies can be run by SQL Server.",
+    "rationale": "Enabling use of CLR assemblies widens the attack surface of SQL Server and puts it at risk from both inadvertent and malicious assemblies.",
+    "audit": "Run the following T-SQL command: SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'clr enabled'; Both value columns must show 0.",
+    "remediation": "Run the following T-SQL command: 11 | P a g e EXECUTE sp_configure 'clr enabled', 0; RECONFIGURE;  Default Value: By default, this option is disabled.",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "function_names": [
+      "sql_server_clr_enabled_disabled",
+      "sql_server_clr_enabled_set_to_0",
+      "sql_server_clr_enabled_secure_config",
+      "sql_server_clr_enabled_compliance_check",
+      "sql_server_clr_enabled_disabled_for_security"
+    ]
+  },
+  {
+    "id": "2.3",
+    "title": "Set the 'Cross DB Ownership Chaining' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "This option allows controlling cross-database ownership chaining across all databases at the instance (or server) level.",
+    "rationale": "When enabled, this option allows a member of the db_owner role in a database to gain access to objects owned by a login in any other database, causing an unnecessary information disclosure. When required, cross-database ownership chaining should only be enabled for the specific databases requiring it instead of at the instance level for all databases by using the ALTER DATABASE <dbname> SET DB_CHAINING ON command.  This database option may not be changed on the master, model, or tempdb system databases.",
+    "audit": "Run the following T-SQL command: SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'Cross db ownership chaining'; Both value columns must show 0.",
+    "remediation": "Run the following T-SQL command: 12 | P a g e EXECUTE sp_configure 'Cross db ownership chaining', 0; RECONFIGURE; GO Default Value: 0 (disabled) References: 1. http://msdn.microsoft.com/en-us/library/ms188694(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms188694(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms188694(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms188694(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_cross_db_ownership_chaining_disabled",
+      "sql_server_instance_ownership_chaining_disabled",
+      "sql_database_cross_ownership_chaining_disabled",
+      "sql_server_cross_db_chaining_disabled",
+      "sql_instance_cross_db_ownership_disabled"
+    ]
+  },
+  {
+    "id": "2.4",
+    "title": "Set the 'Database Mail XPs' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "This option controls the generation and transmission of email messages from SQL Server.",
+    "rationale": "Disabling Database Mail reduces the SQL Server surface, eliminates a DOS attack vector and channel to exfiltrate data from the database server to a remote host.",
+    "audit": "Run the following T-SQL command: SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'Database Mail XPs'; Both value columns must show 0.",
+    "remediation": "Run the following T-SQL command: EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE; EXECUTE sp_configure 'Database Mail XPs', 0; RECONFIGURE; GO 13 | P a g e EXECUTE sp_configure 'show advanced options', 0; RECONFIGURE; Default Value: By default, this option is disabled.",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "function_names": [
+      "sql_server_database_mail_xps_disabled",
+      "sql_server_database_mail_xps_set_to_zero",
+      "sql_server_configuration_mail_xps_disabled",
+      "sql_server_mail_xps_feature_disabled",
+      "sql_server_mail_xps_setting_disabled"
+    ]
+  },
+  {
+    "id": "2.5",
+    "title": "Set the 'Ole Automation Procedures' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "Extended stored procedures that allow SQL Server users to execute functions external to SQL Server.",
+    "rationale": "Enabling this option will increase the attack surface of SQL Server and allow users to execute functions in the security context of SQL Server.",
+    "audit": "SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'Ole Automation Procedures';",
+    "remediation": "Run the following T-SQL command: EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE; EXECUTE sp_configure 'Ole Automation Procedures', 0; RECONFIGURE; GO EXECUTE sp_configure 'show advanced options', 0; RECONFIGURE;  Default Value: 0 (disabled) 14 | P a g e References: 1. http://msdn.microsoft.com/en-us/library/ms191188(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms191188(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms191188(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms191188(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_ole_automation_procedures_disabled",
+      "sql_server_configuration_ole_automation_disabled",
+      "sql_server_external_procedures_disabled",
+      "sql_server_ole_automation_setting_zero",
+      "sql_server_stored_procedures_restricted"
+    ]
+  },
+  {
+    "id": "2.6",
+    "title": "Set the 'Remote Access' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "Enables the execution of local stored procedures on remote servers or remote stored procedures on local server.",
+    "rationale": "Functionality can be abused to launch a Denial-of-Service (DoS) attack on remote servers by off-loading query processing to a target.",
+    "audit": "Run the following T-SQL command: SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'Remote access'; Both value columns must show 0.",
+    "remediation": "Run the following T-SQL command: EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE; EXECUTE sp_configure 'Remote access', 0; RECONFIGURE; GO EXECUTE sp_configure 'show advanced options', 0; RECONFIGURE; Default Value: 1 (enabled) References: 15 | P a g e 1. http://msdn.microsoft.com/en-us/library/ms187660(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms187660(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "15 | P a g e 1. http://msdn.microsoft.com/en-us/library/ms187660(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms187660(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_remote_access_disabled",
+      "sql_server_remote_access_zero",
+      "sql_server_remote_access_secure",
+      "sql_server_remote_access_restricted",
+      "sql_server_remote_access_compliant"
+    ]
+  },
+  {
+    "id": "2.7",
+    "title": "Set the 'Remote Admin Connections' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "This setting controls whether a client application on a remote computer can use the Dedicated Administrator Connection (DAC).",
+    "rationale": "The Dedicated Administrator Connection (DAC) lets an administrator access a running server to execute diagnostic functions or Transact-SQL statements, or to troubleshoot problems on the server, even when the server is locked or running in an abnormal state and not responding to a SQL Server Database Engine connection. In a cluster scenario the administrator may not actually be logged on to the same node that is currently hosting the SQL Server instance and thus is considered \"remote\". Therefore this setting should usually be enabled (1) for SQL Server failover clusters; otherwise it should be disabled (0) which is the default.",
+    "audit": "Run the following T-SQL command: USE master; GO SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'Remote admin connections' AND SERVERPROPERTY('IsClustered') = 0; If no data is returned, the instance is a cluster and this recommendation is not applicable.  If data is returned, then both the value columns must show 0.",
+    "remediation": "Run the following T-SQL command on non-clustered installations: 16 | P a g e EXECUTE sp_configure 'Remote admin connections', 0; RECONFIGURE; GO Default Value: 0 (disabled) References: 1. http://msdn.microsoft.com/en-us/library/ms190468(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms190468(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms190468(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms190468(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_remote_admin_connections_disabled",
+      "sql_server_dac_remote_access_disabled",
+      "sql_server_admin_connections_local_only",
+      "sql_server_remote_admin_connections_zero",
+      "sql_server_dac_connections_restricted"
+    ]
+  },
+  {
+    "id": "2.8",
+    "title": "Set the 'Scan For Startup Procs' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "This option causes SQL Server to scan for and automatically run all stored procedures that are set to execute upon service startup.",
+    "rationale": "Enforcing this control reduces the threat of an entity leveraging these facilities for malicious purposes.",
+    "audit": "Run the following T-SQL command: SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'Scan for startup procs'; Both value columns must show 0.",
+    "remediation": "Run the following T-SQL command: EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE; EXECUTE sp_configure 'Scan for startup procs', 0; 17 | P a g e RECONFIGURE; GO EXECUTE sp_configure 'show advanced options', 0; RECONFIGURE;  Impact: Setting Scan for Startup Procedures to 0 will prevent certain audit traces and other commonly used monitoring SPs from re-starting on start up. Additionally, replication requires this setting to be enabled (1) and will automatically change this setting if needed. Default Value: 0 (disabled) References: 1. http://msdn.microsoft.com/en-us/library/ms179460(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms179460(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "Setting Scan for Startup Procedures to 0 will prevent certain audit traces and other commonly used monitoring SPs from re-starting on start up. Additionally, replication requires this setting to be enabled (1) and will automatically change this setting if needed. Default Value: 0 (disabled)",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms179460(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms179460(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_config_scan_startup_procs_disabled",
+      "sql_server_startup_procs_scan_disabled",
+      "sql_server_config_auto_start_procs_disabled",
+      "sql_server_auto_start_procs_scan_disabled"
+    ]
+  },
+  {
+    "id": "2.9",
+    "title": "Set the 'Trustworthy' Database Property to Off",
+    "assessment": "Scored",
+    "description": "The TRUSTWORTHY option allows database objects to access objects in other database under certain circumstances.",
+    "rationale": "Provides protection from malicious CLR assemblies or extended procedures.",
+    "audit": "Run the following T-SQL query to list the database with a Trustworthy database property value of ON: SELECT name FROM sys.databases WHERE is_trustworthy_on = 1 AND name != 'msdb' AND state = 0;  18 | P a g e",
+    "remediation": "Execute the following statement against the database: ALTER DATABASE <dbname> SET TRUSTWORTHY OFF; Default Value: OFF References: 1. http://msdn.microsoft.com/en-us/library/ms187861(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms187861(v=sql.105).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms187861(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms187861(v=sql.105).aspx",
+    "function_names": [
+      "sql_database_trustworthy_disabled",
+      "sql_database_trustworthy_property_off",
+      "sql_database_trustworthy_setting_disabled",
+      "sql_database_trustworthy_access_restricted",
+      "sql_database_trustworthy_feature_off"
+    ]
+  },
+  {
+    "id": "2.10",
+    "title": "Disable Unnecessary SQL Server Protocols",
+    "assessment": "Not Scored",
+    "description": "SQL Server supports Shared Memory, Named Pipes, TCP/IP and VIA protocols. However, SQL Server should be configured to use the bare minimum required based on the organization's needs.",
+    "rationale": "Using fewer protocols minimizes the attack surface of SQL Server and in some cases can protect it from remote attacks.",
+    "audit": "Open SQL Server Configuration Manager; go to the SQL Server Network Configuration.  Ensure that only required protocols are enabled.",
+    "remediation": "Open SQL Server Configuration Manager; go to the SQL Server Network Configuration.  Ensure that only required protocols are enabled. Disable protocols not necessary. Impact: 19 | P a g e The Database Engine must be stopped and restarted for the change to take effect. Default Value: By default, TCP/IP and Shared Memory protocols are enabled on all commerical SQL Server 2008 instances. References: 1. http://msdn.microsoft.com/en-us/library/ms191294(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms191294(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "19 | P a g e The Database Engine must be stopped and restarted for the change to take effect. Default Value: By default, TCP/IP and Shared Memory protocols are enabled on all commerical SQL Server 2008 instances.",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms191294(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms191294(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_protocol_shared_memory_disabled",
+      "sql_server_protocol_named_pipes_disabled",
+      "sql_server_protocol_tcp_ip_enabled",
+      "sql_server_protocol_via_disabled",
+      "sql_server_protocol_minimal_required_enabled"
+    ]
+  },
+  {
+    "id": "2.11",
+    "title": "Configure SQL Server to use non-standard ports",
+    "assessment": "Not Scored",
+    "description": "If enabled, the default SQL Server instance will be assigned a default port of TCP:1433 for TCP/IP communication.  Administrators can also configure named instances to use TCP:1433 for communication.  TCP:1433 is a widely known SQL Server port and this port assignment should be changed.",
+    "rationale": "Using a non-default port helps protect the database from attacks directed to the default port.",
+    "audit": "Open a powershell window and run the following command: PS C:\\>netstat -ano|select-string 1433.+listening This should return no lines. If any lines returned, check the process id in the last column if it's a SQL Server instance.",
+    "remediation": "1. In SQL Server Configuration Manager, in the console pane, expand SQL Server Network Configuration, expand Protocols for , and then double-click the TCP/IP or VIA protocol 2. In the TCP/IP Properties dialog box, on the IP Addresses tab, several IP addresses appear in the format IP1, IP2, up to IPAll. One of these is for the IP address of the 20 | P a g e loopback adapter, 127.0.0.1. Additional IP addresses appear for each IP Address on the computer 3. Change the TCP Port field from 1433 to another non-standard port or leave the TCP Port field empty and set the TCP Dynamic Ports value to 0 to enable dynamic port assignment and then click OK. 4. In the console pane, click SQL Server Services. 5. In the details pane, right-click SQL Server () and then click Restart, to stop and restart SQL Server. Impact: Changing the default port will force DAC (Default Administrator Connection) to listen on a random port. Also, it might make benign applications, such as application firewalls, require special configuration. Default Value: By default, default SQL Server instances listen on to TCP/IP traffic on TCP port 1433 and named instances use dynamic ports. References: 1. http://support.microsoft.com/kb/308091 2. http://msdn.microsoft.com/en-us/library/ms177440(v=sql.105).aspx 3. http://msdn.microsoft.com/en-us/library/ms177440(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "Changing the default port will force DAC (Default Administrator Connection) to listen on a random port. Also, it might make benign applications, such as application firewalls, require special configuration. Default Value: By default, default SQL Server instances listen on to TCP/IP traffic on TCP port 1433 and named instances use dynamic ports.",
+    "references": "1. http://support.microsoft.com/kb/308091 2. http://msdn.microsoft.com/en-us/library/ms177440(v=sql.105).aspx 3. http://msdn.microsoft.com/en-us/library/ms177440(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_instance_non_standard_port",
+      "sql_server_instance_default_port_disabled",
+      "sql_server_named_instance_non_standard_port",
+      "sql_server_tcp_port_not_1433",
+      "sql_server_communication_port_customized"
+    ]
+  },
+  {
+    "id": "2.12",
+    "title": "Set the 'Hide Instance' option to 'Yes' for Production SQL Server instances",
+    "assessment": "Scored",
+    "description": "Non-clustered SQL Server instances within production environments should be designated as hidden to prevent advertisement by the SQL Server Browser service.",
+    "rationale": "Designating production SQL Server instances as hidden leads to a more secure installation because they cannot be enumerated. However, clustered instances may break if this option is selected. 21 | P a g e",
+    "audit": "1. In SQL Server Configuration Manager, expand SQL Server Network Configuration, right-click Protocols for <server instance>, and then select Properties. 2. On the Flags tab, in the Hide Instance box, select Yes, and then click OK to close the dialog box. The change takes effect immediately for new connections.",
+    "remediation": "1. In SQL Server Configuration Manager, expand SQL Server Network Configuration, right-click Protocols for <server instance>, and then select Properties. 2. On the Flags tab, in the Hide Instance box, select Yes, and then click OK to close the dialog box. The change takes effect immediately for new connections. Default Value: By default, SQL Server instances are not hidden. References: 1. http://msdn.microsoft.com/en-us/library/ms179327(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms179327(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms179327(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms179327(v=sql.100).aspx",
+    "function_names": [
+      "sql_instance_hide_option_enabled",
+      "sql_instance_production_hide_enabled",
+      "sql_instance_browser_service_hidden",
+      "sql_instance_non_clustered_hidden",
+      "sql_instance_production_visibility_disabled"
+    ]
+  },
+  {
+    "id": "2.13",
+    "title": "Disable the 'sa' Login Account",
+    "assessment": "Scored",
+    "description": "The sa account is a widely known and often widely used SQL Server account with sysadmin privileges.",
+    "rationale": "Enforcing this control reduces the probability of an attacker executing brute force attacks against a well-known principal.",
+    "audit": "Use the following syntax to determine if the sa account is disabled. SELECT name, is_disabled FROM sys.server_principals WHERE sid = 0x01; 22 | P a g e An is_disabled value of 1 indicates the account is currently disabled.",
+    "remediation": "Execute the following query: ALTER LOGIN sa DISABLE; Impact: It is not a good security practice to code applications or scripts to use the sa account. However, if this has been done disabling the sa account will prevent scripts and applications for authenticating to the database server and executing required tasks or functions. Default Value: By default the 'sa' login account is enabled. References: 1. http://msdn.microsoft.com/en-us/library/ms188786(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms188786(v=sql.105).aspx 3. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.100).aspx 4. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.105).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "It is not a good security practice to code applications or scripts to use the sa account. However, if this has been done disabling the sa account will prevent scripts and applications for authenticating to the database server and executing required tasks or functions. Default Value: By default the 'sa' login account is enabled.",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms188786(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms188786(v=sql.105).aspx 3. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.100).aspx 4. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.105).aspx",
+    "function_names": [
+      "sql_server_login_sa_disabled",
+      "sql_server_account_admin_privileges_removed",
+      "sql_server_default_account_deactivated",
+      "sql_server_sysadmin_account_restricted",
+      "sql_server_builtin_account_disabled"
+    ]
+  },
+  {
+    "id": "2.14",
+    "title": "Rename the 'sa' Login Account",
+    "assessment": "Scored",
+    "description": "The sa account is a widely known and often widely used SQL Server account with sysadmin privileges.",
+    "rationale": "It is more difficult to launch password-guessing and brute-force attacks against the sa account if the username is not known.",
+    "audit": "23 | P a g e Use the following syntax to determine if the sa account is renamed. SELECT name FROM sys.server_principals WHERE sid = 0x01; A name of sa indicates the account has not been renamed.",
+    "remediation": "Replace the different_user value within the below syntax and execute rename the sa login. ALTER LOGIN sa WITH NAME = different_user;  Impact: It is not a good security practice to code applications or scripts to use the sa account. However, if this has been done renaming the sa account will prevent scripts and applications for authenticating to the database server and executing required tasks or functions. Default Value: By default the 'sa'account name is 'sa' References: 1. http://msdn.microsoft.com/en-us/library/ms144284.aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "It is not a good security practice to code applications or scripts to use the sa account. However, if this has been done renaming the sa account will prevent scripts and applications for authenticating to the database server and executing required tasks or functions. Default Value: By default the 'sa'account name is 'sa'",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms144284.aspx",
+    "function_names": [
+      "sql_server_login_sa_renamed",
+      "sql_server_login_default_admin_disabled",
+      "sql_server_login_sysadmin_privileges_restricted",
+      "sql_server_login_privileged_account_renamed",
+      "sql_server_login_default_credentials_modified"
+    ]
+  },
+  {
+    "id": "2.15",
+    "title": "Set the 'xp_cmdshell' Server Configuration Option to 0",
+    "assessment": "Scored",
+    "description": "The xp_cmdshell procedure allows an authenticated SQL Server user to execute operating- system command shell commands and return results as rows within the SQL client.",
+    "rationale": "xp_cmdshell is commonly used by attackers to read or write data to/from the underlying Operating System of a database server. 24 | P a g e",
+    "audit": "Run the following code snippet to determine if the xp_cmdshell system stored procedure is enabled: EXECUTE sp_configure 'show advanced options',1; RECONFIGURE WITH OVERRIDE; EXECUTE sp_configure 'xp_cmdshell'; A run value of 0 indicates that the xp_cmdshell option is disabled. If the option is enabled, run the following code snippet to disable this option: EXECUTE sp_configure 'show advanced options',1; RECONFIGURE WITH OVERRIDE; EXECUTE sp_configure 'xp_cmdshell',0; RECONFIGURE WITH OVERRIDE;",
+    "remediation": "Run the following T-SQL command: EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE; EXECUTE sp_configure 'Xp_cmdshell', 0; RECONFIGURE; GO EXECUTE sp_configure 'show advanced options', 0; RECONFIGURE; Default Value: 0 (disabled) References: 1. http://msdn.microsoft.com/en-us/library/ms175046(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms175046(v=sql.100).aspx 3. http://msdn.microsoft.com/en-us/library/ms190693(v=sql.105).aspx 4. http://msdn.microsoft.com/en-us/library/ms190693(v=sql.100).aspx  25 | P a g e 3 Authentication and Authorization",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms175046(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms175046(v=sql.100).aspx 3. http://msdn.microsoft.com/en-us/library/ms190693(v=sql.105).aspx 4. http://msdn.microsoft.com/en-us/library/ms190693(v=sql.100).aspx  25 | P a g e 3 Authentication and Authorization",
+    "function_names": [
+      "sql_server_xp_cmdshell_disabled",
+      "sql_server_xp_cmdshell_config_zero",
+      "sql_server_xp_cmdshell_option_disabled",
+      "sql_server_xp_cmdshell_setting_zero",
+      "sql_server_xp_cmdshell_procedure_disabled"
+    ]
+  },
+  {
+    "id": "3.1",
+    "title": "Set The 'Server Authentication' Property To Windows Authentication mode",
+    "assessment": "Scored",
+    "description": "Uses Windows Authentication to validate attempted connections.",
+    "rationale": "Windows provides a more robust authentication mechanism than SQL Server authentication.",
+    "audit": "Execute the following syntax: xp_loginconfig 'login mode'; A config_value of Windows NT Authentication indicates the Server Authentication property is set to Windows Authentication mode",
+    "remediation": "Perform the following steps: 1. Open SQL Server Management Studio. 2. Open the Object Explorer tab and connect to the target database instance. 3. Right click the instance name and select Properties. 4. Select the Security page from the left menu. 5. Set the Server authentication setting to Windows Authentication mode. Default Value: Windows Authentication Mode References: 1. http://msdn.microsoft.com/en-us/library/ms188470(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms188470(v=sql.105).aspx 26 | P a g e",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms188470(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms188470(v=sql.105).aspx 26 | P a g e",
+    "function_names": [
+      "sql_server_authentication_windows_mode",
+      "sql_server_connection_windows_auth",
+      "sql_server_auth_windows_enabled",
+      "sql_server_auth_mode_windows_only",
+      "sql_server_security_windows_auth_required"
+    ]
+  },
+  {
+    "id": "3.2",
+    "title": "Revoke CONNECT permissions on the 'guest user' within all SQL Server databases excluding the master, msdb and tempdb",
+    "assessment": "Scored",
+    "description": "Removes the right of guest users to connect to SQL Server user databases.",
+    "rationale": "A login assumes the identity of the guest user when a login has access to SQL Server but does not have access to a database through its own account and the database has a guest user account. Revoking the connect permission for the guest user will ensure that a login is not able to access database information without explicit access to do so.",
+    "audit": "Run the following code snippet in each database in the instance to determine if the guest user has CONNECT permission. USE [ database_name ]; GO SELECT DB_NAME() AS DBName, dpr.name, dpe.permission_name FROM sys.database_permissions dpe JOIN sys.database_principals dpr ON dpe.grantee_principal_id=dpr.principal_id WHERE dpr.name='guest' AND dpe.permission_name='CONNECT';",
+    "remediation": "The following code snippet revokes CONNECT permissions from the guest user in a database: USE [ database_name ]; GO REVOKE CONNECT FROM guest; Impact: When CONNECT permission to the guest user is revoked, a SQL Server instance login must be mapped to a database user explicitly in order to have access to the database. Default Value: 27 | P a g e The guest user account is added to each new database but without CONNECT permission by default. References: 1. http://msdn.microsoft.com/en-us/library/bb402861(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/bb402861(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "When CONNECT permission to the guest user is revoked, a SQL Server instance login must be mapped to a database user explicitly in order to have access to the database. Default Value: 27 | P a g e The guest user account is added to each new database but without CONNECT permission by default.",
+    "references": "1. http://msdn.microsoft.com/en-us/library/bb402861(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/bb402861(v=sql.100).aspx",
+    "function_names": [
+      "sqlserver_database_guest_connect_revoked",
+      "sqlserver_database_guest_connect_disabled",
+      "sqlserver_database_guest_permission_restricted",
+      "sqlserver_database_guest_access_denied",
+      "sqlserver_database_guest_connect_removed"
+    ]
+  },
+  {
+    "id": "3.3",
+    "title": "Drop Orphaned Users From SQL Server Databases",
+    "assessment": "Scored",
+    "description": "A database user for which the corresponding SQL Server login is undefined or is incorrectly defined on a server instance cannot log in to the instance and is referred to as orphaned and should be removed.",
+    "rationale": "Orphan users should be removed to avoid potential misuse of those broken users in any way.",
+    "audit": "Run the following T-SQL query to identify orphan users: EXEC sp_change_users_login @Action='Report';",
+    "remediation": "Run the following T-SQL query to remove an orphan user: DROP USER <username>; References: 1. http://msdn.microsoft.com/en-us/library/ms175475(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms175475(v=sql.105).aspx  28 | P a g e 4 Password Policies",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms175475(v=sql.100).aspx 2. http://msdn.microsoft.com/en-us/library/ms175475(v=sql.105).aspx  28 | P a g e 4 Password Policies",
+    "function_names": [
+      "sqlserver_database_orphaned_users_removed",
+      "sqlserver_database_user_login_valid",
+      "sqlserver_database_user_orphaned_cleanup",
+      "sqlserver_database_login_mapping_valid",
+      "sqlserver_database_user_orphaned_dropped"
+    ]
+  },
+  {
+    "id": "4.1",
+    "title": "Set the 'MUST_CHANGE' Option to ON for All SQL Authenticated Logins",
+    "assessment": "Not Scored",
+    "description": "SQL Server will prompt for an updated password the first time the altered login is used.",
+    "rationale": "Enforcing password change will prevent the account administrators or anyone accessing the initial password to misuse the SQL login created without being noticed.",
+    "audit": "1. Open SQL Server Management Studio. 2. Open Object Explorer and connect to the target instance. 3. Navigate to the Logins tab in Object Explorer and expand. Right click on the desired login and select Properties. 4. Verify the User must change password at next login checkbox is checked",
+    "remediation": "Set the MUST_CHANGE option for SQL Authenticated logins ALTER LOGIN login_name WITH PASSWORD = password_value MUST_CHANGE; Impact: CHECK_EXPIRATION and CHECK_POLICY options must both be ON Default Value: ON References: 1. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.100).aspx 29 | P a g e",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "CHECK_EXPIRATION and CHECK_POLICY options must both be ON Default Value: ON",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms189828(v=sql.100).aspx 29 | P a g e",
+    "function_names": [
+      "sql_server_login_must_change_enabled",
+      "sql_server_auth_password_reset_required",
+      "sql_server_login_password_expiry_enabled",
+      "sql_server_auth_credential_rotation_required",
+      "sql_server_login_initial_password_change_enabled"
+    ]
+  },
+  {
+    "id": "4.2",
+    "title": "Set the 'CHECK_EXPIRATION' Option to ON for All SQL Authenticated Logins Within the Sysadmin Role",
+    "assessment": "Scored",
+    "description": "Applies the same password expiration policy used in Windows to passwords used inside SQL Server.",
+    "rationale": "Ensuring SQL logins comply with the secure password policy applied by the Windows Server Benchmark will ensure the passwords for SQL logins with Sysadmin privileges are changed on a frequent basis to help prevent compromise via a brute force attack.",
+    "audit": "SELECT SQLLoginName = sp.name FROM sys.server_principals sp JOIN sys.sql_logins AS sl ON sl.principal_id = sp.principal_id WHERE sp.type_desc = 'SQL_LOGIN' AND sp.name in (SELECT name AS IsSysAdmin FROM sys.server_principals p WHERE IS_SRVROLEMEMBER('sysadmin',name) = 1) AND sl.is_expiration_checked <> 1;",
+    "remediation": "ALTER LOGIN [login_name] WITH CHECK_EXPIRATION = ON; Default Value: 'CHECK_EXPIRATION' is ON References: 1. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_login_password_expiration_enabled",
+      "sql_server_sysadmin_login_check_expiration_enabled",
+      "sql_server_auth_login_password_policy_enabled",
+      "sql_server_sysadmin_password_expiration_required",
+      "sql_server_login_password_expiration_enforced"
+    ]
+  },
+  {
+    "id": "4.3",
+    "title": "Set the 'CHECK_POLICY' Option to ON for All SQL Authenticated Logins",
+    "assessment": "Scored",
+    "description": "Applies the same password complexity policy used in Windows to passwords used inside SQL Server.",
+    "rationale": "Ensuring SQL logins comply with the secure password policy applied by the Windows Server Benchmark will ensure SQL  logins are not blank and cannot be easily compromised via brute force attack.",
+    "audit": "Use the following code snippet to determine the SQL Logins and if their password complexity is enforced. SELECT SQLLoginName = sp.name, PasswordPolicyEnforced = CAST(sl.is_policy_checked AS BIT) FROM sys.server_principals sp JOIN sys.sql_logins AS sl ON sl.principal_id = sp.principal_id WHERE sp.type_desc = 'SQL_LOGIN'; A PasswordPolicyEnforced value of 0 indicates that the 'Check_Policy' option is OFF",
+    "remediation": "ALTER LOGIN [login_name] WITH CHECK_POLICY = ON; Default Value: 'CHECK_POLICY'  is ON References: 1. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.100).aspx  31 | P a g e 5 Auditing and Logging SQL Server audit and logging configuration settings.",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms161959(v=sql.100).aspx  31 | P a g e 5 Auditing and Logging SQL Server audit and logging configuration settings.",
+    "function_names": [
+      "sql_server_login_password_policy_enabled",
+      "sql_server_auth_login_check_policy_enabled",
+      "sql_auth_login_password_complexity_enabled",
+      "sql_server_login_windows_policy_enabled",
+      "sql_auth_login_policy_compliance_enabled"
+    ]
+  },
+  {
+    "id": "5.1",
+    "title": "Set the 'Maximum number of error log files' setting to greater than or equal to 12",
+    "assessment": "Not Scored",
+    "description": "SQL Server errorlog files must be protected from loss. The log files must be backed up before they are overwritten.",
+    "rationale": "The SQL Server errorlog contains important information about major server events and login attempt information as well.",
+    "audit": "1. Open SQL Server Management Studio. 2. Open Object Explorer and connect to the target instance. 3. Navigate to the Management tab in Object Explorer and expand. Right click on the SQL Server Logs file and select Configure. 4. Verify the Limit the number of error log files before they are recycled checkbox is checked 5. Verify the Maximum number of error log files is greater than or equal to 12",
+    "remediation": "Adjust the number of logs to prevent data loss. The default value of 6 may be insufficient for a production environment. 1. Open SQL Server Management Studio. 2. Open Object Explorer and connect to the target instance. 3. Navigate to the Management tab in Object Explorer and expand. Right click on the SQL Server Logs file and select Configure 4. Check the Limit the number of error log files before they are recycled 5. Set the Maximum number of error log files to greater than or equal to 12  32 | P a g e Default Value: 6 SQL Server error logs are retained by default. References: 1. http://msdn.microsoft.com/en-us/library/ms177285(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms177285(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms177285(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms177285(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_error_log_max_files_ge_12",
+      "sql_server_error_log_retention_configured",
+      "sql_server_error_log_backup_enabled",
+      "sql_server_error_log_protected_from_loss"
+    ]
+  },
+  {
+    "id": "5.2",
+    "title": "Set the 'Default Trace Enabled' Server Configuration Option to 1",
+    "assessment": "Scored",
+    "description": "The default trace provides audit logging of database activity including account creations, privilege elevation and execution of DBCC commands.",
+    "rationale": "Default trace provides valuable audit information regarding security-related activities on the server.",
+    "audit": "Run the following T-SQL command: SELECT name, CAST(value as int) as value_configured, CAST(value_in_use as int) as value_in_use FROM sys.configurations WHERE name = 'Default trace enabled'; Both value columns must show 1.",
+    "remediation": "Run the following T-SQL command: EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE; EXECUTE sp_configure 'Default trace enabled', 1; RECONFIGURE; GO 33 | P a g e EXECUTE sp_configure 'show advanced options', 0; RECONFIGURE; Default Value: 1 (on) References: 1. http://msdn.microsoft.com/en-us/library/ms175513(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms175513(v=sql.100).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms175513(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms175513(v=sql.100).aspx",
+    "function_names": [
+      "sql_server_default_trace_enabled",
+      "sql_server_audit_logging_enabled",
+      "sql_server_dbcc_command_logging_enabled",
+      "sql_server_privilege_elevation_logging_enabled",
+      "sql_server_account_creation_logging_enabled"
+    ]
+  },
+  {
+    "id": "5.3",
+    "title": "Set 'Login Auditing' to Both failed and successful logins",
+    "assessment": "Not Scored",
+    "description": "Setting logs both successful and failed login SQL Server authentication attempts.",
+    "rationale": "Logging successful and failed logins provides key information that can be used to detect\\confirm password guessing attacks.  Further, logging successful login attempts can be used to confirm server access during forensic investigations.",
+    "audit": "XP_loginconfig 'audit level'; A config_value of 'all'  indicates a server login auditing setting of 'Both failed and successful logins'.",
+    "remediation": "Perform the following steps to set the level of auditing: 1. Open SQL Server Management Studio. 2. Right click the target instance and select Properties and navigate to the Security tab. 3. Select the option Both failed and successful logins under the \"Login Auditing\" section and click OK. 4. Restart the SQL Server instance. Default Value: 34 | P a g e By default, only failed login attempted are captured. References: 1. http://technet.microsoft.com/en-us/library/ms188470(v=sql.105).aspx 2. http://technet.microsoft.com/en-us/library/ms188470(v=sql.100).aspx 6 Application Development",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "references": "1. http://technet.microsoft.com/en-us/library/ms188470(v=sql.105).aspx 2. http://technet.microsoft.com/en-us/library/ms188470(v=sql.100).aspx 6 Application Development",
+    "function_names": [
+      "sql_server_audit_login_both_attempts",
+      "sql_server_audit_failed_and_successful_logins",
+      "sql_server_authentication_audit_enabled",
+      "sql_server_login_audit_both_events",
+      "sql_server_audit_logins_all_attempts"
+    ]
+  },
+  {
+    "id": "6.1",
+    "title": "Sanitize Database and Application User Input",
+    "assessment": "Not Scored",
+    "description": "Always validate user input received from a database client or application by testing type, length, format, and range prior to transmitting it to the database server.",
+    "rationale": "Sanitizing user input drastically minimizes risk of SQL injection.",
+    "audit": "Check with the application teams to ensure any database interaction is through the use of stored procedures and not dynamic SQL. Revoke any INSERT, UPDATE, or DELETE privileges to users so that modifications to data must be done through stored procedures. Verify that there's no SQL query in the application code produced by string concatenation.",
+    "remediation": "The following steps can be taken to remediate SQL injection vulnerabilities:  Review TSQL and application code for SQL Injection  Only permit minimally privileged accounts to send user input to the server  Minimize the risk of SQL injection attack by using parameterized commands and stored procedures  Reject user input containing binary data, escape sequences, and comment characters  Always validate user input and do not use it directly to build SQL statements Impact: 35 | P a g e Sanitize user input may require changes to application code or database object syntax. These changes can require applications or databases to be taken temporarily off-line. Any change to TSQL or application code should be thoroughly tested in testing environment before production implementation. References: 1. https://www.owasp.org/index.php/SQL_Injection 2. http://msdn.microsoft.com/en-us/library/ms161953(v=sql.100).aspx 3. http://msdn.microsoft.com/en-us/library/ms161953(v=sql.105).aspx",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "35 | P a g e Sanitize user input may require changes to application code or database object syntax. These changes can require applications or databases to be taken temporarily off-line. Any change to TSQL or application code should be thoroughly tested in testing environment before production implementation.",
+    "references": "1. https://www.owasp.org/index.php/SQL_Injection 2. http://msdn.microsoft.com/en-us/library/ms161953(v=sql.100).aspx 3. http://msdn.microsoft.com/en-us/library/ms161953(v=sql.105).aspx",
+    "function_names": [
+      "database_client_input_sanitized",
+      "database_client_input_type_validated",
+      "database_client_input_length_validated",
+      "database_client_input_format_validated",
+      "database_client_input_range_validated",
+      "application_user_input_sanitized",
+      "application_user_input_type_validated",
+      "application_user_input_length_validated",
+      "application_user_input_format_validated",
+      "application_user_input_range_validated"
+    ]
+  },
+  {
+    "id": "6.2",
+    "title": "Set the 'CLR Assembly Permission Set' to SAFE_ACCESS for All CLR Assemblies",
+    "assessment": "Scored",
+    "description": "Setting CLR Assembly Permission Sets to SAFE_ACCESS will prevent assemblies from accessing external system resources such as files, the network, environment variables, or the registry.",
+    "rationale": "Assemblies with EXTERNAL_ACCESS or UNSAFE permission sets can be used to access sensitive areas of the operating system, steal and/or transmit data and alter the state and other protection measures of the underlying Windows Operating System.",
+    "audit": "Execute the following SQL statement: SELECT name, permission_set_desc FROM sys.assemblies where is_user_defined = 1; All the returned assemblies should show SAFE_ACCESS in the permission_set_desc column.",
+    "remediation": "ALTER ASSEMBLY assembly_name WITH PERMISSION_SET = SAFE; 36 | P a g e Impact: The remediation measure should first be tested within a test environment prior to production to ensure the assembly still functions as designed with SAFE permission setting. Default Value: SAFE permission set References: 1. http://msdn.microsoft.com/en-us/library/ms345101(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms189790(v=sql.100).aspx 3. http://msdn.microsoft.com/en-us/library/ms189790(v=sql.105).aspx 4. http://msdn.microsoft.com/en-us/library/ms345101(v=sql.100).aspx 5. http://msdn.microsoft.com/en-us/library/ms186711(v=sql.100).aspx 6. http://msdn.microsoft.com/en-us/library/ms186711(v=sql.105).aspx   37 | P a g e  Appendix: Change History Date Version Changes for this version 09-07-2014 1.1.0 Updated 2.7 Set the 'Remote Admin Connections' Server Configuration Option per Ticket #100 09-07-2014 1.1.0 Updated 4.2 and 4.3 per Ticket #111 09-07-2014 1.1.0 Updated 2.7 per Ticket #112 09-07-2014 1.1.0 Updated 2.12 Hide SQL Server Instance per Ticket #114 09-07-2014 1.1.0 Updated 2.8 \"Scan for Startup Procs\" Server Configuration Setting per Ticket #102 09-07-2014 1.1.0 Updated 2.3 per Ticket #98 09-07-2014 1.1.0 Moved recommendation to disable xp_cmdshell to Section 2 per Ticket #117 09-07-2014 1.1.0 Removed Section 3 per Ticket #106",
+    "profile_applicability": "  Level 1 - Database Engine",
+    "impact": "The remediation measure should first be tested within a test environment prior to production to ensure the assembly still functions as designed with SAFE permission setting. Default Value: SAFE permission set",
+    "references": "1. http://msdn.microsoft.com/en-us/library/ms345101(v=sql.105).aspx 2. http://msdn.microsoft.com/en-us/library/ms189790(v=sql.100).aspx 3. http://msdn.microsoft.com/en-us/library/ms189790(v=sql.105).aspx 4. http://msdn.microsoft.com/en-us/library/ms345101(v=sql.100).aspx 5. http://msdn.microsoft.com/en-us/library/ms186711(v=sql.100).aspx 6. http://msdn.microsoft.com/en-us/library/ms186711(v=sql.105).aspx   37 | P a g e  Appendix: Change History Date Version Changes for this version 09-07-2014 1.1.0 Updated 2.7 Set the 'Remote Admin Connections' Server Configuration Option per Ticket #100 09-07-2014 1.1.0 Updated 4.2 and 4.3 per Ticket #111 09-07-2014 1.1.0 Updated 2.7 per Ticket #112 09-07-2014 1.1.0 Updated 2.12 Hide SQL Server Instance per Ticket #114 09-07-2014 1.1.0 Updated 2.8 \"Scan for Startup Procs\" Server Configuration Setting per Ticket #102 09-07-2014 1.1.0 Updated 2.3 per Ticket #98 09-07-2014 1.1.0 Moved recommendation to disable xp_cmdshell to Section 2 per Ticket #117 09-07-2014 1.1.0 Removed Section 3 per Ticket #106",
+    "function_names": [
+      "sql_server_clr_assembly_safe_access_permission_set",
+      "sql_server_clr_assembly_no_external_access",
+      "sql_server_clr_assembly_restricted_permissions",
+      "sql_server_clr_assembly_safe_access_only",
+      "sql_server_clr_assembly_no_system_resource_access"
+    ]
+  }
+]

@@ -1,0 +1,603 @@
+[
+  {
+    "id": "4.1.1",
+    "title": "Ensure that the cluster-admin role is only used where required",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "kubernetes_role_cluster_admin_restricted",
+      "kubernetes_role_cluster_admin_minimal_usage",
+      "kubernetes_role_cluster_admin_least_privilege",
+      "kubernetes_role_cluster_admin_required_only",
+      "kubernetes_role_cluster_admin_no_unnecessary_assignments"
+    ]
+  },
+  {
+    "id": "4.1.2",
+    "title": "Minimize access to secrets",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "secrets_manager_secret_access_restricted",
+      "secrets_manager_secret_no_public_access",
+      "secrets_manager_secret_rotation_enabled",
+      "secrets_manager_secret_encryption_enabled",
+      "secrets_manager_secret_access_logging_enabled",
+      "secrets_manager_secret_minimum_permissions",
+      "secrets_manager_secret_no_wildcard_permissions",
+      "secrets_manager_secret_access_reviewed_over_90d",
+      "secrets_manager_secret_no_unused_over_180d",
+      "secrets_manager_secret_cross_account_access_restricted"
+    ]
+  },
+  {
+    "id": "4.1.3",
+    "title": "Minimize wildcard use in Roles and ClusterRoles",
+    "assessment": "Automated",
+    "remediation": "Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions. References: 1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "kubernetes_role_wildcard_restricted",
+      "kubernetes_clusterrole_wildcard_restricted",
+      "kubernetes_role_wildcard_minimized",
+      "kubernetes_clusterrole_wildcard_minimized",
+      "kubernetes_role_wildcard_permissions_limited",
+      "kubernetes_clusterrole_wildcard_permissions_limited",
+      "kubernetes_role_wildcard_usage_reduced",
+      "kubernetes_clusterrole_wildcard_usage_reduced"
+    ]
+  },
+  {
+    "id": "4.1.4",
+    "title": "Ensure that default service accounts are not actively used",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 5.3 Disable Dormant Accounts Delete or disable any dormant accounts after a period of 45 days of inactivity, where supported. ● ● ● v7 4.3 Ensure the Use of Dedicated Administrative Accounts Ensure that all users with administrative account access use a dedicated or secondary account for elevated activities. This account should only be used for administrative activities and not internet browsing, email, or similar activities. ● ● ● v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ● v7 16.9 Disable Dormant Accounts Automatically disable dormant accounts after a set period of inactivity. ● ● ●",
+    "function_names": [
+      "iam_service_account_no_active_default",
+      "iam_service_account_default_disabled",
+      "iam_service_account_default_unused",
+      "compute_service_account_default_inactive",
+      "compute_service_account_no_default_usage"
+    ]
+  },
+  {
+    "id": "4.1.5",
+    "title": "Ensure that Service Account Tokens are only mounted where necessary",
+    "assessment": "Automated",
+    "remediation": "Modify the definition of pods and service accounts which do not need to mount service account tokens to disable it. Default Value: By default, all pods get a service account token mounted in them. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "kubernetes_service_account_token_mounted_necessary",
+      "kubernetes_service_account_token_unnecessary_mount_disabled",
+      "kubernetes_service_account_token_mount_restricted",
+      "kubernetes_service_account_token_mount_minimized",
+      "kubernetes_service_account_token_mount_required_only"
+    ]
+  },
+  {
+    "id": "4.1.6",
+    "title": "Avoid use of system:masters group",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/rbac/escalatio n_check.go#L38 CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 5.4 Restrict Administrator Privileges to Dedicated Administrator Accounts Restrict administrator privileges to dedicated administrator accounts on enterprise assets. Conduct general computing activities, such as internet browsing, email, and productivity suite use, from the user’s primary, non-privileged account. ● ● ● v7 4 Controlled Use of Administrative Privileges Controlled Use of Administrative Privileges",
+    "function_names": [
+      "iam_group_system_masters_restricted",
+      "iam_group_system_masters_unused",
+      "iam_group_system_masters_deprecated",
+      "iam_group_system_masters_avoided",
+      "iam_group_system_masters_disabled"
+    ]
+  },
+  {
+    "id": "4.1.7",
+    "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "kubernetes_role_bind_permission_restricted",
+      "kubernetes_role_impersonate_permission_restricted",
+      "kubernetes_role_escalate_permission_restricted",
+      "kubernetes_cluster_bind_permission_restricted",
+      "kubernetes_cluster_impersonate_permission_restricted",
+      "kubernetes_cluster_escalate_permission_restricted",
+      "kubernetes_role_high_risk_permissions_restricted",
+      "kubernetes_cluster_high_risk_permissions_restricted"
+    ]
+  },
+  {
+    "id": "4.1.8",
+    "title": "Avoid bindings to system:anonymous",
+    "assessment": "Automated",
+    "remediation": "Identify all clusterrolebindings and rolebindings to the user system:anonymous. Check if they are used and review the permissions associated with the binding using the commands in the Audit section above or refer to GKE documentation. Strongly consider replacing unsafe bindings with an authenticated, user-defined group. Where possible, bind to non-default, user-defined groups with least-privilege roles. If there are any unsafe bindings to the user system:anonymous, proceed to delete them after consideration for cluster operations with only necessary, safer bindings. kubectl delete clusterrolebinding [CLUSTER_ROLE_BINDING_NAME] kubectl delete rolebinding [ROLE_BINDING_NAME] --namespace [ROLE_BINDING_NAMESPACE] Default Value: No clusterrolebindings nor rolebindings with user system:anonymous. References: 1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/#discovery-roles",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "iam_role_no_anonymous_bindings",
+      "iam_service_account_no_anonymous_bindings",
+      "iam_policy_no_anonymous_bindings",
+      "iam_binding_no_anonymous_principal",
+      "iam_member_no_anonymous_identity",
+      "iam_permission_no_anonymous_access",
+      "iam_principal_no_system_anonymous",
+      "iam_identity_no_anonymous_usage"
+    ]
+  },
+  {
+    "id": "4.1.9",
+    "title": "Avoid non-default bindings to system:unauthenticated",
+    "assessment": "Automated",
+    "remediation": "Identify all non-default clusterrolebindings and rolebindings to the group system:unauthenticated. Check if they are used and review the permissions associated with the binding using the commands in the Audit section above or refer to GKE documentation. Strongly consider replacing non-default, unsafe bindings with an authenticated, user- defined group. Where possible, bind to non-default, user-defined groups with least- privilege roles. If there are any non-default, unsafe bindings to the group system:unauthenticated, proceed to delete them after consideration for cluster operations with only necessary, safer bindings. kubectl delete clusterrolebinding [CLUSTER_ROLE_BINDING_NAME] kubectl delete rolebinding [ROLE_BINDING_NAME] -- namespace [ROLE_BINDING_NAMESPACE] Default Value: ClusterRoleBindings with group system:unauthenticated: • system:public-info-viewer No RoleBindings with the group system:unauthenticated. References: 1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/#discovery-roles",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/#discovery-roles",
+    "function_names": [
+      "iam_role_no_unauthenticated_bindings",
+      "iam_service_account_no_unauthenticated_bindings",
+      "iam_policy_no_unauthenticated_access",
+      "iam_binding_no_unauthenticated_principal",
+      "iam_member_no_unauthenticated_identity",
+      "iam_resource_no_unauthenticated_permissions",
+      "iam_organization_no_unauthenticated_bindings",
+      "iam_project_no_unauthenticated_bindings",
+      "iam_folder_no_unauthenticated_bindings",
+      "iam_workload_identity_no_unauthenticated_bindings"
+    ]
+  },
+  {
+    "id": "4.1.10",
+    "title": "Avoid non-default bindings to system:authenticated",
+    "assessment": "Automated",
+    "remediation": "Identify all non-default clusterrolebindings and rolebindings to the group system:authenticated. Check if they are used and review the permissions associated with the binding using the commands in the Audit section above or refer to GKE documentation. Strongly consider replacing non-default, unsafe bindings with an authenticated, user- defined group. Where possible, bind to non-default, user-defined groups with least- privilege roles. If there are any non-default, unsafe bindings to the group system:authenticated, proceed to delete them after consideration for cluster operations with only necessary, safer bindings. kubectl delete clusterrolebinding [CLUSTER_ROLE_BINDING_NAME] kubectl delete rolebinding [ROLE_BINDING_NAME] --namespace [ROLE_BINDING_NAMESPACE] Default Value: ClusterRoleBindings with group system:authenticated: • system:basic-user • system:discovery No RoleBindings with the group system:authenticated. References: 1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/#discovery-roles 4.2 Pod Security Standards",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "iam_role_no_default_authenticated_bindings",
+      "iam_service_account_no_default_authenticated_bindings",
+      "iam_policy_no_default_authenticated_bindings",
+      "iam_binding_no_default_authenticated_principal",
+      "iam_member_no_default_authenticated_principal",
+      "iam_custom_role_no_default_authenticated_bindings",
+      "iam_organization_policy_no_default_authenticated_bindings",
+      "iam_workload_identity_no_default_authenticated_bindings"
+    ]
+  },
+  {
+    "id": "4.2.1",
+    "title": "Ensure that the cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces.",
+    "assessment": "Manual",
+    "remediation": "Ensure that Pod Security Admission is in place for every namespace which contains user workloads. Run the following command to enforce the Baseline profile in a namespace: kubectl label namespace <namespace-name> pod- security.kubernetes.io/enforce=baseline Default Value: By default, Pod Security Admission is enabled but no policies are in place. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-admission 2. https://kubernetes.io/docs/concepts/security/pod-security-standards 3. https://cloud.google.com/kubernetes-engine/docs/concepts/about-security- posture-dashboard CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "kubernetes_namespace_pod_security_standard_baseline_enabled",
+      "kubernetes_namespace_pod_security_standard_stricter_enabled",
+      "kubernetes_namespace_pod_security_profile_compliance",
+      "kubernetes_pod_security_standard_baseline_enforced",
+      "kubernetes_pod_security_standard_stricter_enforced_all_namespaces"
+    ]
+  },
+  {
+    "id": "4.3.1",
+    "title": "Ensure that all Namespaces have Network Policies defined",
+    "assessment": "Automated",
+    "remediation": "Follow the documentation and create NetworkPolicy objects as needed. See: https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy for more information. Default Value: By default, network policies are not created. References: 1. https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy 2. https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy 2. https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 13.4 Perform Traffic Filtering Between Network Segments Perform traffic filtering between network segments, where appropriate. ● ● v7 14.1 Segment the Network Based on Sensitivity Segment the network based on the label or classification level of the information stored on the servers, locate all sensitive information on separated Virtual Local Area Networks (VLANs). ● ● v7 14.2 Enable Firewall Filtering Between VLANs Enable firewall filtering between VLANs to ensure that only authorized systems are able to communicate with other systems necessary to fulfill their specific responsibilities. ● ●  4.4 Secrets Management",
+    "function_names": [
+      "kubernetes_namespace_network_policy_defined",
+      "kubernetes_namespace_network_policy_required",
+      "kubernetes_namespace_network_policy_enabled",
+      "kubernetes_namespace_network_policy_exists",
+      "kubernetes_namespace_network_policy_enforced"
+    ]
+  },
+  {
+    "id": "4.4.1",
+    "title": "Consider external secret storage",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "secrets_manager_secret_external_storage_enabled",
+      "secrets_manager_secret_rotation_enabled",
+      "secrets_manager_secret_encryption_enabled",
+      "secrets_manager_secret_access_restricted",
+      "secrets_manager_secret_versioning_enabled",
+      "secrets_manager_secret_audit_logging_enabled",
+      "secrets_manager_secret_cross_account_access_restricted",
+      "secrets_manager_secret_minimum_rotation_frequency",
+      "secrets_manager_secret_secure_transport_required",
+      "secrets_manager_secret_immutable_after_creation"
+    ]
+  },
+  {
+    "id": "4.5.1",
+    "title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "kubernetes_image_provenance_required",
+      "kubernetes_admission_controller_image_policy_webhook_enabled",
+      "kubernetes_image_policy_webhook_configured",
+      "kubernetes_image_provenance_validation_enabled",
+      "kubernetes_admission_controller_image_provenance_enforced"
+    ]
+  },
+  {
+    "id": "4.6.1",
+    "title": "Create administrative boundaries between resources using namespaces",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://kubernetes.io/docs/concepts/overview/working-with- objects/namespaces/#viewing-namespaces 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html 3. https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/589- efficient-node-heartbeats CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 13 Network Monitoring and Defense Operate processes and tooling to establish and maintain comprehensive network monitoring and defense against security threats across the enterprise’s network infrastructure and user base.  v7 12 Boundary Defense Boundary Defense",
+    "function_names": [
+      "compute_namespace_boundaries_enabled",
+      "compute_namespace_admin_boundaries_configured",
+      "compute_namespace_isolation_enforced",
+      "compute_namespace_resource_separation_configured",
+      "compute_namespace_administrative_boundaries_defined",
+      "compute_namespace_security_boundaries_configured",
+      "compute_namespace_segmentation_enabled",
+      "compute_namespace_access_control_enforced",
+      "compute_namespace_secure_boundaries_configured",
+      "compute_namespace_resource_isolation_configured"
+    ]
+  },
+  {
+    "id": "4.6.2",
+    "title": "Ensure that the seccomp profile is set to RuntimeDefault in the pod definitions",
+    "assessment": "Automated",
+    "remediation": "Use security context to enable the RuntimeDefault seccomp profile in your pod definitions. An example is as below: { \"namespace\": \"kube-system\", \"name\": \"metrics-server-v0.7.0-dbcc8ddf6-gz7d4\", \"seccompProfile\": \"RuntimeDefault\" } Default Value: By default, seccomp profile is set to unconfined which means that no seccomp profiles are enabled. References: 1. https://kubernetes.io/docs/tutorials/security/seccomp/ 2. https://cloud.google.com/kubernetes-engine/docs/concepts/seccomp-in-gke CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://kubernetes.io/docs/tutorials/security/seccomp/ 2. https://cloud.google.com/kubernetes-engine/docs/concepts/seccomp-in-gke CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16.7 Use Standard Hardening Configuration Templates for Application Infrastructure Use standard, industry-recommended hardening configuration templates for application infrastructure components. This includes underlying servers, databases, and web servers, and applies to cloud containers, Platform as a Service (PaaS) components, and SaaS components. Do not allow in-house developed software to weaken configuration hardening. ● ● v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ●",
+    "function_names": [
+      "kubernetes_pod_seccomp_profile_runtime_default",
+      "pod_security_seccomp_profile_runtime_default",
+      "container_pod_seccomp_profile_runtime_default",
+      "workload_pod_seccomp_profile_runtime_default",
+      "k8s_pod_seccomp_profile_runtime_default"
+    ]
+  },
+  {
+    "id": "4.6.3",
+    "title": "Apply Security Context to Pods and Containers",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "kubernetes_pod_security_context_enabled",
+      "kubernetes_container_security_context_enabled",
+      "kubernetes_pod_read_only_root_filesystem",
+      "kubernetes_container_read_only_root_filesystem",
+      "kubernetes_pod_run_as_non_root",
+      "kubernetes_container_run_as_non_root",
+      "kubernetes_pod_capabilities_dropped",
+      "kubernetes_container_capabilities_dropped",
+      "kubernetes_pod_privilege_escalation_disabled",
+      "kubernetes_container_privilege_escalation_disabled"
+    ]
+  },
+  {
+    "id": "4.6.4",
+    "title": "The default namespace should not be used",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "kubernetes_namespace_default_not_used",
+      "kubernetes_namespace_non_default_required",
+      "kubernetes_namespace_default_denied",
+      "kubernetes_namespace_default_restricted",
+      "kubernetes_namespace_default_prohibited"
+    ]
+  },
+  {
+    "id": "5.1.1",
+    "title": "Ensure Image Vulnerability Scanning is enabled",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_image_vulnerability_scanning_enabled",
+      "container_registry_image_scanning_enabled",
+      "compute_image_scanning_enabled_all_regions",
+      "container_image_scanning_enabled_min_severity_high",
+      "compute_image_scanning_enabled_auto_remediation",
+      "container_registry_image_scanning_enabled_continuous",
+      "compute_image_scanning_enabled_latest_version",
+      "container_image_scanning_enabled_critical_cves",
+      "compute_image_scanning_enabled_active_status",
+      "container_registry_image_scanning_enabled_all_repositories"
+    ]
+  },
+  {
+    "id": "5.1.2",
+    "title": "Minimize user access to Container Image repositories",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://cloud.google.com/container-registry/docs/ 2. https://cloud.google.com/kubernetes-engine/docs/how-to/service-accounts 3. https://cloud.google.com/kubernetes-engine/docs/how-to/iam 4. https://cloud.google.com/artifact-registry/docs/access-control#grant CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.3 Configure Data Access Control Lists Configure data access control lists based on a user’s need to know. Apply data access control lists, also known as access permissions, to local and remote file systems, databases, and applications. ● ● ● v7 14.6 Protect Information through Access Control Lists Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities. ● ● ●",
+    "function_names": [
+      "container_registry_repository_user_access_restricted",
+      "container_registry_repository_minimal_user_access",
+      "container_registry_repository_access_least_privilege",
+      "container_registry_repository_user_permissions_minimized",
+      "container_registry_repository_access_scope_limited"
+    ]
+  },
+  {
+    "id": "5.1.3",
+    "title": "Minimize cluster access to read-only for Container Image repositories",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_registry_repository_read_only_access",
+      "container_registry_repository_minimize_access",
+      "container_registry_repository_restrict_write_access",
+      "container_registry_repository_enforce_read_only",
+      "container_registry_repository_limit_cluster_access"
+    ]
+  },
+  {
+    "id": "5.1.4",
+    "title": "Ensure only trusted container images are used",
+    "assessment": "Automated",
+    "remediation": "Using Google Cloud Console 1. Go to Binary Authorization by visiting: https://console.cloud.google.com/security/binary-authorization. 2. Enable the Binary Authorization API (if disabled). 3. Create an appropriate policy for use with the cluster. See https://cloud.google.com/binary-authorization/docs/policy-yaml-reference for guidance. 4. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 5. Select the cluster for which Binary Authorization is disabled. 6. Under the details pane, within the Security section, click on the pencil icon named Edit Binary Authorization. 7. Check the box next to Enable Binary Authorization. 8. Choose Enforce policy and provide a directory for the policy to be used. 9. Click SAVE CHANGES. Using Command Line: Update the cluster to enable Binary Authorization: gcloud container cluster update <cluster_name> --zone <compute_zone> -- binauthz-evaluation-mode=<evaluation_mode> Example: gcloud container clusters update $CLUSTER_NAME --zone $COMPUTE_ZONE -- binauthz-evaluation-mode=PROJECT_SINGLETON_POLICY_ENFORCE See: https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#-- binauthz-evaluation-mode for more details around the evaluation modes available. Create a Binary Authorization Policy using the Binary Authorization Policy Reference: https://cloud.google.com/binary-authorization/docs/policy-yaml-reference for guidance. Import the policy file into Binary Authorization: gcloud container binauthz policy import <yaml_policy> Default Value: By default, Binary Authorization is disabled along with container registry allowlisting. References: 1. https://cloud.google.com/binary-authorization/docs/policy-yaml-reference 2. https://cloud.google.com/binary-authorization/docs/setting-up CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "container_image_trusted_source",
+      "container_image_approved_registry",
+      "container_image_vulnerability_scanned",
+      "container_image_signed_verification",
+      "container_image_immutable_tag",
+      "container_image_minimal_base",
+      "container_image_no_privileged",
+      "container_image_readonly_root",
+      "container_image_no_sensitive_data",
+      "container_image_regularly_updated"
+    ]
+  },
+  {
+    "id": "5.2.1",
+    "title": "Ensure GKE clusters are not running using the Compute Engine default service account",
+    "assessment": "Automated",
+    "remediation": "Using Google Cloud Console: To create a minimally privileged service account: 1. Go to Service Accounts by visiting: https://console.cloud.google.com/iam- admin/serviceaccounts. 2. Click on CREATE SERVICE ACCOUNT. 3. Enter Service Account Details. 4. Click CREATE AND CONTINUE. 5. Within Service Account permissions add the following roles: o Logs Writer. o Monitoring Metric Writer. o `Monitoring Viewer. 6. Click CONTINUE. 7. Grant users access to this service account and create keys as required. 8. Click DONE. Note: A new cluster will need to be created specifying the minimally privileged service account, and workloads will need to be migrated to the new cluster and the old cluster deleted. Using Command Line: To create a minimally privileged service account: gcloud iam service-accounts create <node_sa_name> --display-name \"GKE Node Service Account\" export NODE_SA_EMAIL=gcloud iam service-accounts list --format='value(email)' --filter='displayName:GKE Node Service Account' Grant the following roles to the service account: export PROJECT_ID=gcloud config get-value project gcloud projects add-iam-policy-binding <project_id> --member serviceAccount:<node_sa_email> --role roles/monitoring.metricWriter gcloud projects add-iam-policy-binding <project_id> --member serviceAccount:<node_sa_email> --role roles/monitoring.viewer gcloud projects add-iam-policy-binding <project_id> --member serviceAccount:<node_sa_email> --role roles/logging.logWriter Note: A new cluster will need to be created specifying the minimally privileged service account, and workloads will need to be migrated to the new cluster and the old cluster deleted. Default Value: By default, nodes use the Compute Engine default service account when you create a new cluster. References: 1. https://cloud.google.com/compute/docs/access/service- accounts#compute_engine_default_service_account CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "gke_cluster_default_service_account_disabled",
+      "compute_engine_default_service_account_not_used",
+      "gke_cluster_custom_service_account_required",
+      "compute_default_service_account_restricted",
+      "gke_cluster_service_account_non_default",
+      "compute_engine_service_account_not_shared",
+      "gke_cluster_service_account_isolated",
+      "compute_default_service_account_unused"
+    ]
+  },
+  {
+    "id": "5.3.1",
+    "title": "Ensure Kubernetes Secrets are encrypted using keys managed in Cloud KMS",
+    "assessment": "Automated",
+    "remediation": "To enable Application-layer Secrets Encryption, several configuration items are required. These include: • A key ring • A key • A GKE service account with Cloud KMS CryptoKey Encrypter/Decrypter role Once these are created, Application-layer Secrets Encryption can be enabled on an existing or new cluster. Using Google Cloud Console: To create a key 1. Go to Cloud KMS by visiting https://console.cloud.google.com/security/kms. 2. Select CREATE KEY RING. 3. Enter a Key ring name and the region where the keys will be stored. 4. Click CREATE. 5. Enter a Key name and appropriate rotation period within the Create key pane. 6. Click CREATE. To enable on a new cluster 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Click CREATE CLUSTER, and choose the required cluster mode. 3. Within the Security heading, under CLUSTER, check Encrypt secrets at the application layer checkbox. 4. Select the kms key as the customer-managed key and, if prompted, grant permissions to the GKE Service account. 5. Click CREATE. To enable on an existing cluster 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select the cluster to be updated. 3. Under the Details pane, within the Security heading, click on the pencil named Application-layer secrets encryption. 4. Enable Encrypt secrets at the application layer and choose a kms key. 5. Click SAVE CHANGES. Using Command Line: To create a key: Create a key ring: gcloud kms keyrings create <ring_name> --location <location> --project <key_project_id> Create a key: gcloud kms keys create <key_name> --location <location> --keyring <ring_name> --purpose encryption --project <key_project_id> Grant the Kubernetes Engine Service Agent service account the Cloud KMS CryptoKey Encrypter/Decrypter role: gcloud kms keys add-iam-policy-binding <key_name> --location <location> -- keyring <ring_name> --member serviceAccount:<service_account_name> --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project <key_project_id> To create a new cluster with Application-layer Secrets Encryption: gcloud container clusters create <cluster_name> --cluster-version=latest -- zone <zone> --database-encryption-key projects/<key_project_id>/locations/<location>/keyRings/<ring_name>/cryptoKey s/<key_name> --project <cluster_project_id> To enable on an existing cluster: gcloud container clusters update <cluster_name> --zone <zone> --database- encryption-key projects/<key_project_id>/locations/<location>/keyRings/<ring_name>/cryptoKey s/<key_name> --project <cluster_project_id> Default Value: By default, Application-layer Secrets Encryption is disabled. References: 1. https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "kubernetes_secret_kms_encryption_enabled",
+      "kubernetes_secret_kms_key_managed",
+      "kubernetes_secret_encryption_key_rotation_enabled",
+      "kubernetes_secret_kms_key_versioned",
+      "kubernetes_secret_kms_key_access_restricted",
+      "kubernetes_secret_kms_key_audit_logging_enabled",
+      "kubernetes_secret_kms_key_iam_policy_restricted",
+      "kubernetes_secret_kms_key_usage_monitored"
+    ]
+  },
+  {
+    "id": "5.4.1",
+    "title": "Enable VPC Flow Logs and Intranode Visibility",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "vpc_flow_logs_enabled",
+      "vpc_flow_logs_intranode_visibility_enabled",
+      "vpc_flow_logs_all_regions_enabled",
+      "vpc_flow_logs_retention_over_90d",
+      "vpc_flow_logs_encryption_enabled",
+      "vpc_flow_logs_logging_enabled",
+      "vpc_flow_logs_destination_s3_encrypted",
+      "vpc_flow_logs_destination_cloudwatch_logs_encrypted",
+      "vpc_flow_logs_destination_s3_access_restricted",
+      "vpc_flow_logs_destination_cloudwatch_logs_access_restricted"
+    ]
+  },
+  {
+    "id": "5.4.2",
+    "title": "Ensure Control Plane Authorized Networks is Enabled",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "impact": "When implementing Control Plane Authorized Networks, be careful to ensure all desired networks are on the allowlist to prevent inadvertently blocking external access to your cluster's control plane. Audit: Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the cluster to open the Details page and make sure 'Control plane authorized networks' is set to 'Enabled'. Using Command Line: To check Master Authorized Networks status for an existing cluster, run the following command; gcloud container clusters describe $CLUSTER_NAME --zone $COMPUTE_ZONE -- format json | jq '.masterAuthorizedNetworksConfig' The output should include { \"enabled\": true, \"gcpPublicCidrsAccessEnabled\": true } if Control Plane Authorized Networks is enabled. Remediation: Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Select Kubernetes clusters for which Control Plane Authorized Networks is disabled 3. Within the Details pane, under the Networking heading, click on the pencil icon named Edit control plane authorised networks. 4. Check the box next to Enable control plane authorised networks. 5. Click SAVE CHANGES. Using Command Line: To enable Control Plane Authorized Networks for an existing cluster, run the following sample command changing the IP range for fit your network: gcloud container clusters update $CLUSTER_NAME --region $REGION --enable- master-authorized-networks --master-authorized-networks 192.168.1.0/24 Along with this, you can list authorized networks using the --master-authorized- networks flag which contains a list of up to 20 external networks that are allowed to connect to your cluster's control plane through HTTPS. You provide these networks as a comma-separated list of addresses in CIDR notation (such as 90.90.100.0/24). Default Value: By default, Control Plane Authorized Networks is disabled.",
+    "references": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.3 Configure Data Access Control Lists Configure data access control lists based on a user’s need to know. Apply data access control lists, also known as access permissions, to local and remote file systems, databases, and applications. ● ● ● v7 14.6 Protect Information through Access Control Lists Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities. ● ● ●",
+    "function_names": [
+      "gke_cluster_control_plane_authorized_networks_enabled",
+      "gke_cluster_control_plane_authorized_networks_restricted",
+      "gke_cluster_control_plane_authorized_networks_configured",
+      "gke_cluster_control_plane_authorized_networks_no_public_access",
+      "gke_cluster_control_plane_authorized_networks_ip_ranges_defined"
+    ]
+  },
+  {
+    "id": "5.4.3",
+    "title": "Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "gke_cluster_private_endpoint_enabled",
+      "gke_cluster_public_access_disabled",
+      "gke_cluster_network_isolation_enabled",
+      "gke_cluster_private_nodes_only",
+      "gke_cluster_master_authorized_networks_configured",
+      "gke_cluster_control_plane_private",
+      "gke_cluster_public_endpoint_disabled",
+      "gke_cluster_internal_ip_only"
+    ]
+  },
+  {
+    "id": "5.4.4",
+    "title": "Ensure clusters are created with Private Nodes",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "gke_cluster_private_nodes_enabled",
+      "gke_cluster_private_nodes_required",
+      "gke_cluster_private_nodes_only",
+      "gke_cluster_public_nodes_disabled",
+      "gke_cluster_private_endpoint_enabled",
+      "gke_cluster_private_networking_enabled",
+      "gke_cluster_private_ip_enabled",
+      "gke_cluster_private_control_plane_enabled",
+      "gke_cluster_private_node_pools_enabled",
+      "gke_cluster_private_workloads_enabled"
+    ]
+  },
+  {
+    "id": "5.4.5",
+    "title": "Ensure use of Google-managed SSL Certificates",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_load_balancer_google_managed_ssl_certificate",
+      "compute_load_balancer_google_managed_ssl_certificate",
+      "cloud_cdn_ssl_certificate_google_managed",
+      "compute_ssl_certificate_google_managed",
+      "cloud_cdn_load_balancer_ssl_certificate_google_managed",
+      "compute_load_balancer_ssl_certificate_google_managed",
+      "cloud_cdn_ssl_certificate_google_managed_only",
+      "compute_ssl_certificate_google_managed_only"
+    ]
+  },
+  {
+    "id": "5.5.1",
+    "title": "Manage Kubernetes RBAC users with Google Groups for GKE",
+    "assessment": "Manual",
+    "remediation": "Follow the G Suite Groups instructions at: https://cloud.google.com/kubernetes- engine/docs/how-to/role-based-access-control#google-groups-for-gke. Then, create a cluster with: gcloud container clusters create <cluster_name> --security-group <security_group_name> Finally create Roles, ClusterRoles, RoleBindings, and ClusterRoleBindings that reference the G Suite Groups. Default Value: Google Groups for GKE is disabled by default. References: 1. https://cloud.google.com/kubernetes-engine/docs/how-to/google-groups-rbac 2. https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access- control CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "gke_cluster_rbac_google_groups_managed",
+      "gke_rbac_user_group_sync_enabled",
+      "gke_cluster_iam_google_groups_integrated",
+      "gke_rbac_google_groups_exclusive",
+      "gke_cluster_identity_provider_google_groups_used",
+      "gke_rbac_google_groups_primary",
+      "gke_cluster_rbac_external_identity_disabled",
+      "gke_rbac_google_groups_only"
+    ]
+  },
+  {
+    "id": "5.6.1",
+    "title": "Enable Customer-Managed Encryption Keys (CMEK) for GKE Persistent Disks (PD)",
+    "assessment": "Manual",
+    "remediation": "This cannot be remediated by updating an existing cluster. The node pool must either be recreated or a new cluster created. Using Google Cloud Console: This is not possible using Google Cloud Console. Using Command Line: Follow the instructions detailed at: https://cloud.google.com/kubernetes- engine/docs/how-to/using-cmek. Default Value: Persistent disks are encrypted at rest by default, but are not encrypted using Customer- Managed Encryption Keys by default. By default, the Compute Engine Persistent Disk CSI Driver is not provisioned within the cluster. References: 1. https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek 2. https://cloud.google.com/compute/docs/disks/customer-managed-encryption 3. https://cloud.google.com/security/encryption-at-rest/default-encryption/ 4. https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes 5. https://cloud.google.com/sdk/gcloud/reference/container/node-pools/create CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "gke_persistent_disk_cmek_enabled",
+      "gke_pd_customer_managed_key_used",
+      "compute_disk_encryption_customer_key",
+      "gke_storage_cmek_required",
+      "persistent_disk_encryption_customer_managed",
+      "gke_volume_encryption_customer_key",
+      "compute_persistent_disk_cmek_enabled",
+      "gke_disk_encryption_customer_managed"
+    ]
+  },
+  {
+    "id": "5.7.1",
+    "title": "Enable Security Posture",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloudtrail_trail_logging_enabled",
+      "cloudtrail_trail_log_file_validation_enabled",
+      "cloudtrail_trail_multi_region_enabled",
+      "cloudtrail_trail_encryption_enabled",
+      "cloudtrail_trail_logging_all_regions",
+      "cloudtrail_trail_logging_over_90d",
+      "cloudtrail_trail_logging_min_tls_1_2",
+      "cloudtrail_trail_logging_immutable",
+      "cloudtrail_trail_logging_centralized",
+      "cloudtrail_trail_logging_organization_enabled"
+    ]
+  }
+]

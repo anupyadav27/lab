@@ -1,0 +1,1130 @@
+[
+  {
+    "id": "1.1",
+    "title": "Remove extraneous files and directories",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "filesystem_unnecessary_files_removed",
+      "filesystem_unnecessary_directories_removed",
+      "filesystem_extraneous_content_cleaned",
+      "filesystem_default_files_removed",
+      "filesystem_temp_files_removed",
+      "filesystem_legacy_files_removed",
+      "filesystem_unused_directories_removed",
+      "filesystem_orphaned_files_removed",
+      "filesystem_non_essential_content_removed",
+      "filesystem_redundant_files_removed"
+    ]
+  },
+  {
+    "id": "1.2",
+    "title": "Disable Unused Connectors",
+    "assessment": "Manual",
+    "remediation": "Within the $CATALINA_HOME/conf/server.xml, remove, or comment out, each unused Connector. For example, to disable an instance of the HTTPConnector, remove the following: <Connector className=\"org.apache.catalina.connector.http.HttpConnector\" ... connectionTimeout=\"60000\"/> Default Value: $CATALINA_HOME/conf/server.xml, has the following connectors defined by default: • A non-SSL HTTP Connector bound to port 8080 • An AJP Connector bound to port 8009 References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/http.html 2. https://tomcat.apache.org/tomcat-9.0-doc/security-howto.html#Connectors CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://tomcat.apache.org/tomcat-9.0-doc/config/http.html 2. https://tomcat.apache.org/tomcat-9.0-doc/security-howto.html#Connectors CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4.8 Uninstall or Disable Unnecessary Services on Enterprise Assets and Software Uninstall or disable unnecessary services on enterprise assets and software, such as an unused file sharing service, web application module, or service function. ● ● v7 9.2 Ensure Only Approved Ports, Protocols and Services Are Running Ensure that only network ports, protocols, and services listening on a system with validated business needs, are running on each system. ● ●  2 Limit Server Platform Information Leaks Limiting Server Platform Information Leaks make it harder for attackers to determine which vulnerabilities affect the server platform.",
+    "function_names": [
+      "cloud_cdn_connector_disabled",
+      "cloud_cdn_connector_unused_disabled",
+      "cloud_cdn_connector_inactive_disabled",
+      "cloud_cdn_connector_no_traffic_disabled",
+      "cloud_cdn_connector_idle_disabled"
+    ]
+  },
+  {
+    "id": "2.1",
+    "title": "Alter the Advertised server.info String",
+    "assessment": "Manual",
+    "remediation": "Perform the following to alter the server platform string that gets displayed when clients connect to the tomcat server. 1. Extract the ServerInfo.properties file from the catalina.jar file: $ cd $CATALINA_HOME/lib $ jar xf catalina.jar org/apache/catalina/util/ServerInfo.properties 2. Navigate to the util directory that was created cd org/apache/catalina/util 3. Open ServerInfo.properties in an editor 4. Update the server.info attribute in the ServerInfo.properties file. server.info=<SomeWebServer> 5. Update the catalina.jar with the modified ServerInfo.properties file. $ jar uf catalina.jar org/apache/catalina/util/ServerInfo.properties Default Value: The default value for the server.info attribute is Apache Tomcat/ <version> . For example, Apache Tomcat/9.0.0.M9. References: 1. https://www.owasp.org/index.php/Securing_tomcat CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_server_info_customized",
+      "compute_server_info_altered",
+      "compute_server_info_obfuscated",
+      "compute_server_info_removed",
+      "compute_server_info_non_default",
+      "compute_server_info_hardened",
+      "compute_server_info_secure",
+      "compute_server_info_minimal"
+    ]
+  },
+  {
+    "id": "2.2",
+    "title": "Alter the Advertised server.number String",
+    "assessment": "Manual",
+    "remediation": "Perform the following to alter the server version string that gets displayed when clients connect to the server. 1. Extract the ServerInfo.properties file from the catalina.jar file: $ cd $CATALINA_HOME/lib $ jar xf catalina.jar org/apache/catalina/util/ServerInfo.properties 2. Navigate to the util directory that was created $ cd org/apache/Catalina/util 3. Open ServerInfo.properties in an editor 4. Update the server.number attribute server.number=<someversion> 5. Update the catalina.jar with the modified ServerInfo.properties file. $ jar uf catalina.jar org/apache/catalina/util/ServerInfo.properties Default Value: The default value for the server.number attribute is a four part version number, such as 9.0.0.0. CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_server_number_altered",
+      "cloud_cdn_server_version_obfuscated",
+      "cloud_cdn_header_server_number_removed",
+      "cloud_cdn_response_server_number_modified",
+      "cloud_cdn_security_header_server_number_hidden"
+    ]
+  },
+  {
+    "id": "2.3",
+    "title": "Alter the Advertised server.built Date",
+    "assessment": "Manual",
+    "remediation": "Perform the following to alter the server version string that gets displayed when clients connect to the server. 1. Extract the ServerInfo.properties file from the catalina.jar file: $ cd $CATALINA_HOME/lib $ jar xf catalina.jar org/apache/catalina/util/ServerInfo.properties 2. Navigate to the util directory that was created $ cd org/apache/Catalina/util 3. Open ServerInfo.properties in an editor 4. Update the server.built attribute in the ServerInfo.properties file. server.built= 5. Update the catalina.jar with the modified ServerInfo.properties file. $ jar uf catalina.jar org/apache/catalina/util/ServerInfo.properties Default Value: The default value for the server.built attribute is build date and time. For example, Jul 8 2008 11:40:35. CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_server_built_date_altered",
+      "cloud_cdn_server_version_hidden",
+      "cloud_cdn_header_built_date_removed",
+      "cloud_cdn_server_info_obfuscated",
+      "cloud_cdn_response_header_sanitized",
+      "cloud_cdn_server_metadata_removed",
+      "cloud_cdn_version_disclosure_disabled",
+      "cloud_cdn_header_security_hardened"
+    ]
+  },
+  {
+    "id": "2.4",
+    "title": "Disable X-Powered-By HTTP Header and Rename the Server Value for all Connectors",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_connector_x_powered_by_disabled",
+      "cloud_cdn_connector_server_header_renamed",
+      "cloud_cdn_connector_headers_secure",
+      "cloud_cdn_connector_http_headers_sanitized",
+      "cloud_cdn_connector_x_powered_by_removed",
+      "cloud_cdn_connector_server_value_obfuscated"
+    ]
+  },
+  {
+    "id": "2.5",
+    "title": "Disable client facing Stack Traces",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_distribution_stack_traces_disabled",
+      "cloud_cdn_distribution_client_stack_traces_disabled",
+      "cloud_cdn_distribution_error_stack_traces_disabled",
+      "cloud_cdn_distribution_debug_info_disabled",
+      "cloud_cdn_distribution_error_details_hidden"
+    ]
+  },
+  {
+    "id": "2.6",
+    "title": "Turn off TRACE",
+    "assessment": "Automated",
+    "remediation": "Perform the following to prevent Tomcat from accepting a TRACE request: 1. Set the allowTrace attribute for each Connector specified in $CATALINA_HOME/conf/server.xml to false. <Connector ... allowTrace=\"false\" /> Alternatively, ensure the allowTrace attribute is absent from each Connector specified in $CATALINA_HOME/conf/server.xml. 2. Add the following as a child of the web-app root element, if present, in each web applications web.xml: <security-constraint> <web-resource-collection> <web-resource-name>restricted methods</web-resource-name> ... <http-method>TRACE</http-method> ... </web-resource-collection> ... </security-constraint> Default Value: Tomcat does not allow the TRACE HTTP verb by default. Tomcat will only allow TRACE if the allowTrace attribute is present and set to true. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/http.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_load_balancer_trace_disabled",
+      "compute_load_balancer_trace_disabled",
+      "cloudfront_distribution_trace_disabled",
+      "api_gateway_trace_disabled",
+      "application_load_balancer_trace_disabled",
+      "network_load_balancer_trace_disabled",
+      "gateway_load_balancer_trace_disabled",
+      "cloud_load_balancer_trace_disabled"
+    ]
+  },
+  {
+    "id": "2.7",
+    "title": "Ensure Sever Header is Modified To Prevent Information Disclosure",
+    "assessment": "Automated",
+    "remediation": "In $CATALINA_HOME/conf/server.xml, add the server directive to the connector as shown below replacing apache with the text of your choosing. This text should not help in identifying the server. <Connector port=\"8443\" server=”I am a teapot\" redirectPort=\"8080\" /> Scripted: • If you do not have the header defined: sed -ir 's/Connector/Connector server=”I am a teapot\"/g' $CATALINA_HOME/conf/server.xml • If you already have a header but it is still revealing sed -ir 's/server=\"[^\"]*\"/server=\"I Am A Teapot\"/g' $CATALINA_HOME/conf/server.xml Default Value: The default value is Apache-Coyote/1.1. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/security-howto.html#server.xml 2. https://stackoverflow.com/questions/52637285/replacing-server-header-in- tomcat-with-sed CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_response_header_server_info_removed",
+      "cloud_cdn_response_header_server_info_modified",
+      "cloud_cdn_response_header_server_info_hidden",
+      "cloud_cdn_response_header_server_info_suppressed",
+      "cloud_cdn_response_header_server_info_obfuscated",
+      "cloud_cdn_response_header_server_info_disabled",
+      "cloud_cdn_response_header_server_info_sanitized",
+      "cloud_cdn_response_header_server_info_restricted",
+      "cloud_cdn_response_header_server_info_secure",
+      "cloud_cdn_response_header_server_info_protected"
+    ]
+  },
+  {
+    "id": "3.1",
+    "title": "Set a nondeterministic Shutdown command value",
+    "assessment": "Automated",
+    "remediation": "Perform the following to set a nondeterministic value for the shutdown attribute. Update the shutdown attribute in $CATALINA_HOME/conf/server.xml as follows: <Server port=\"8005\" shutdown=\"NONDETERMINISTICVALUE\"> Note: NONDETERMINISTICVALUE should be replaced with a sequence of random characters. Default Value: The default value for the shutdown attribute is SHUTDOWN. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/server.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_instance_nondeterministic_shutdown",
+      "compute_vm_nondeterministic_shutdown",
+      "compute_instance_shutdown_randomized",
+      "compute_vm_shutdown_randomized",
+      "compute_instance_shutdown_nondeterministic_value",
+      "compute_vm_shutdown_nondeterministic_value"
+    ]
+  },
+  {
+    "id": "3.2",
+    "title": "Disable the Shutdown port",
+    "assessment": "Automated",
+    "remediation": "Set the port to -1 in the $CATALINA_HOME/conf/server.xml to disable the shutdown port: <Server port=\"-1\" shutdown=\"SHUTDOWN\"> Default Value: The shutdown port is enabled on TCP port 8005, bound to the loopback address. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/server.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_instance_shutdown_port_disabled",
+      "compute_vm_shutdown_port_disabled",
+      "compute_server_shutdown_port_disabled",
+      "compute_host_shutdown_port_disabled",
+      "compute_guest_shutdown_port_disabled"
+    ]
+  },
+  {
+    "id": "4.1",
+    "title": "Restrict access to $CATALINA_HOME",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_catalina_home_restricted",
+      "compute_tomcat_catalina_home_permissions_restricted",
+      "compute_tomcat_catalina_home_access_restricted",
+      "compute_tomcat_catalina_home_ownership_restricted",
+      "compute_tomcat_catalina_home_directory_restricted"
+    ]
+  },
+  {
+    "id": "4.2",
+    "title": "Restrict access to $CATALINA_BASE",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_catalina_base_restricted",
+      "compute_tomcat_catalina_base_permissions_restricted",
+      "compute_tomcat_catalina_base_access_restricted",
+      "compute_tomcat_catalina_base_ownership_restricted",
+      "compute_tomcat_catalina_base_directory_restricted"
+    ]
+  },
+  {
+    "id": "4.3",
+    "title": "Restrict access to Tomcat configuration directory",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_config_directory_restricted_access",
+      "compute_tomcat_config_directory_permissions_secure",
+      "compute_tomcat_config_directory_ownership_correct",
+      "compute_tomcat_config_directory_world_writable_disabled",
+      "compute_tomcat_config_directory_group_writable_disabled",
+      "compute_tomcat_config_directory_minimal_permissions",
+      "compute_tomcat_config_directory_unauthorized_access_denied",
+      "compute_tomcat_config_directory_root_ownership_required",
+      "compute_tomcat_config_directory_strict_mode_enabled",
+      "compute_tomcat_config_directory_public_access_blocked"
+    ]
+  },
+  {
+    "id": "4.4",
+    "title": "Restrict access to Tomcat logs directory",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_logs_directory_restricted_access",
+      "compute_tomcat_logs_directory_permissions_secure",
+      "compute_tomcat_logs_directory_access_controlled",
+      "compute_tomcat_logs_directory_minimal_permissions",
+      "compute_tomcat_logs_directory_ownership_correct"
+    ]
+  },
+  {
+    "id": "4.5",
+    "title": "Restrict access to Tomcat temp directory",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_temp_directory_restricted_access",
+      "compute_tomcat_temp_directory_permissions_secure",
+      "compute_tomcat_temp_directory_write_access_restricted",
+      "compute_tomcat_temp_directory_ownership_correct",
+      "compute_tomcat_temp_directory_world_writable_disabled"
+    ]
+  },
+  {
+    "id": "4.6",
+    "title": "Restrict access to Tomcat binaries directory",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_binaries_directory_restricted_access",
+      "compute_tomcat_binaries_directory_no_public_access",
+      "compute_tomcat_binaries_directory_minimal_permissions",
+      "compute_tomcat_binaries_directory_read_only",
+      "compute_tomcat_binaries_directory_no_execute_permissions",
+      "compute_tomcat_binaries_directory_owner_restricted",
+      "compute_tomcat_binaries_directory_group_restricted",
+      "compute_tomcat_binaries_directory_world_writable_disabled",
+      "compute_tomcat_binaries_directory_strict_mode_enabled",
+      "compute_tomcat_binaries_directory_access_controlled"
+    ]
+  },
+  {
+    "id": "4.7",
+    "title": "Restrict access to Tomcat web application directory",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_webapp_directory_restricted",
+      "compute_tomcat_webapp_directory_access_limited",
+      "compute_tomcat_webapp_directory_permissions_secure",
+      "compute_tomcat_webapp_directory_write_protected",
+      "compute_tomcat_webapp_directory_read_only",
+      "compute_tomcat_webapp_directory_ownership_correct",
+      "compute_tomcat_webapp_directory_group_restricted",
+      "compute_tomcat_webapp_directory_public_access_disabled"
+    ]
+  },
+  {
+    "id": "4.8",
+    "title": "Restrict access to Tomcat catalina.properties",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_catalina_properties_restricted_access",
+      "compute_tomcat_catalina_properties_file_permissions",
+      "compute_tomcat_catalina_properties_secure_ownership",
+      "compute_tomcat_catalina_properties_read_only",
+      "compute_tomcat_catalina_properties_no_world_writable",
+      "compute_tomcat_catalina_properties_minimal_access",
+      "compute_tomcat_catalina_properties_secure_mode",
+      "compute_tomcat_catalina_properties_access_controlled"
+    ]
+  },
+  {
+    "id": "4.9",
+    "title": "Restrict access to Tomcat catalina.policy",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "tomcat_catalina_policy_restricted_access",
+      "tomcat_catalina_policy_file_permissions",
+      "tomcat_catalina_policy_owner_root",
+      "tomcat_catalina_policy_group_root",
+      "tomcat_catalina_policy_read_only",
+      "tomcat_catalina_policy_no_world_writable",
+      "tomcat_catalina_policy_no_world_readable",
+      "tomcat_catalina_policy_no_world_executable",
+      "tomcat_catalina_policy_strict_permissions",
+      "tomcat_catalina_policy_secure_ownership"
+    ]
+  },
+  {
+    "id": "4.10",
+    "title": "Restrict access to Tomcat context.xml",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_context_xml_restricted_access",
+      "compute_tomcat_context_xml_read_only",
+      "compute_tomcat_context_xml_no_public_access",
+      "compute_tomcat_context_xml_secure_permissions",
+      "compute_tomcat_context_xml_owner_restricted",
+      "compute_tomcat_context_xml_group_restricted",
+      "compute_tomcat_context_xml_world_inaccessible",
+      "compute_tomcat_context_xml_minimal_permissions"
+    ]
+  },
+  {
+    "id": "4.11",
+    "title": "Restrict access to Tomcat logging.properties",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "tomcat_logging_properties_restricted_access",
+      "tomcat_logging_properties_file_permissions",
+      "tomcat_logging_properties_owner_valid",
+      "tomcat_logging_properties_group_valid",
+      "tomcat_logging_properties_world_readable_disabled",
+      "tomcat_logging_properties_world_writable_disabled",
+      "tomcat_logging_properties_strict_permissions",
+      "tomcat_logging_properties_access_control_enabled",
+      "tomcat_logging_properties_unauthorized_access_blocked",
+      "tomcat_logging_properties_secure_ownership"
+    ]
+  },
+  {
+    "id": "4.12",
+    "title": "Restrict access to Tomcat server.xml",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "tomcat_server_xml_restricted_access",
+      "tomcat_server_xml_file_permissions",
+      "tomcat_server_xml_owner_valid",
+      "tomcat_server_xml_group_valid",
+      "tomcat_server_xml_world_readable_disabled",
+      "tomcat_server_xml_world_writable_disabled",
+      "tomcat_server_xml_strict_permissions",
+      "tomcat_server_xml_access_controlled",
+      "tomcat_server_xml_unauthorized_access_blocked",
+      "tomcat_server_xml_secure_ownership"
+    ]
+  },
+  {
+    "id": "4.13",
+    "title": "Restrict access to Tomcat tomcat-users.xml",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "tomcat_users_xml_restricted_access",
+      "tomcat_users_xml_permissions_secure",
+      "tomcat_users_xml_file_ownership_correct",
+      "tomcat_users_xml_read_access_limited",
+      "tomcat_users_xml_write_access_restricted",
+      "tomcat_users_xml_group_ownership_secure",
+      "tomcat_users_xml_world_readable_disabled",
+      "tomcat_users_xml_world_writable_disabled",
+      "tomcat_users_xml_strict_file_permissions",
+      "tomcat_users_xml_unauthorized_access_prevented"
+    ]
+  },
+  {
+    "id": "4.14",
+    "title": "Restrict access to Tomcat web.xml",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_web_xml_restricted_access",
+      "compute_tomcat_web_xml_permissions_secure",
+      "compute_tomcat_web_xml_read_only",
+      "compute_tomcat_web_xml_no_public_access",
+      "compute_tomcat_web_xml_access_controlled",
+      "compute_tomcat_web_xml_minimal_permissions",
+      "compute_tomcat_web_xml_secure_config",
+      "compute_tomcat_web_xml_no_anonymous_access"
+    ]
+  },
+  {
+    "id": "4.15",
+    "title": "Restrict access to jaspic-providers.xml",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://tomcat.apache.org/tomcat-9.0-doc/config/jaspic.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.3 Configure Data Access Control Lists Configure data access control lists based on a user’s need to know. Apply data access control lists, also known as access permissions, to local and remote file systems, databases, and applications. ● ● ● v7 14.6 Protect Information through Access Control Lists Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities. ● ● ●  5 Configure Realms A Tomcat realm is a database of usernames and passwords used to identify valid users of web applications.",
+    "function_names": [
+      "compute_jaspic_providers_xml_restricted_access",
+      "compute_jaspic_providers_xml_no_public_access",
+      "compute_jaspic_providers_xml_permissions_locked",
+      "compute_jaspic_providers_xml_read_only",
+      "compute_jaspic_providers_xml_minimal_access"
+    ]
+  },
+  {
+    "id": "5.1",
+    "title": "Use secure Realms",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "iam_realm_secure_configuration",
+      "iam_realm_tls_enabled",
+      "iam_realm_encryption_enabled",
+      "iam_realm_authentication_required",
+      "iam_realm_password_policy_enforced",
+      "iam_realm_mfa_required",
+      "iam_realm_session_timeout_configured",
+      "iam_realm_secure_protocols_enabled",
+      "iam_realm_brute_force_protection_enabled",
+      "iam_realm_logging_enabled"
+    ]
+  },
+  {
+    "id": "5.2",
+    "title": "Use LockOut Realms",
+    "assessment": "Automated",
+    "remediation": "Create a lockout realm wrapping the main realm similar to the example below: <Realm className=\"org.apache.catalina.realm.LockOutRealm\" failureCount=\"3\" lockOutTime=\"600\" cacheSize=\"1000\" cacheRemovalWarningTime=\"3600\"> <Realm className=\"org.apache.catalina.realm.DataSourceRealm\" dataSourceName=... /> </Realm> References: 1. http://tomcat.apache.org/tomcat-9.0-doc/realm-howto.html 2. http://tomcat.apache.org/tomcat-9.0-doc/config/realm.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. http://tomcat.apache.org/tomcat-9.0-doc/realm-howto.html 2. http://tomcat.apache.org/tomcat-9.0-doc/config/realm.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4 Secure Configuration of Enterprise Assets and Software Establish and maintain the secure configuration of enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/IoT devices; and servers) and software (operating systems and applications).  Controls Version Control IG 1 IG 2 IG 3 v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●  6 Connector Security Tomcat Connector Security will ensure applications built on Tomcat have an accurate depiction of the context and security guarantees provided to them.",
+    "function_names": [
+      "iam_user_lockout_realm_enabled",
+      "iam_user_lockout_realm_configured",
+      "iam_user_lockout_realm_min_duration",
+      "iam_user_lockout_realm_max_attempts",
+      "iam_user_lockout_realm_recovery_enabled",
+      "iam_user_lockout_realm_notification_enabled",
+      "iam_user_lockout_realm_custom_threshold",
+      "iam_user_lockout_realm_automatic_reset"
+    ]
+  },
+  {
+    "id": "6.1",
+    "title": "Setup Client-cert Authentication",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_domain_client_cert_authentication_enabled",
+      "cloud_cdn_domain_client_cert_authentication_required",
+      "cloud_cdn_domain_client_cert_validation_enabled",
+      "cloud_cdn_domain_client_cert_trusted_ca_configured",
+      "cloud_cdn_domain_client_cert_min_tls_1_2",
+      "cloud_cdn_domain_client_cert_revocation_check_enabled",
+      "cloud_cdn_domain_client_cert_expiry_monitored",
+      "cloud_cdn_domain_client_cert_rotation_enabled"
+    ]
+  },
+  {
+    "id": "6.2",
+    "title": "Ensure SSLEnabled is set to True for Sensitive Connectors",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_connector_ssl_enabled",
+      "cloud_cdn_connector_ssl_enabled_for_sensitive_data",
+      "cloud_cdn_connector_secure_transport_required",
+      "cloud_cdn_connector_encryption_enabled",
+      "cloud_cdn_connector_tls_required",
+      "cloud_cdn_connector_secure_connection_enabled",
+      "cloud_cdn_connector_ssl_enforced",
+      "cloud_cdn_connector_secure_transfer_enabled"
+    ]
+  },
+  {
+    "id": "6.3",
+    "title": "Ensure scheme is set accurately",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_distribution_https_redirect_enabled",
+      "cloud_cdn_distribution_tls_version_min_1_2",
+      "cloud_cdn_distribution_secure_scheme_enforced",
+      "cloud_cdn_distribution_http2_enabled",
+      "cloud_cdn_distribution_ssl_certificate_valid",
+      "cloud_cdn_distribution_custom_domain_https_only",
+      "cloud_cdn_distribution_origin_protocol_policy_https",
+      "cloud_cdn_distribution_viewer_protocol_policy_redirect_https"
+    ]
+  },
+  {
+    "id": "6.4",
+    "title": "Ensure secure is set to true only for SSL-enabled Connectors",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_connector_secure_ssl_only",
+      "cloud_cdn_connector_ssl_enabled",
+      "cloud_cdn_connector_secure_setting_valid",
+      "cloud_cdn_connector_tls_required",
+      "cloud_cdn_connector_secure_config_compliant"
+    ]
+  },
+  {
+    "id": "6.5",
+    "title": "Ensure 'sslProtocol' is Configured Correctly for Secure Connectors",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_secure_connector_ssl_protocol_configured",
+      "cloud_cdn_secure_connector_min_tls_1_2",
+      "cloud_cdn_secure_connector_weak_protocols_disabled",
+      "cloud_cdn_secure_connector_ssl_protocol_compliant",
+      "cloud_cdn_secure_connector_tls_1_2_or_higher",
+      "cloud_cdn_secure_connector_ssl_protocol_restricted",
+      "cloud_cdn_secure_connector_secure_protocol_enabled",
+      "cloud_cdn_secure_connector_ssl_protocol_no_weak_ciphers"
+    ]
+  },
+  {
+    "id": "7.1",
+    "title": "Application specific logging",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloudtrail_trail_logging_enabled",
+      "cloudtrail_trail_log_file_validation_enabled",
+      "cloudtrail_trail_logging_all_regions",
+      "cloudtrail_trail_logging_encryption_enabled",
+      "cloudtrail_trail_logging_multi_region_enabled",
+      "cloudtrail_trail_logging_immutable_enabled",
+      "cloudtrail_trail_logging_retention_over_90d",
+      "cloudtrail_trail_logging_s3_bucket_encrypted",
+      "cloudtrail_trail_logging_s3_bucket_access_logging_enabled",
+      "cloudtrail_trail_logging_s3_bucket_versioning_enabled"
+    ]
+  },
+  {
+    "id": "7.2",
+    "title": "Specify file handler in logging.properties files",
+    "assessment": "Automated",
+    "remediation": "Add the following entries, replacing <file_handler> with either FileHandler or AsyncFileHandler, to your logging.properties file if they do not exist. handlers=1catalina.org.apache.juli.<file_handler>, 2localhost.org.apache.juli.<file_handler>, 3manager.org.apache.juli.<file_handler>, 4host- manager.org.apache.juli.<file_handler>, java.util.logging.ConsoleHandler Ensure logging is not off and set the <logging_level> to the desired level (SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST or ALL), for example: org.apache.juli.FileHandler.level=<logging_level> Default Value: No value for new applications by default. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/logging.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://tomcat.apache.org/tomcat-9.0-doc/logging.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 8.5 Collect Detailed Audit Logs Configure detailed audit logging for enterprise assets containing sensitive data. Include event source, date, username, timestamp, source addresses, destination addresses, and other useful elements that could assist in a forensic investigation. ● ● v7 6.3 Enable Detailed Logging Enable system logging to include detailed information such as an event source, date, user, timestamp, source addresses, destination addresses, and other useful elements. ● ●",
+    "function_names": [
+      "logging_properties_file_handler_specified",
+      "logging_properties_file_handler_configured",
+      "logging_properties_file_handler_defined",
+      "logging_properties_file_handler_valid",
+      "logging_properties_file_handler_present"
+    ]
+  },
+  {
+    "id": "7.3",
+    "title": "Ensure className is set correctly in context.xml",
+    "assessment": "Automated",
+    "remediation": "Add the following statement into the $CATALINA_BASE/webapps/ <app_name> /META- INF/context.xml file if it does not already exist. <Valve className=\"org.apache.catalina.valves.AccessLogValve\" directory=\"$CATALINA_HOME/logs/\" prefix=\"access_log\" fileDateFormat=\"yyyy-MM-dd.HH\" suffix=\".log\" pattern=\"%h %t %H cookie:%{SESSIONID}c request:%{SESSIONID}r %m %U %s %q %r\" /> Default Value: Does not exist by default. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/valve.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_context_classname_configured",
+      "compute_context_classname_secure",
+      "compute_context_classname_valid",
+      "compute_context_classname_cis_compliant",
+      "compute_context_classname_properly_set"
+    ]
+  },
+  {
+    "id": "7.4",
+    "title": "Ensure directory in context.xml is a secure location",
+    "assessment": "Manual",
+    "remediation": "Perform the following: 1. Add the following statement into the $CATALINA_BASE/webapps/ <app_name> /META- INF/context.xml file if it does not already exist. <Valve className=\"org.apache.catalina.valves.AccessLogValve\" directory=\"$CATALINA_HOME/logs/\" prefix=\"access_log\" fileDateFormat=\"yyyy-MM-dd.HH\" suffix=\".log\" pattern=\"%h %t %H cookie:%{SESSIONID}c request:%{SESSIONID}r %m %U %s %q %r\" /> 2. Set the location pointed to by the directory attribute to be owned by tomcat_admin:tomcat with permissions of o-rwx. # chown tomcat_admin:tomcat $CATALINA_HOME/logs # chmod o-rwx $CATALINA_HOME/logs Default Value: Does not exist by default CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "tomcat_context_xml_secure_directory_location",
+      "tomcat_context_xml_directory_restricted",
+      "tomcat_context_xml_directory_protected",
+      "tomcat_context_xml_directory_in_secure_path",
+      "tomcat_context_xml_directory_access_controlled"
+    ]
+  },
+  {
+    "id": "7.5",
+    "title": "Ensure pattern in context.xml is correct",
+    "assessment": "Automated",
+    "rationale": "The level of logging detail prescribed will assist in identifying correlating security events or incidents. Audit: Review the pattern settings to ensure it contains all of the variables required by the installation. # grep pattern $CATALINA_BASE/webapps/<app_name>/META-INF/context.xml",
+    "remediation": "Add the following statement into the $CATALINA_BASE/webapps/ <app_name> /META- INF/context.xml file if it does not already exist. <Valve className=\"org.apache.catalina.valves.AccessLogValve\" directory=\"$CATALINA_HOME/logs/\" prefix=\"access_log\" fileDateFormat=\"yyyy-MM- dd.HH\" suffix=\".log\" pattern=\"%h %t %H cookie:%{SESSIONID}c request:%{SESSIONID}r %m %U %s %q %r\" /> Default Value: Does not exist by default. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/valve.html CIS Controls:",
+    "description": "",
+    "audit": "",
+    "function_names": [
+      "compute_context_xml_pattern_correct",
+      "compute_context_xml_secure_pattern",
+      "compute_context_xml_cis_compliant",
+      "compute_context_xml_secure_configuration",
+      "compute_context_xml_pattern_validated"
+    ]
+  },
+  {
+    "id": "7.6",
+    "title": "Ensure directory in logging.properties is a secure location",
+    "assessment": "Automated",
+    "remediation": "Perform the following: 1. Add the following properties into your logging.properties file if they do not exist <application_name>.org.apache.juli.AsyncFileHandler.directory=<log_loca tion> <application_name>.org.apache.juli.AsyncFileHandler.prefix=<application _name> 2. Set the location pointed to by the directory attribute to be owned by tomcat_admin:tomcat with permissions of o-rwx. # chown tomcat_admin:tomcat <log_location> # chmod o-rwx <log_location> Default Value: The directory location is configured to store logs in $CATALINA_BASE/logs. CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloudtrail_logging_properties_secure_directory",
+      "cloudtrail_logging_properties_directory_restricted",
+      "cloudtrail_logging_properties_directory_protected",
+      "cloudtrail_logging_properties_directory_secure_location",
+      "cloudtrail_logging_properties_directory_access_controlled"
+    ]
+  },
+  {
+    "id": "8.1",
+    "title": "Restrict runtime access to sensitive packages",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_runtime_package_access_restricted",
+      "compute_instance_sensitive_package_access_restricted",
+      "compute_runtime_sensitive_package_protected",
+      "compute_instance_package_access_restricted",
+      "compute_runtime_package_access_restricted",
+      "compute_sensitive_package_runtime_restricted",
+      "compute_instance_runtime_access_restricted",
+      "compute_runtime_sensitive_package_restricted"
+    ]
+  },
+  {
+    "id": "9.1",
+    "title": "Starting Tomcat with Security Manager",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_security_manager_enabled",
+      "compute_tomcat_security_manager_startup",
+      "compute_tomcat_security_manager_active",
+      "compute_tomcat_security_manager_configured",
+      "compute_tomcat_security_manager_enforced"
+    ]
+  },
+  {
+    "id": "9.2",
+    "title": "Disabling auto deployment of applications",
+    "assessment": "Automated",
+    "remediation": "In the $CATALINA_HOME/conf/server.xml file, change autoDeploy to false. autoDeploy=\"false\" Default Value: autoDeploy is set to true. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/deployer- howto.html#Deploying_on_a_running_Tomcat_server 2. https://tomcat.apache.org/tomcat-9.0-doc/config/host.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_distribution_auto_deployment_disabled",
+      "cloud_cdn_distribution_auto_deploy_disabled",
+      "cloud_cdn_distribution_deployment_automation_disabled",
+      "cloud_cdn_distribution_auto_update_disabled",
+      "cloud_cdn_distribution_automatic_deployment_disabled"
+    ]
+  },
+  {
+    "id": "9.3",
+    "title": "Disable deploy on startup of applications",
+    "assessment": "Automated",
+    "remediation": "In the $CATALINA_HOME/conf/server.xml file, change deployOnStartup to false. deployOnStartup=\"false\" Default Value: deployOnStartup is set to true. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/deployer- howto.html#Deployment_on_Tomcat_startup 2. https://tomcat.apache.org/tomcat-9.0- doc/config/host.html#Automatic_Application_Deployment CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_instance_deploy_on_startup_disabled",
+      "compute_application_auto_deploy_disabled",
+      "compute_vm_startup_deployment_disabled",
+      "compute_app_auto_start_disabled",
+      "compute_instance_auto_deploy_disabled",
+      "compute_startup_script_disabled",
+      "compute_application_startup_disabled",
+      "compute_vm_auto_deploy_disabled"
+    ]
+  },
+  {
+    "id": "10.1",
+    "title": "Ensure Web content directory is on a separate partition from the Tomcat system files",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tomcat_web_content_separate_partition",
+      "compute_tomcat_system_files_isolated",
+      "compute_tomcat_content_partition_segregated",
+      "compute_tomcat_web_directory_separate_partition",
+      "compute_tomcat_filesystem_isolation_enabled"
+    ]
+  },
+  {
+    "id": "10.2",
+    "title": "Restrict access to the web administration application",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_web_admin_access_restricted",
+      "compute_instance_admin_interface_restricted",
+      "compute_instance_web_console_restricted",
+      "compute_instance_admin_port_restricted",
+      "compute_instance_web_ui_access_restricted",
+      "compute_instance_admin_access_ip_restricted",
+      "compute_instance_web_admin_auth_required",
+      "compute_instance_admin_endpoint_restricted",
+      "compute_instance_web_admin_tls_enabled",
+      "compute_instance_admin_interface_private_only"
+    ]
+  },
+  {
+    "id": "10.3",
+    "title": "Restrict manager application",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_manager_application_restricted",
+      "compute_manager_application_network_restricted",
+      "compute_manager_application_iam_restricted",
+      "compute_manager_application_access_restricted",
+      "compute_manager_application_ingress_restricted",
+      "compute_manager_application_egress_restricted",
+      "compute_manager_application_port_restricted",
+      "compute_manager_application_ip_restricted",
+      "compute_manager_application_auth_required",
+      "compute_manager_application_tls_enabled"
+    ]
+  },
+  {
+    "id": "10.4",
+    "title": "Force SSL when accessing the manager application via HTTP",
+    "assessment": "Manual",
+    "remediation": "Set <transport-guarantee> to CONFIDENTIAL in $CATALINA_HOME/webapps/manager/WEB- INF/web.xml: <security-constraint> <user-data-constraint> <transport-guarantee>CONFIDENTIAL</transport-guarantee> </user-data-constraint> </security-constraint> Default Value: By default this configuration is not present. References: 1. https://www.owasp.org/index.php/Securing_tomcat CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_manager_application_force_ssl",
+      "cloud_cdn_manager_application_https_required",
+      "cloud_cdn_manager_application_ssl_enforced",
+      "cloud_cdn_manager_application_secure_connection_required",
+      "cloud_cdn_manager_application_tls_required"
+    ]
+  },
+  {
+    "id": "10.5",
+    "title": "Rename the manager application",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://www.owasp.org/index.php/Securing_tomcat CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4.8 Uninstall or Disable Unnecessary Services on Enterprise Assets and Software Uninstall or disable unnecessary services on enterprise assets and software, such as an unused file sharing service, web application module, or service function. ● ● v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●",
+    "function_names": [
+      "compute_manager_application_renamed",
+      "compute_manager_application_default_name_removed",
+      "compute_manager_application_custom_name_required",
+      "compute_manager_application_name_compliant",
+      "compute_manager_application_name_not_default"
+    ]
+  },
+  {
+    "id": "10.6",
+    "title": "Enable strict servlet Compliance",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_servlet_strict_compliance_enabled",
+      "compute_servlet_security_headers_enabled",
+      "compute_servlet_secure_cookies_enabled",
+      "compute_servlet_https_only_enabled",
+      "compute_servlet_cors_restricted",
+      "compute_servlet_xss_protection_enabled",
+      "compute_servlet_content_security_policy_enabled",
+      "compute_servlet_session_timeout_configured",
+      "compute_servlet_input_validation_enabled",
+      "compute_servlet_error_handling_secure"
+    ]
+  },
+  {
+    "id": "10.7",
+    "title": "Turn off session facade recycling",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_session_facade_recycling_disabled",
+      "compute_vm_session_facade_recycling_disabled",
+      "compute_session_facade_recycling_disabled",
+      "compute_instance_no_session_facade_recycling",
+      "compute_vm_no_session_facade_recycling"
+    ]
+  },
+  {
+    "id": "10.8",
+    "title": "Do not allow additional path delimiters",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_distribution_no_additional_path_delimiters",
+      "cloud_cdn_cache_behavior_no_additional_path_delimiters",
+      "cloud_cdn_origin_no_additional_path_delimiters",
+      "cloud_cdn_path_pattern_no_additional_path_delimiters",
+      "cloud_cdn_request_policy_no_additional_path_delimiters"
+    ]
+  },
+  {
+    "id": "10.9",
+    "title": "Configure connectionTimeout",
+    "assessment": "Automated",
+    "remediation": "Set the connectionTimeout for each connector in $CATALINA_HOME/conf/server.xml ensure to the optimal number of milliseconds based on hardware resources, load, and number of concurrent connections. connectionTimeout=\"60000\" Default Value: By default this is set to 60000 (i.e. 60 seconds). References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/http.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_distribution_connection_timeout_configured",
+      "cloud_cdn_distribution_connection_timeout_within_threshold",
+      "cloud_cdn_distribution_connection_timeout_min_30s",
+      "cloud_cdn_distribution_connection_timeout_not_disabled",
+      "cloud_cdn_distribution_connection_timeout_custom_value_set"
+    ]
+  },
+  {
+    "id": "10.10",
+    "title": "Configure maxHttpHeaderSize",
+    "assessment": "Automated",
+    "remediation": "Set maxHttpHeaderSize for each connector in $CATALINA_HOME/conf/server.xml to the appropriate setting. maxHttpHeaderSize=”8192” Default Value: The default is 8192 bytes. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/http.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_distribution_max_http_header_size_configured",
+      "cloud_cdn_distribution_max_http_header_size_within_limits",
+      "cloud_cdn_distribution_max_http_header_size_secure_value",
+      "cloud_cdn_distribution_max_http_header_size_not_exceeded",
+      "cloud_cdn_distribution_max_http_header_size_protected"
+    ]
+  },
+  {
+    "id": "10.11",
+    "title": "Force SSL for all applications",
+    "assessment": "Automated",
+    "remediation": "Set transport-guarantee to CONFIDENTIAL in $CATALINA_HOME/conf/web.xml: <user-data-constraint> <transport-guarantee>CONFIDENTIAL</transport-guarantee> </user-data-constraint> Default Value: By default this configuration is not present. References: 1. https://www.owasp.org/index.php/Securing_tomcat CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_distribution_https_redirect_enabled",
+      "cloud_cdn_distribution_min_tls_1_2",
+      "cloud_cdn_distribution_ssl_certificate_valid",
+      "cloud_cdn_distribution_ssl_enforced",
+      "cloud_cdn_distribution_secure_protocols_enabled",
+      "cloud_cdn_distribution_non_ssl_denied",
+      "cloud_cdn_distribution_tls_1_2_required",
+      "cloud_cdn_distribution_ssl_only_access",
+      "cloud_cdn_distribution_secure_transport_enabled",
+      "cloud_cdn_distribution_ssl_protocol_compliance"
+    ]
+  },
+  {
+    "id": "10.12",
+    "title": "Do not allow symbolic linking",
+    "assessment": "Automated",
+    "remediation": "In all context.xml, set the allowLinking attribute to false: <Context ... <Resources ... allowLinking=”false” /> ... </Context> Default Value: By default allowLinking has a value of false. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/resources.html 2. https://tomcat.apache.org/tomcat-9.0-doc/config/context.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_instance_symbolic_linking_disabled",
+      "compute_volume_symbolic_linking_disabled",
+      "storage_bucket_symbolic_linking_disabled",
+      "container_image_symbolic_linking_disabled",
+      "filesystem_symbolic_linking_disabled",
+      "compute_snapshot_symbolic_linking_disabled",
+      "compute_disk_symbolic_linking_disabled",
+      "compute_filesystem_symbolic_linking_disabled"
+    ]
+  },
+  {
+    "id": "10.13",
+    "title": "Do not run applications as privileged",
+    "assessment": "Automated",
+    "remediation": "Set the privileged attribute in all context.xml files to false unless it is required as for the manager application: <Context ... privileged=”false” /> Default Value: By default, privileged has a value of false. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/context.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_instance_no_privileged_mode",
+      "compute_container_no_privileged_mode",
+      "compute_pod_no_privileged_mode",
+      "compute_task_no_privileged_mode",
+      "compute_service_no_privileged_mode",
+      "compute_function_no_privileged_mode",
+      "compute_workload_no_privileged_mode",
+      "compute_deployment_no_privileged_mode",
+      "compute_job_no_privileged_mode",
+      "compute_vm_no_privileged_mode"
+    ]
+  },
+  {
+    "id": "10.14",
+    "title": "Do not allow cross context requests",
+    "assessment": "Automated",
+    "remediation": "Set the crossContext attribute in all context.xml files to false: <Context ... crossContext=”false” /> Default Value: By default crossContext has a value of false. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/context.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_distribution_cross_context_requests_disabled",
+      "cloud_cdn_distribution_cross_origin_requests_blocked",
+      "cloud_cdn_distribution_cross_site_requests_restricted",
+      "cloud_cdn_distribution_cross_domain_requests_denied",
+      "cloud_cdn_distribution_cross_origin_resource_sharing_disabled"
+    ]
+  },
+  {
+    "id": "10.15",
+    "title": "Do not resolve hosts on logging valves",
+    "assessment": "Automated",
+    "remediation": "In Connector elements, set the enableLookups attribute to false or remove it. <Connector ... enableLookups=\"false\" /> Default Value: By default, DNS lookups are disabled. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/valve.html 2. https://tomcat.apache.org/tomcat-9.0-doc/config/http.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "cloud_cdn_logging_valve_host_resolution_disabled",
+      "cloud_cdn_logging_valve_no_host_resolution",
+      "cloud_cdn_logging_valve_disable_host_lookup",
+      "cloud_cdn_logging_valve_host_resolution_denied",
+      "cloud_cdn_logging_valve_host_resolution_blocked"
+    ]
+  },
+  {
+    "id": "10.16",
+    "title": "Enable memory leak listener",
+    "assessment": "Automated",
+    "remediation": "Uncomment the JRE Memory Leak Prevention Listener in $CATALINA_HOME/conf/server.xml <Listener className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\" /> References: 1. https://tomcat.apache.org/tomcat-9.0- doc/config/listeners.html#JRE_Memory_Leak_Prevention_Listener_- _org.apache.catalina.core.JreMemoryLeakPreventionListener CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://tomcat.apache.org/tomcat-9.0- doc/config/listeners.html#JRE_Memory_Leak_Prevention_Listener_- _org.apache.catalina.core.JreMemoryLeakPreventionListener CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4 Secure Configuration of Enterprise Assets and Software Establish and maintain the secure configuration of enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/IoT devices; and servers) and software (operating systems and applications).  v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●",
+    "function_names": [
+      "compute_instance_memory_leak_listener_enabled",
+      "compute_vm_memory_leak_monitoring_enabled",
+      "compute_memory_leak_detection_enabled",
+      "compute_instance_memory_leak_alerting_enabled",
+      "compute_memory_leak_listener_active",
+      "compute_vm_memory_leak_listener_enabled",
+      "compute_memory_leak_monitoring_active",
+      "compute_instance_memory_leak_detection_active"
+    ]
+  },
+  {
+    "id": "10.17",
+    "title": "Setting Security Lifecycle Listener",
+    "assessment": "Automated",
+    "audit": "Review server.xml to ensure the Security Lifecycle Listener element is uncommented with the checkedOsUsers and minimumUmask attributes set with expected values. Remediation: Uncomment the listener in $CATALINA_BASE/conf/server.xml. If the operating system supports umask then the line in $CATALINA_HOME/bin/catalina.sh that obtains the umask also needs to be uncommented. Within Server elements add: • checkedOsUsers: A comma separated list of OS users that must not be used to start Tomcat. If not specified, the default value of root is used. • minimumUmask: The least restrictive umask that must be configured before Tomcat will start. If not specified, the default value of 0007 is used. <Listener className=\"org.apache.catalina.security.SecurityListener\" checkedOsUsers=\"alex,bob\" minimumUmask=\"0007\" /> Default Value: The Security Lifecycle Listener is not enabled by default. For checkedOsUsers, the default value is root. For minimumUmask, the default value is 0007. References: 1. https://tomcat.apache.org/tomcat-9.0- doc/config/listeners.html#Security_Lifecycle_Listener_- _org.apache.catalina.security.SecurityListener CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 5.4 Restrict Administrator Privileges to Dedicated Administrator Accounts Restrict administrator privileges to dedicated administrator accounts on enterprise assets. Conduct general computing activities, such as internet browsing, email, and productivity suite use, from the user’s primary, non-privileged account. ● ● ● v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●",
+    "description": "",
+    "rationale": "",
+    "remediation": null,
+    "references": "1. https://tomcat.apache.org/tomcat-9.0- doc/config/listeners.html#Security_Lifecycle_Listener_- _org.apache.catalina.security.SecurityListener CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 5.4 Restrict Administrator Privileges to Dedicated Administrator Accounts Restrict administrator privileges to dedicated administrator accounts on enterprise assets. Conduct general computing activities, such as internet browsing, email, and productivity suite use, from the user’s primary, non-privileged account. ● ● ● v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●",
+    "function_names": [
+      "cloud_cdn_distribution_security_lifecycle_listener_enabled",
+      "cloud_cdn_distribution_security_lifecycle_listener_configured",
+      "cloud_cdn_distribution_security_lifecycle_listener_https_only",
+      "cloud_cdn_distribution_security_lifecycle_listener_tls_1_2",
+      "cloud_cdn_distribution_security_lifecycle_listener_secure_headers",
+      "cloud_cdn_distribution_security_lifecycle_listener_logging_enabled",
+      "cloud_cdn_distribution_security_lifecycle_listener_waf_integrated",
+      "cloud_cdn_distribution_security_lifecycle_listener_origin_ssl_verified"
+    ]
+  },
+  {
+    "id": "10.18",
+    "title": "Use the logEffectiveWebXml and metadata-complete settings for deploying applications in production",
+    "assessment": "Automated",
+    "remediation": "• Set the metadata-complete value in the web.xml in each of the applications to true. Note: The metadata-complete option is not enough to disable all of annotation scanning. If there is a ServletContainerInitializer with a @HandlesTypes annotation, Tomcat has to scan your application for classes that use annotations or interfaces specified in that annotation. • Set the logEffectiveWebXml value in the context.xml in each of the application to true. Default Value: If logEffectiveWebXml and/or metadata-complete is/are not specified, the default value is false. References: 1. https://tomcat.apache.org/tomcat-9.0-doc/config/context.html 2. https://alexismp.wordpress.com/2010/07/28/servlet-3-0-fragments-and-web-xml- to-rule-them-all/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_web_app_log_effective_web_xml_enabled",
+      "compute_web_app_metadata_complete_enabled",
+      "compute_web_app_production_deployment_secure_settings",
+      "compute_web_app_deployment_log_effective_web_xml_enabled",
+      "compute_web_app_deployment_metadata_complete_enabled"
+    ]
+  },
+  {
+    "id": "10.19",
+    "title": "Ensure Manager Application Passwords are Encrypted",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://tomcat.apache.org/tomcat-9.0-doc/manager- howto.html#Configuring_Manager_Application_Access 2. https://tomcat.apache.org/tomcat-9.0- doc/config/realm.html#Memory_Based_Realm_- _org.apache.catalina.realm.MemoryRealm 3. https://tomcat.apache.org/tomcat-9.0-doc/realm- howto.html#Digested_Passwords CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.11 Encrypt Sensitive Data at Rest Encrypt sensitive data at rest on servers, applications, and databases containing sensitive data. Storage-layer encryption, also known as server-side encryption, meets the minimum requirement of this Safeguard. Additional encryption methods may include application-layer encryption, also known as client-side encryption, where access to the data storage device(s) does not permit access to the plain-text data. ● ● v7 14.8 Encrypt Sensitive Information at Rest Encrypt all sensitive information at rest using a tool that requires a secondary authentication mechanism not integrated into the operating system, in order to access the information. ●  Appendix: Summary Table CIS Benchmark Recommendation Set Correctly Yes No 1 Remove Extraneous Resources 1.1 Remove extraneous files and directories (Manual) o o 1.2 Disable Unused Connectors (Manual) o o 2 Limit Server Platform Information Leaks 2.1 Alter the Advertised server.info String (Manual) o o 2.2 Alter the Advertised server.number String (Manual) o o 2.3 Alter the Advertised server.built Date (Manual) o o 2.4 Disable X-Powered-By HTTP Header and Rename the Server Value for all Connectors (Automated) o o 2.5 Disable client facing Stack Traces (Automated) o o 2.6 Turn off TRACE (Automated) o o 2.7 Ensure Sever Header is Modified To Prevent Information Disclosure (Automated) o o 3 Protect the Shutdown Port 3.1 Set a nondeterministic Shutdown command value (Automated) o o 3.2 Disable the Shutdown port (Automated) o o 4 Protect Tomcat Configurations 4.1 Restrict access to $CATALINA_HOME (Automated) o o 4.2 Restrict access to $CATALINA_BASE (Automated) o o 4.3 Restrict access to Tomcat configuration directory (Automated) o o CIS Benchmark Recommendation Set Correctly Yes No 4.4 Restrict access to Tomcat logs directory (Automated) o o 4.5 Restrict access to Tomcat temp directory (Automated) o o 4.6 Restrict access to Tomcat binaries directory (Automated) o o 4.7 Restrict access to Tomcat web application directory (Automated) o o 4.8 Restrict access to Tomcat catalina.properties (Automated) o o 4.9 Restrict access to Tomcat catalina.policy (Automated) o o 4.10 Restrict access to Tomcat context.xml (Automated) o o 4.11 Restrict access to Tomcat logging.properties (Automated) o o 4.12 Restrict access to Tomcat server.xml (Automated) o o 4.13 Restrict access to Tomcat tomcat-users.xml (Automated) o o 4.14 Restrict access to Tomcat web.xml (Automated) o o 4.15 Restrict access to jaspic-providers.xml (Automated) o o 5 Configure Realms 5.1 Use secure Realms (Automated) o o 5.2 Use LockOut Realms (Automated) o o 6 Connector Security 6.1 Setup Client-cert Authentication (Automated) o o 6.2 Ensure SSLEnabled is set to True for Sensitive Connectors (Automated) o o 6.3 Ensure scheme is set accurately (Automated) o o CIS Benchmark Recommendation Set Correctly Yes No 6.4 Ensure secure is set to true only for SSL-enabled Connectors (Automated) o o 6.5 Ensure 'sslProtocol' is Configured Correctly for Secure Connectors (Automated) o o 7 Establish and Protect Logging Facilities 7.1 Application specific logging (Automated) o o 7.2 Specify file handler in logging.properties files (Automated) o o 7.3 Ensure className is set correctly in context.xml (Automated) o o 7.4 Ensure directory in context.xml is a secure location (Manual) o o 7.5 Ensure pattern in context.xml is correct (Automated) o o 7.6 Ensure directory in logging.properties is a secure location (Automated) o o 8 Configure Catalina Policy 8.1 Restrict runtime access to sensitive packages (Automated) o o 9 Application Deployment 9.1 Starting Tomcat with Security Manager (Manual) o o 9.2 Disabling auto deployment of applications (Automated) o o 9.3 Disable deploy on startup of applications (Automated) o o 10 Miscellaneous Configuration Settings 10.1 Ensure Web content directory is on a separate partition from the Tomcat system files (Manual) o o CIS Benchmark Recommendation Set Correctly Yes No 10.2 Restrict access to the web administration application (Automated) o o 10.3 Restrict manager application (Manual) o o 10.4 Force SSL when accessing the manager application via HTTP (Manual) o o 10.5 Rename the manager application (Manual) o o 10.6 Enable strict servlet Compliance (Manual) o o 10.7 Turn off session facade recycling (Manual) o o 10.8 Do not allow additional path delimiters (Manual) o o 10.9 Configure connectionTimeout (Automated) o o 10.10 Configure maxHttpHeaderSize (Automated) o o 10.11 Force SSL for all applications (Automated) o o 10.12 Do not allow symbolic linking (Automated) o o 10.13 Do not run applications as privileged (Automated) o o 10.14 Do not allow cross context requests (Automated) o o 10.15 Do not resolve hosts on logging valves (Automated) o o 10.16 Enable memory leak listener (Automated) o o 10.17 Setting Security Lifecycle Listener (Automated) o o 10.18 Use the logEffectiveWebXml and metadata-complete settings for deploying applications in production (Automated) o o 10.19 Ensure Manager Application Passwords are Encrypted (Manual) o o   Appendix:\tCIS\tControls\tv7\tIG\t1\tMapped Recommendations Recommendation Set Correctly Yes No 1.1 Remove extraneous files and directories o o 2.1 Alter the Advertised server.info String o o 2.2 Alter the Advertised server.number String o o 2.3 Alter the Advertised server.built Date o o 2.4 Disable X-Powered-By HTTP Header and Rename the Server Value for all Connectors o o 2.5 Disable client facing Stack Traces o o 2.6 Turn off TRACE o o 2.7 Ensure Sever Header is Modified To Prevent Information Disclosure o o 4.1 Restrict access to $CATALINA_HOME o o 4.2 Restrict access to $CATALINA_BASE o o 4.3 Restrict access to Tomcat configuration directory o o 4.4 Restrict access to Tomcat logs directory o o 4.5 Restrict access to Tomcat temp directory o o 4.6 Restrict access to Tomcat binaries directory o o 4.7 Restrict access to Tomcat web application directory o o 4.8 Restrict access to Tomcat catalina.properties o o 4.9 Restrict access to Tomcat catalina.policy o o 4.10 Restrict access to Tomcat context.xml o o 4.11 Restrict access to Tomcat logging.properties o o 4.12 Restrict access to Tomcat server.xml o o 4.13 Restrict access to Tomcat tomcat-users.xml o o 4.14 Restrict access to Tomcat web.xml o o 4.15 Restrict access to jaspic-providers.xml o o 5.1 Use secure Realms o o 5.2 Use LockOut Realms o o Recommendation Set Correctly Yes No 7.4 Ensure directory in context.xml is a secure location o o 7.6 Ensure directory in logging.properties is a secure location o o 8.1 Restrict runtime access to sensitive packages o o 9.1 Starting Tomcat with Security Manager o o 9.2 Disabling auto deployment of applications o o 9.3 Disable deploy on startup of applications o o 10.5 Rename the manager application o o 10.6 Enable strict servlet Compliance o o 10.7 Turn off session facade recycling o o 10.8 Do not allow additional path delimiters o o 10.9 Configure connectionTimeout o o 10.10 Configure maxHttpHeaderSize o o 10.12 Do not allow symbolic linking o o 10.15 Do not resolve hosts on logging valves o o 10.16 Enable memory leak listener o o 10.17 Setting Security Lifecycle Listener o o  Appendix:\tCIS\tControls\tv7\tIG\t2\tMapped Recommendations Recommendation Set Correctly Yes No 1.1 Remove extraneous files and directories o o 1.2 Disable Unused Connectors o o 2.1 Alter the Advertised server.info String o o 2.2 Alter the Advertised server.number String o o 2.3 Alter the Advertised server.built Date o o 2.4 Disable X-Powered-By HTTP Header and Rename the Server Value for all Connectors o o 2.5 Disable client facing Stack Traces o o 2.6 Turn off TRACE o o 2.7 Ensure Sever Header is Modified To Prevent Information Disclosure o o 3.1 Set a nondeterministic Shutdown command value o o 3.2 Disable the Shutdown port o o 4.1 Restrict access to $CATALINA_HOME o o 4.2 Restrict access to $CATALINA_BASE o o 4.3 Restrict access to Tomcat configuration directory o o 4.4 Restrict access to Tomcat logs directory o o 4.5 Restrict access to Tomcat temp directory o o 4.6 Restrict access to Tomcat binaries directory o o 4.7 Restrict access to Tomcat web application directory o o 4.8 Restrict access to Tomcat catalina.properties o o 4.9 Restrict access to Tomcat catalina.policy o o 4.10 Restrict access to Tomcat context.xml o o 4.11 Restrict access to Tomcat logging.properties o o 4.12 Restrict access to Tomcat server.xml o o 4.13 Restrict access to Tomcat tomcat-users.xml o o 4.14 Restrict access to Tomcat web.xml o o Recommendation Set Correctly Yes No 4.15 Restrict access to jaspic-providers.xml o o 5.1 Use secure Realms o o 5.2 Use LockOut Realms o o 6.1 Setup Client-cert Authentication o o 6.2 Ensure SSLEnabled is set to True for Sensitive Connectors o o 6.4 Ensure secure is set to true only for SSL-enabled Connectors o o 6.5 Ensure 'sslProtocol' is Configured Correctly for Secure Connectors o o 7.1 Application specific logging o o 7.2 Specify file handler in logging.properties files o o 7.3 Ensure className is set correctly in context.xml o o 7.4 Ensure directory in context.xml is a secure location o o 7.5 Ensure pattern in context.xml is correct o o 7.6 Ensure directory in logging.properties is a secure location o o 8.1 Restrict runtime access to sensitive packages o o 9.1 Starting Tomcat with Security Manager o o 9.2 Disabling auto deployment of applications o o 9.3 Disable deploy on startup of applications o o 10.2 Restrict access to the web administration application o o 10.3 Restrict manager application o o 10.4 Force SSL when accessing the manager application via HTTP o o 10.5 Rename the manager application o o 10.6 Enable strict servlet Compliance o o 10.7 Turn off session facade recycling o o 10.8 Do not allow additional path delimiters o o 10.9 Configure connectionTimeout o o 10.10 Configure maxHttpHeaderSize o o 10.11 Force SSL for all applications o o 10.12 Do not allow symbolic linking o o Recommendation Set Correctly Yes No 10.13 Do not run applications as privileged o o 10.14 Do not allow cross context requests o o 10.15 Do not resolve hosts on logging valves o o 10.16 Enable memory leak listener o o 10.17 Setting Security Lifecycle Listener o o 10.18 Use the logEffectiveWebXml and metadata-complete settings for deploying applications in production o o Appendix:\tCIS\tControls\tv7\tIG\t3\tMapped Recommendations Recommendation Set Correctly Yes No 1.1 Remove extraneous files and directories o o 1.2 Disable Unused Connectors o o 2.1 Alter the Advertised server.info String o o 2.2 Alter the Advertised server.number String o o 2.3 Alter the Advertised server.built Date o o 2.4 Disable X-Powered-By HTTP Header and Rename the Server Value for all Connectors o o 2.5 Disable client facing Stack Traces o o 2.6 Turn off TRACE o o 2.7 Ensure Sever Header is Modified To Prevent Information Disclosure o o 3.1 Set a nondeterministic Shutdown command value o o 3.2 Disable the Shutdown port o o 4.1 Restrict access to $CATALINA_HOME o o 4.2 Restrict access to $CATALINA_BASE o o 4.3 Restrict access to Tomcat configuration directory o o 4.4 Restrict access to Tomcat logs directory o o 4.5 Restrict access to Tomcat temp directory o o 4.6 Restrict access to Tomcat binaries directory o o 4.7 Restrict access to Tomcat web application directory o o 4.8 Restrict access to Tomcat catalina.properties o o 4.9 Restrict access to Tomcat catalina.policy o o 4.10 Restrict access to Tomcat context.xml o o 4.11 Restrict access to Tomcat logging.properties o o 4.12 Restrict access to Tomcat server.xml o o 4.13 Restrict access to Tomcat tomcat-users.xml o o 4.14 Restrict access to Tomcat web.xml o o Recommendation Set Correctly Yes No 4.15 Restrict access to jaspic-providers.xml o o 5.1 Use secure Realms o o 5.2 Use LockOut Realms o o 6.1 Setup Client-cert Authentication o o 6.2 Ensure SSLEnabled is set to True for Sensitive Connectors o o 6.4 Ensure secure is set to true only for SSL-enabled Connectors o o 6.5 Ensure 'sslProtocol' is Configured Correctly for Secure Connectors o o 7.1 Application specific logging o o 7.2 Specify file handler in logging.properties files o o 7.3 Ensure className is set correctly in context.xml o o 7.4 Ensure directory in context.xml is a secure location o o 7.5 Ensure pattern in context.xml is correct o o 7.6 Ensure directory in logging.properties is a secure location o o 8.1 Restrict runtime access to sensitive packages o o 9.1 Starting Tomcat with Security Manager o o 9.2 Disabling auto deployment of applications o o 9.3 Disable deploy on startup of applications o o 10.1 Ensure Web content directory is on a separate partition from the Tomcat system files o o 10.2 Restrict access to the web administration application o o 10.3 Restrict manager application o o 10.4 Force SSL when accessing the manager application via HTTP o o 10.5 Rename the manager application o o 10.6 Enable strict servlet Compliance o o 10.7 Turn off session facade recycling o o 10.8 Do not allow additional path delimiters o o 10.9 Configure connectionTimeout o o 10.10 Configure maxHttpHeaderSize o o 10.11 Force SSL for all applications o o Recommendation Set Correctly Yes No 10.12 Do not allow symbolic linking o o 10.13 Do not run applications as privileged o o 10.14 Do not allow cross context requests o o 10.15 Do not resolve hosts on logging valves o o 10.16 Enable memory leak listener o o 10.17 Setting Security Lifecycle Listener o o 10.18 Use the logEffectiveWebXml and metadata-complete settings for deploying applications in production o o 10.19 Ensure Manager Application Passwords are Encrypted o o  Appendix:\tCIS\tControls\tv7\tUnmapped Recommendations Recommendation Set Correctly Yes No 6.3 Ensure scheme is set accurately o o Appendix:\tCIS\tControls\tv8\tIG\t1\tMapped Recommendations Recommendation Set Correctly Yes No 3.2 Disable the Shutdown port o o 4.1 Restrict access to $CATALINA_HOME o o 4.2 Restrict access to $CATALINA_BASE o o 4.3 Restrict access to Tomcat configuration directory o o 4.4 Restrict access to Tomcat logs directory o o 4.5 Restrict access to Tomcat temp directory o o 4.6 Restrict access to Tomcat binaries directory o o 4.7 Restrict access to Tomcat web application directory o o 4.8 Restrict access to Tomcat catalina.properties o o 4.9 Restrict access to Tomcat catalina.policy o o 4.10 Restrict access to Tomcat context.xml o o 4.11 Restrict access to Tomcat logging.properties o o 4.12 Restrict access to Tomcat server.xml o o 4.13 Restrict access to Tomcat tomcat-users.xml o o 4.14 Restrict access to Tomcat web.xml o o 4.15 Restrict access to jaspic-providers.xml o o 6.1 Setup Client-cert Authentication o o 7.4 Ensure directory in context.xml is a secure location o o 8.1 Restrict runtime access to sensitive packages o o 10.1 Ensure Web content directory is on a separate partition from the Tomcat system files o o 10.2 Restrict access to the web administration application o o 10.3 Restrict manager application o o 10.13 Do not run applications as privileged o o 10.15 Do not resolve hosts on logging valves o o 10.17 Setting Security Lifecycle Listener o o   Appendix:\tCIS\tControls\tv8\tIG\t2\tMapped Recommendations Recommendation Set Correctly Yes No 1.1 Remove extraneous files and directories o o 1.2 Disable Unused Connectors o o 3.2 Disable the Shutdown port o o 4.1 Restrict access to $CATALINA_HOME o o 4.2 Restrict access to $CATALINA_BASE o o 4.3 Restrict access to Tomcat configuration directory o o 4.4 Restrict access to Tomcat logs directory o o 4.5 Restrict access to Tomcat temp directory o o 4.6 Restrict access to Tomcat binaries directory o o 4.7 Restrict access to Tomcat web application directory o o 4.8 Restrict access to Tomcat catalina.properties o o 4.9 Restrict access to Tomcat catalina.policy o o 4.10 Restrict access to Tomcat context.xml o o 4.11 Restrict access to Tomcat logging.properties o o 4.12 Restrict access to Tomcat server.xml o o 4.13 Restrict access to Tomcat tomcat-users.xml o o 4.14 Restrict access to Tomcat web.xml o o 4.15 Restrict access to jaspic-providers.xml o o 6.1 Setup Client-cert Authentication o o 6.2 Ensure SSLEnabled is set to True for Sensitive Connectors o o 6.3 Ensure scheme is set accurately o o 7.1 Application specific logging o o 7.2 Specify file handler in logging.properties files o o 7.3 Ensure className is set correctly in context.xml o o 7.4 Ensure directory in context.xml is a secure location o o 8.1 Restrict runtime access to sensitive packages o o Recommendation Set Correctly Yes No 10.1 Ensure Web content directory is on a separate partition from the Tomcat system files o o 10.2 Restrict access to the web administration application o o 10.3 Restrict manager application o o 10.4 Force SSL when accessing the manager application via HTTP o o 10.5 Rename the manager application o o 10.7 Turn off session facade recycling o o 10.8 Do not allow additional path delimiters o o 10.10 Configure maxHttpHeaderSize o o 10.11 Force SSL for all applications o o 10.13 Do not run applications as privileged o o 10.15 Do not resolve hosts on logging valves o o 10.17 Setting Security Lifecycle Listener o o 10.18 Use the logEffectiveWebXml and metadata-complete settings for deploying applications in production o o 10.19 Ensure Manager Application Passwords are Encrypted o o  Appendix:\tCIS\tControls\tv8\tIG\t3\tMapped Recommendations Recommendation Set Correctly Yes No 1.1 Remove extraneous files and directories o o 1.2 Disable Unused Connectors o o 3.2 Disable the Shutdown port o o 4.1 Restrict access to $CATALINA_HOME o o 4.2 Restrict access to $CATALINA_BASE o o 4.3 Restrict access to Tomcat configuration directory o o 4.4 Restrict access to Tomcat logs directory o o 4.5 Restrict access to Tomcat temp directory o o 4.6 Restrict access to Tomcat binaries directory o o 4.7 Restrict access to Tomcat web application directory o o 4.8 Restrict access to Tomcat catalina.properties o o 4.9 Restrict access to Tomcat catalina.policy o o 4.10 Restrict access to Tomcat context.xml o o 4.11 Restrict access to Tomcat logging.properties o o 4.12 Restrict access to Tomcat server.xml o o 4.13 Restrict access to Tomcat tomcat-users.xml o o 4.14 Restrict access to Tomcat web.xml o o 4.15 Restrict access to jaspic-providers.xml o o 6.1 Setup Client-cert Authentication o o 6.2 Ensure SSLEnabled is set to True for Sensitive Connectors o o 6.3 Ensure scheme is set accurately o o 7.1 Application specific logging o o 7.2 Specify file handler in logging.properties files o o 7.3 Ensure className is set correctly in context.xml o o 7.4 Ensure directory in context.xml is a secure location o o 8.1 Restrict runtime access to sensitive packages o o Recommendation Set Correctly Yes No 10.1 Ensure Web content directory is on a separate partition from the Tomcat system files o o 10.2 Restrict access to the web administration application o o 10.3 Restrict manager application o o 10.4 Force SSL when accessing the manager application via HTTP o o 10.5 Rename the manager application o o 10.6 Enable strict servlet Compliance o o 10.7 Turn off session facade recycling o o 10.8 Do not allow additional path delimiters o o 10.10 Configure maxHttpHeaderSize o o 10.11 Force SSL for all applications o o 10.12 Do not allow symbolic linking o o 10.13 Do not run applications as privileged o o 10.14 Do not allow cross context requests o o 10.15 Do not resolve hosts on logging valves o o 10.17 Setting Security Lifecycle Listener o o 10.18 Use the logEffectiveWebXml and metadata-complete settings for deploying applications in production o o 10.19 Ensure Manager Application Passwords are Encrypted o o  Appendix:\tCIS\tControls\tv8\tUnmapped Recommendations Recommendation Set Correctly Yes No 2.1 Alter the Advertised server.info String o o 2.2 Alter the Advertised server.number String o o 2.3 Alter the Advertised server.built Date o o 2.4 Disable X-Powered-By HTTP Header and Rename the Server Value for all Connectors o o 2.5 Disable client facing Stack Traces o o 2.6 Turn off TRACE o o 2.7 Ensure Sever Header is Modified To Prevent Information Disclosure o o 3.1 Set a nondeterministic Shutdown command value o o 5.1 Use secure Realms o o 7.5 Ensure pattern in context.xml is correct o o 7.6 Ensure directory in logging.properties is a secure location o o  Appendix:\tChange\tHistory Date Version Changes for this version Sep 25, 2019 1.0.0 #109 10.1R Do not allow custom header st... (Ticket 2390) Sep 25, 2019 1.0.0 #110 7.1R Configure log file size limit (Ticket 2391) Sep 30, 2019 1.0.0 Permissions for Tomcat config files (Ticket 9226) Sep 30, 2019 1.0.0 ‘Remediation’ instructs one to change pe... (Ticket 9228) Oct 1, 2019 1.0.0 Map Apache Tomcat 9 Benchmark to CIS Con... (Ticket 9232) Oct 21, 2019 1.0.0 Initial Release Sep 2, 2020 1.1.0 Review note on Audit Procedure (Ticket 9692) Sep 2, 2020 1.1.0 Revise profile level due to impact (Ticket 11329) Sep 2, 2020 1.1.0 Ensure only TLS 1.2 is enabled (Ticket 11152) Nov 6, 2020 1.1.0 Encrypt admins password (Ticket 7609) Dec 18, 2020 1.1.0 Planned Update June 1, 2022 1.2.0 Applicability of transport-guarantee (Ticket 11943) June 26, 2022 1.2.0 Security Lifecycle Listener – org.apache.catalina.security.SecurityListener (Ticket 13012) August 15, 2022 1.2.0 10.8 Do not allow additional path delimiters (Ticket 13197) Sept 30, 2022 1.2.0 Planned Update",
+    "function_names": [
+      "compute_manager_application_password_encrypted",
+      "compute_manager_application_password_encryption_enabled",
+      "compute_manager_application_password_storage_encrypted",
+      "compute_manager_application_credential_encryption_enabled",
+      "compute_manager_application_secret_encrypted"
+    ]
+  }
+]

@@ -1,0 +1,2080 @@
+[
+  {
+    "id": "1.1.1",
+    "title": "Ensure a separate partition for containers has been created",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_partition_created",
+      "compute_container_separate_partition_enabled",
+      "compute_container_dedicated_partition_required",
+      "compute_container_storage_isolation_enabled",
+      "compute_container_partition_isolated"
+    ]
+  },
+  {
+    "id": "1.1.2",
+    "title": "Ensure only trusted users are allowed to control Docker daemon",
+    "assessment": "Manual",
+    "remediation": "You should remove any untrusted users from the docker group. Additionally, you should not create a mapping of sensitive directories from the host to container volumes. Default Value: Not Applicable References: 1. https://docs.docker.com/engine/security/#docker-daemon-attack-surface 2. http://www.projectatomic.io/blog/2015/08/why-we-dont-let-non-root-users-run- docker-in-centos-fedora-or-rhel/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_daemon_trusted_users_only",
+      "docker_daemon_control_restricted",
+      "docker_daemon_admin_users_limited",
+      "docker_daemon_privileged_access_restricted",
+      "docker_daemon_authz_users_approved"
+    ]
+  },
+  {
+    "id": "1.1.3",
+    "title": "Ensure auditing is configured for the Docker daemon",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://access.redhat.com/documentation/en- us/red_hat_enterprise_linux/8/html/system_design_guide/auditing-the- system_system-design-guide CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 8.2 Collect Audit Logs Collect audit logs. Ensure that logging, per the enterprise’s audit log management process, has been enabled across enterprise assets. ● ● ● v7 6.2 Activate audit logging Ensure that local logging has been enabled on all systems and networking devices. ● ● ● v7 6.3 Enable Detailed Logging Enable system logging to include detailed information such as an event source, date, user, timestamp, source addresses, destination addresses, and other useful elements. ● ●",
+    "function_names": [
+      "docker_daemon_auditing_enabled",
+      "docker_daemon_audit_logging_enabled",
+      "docker_daemon_audit_config_present",
+      "docker_daemon_audit_policy_configured",
+      "docker_daemon_audit_logs_retention_set"
+    ]
+  },
+  {
+    "id": "1.1.4",
+    "title": "Ensure auditing is configured for Docker files and directories - /run/containerd",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://access.redhat.com/documentation/en- us/red_hat_enterprise_linux/8/html/system_design_guide/auditing-the- system_system-design-guide CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 8.5 Collect Detailed Audit Logs Configure detailed audit logging for enterprise assets containing sensitive data. Include event source, date, username, timestamp, source addresses, destination addresses, and other useful elements that could assist in a forensic investigation. ● ● v7 14.9 Enforce Detail Logging for Access or Changes to Sensitive Data Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring). ●",
+    "function_names": [
+      "container_runtime_audit_logging_enabled",
+      "containerd_run_directory_auditing_enabled",
+      "docker_file_audit_configuration_valid",
+      "container_runtime_directory_auditing_active",
+      "containerd_audit_rules_configured",
+      "docker_audit_logging_for_run_directory_enabled",
+      "container_runtime_audit_policy_configured",
+      "containerd_directory_audit_rules_present"
+    ]
+  },
+  {
+    "id": "1.1.5",
+    "title": "Ensure auditing is configured for Docker files and directories - /var/lib/docker",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_audit_logging_enabled",
+      "docker_file_auditing_configured",
+      "docker_directory_auditing_enabled",
+      "docker_var_lib_audit_enabled",
+      "docker_system_audit_rules_configured",
+      "docker_file_integrity_monitoring_enabled",
+      "docker_audit_policy_active",
+      "docker_sensitive_path_auditing_enabled"
+    ]
+  },
+  {
+    "id": "1.1.6",
+    "title": "Ensure auditing is configured for Docker files and directories - /etc/docker",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://access.redhat.com/documentation/en- us/red_hat_enterprise_linux/8/html/system_design_guide/auditing-the- system_system-design-guide CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 8.5 Collect Detailed Audit Logs Configure detailed audit logging for enterprise assets containing sensitive data. Include event source, date, username, timestamp, source addresses, destination addresses, and other useful elements that could assist in a forensic investigation. ● ● v7 14.9 Enforce Detail Logging for Access or Changes to Sensitive Data Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring). ●",
+    "function_names": [
+      "docker_audit_logging_enabled",
+      "docker_file_audit_config_enabled",
+      "docker_directory_audit_config_enabled",
+      "docker_etc_audit_rules_configured",
+      "docker_audit_policy_configured",
+      "docker_system_audit_enabled",
+      "docker_config_audit_logging_active",
+      "docker_audit_rules_present",
+      "docker_audit_logging_configured",
+      "docker_etc_audit_logging_enabled"
+    ]
+  },
+  {
+    "id": "1.1.7",
+    "title": "Ensure auditing is configured for Docker files and directories - docker.service",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_service_audit_logging_enabled",
+      "docker_service_file_auditing_enabled",
+      "docker_service_directory_auditing_enabled",
+      "docker_service_audit_config_valid",
+      "docker_service_audit_rules_configured",
+      "docker_service_audit_logs_retained",
+      "docker_service_audit_logs_immutable",
+      "docker_service_audit_logs_centralized",
+      "docker_service_audit_logs_encrypted",
+      "docker_service_audit_logs_access_restricted"
+    ]
+  },
+  {
+    "id": "1.1.8",
+    "title": "Ensure auditing is configured for Docker files and directories - containerd.sock",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_containerd_socket_auditing_enabled",
+      "docker_containerd_socket_file_monitoring_enabled",
+      "docker_containerd_socket_access_logging_enabled",
+      "docker_containerd_socket_audit_rules_configured",
+      "docker_containerd_socket_file_integrity_monitored",
+      "docker_containerd_socket_permission_audited",
+      "docker_containerd_socket_activity_logging_enabled",
+      "docker_containerd_socket_security_audit_enabled"
+    ]
+  },
+  {
+    "id": "1.1.9",
+    "title": "Ensure auditing is configured for Docker files and directories - docker.sock",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_file_auditing_enabled",
+      "docker_directory_auditing_enabled",
+      "docker_sock_auditing_enabled",
+      "docker_file_audit_logging_enabled",
+      "docker_directory_audit_logging_enabled",
+      "docker_sock_audit_logging_enabled",
+      "docker_file_audit_rules_configured",
+      "docker_directory_audit_rules_configured",
+      "docker_sock_audit_rules_configured"
+    ]
+  },
+  {
+    "id": "1.1.10",
+    "title": "Ensure auditing is configured for Docker files and directories - /etc/default/docker",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_file_auditing_enabled",
+      "docker_directory_auditing_enabled",
+      "docker_default_config_auditing_enabled",
+      "docker_config_file_auditing_enabled",
+      "docker_system_file_auditing_enabled",
+      "docker_etc_default_auditing_enabled",
+      "docker_audit_rules_configured",
+      "docker_file_integrity_monitoring_enabled",
+      "docker_config_file_monitoring_enabled",
+      "docker_audit_logging_enabled"
+    ]
+  },
+  {
+    "id": "1.1.11",
+    "title": "Ensure auditing is configured for Docker files and directories - /etc/docker/daemon.json",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_daemon_auditing_enabled",
+      "docker_daemon_file_audit_logging_enabled",
+      "docker_daemon_config_audit_enabled",
+      "docker_daemon_json_audit_logging_enabled",
+      "docker_config_audit_logging_enabled",
+      "docker_daemon_audit_logging_active",
+      "docker_daemon_audit_policy_configured",
+      "docker_daemon_audit_rules_present"
+    ]
+  },
+  {
+    "id": "1.1.12",
+    "title": "Ensure auditing is configured for Docker files and directories - /etc/containerd/config.toml",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_runtime_config_audit_enabled",
+      "container_runtime_config_file_monitoring_enabled",
+      "container_runtime_config_audit_logging_enabled",
+      "containerd_config_audit_rules_configured",
+      "containerd_config_file_integrity_monitored",
+      "container_runtime_config_audit_policy_enabled",
+      "containerd_config_audit_logging_active",
+      "container_runtime_config_file_access_audited"
+    ]
+  },
+  {
+    "id": "1.1.13",
+    "title": "Ensure auditing is configured for Docker files and directories - /etc/sysconfig/docker",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_file_auditing_enabled",
+      "docker_directory_auditing_enabled",
+      "docker_sysconfig_audit_rules_configured",
+      "docker_file_integrity_monitoring_enabled",
+      "docker_config_audit_logging_enabled",
+      "docker_sysconfig_file_audit_enabled",
+      "docker_directory_access_audited",
+      "docker_file_modification_audited"
+    ]
+  },
+  {
+    "id": "1.1.14",
+    "title": "Ensure auditing is configured for Docker files and directories - /usr/bin/containerd",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_containerd_audit_enabled",
+      "docker_containerd_audit_logging_enabled",
+      "docker_containerd_audit_config_valid",
+      "docker_containerd_audit_rules_configured",
+      "docker_containerd_audit_file_permissions_correct",
+      "docker_containerd_audit_directory_monitoring_enabled",
+      "docker_containerd_audit_integrity_verified",
+      "docker_containerd_audit_access_restricted",
+      "docker_containerd_audit_retention_configured",
+      "docker_containerd_audit_events_captured"
+    ]
+  },
+  {
+    "id": "1.1.15",
+    "title": "Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_runtime_audit_enabled",
+      "containerd_shim_audit_logging_enabled",
+      "docker_file_audit_configured",
+      "containerd_shim_audit_rules_present",
+      "container_runtime_audit_logging_active",
+      "docker_directory_audit_enabled",
+      "containerd_shim_audit_policy_configured",
+      "container_runtime_audit_logging_configured"
+    ]
+  },
+  {
+    "id": "1.1.16",
+    "title": "Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_runtime_audit_enabled",
+      "containerd_shim_runc_audit_enabled",
+      "docker_file_auditing_enabled",
+      "container_runtime_audit_logging_enabled",
+      "containerd_shim_runc_audit_logging_enabled",
+      "docker_directory_auditing_enabled",
+      "container_runtime_file_audit_enabled",
+      "containerd_shim_runc_file_audit_enabled"
+    ]
+  },
+  {
+    "id": "1.1.17",
+    "title": "Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_runtime_audit_logging_enabled",
+      "containerd_shim_runc_v2_auditing_enabled",
+      "docker_file_audit_configuration_enabled",
+      "container_runtime_file_integrity_monitoring_enabled",
+      "containerd_shim_runc_v2_file_auditing_enabled",
+      "docker_directory_audit_logging_active",
+      "container_runtime_audit_policy_configured",
+      "containerd_shim_runc_v2_audit_rules_present"
+    ]
+  },
+  {
+    "id": "1.1.18",
+    "title": "Ensure auditing is configured for Docker files and directories - /usr/bin/runc",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://access.redhat.com/documentation/en- us/red_hat_enterprise_linux/8/html/system_design_guide/auditing-the- system_system-design-guide 2. https://containerd.io CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 8.5 Collect Detailed Audit Logs Configure detailed audit logging for enterprise assets containing sensitive data. Include event source, date, username, timestamp, source addresses, destination addresses, and other useful elements that could assist in a forensic investigation. ● ● v7 14.9 Enforce Detail Logging for Access or Changes to Sensitive Data Enforce detailed audit logging for access to sensitive data or changes to sensitive data (utilizing tools such as File Integrity Monitoring or Security Information and Event Monitoring). ●  1.2 General Configuration This section contains general host recommendations for systems running Docker",
+    "function_names": [
+      "docker_file_audit_enabled",
+      "docker_directory_audit_enabled",
+      "docker_runc_audit_enabled",
+      "docker_file_audit_logging_enabled",
+      "docker_directory_audit_logging_enabled",
+      "docker_runc_audit_logging_enabled",
+      "docker_file_audit_config_present",
+      "docker_directory_audit_config_present",
+      "docker_runc_audit_config_present"
+    ]
+  },
+  {
+    "id": "1.2.1",
+    "title": "Ensure the container host has been Hardened",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_host_hardened",
+      "compute_container_host_secure_boot_enabled",
+      "compute_container_host_unnecessary_services_disabled",
+      "compute_container_host_kernel_parameters_configured",
+      "compute_container_host_firewall_enabled",
+      "compute_container_host_automatic_updates_enabled",
+      "compute_container_host_root_login_disabled",
+      "compute_container_host_password_policy_enforced",
+      "compute_container_host_audit_logging_enabled",
+      "compute_container_host_file_permissions_restricted"
+    ]
+  },
+  {
+    "id": "1.2.2",
+    "title": "Ensure that the version of Docker is up to date",
+    "assessment": "Manual",
+    "remediation": "You should monitor versions of Docker releases and make sure your software is updated as required. Default Value: Not Applicable References: 1. https://docs.docker.com/engine/install/ 2. https://docs.docker.com/engine/release-notes/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://docs.docker.com/engine/install/ 2. https://docs.docker.com/engine/release-notes/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16.5 Use Up-to-Date and Trusted Third-Party Software Components Use up-to-date and trusted third-party software components. When possible, choose established and proven frameworks and libraries that provide adequate security. Acquire these components from trusted sources or evaluate the software for vulnerabilities before use. ● ● v7 3 Continuous Vulnerability Management Continuous Vulnerability Management  2 Docker daemon configuration This section lists the recommendations that alter and secure the behavior of the Docker daemon. The settings that are under this section affect ALL container instances. Note: Docker daemon options, when running in the default rootful mode, can also be controlled using files such as /etc/sysconfig/docker, /etc/default/docker, the systemd unit file or /etc/docker/daemon.json. Also, note that Docker in daemon mode can be identified as /usr/bin/dockerd, or having -d or daemon as the argument to docker service. Note: When running in rootless mode does change all configuration file locations and has some known limitations regarding e.g privileged TCP/UDP ports and specific prerequisites depending on which distribution that is used.",
+    "function_names": [
+      "docker_engine_version_up_to_date",
+      "docker_engine_version_current",
+      "docker_engine_version_latest",
+      "docker_engine_version_supported",
+      "docker_engine_version_recent",
+      "docker_engine_version_patched",
+      "docker_engine_version_secure",
+      "docker_engine_version_compliant"
+    ]
+  },
+  {
+    "id": "2.1",
+    "title": "Run the Docker daemon as a non-root user, if possible",
+    "assessment": "Manual",
+    "remediation": "Follow the current Docker documentation on how to install the Docker daemon as a non-root user. Default Value: The Docker daemon is running as the root user by default. References: 1. https://docs.docker.com/engine/security/rootless/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_daemon_non_root_user",
+      "docker_service_non_root_privileges",
+      "docker_daemon_low_privilege_mode",
+      "docker_container_non_root_execution",
+      "docker_host_non_root_daemon",
+      "docker_engine_non_root_operation",
+      "docker_daemon_user_namespace_remapping",
+      "docker_service_user_isolation_enabled",
+      "docker_daemon_rootless_mode_enabled",
+      "docker_host_user_namespace_enabled"
+    ]
+  },
+  {
+    "id": "2.2",
+    "title": "Ensure network traffic is restricted between containers on the default bridge",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_network_restricted",
+      "compute_container_default_bridge_isolated",
+      "compute_container_inter_container_traffic_blocked",
+      "compute_container_bridge_network_restricted",
+      "compute_container_default_network_denied",
+      "compute_container_bridge_traffic_isolated",
+      "compute_container_network_default_denied",
+      "compute_container_inter_container_communication_blocked"
+    ]
+  },
+  {
+    "id": "2.3",
+    "title": "Ensure the logging level is set to 'info'",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloudtrail_trail_logging_level_info",
+      "cloudtrail_trail_logging_level_info_all_regions",
+      "cloudtrail_trail_logging_level_info_enabled",
+      "cloudtrail_trail_logging_level_info_minimum",
+      "cloudtrail_trail_logging_level_info_required"
+    ]
+  },
+  {
+    "id": "2.4",
+    "title": "Ensure Docker is allowed to make changes to iptables",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_iptables_changes_allowed",
+      "docker_iptables_modification_enabled",
+      "docker_iptables_write_permissions_granted",
+      "docker_iptables_management_configured",
+      "docker_iptables_access_permitted"
+    ]
+  },
+  {
+    "id": "2.5",
+    "title": "Ensure insecure registries are not used",
+    "assessment": "Manual",
+    "remediation": "You should ensure that no insecure registries are in use. Default Value: By default, Docker assumes all, but local, registries are secure. Additional Information: Docker engine always include 127.0.0.0/8 and ::1/128 as insecure registers CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "container_registry_insecure_registries_disabled",
+      "container_registry_insecure_endpoints_blocked",
+      "container_registry_insecure_sources_restricted",
+      "container_registry_insecure_connections_denied",
+      "container_registry_insecure_registries_not_used"
+    ]
+  },
+  {
+    "id": "2.6",
+    "title": "Ensure aufs storage driver is not used",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_aufs_disabled",
+      "container_runtime_aufs_not_used",
+      "docker_storage_aufs_disabled",
+      "container_aufs_driver_disabled",
+      "container_host_aufs_storage_disabled"
+    ]
+  },
+  {
+    "id": "2.7",
+    "title": "Ensure devicemapper storage driver is not used",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_devicemapper_disabled",
+      "container_storage_driver_devicemapper_not_used",
+      "compute_container_storage_no_devicemapper",
+      "container_runtime_devicemapper_disabled",
+      "compute_container_storage_driver_restricted"
+    ]
+  },
+  {
+    "id": "2.8",
+    "title": "Ensure TLS authentication for Docker daemon is configured",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_docker_daemon_tls_authentication_enabled",
+      "compute_docker_daemon_tls_authentication_required",
+      "compute_docker_daemon_tls_authentication_configured",
+      "compute_docker_daemon_tls_authentication_enforced",
+      "compute_docker_daemon_tls_authentication_valid"
+    ]
+  },
+  {
+    "id": "2.9",
+    "title": "Ensure the default ulimit is configured appropriately",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/commandline/dockerd/#default-ulimit- settings CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16.7 Use Standard Hardening Configuration Templates for Application Infrastructure Use standard, industry-recommended hardening configuration templates for application infrastructure components. This includes underlying servers, databases, and web servers, and applies to cloud containers, Platform as a Service (PaaS) components, and SaaS components. Do not allow in-house developed software to weaken configuration hardening. ● ● v7 18 Application Software Security Application Software Security",
+    "function_names": [
+      "compute_instance_default_ulimit_configured",
+      "compute_instance_ulimit_secure_values",
+      "compute_instance_ulimit_nofile_configured",
+      "compute_instance_ulimit_nproc_configured",
+      "compute_instance_ulimit_memlock_configured",
+      "compute_instance_ulimit_core_configured",
+      "compute_instance_ulimit_fsize_configured",
+      "compute_instance_ulimit_cpu_configured",
+      "compute_instance_ulimit_as_configured",
+      "compute_instance_ulimit_rss_configured"
+    ]
+  },
+  {
+    "id": "2.10",
+    "title": "Enable user namespace support",
+    "assessment": "Manual",
+    "remediation": "Please consult the Docker documentation for various ways in which this can be configured depending upon your requirements. Your steps might also vary based on platform - For example, on Red Hat, sub-UIDs and sub-GIDs mapping creation do not work automatically. You might have to create your own mapping. The high-level steps are as below: Step 1: Ensure that the files /etc/subuid and /etc/subgid exist. touch /etc/subuid /etc/subgid Step 2: Start the docker daemon with --userns-remap flag dockerd --userns-remap=default Default Value: By default, user namespace is not remapped. Consideration should be given to implementing this in line with the requirements of the applications being used and the organization's security policy. References: 1. https://man7.org/linux/man-pages/man7/user_namespaces.7.html 2. https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-user- namespace-options CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_container_user_namespace_enabled",
+      "compute_container_user_namespace_support_enabled",
+      "compute_container_user_namespace_configured",
+      "compute_container_user_namespace_active",
+      "compute_container_user_namespace_remediation_required"
+    ]
+  },
+  {
+    "id": "2.11",
+    "title": "Ensure the default cgroup usage has been confirmed",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_default_cgroup_usage_confirmed",
+      "compute_container_default_cgroup_usage_confirmed",
+      "compute_pod_default_cgroup_usage_confirmed",
+      "compute_service_default_cgroup_usage_confirmed",
+      "compute_system_default_cgroup_usage_confirmed",
+      "compute_process_default_cgroup_usage_confirmed",
+      "compute_resource_default_cgroup_usage_confirmed"
+    ]
+  },
+  {
+    "id": "2.12",
+    "title": "Ensure base device size is not changed until needed",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/commandline/dockerd/#storage-driver- options CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16.7 Use Standard Hardening Configuration Templates for Application Infrastructure Use standard, industry-recommended hardening configuration templates for application infrastructure components. This includes underlying servers, databases, and web servers, and applies to cloud containers, Platform as a Service (PaaS) components, and SaaS components. Do not allow in-house developed software to weaken configuration hardening. ● ● v7 18 Application Software Security Application Software Security",
+    "function_names": [
+      "compute_instance_base_device_size_unchanged_until_needed",
+      "compute_volume_base_size_default_until_required",
+      "compute_disk_initial_size_preserved_until_usage",
+      "compute_storage_default_size_maintained_until_demand",
+      "compute_device_base_capacity_unmodified_until_necessary"
+    ]
+  },
+  {
+    "id": "2.13",
+    "title": "Ensure that authorization for Docker client commands is enabled",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_docker_auth_enabled",
+      "compute_docker_client_auth_required",
+      "compute_docker_remote_access_restricted",
+      "compute_docker_authz_enabled",
+      "compute_docker_command_auth_enabled"
+    ]
+  },
+  {
+    "id": "2.14",
+    "title": "Ensure centralized and remote logging is configured",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloudtrail_trail_logging_enabled",
+      "cloudtrail_trail_multi_region_enabled",
+      "cloudtrail_trail_log_file_validation_enabled",
+      "cloudtrail_trail_logs_encrypted",
+      "cloudtrail_trail_logs_centralized",
+      "cloudtrail_trail_logs_remote_storage_enabled",
+      "cloudtrail_trail_logs_retention_over_90d",
+      "cloudtrail_trail_logs_monitoring_enabled",
+      "cloudtrail_trail_logs_integrity_monitoring_enabled",
+      "cloudtrail_trail_logs_immutable_storage_enabled"
+    ]
+  },
+  {
+    "id": "2.15",
+    "title": "Ensure containers are restricted from acquiring new privileges",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/commandline/dockerd/ 2. https://github.com/moby/moby/pull/20727 CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 6.1 Establish an Access Granting Process Establish and follow a process, preferably automated, for granting access to enterprise assets upon new hire, rights grant, or role change of a user. ● ● ● v7 4 Controlled Use of Administrative Privileges Controlled Use of Administrative Privileges",
+    "function_names": [
+      "compute_container_no_privilege_escalation",
+      "container_runtime_privilege_restriction_enabled",
+      "container_security_no_new_privileges",
+      "container_runtime_privilege_escalation_blocked",
+      "compute_container_privilege_escalation_disabled"
+    ]
+  },
+  {
+    "id": "2.16",
+    "title": "Ensure live restore is enabled",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_disk_live_restore_enabled",
+      "compute_disk_live_restore_enabled_all_regions",
+      "compute_disk_live_restore_enabled_min_version",
+      "compute_disk_live_restore_enabled_default",
+      "compute_disk_live_restore_enabled_automatic"
+    ]
+  },
+  {
+    "id": "2.17",
+    "title": "Ensure Userland Proxy is Disabled",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_userland_proxy_disabled",
+      "compute_vm_userland_proxy_disabled",
+      "gcp_compute_instance_userland_proxy_disabled",
+      "aws_ec2_instance_userland_proxy_disabled",
+      "azure_vm_userland_proxy_disabled",
+      "container_runtime_userland_proxy_disabled",
+      "kubernetes_node_userland_proxy_disabled",
+      "gke_node_userland_proxy_disabled",
+      "eks_node_userland_proxy_disabled",
+      "aks_node_userland_proxy_disabled"
+    ]
+  },
+  {
+    "id": "2.18",
+    "title": "Ensure that a daemon-wide custom seccomp profile is applied if appropriate",
+    "assessment": "Manual",
+    "remediation": "By default, Docker's default seccomp profile is applied. If this is adequate for your environment, no action is necessary. Alternatively, if you choose to apply your own seccomp profile, use the --seccomp-profile flag at daemon start or put it in the daemon runtime parameters file. dockerd --seccomp-profile </path/to/seccomp/profile> Default Value: By default, Docker applies a default seccomp profile. References: 1. https://docs.docker.com/engine/security/seccomp/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_container_seccomp_profile_applied",
+      "compute_container_custom_seccomp_enabled",
+      "compute_container_seccomp_profile_configured",
+      "compute_container_seccomp_restrictions_enforced",
+      "compute_container_seccomp_profile_default_denied"
+    ]
+  },
+  {
+    "id": "2.19",
+    "title": "Ensure that experimental features are not implemented in production",
+    "assessment": "Manual",
+    "remediation": "You should not pass --experimental as a runtime parameter to the Docker daemon on production systems. Default Value: By default, experimental features are not activated in the Docker daemon. References: 1. https://docs.docker.com/engine/reference/commandline/dockerd/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_instance_experimental_features_disabled",
+      "compute_cluster_experimental_features_disabled",
+      "compute_service_experimental_features_disabled",
+      "cloud_service_experimental_features_disabled",
+      "cloud_resource_experimental_features_disabled",
+      "cloud_api_experimental_features_disabled",
+      "cloud_function_experimental_features_disabled",
+      "cloud_deployment_experimental_features_disabled",
+      "cloud_environment_experimental_features_disabled",
+      "cloud_infrastructure_experimental_features_disabled"
+    ]
+  },
+  {
+    "id": "3.1",
+    "title": "Ensure that the docker.service file ownership is set to root:root",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_service_file_owner_root",
+      "docker_service_file_group_root",
+      "docker_service_file_ownership_root_root",
+      "docker_service_file_permissions_secure",
+      "docker_service_file_integrity_verified"
+    ]
+  },
+  {
+    "id": "3.2",
+    "title": "Ensure that docker.service file permissions are appropriately set",
+    "assessment": "Automated",
+    "remediation": "Step 1 : Find out the file location: systemctl show -p FragmentPath docker.service Step 2 : If the file does not exist, this recommendation is not applicable. If the file exists, execute the command below including the correct file path to set the file permissions to 644. For example, chmod 644 /usr/lib/systemd/system/docker.service Default Value: This file may not be present on the system. In that case, this recommendation is not applicable. By default, if the file is present, the file permissions are correctly set to 644. References: 1. https://docs.docker.com/articles/systemd/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://docs.docker.com/articles/systemd/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.3 Configure Data Access Control Lists Configure data access control lists based on a user’s need to know. Apply data access control lists, also known as access permissions, to local and remote file systems, databases, and applications. ● ● ● v7 14.6 Protect Information through Access Control Lists Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities. ● ● ●",
+    "function_names": [
+      "compute_docker_service_file_permissions_restricted",
+      "compute_docker_service_file_owner_correct",
+      "compute_docker_service_file_group_correct",
+      "compute_docker_service_file_mode_secure",
+      "compute_docker_service_file_unauthorized_access_denied"
+    ]
+  },
+  {
+    "id": "3.3",
+    "title": "Ensure that docker.socket file ownership is set to root:root",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_socket_file_owner_root",
+      "docker_socket_file_group_root",
+      "docker_socket_file_ownership_root_root"
+    ]
+  },
+  {
+    "id": "3.4",
+    "title": "Ensure that docker.socket file permissions are set to 644 or more restrictive",
+    "assessment": "Automated",
+    "remediation": "Step 1 : Find out the file location: systemctl show -p FragmentPath docker.socket Step 2 : If the file does not exist, this recommendation is not applicable. If the file does exist, you should execute the command below, including the correct file path to set the file permissions to 644. For example, chmod 644 /usr/lib/systemd/system/docker.socket Default Value: This file may not be present on the system and in that case, this recommendation is not applicable. By default, if the file is present, the permissions should be set to 644 or more restrictively. References: 1. https://docs.docker.com/engine/reference/commandline/dockerd/#bind-docker-to- another-hostport-or-a-unix-socket 2. https://github.com/YungSang/fedora-atomic- packer/blob/master/oem/docker.socket 3. http://daviddaeschler.com/2014/12/14/centos-7rhel-7-and-docker-containers-on- boot/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_socket_file_permissions_restrictive",
+      "docker_socket_file_permissions_644_or_stricter",
+      "docker_socket_file_permissions_secure",
+      "docker_socket_file_permissions_compliant",
+      "docker_socket_file_permissions_cis_benchmark"
+    ]
+  },
+  {
+    "id": "3.5",
+    "title": "Ensure that the /etc/docker directory ownership is set to root:root",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_directory_ownership_root_root",
+      "docker_etc_directory_secure_ownership",
+      "docker_config_directory_root_owned",
+      "docker_host_directory_proper_ownership",
+      "docker_etc_directory_restricted_ownership"
+    ]
+  },
+  {
+    "id": "3.6",
+    "title": "Ensure that /etc/docker directory permissions are set to 755 or more restrictively",
+    "assessment": "Automated",
+    "remediation": "You should run the following command: chmod 755 /etc/docker This sets the permissions for the directory to 755. Default Value: By default, the permissions for this directory are set to 755. References: 1. https://docs.docker.com/engine/security/https/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_directory_permissions_restricted",
+      "docker_directory_permissions_755_or_stricter",
+      "docker_directory_permissions_secure",
+      "docker_directory_permissions_compliant",
+      "docker_directory_permissions_cis_benchmark"
+    ]
+  },
+  {
+    "id": "3.7",
+    "title": "Ensure that registry certificate file ownership is set to root:root",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_registry_certificate_file_ownership_root",
+      "container_registry_certificate_file_ownership_root_root",
+      "container_registry_certificate_file_ownership_set_correctly",
+      "container_registry_certificate_file_ownership_restricted",
+      "container_registry_certificate_file_ownership_secure"
+    ]
+  },
+  {
+    "id": "3.8",
+    "title": "Ensure that registry certificate file permissions are set to 444 or more restrictively",
+    "assessment": "Manual",
+    "remediation": "You should execute the following command: find /etc/docker/certs.d/ -type f -exec chmod 0444 {} \\; This would set the permissions for the registry certificate files to 444. Default Value: By default, the permissions for registry certificate files might not be 444. The default file permissions are governed by the system or user specific umask values which are defined within the operating system itself. References: 1. https://docs.docker.com/registry/insecure/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "container_registry_certificate_file_permissions_restricted",
+      "container_registry_certificate_file_permissions_444_or_stricter",
+      "container_registry_certificate_file_read_only",
+      "container_registry_certificate_file_permissions_secure",
+      "container_registry_certificate_file_permissions_min_444"
+    ]
+  },
+  {
+    "id": "3.9",
+    "title": "Ensure that TLS CA certificate file ownership is set to root:root",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_tls_ca_certificate_file_ownership_root",
+      "compute_ca_certificate_file_ownership_root",
+      "compute_certificate_file_ownership_root",
+      "compute_tls_certificate_file_ownership_root",
+      "compute_ca_certificate_ownership_root",
+      "compute_tls_ca_certificate_ownership_root",
+      "compute_certificate_ownership_root",
+      "compute_tls_certificate_ownership_root"
+    ]
+  },
+  {
+    "id": "3.10",
+    "title": "Ensure that TLS CA certificate file permissions are set to 444 or more restrictively",
+    "assessment": "Manual",
+    "remediation": "You should execute the following command: chmod 444 <path to TLS CA certificate file> This sets the file permissions on the TLS CA file to 444. Default Value: By default, the permissions for the TLS CA certificate file might not be 444. The default file permissions are governed by the operating system or user specific umask values. References: 1. https://docs.docker.com/registry/insecure/ 2. https://docs.docker.com/engine/security/https/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_tls_ca_certificate_file_permissions_restricted",
+      "compute_tls_ca_certificate_file_permissions_444_or_stricter",
+      "compute_certificate_file_permissions_restricted",
+      "compute_ca_certificate_file_permissions_secure",
+      "compute_tls_certificate_file_permissions_compliant"
+    ]
+  },
+  {
+    "id": "3.11",
+    "title": "Ensure that Docker server certificate file ownership is set to root:root",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_certificate_file_ownership_root",
+      "docker_certificate_file_permissions_root_only",
+      "docker_server_certificate_secure_ownership",
+      "docker_certificate_ownership_root_root",
+      "docker_tls_certificate_file_ownership_restricted"
+    ]
+  },
+  {
+    "id": "3.12",
+    "title": "Ensure that the Docker server certificate file permissions are set to 444 or more restrictively",
+    "assessment": "Manual",
+    "remediation": "You should execute the command below: chmod 444 <path to Docker server certificate file> This sets the file permissions of the Docker server certificate file to 444. Default Value: By default, the permissions for the Docker server certificate file might not be 444. The default file permissions are governed by the operating system or user specific umask values. References: 1. https://docs.docker.com/registry/insecure/ 2. https://docs.docker.com/engine/security/https/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_certificate_file_permissions_restricted",
+      "docker_certificate_file_permissions_444_or_stricter",
+      "docker_server_certificate_file_permissions_secure",
+      "docker_certificate_file_permissions_read_only",
+      "docker_server_certificate_file_permissions_restricted"
+    ]
+  },
+  {
+    "id": "3.13",
+    "title": "Ensure that the Docker server certificate key file ownership is set to root:root",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_certificate_key_file_owner_root",
+      "docker_certificate_key_file_group_root",
+      "docker_certificate_key_file_permissions_restricted",
+      "docker_certificate_key_file_ownership_secure",
+      "docker_certificate_key_file_access_controlled"
+    ]
+  },
+  {
+    "id": "3.14",
+    "title": "Ensure that the Docker server certificate key file permissions are set to 400",
+    "assessment": "Manual",
+    "remediation": "You should execute the following command: chmod 400 <path to Docker server certificate key file> This sets the Docker server certificate key file permissions to 400. Default Value: By default, the permissions for the Docker server certificate key file might not be 400. The default file permissions are governed by the operating system or user specific umask values. References: 1. https://docs.docker.com/registry/insecure/ 2. https://docs.docker.com/engine/security/https/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_certificate_key_file_permissions_400",
+      "docker_server_certificate_key_restricted_permissions",
+      "docker_cert_key_file_permissions_read_only",
+      "docker_cert_key_file_permissions_owner_only",
+      "docker_cert_key_file_permissions_secure",
+      "docker_server_cert_key_file_permissions_400",
+      "docker_cert_key_file_permissions_strict",
+      "docker_cert_key_file_permissions_protected"
+    ]
+  },
+  {
+    "id": "3.15",
+    "title": "Ensure that the Docker socket file ownership is set to root:docker",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_socket_file_root_docker_ownership",
+      "docker_socket_file_secure_ownership",
+      "docker_socket_file_correct_permissions",
+      "docker_socket_file_root_group_ownership",
+      "docker_socket_file_proper_ownership"
+    ]
+  },
+  {
+    "id": "3.16",
+    "title": "Ensure that the Docker socket file permissions are set to 660 or more restrictively",
+    "assessment": "Automated",
+    "remediation": "You should execute the command below. chmod 660 /var/run/docker.sock This sets the file permissions of the Docker socket file to 660. Default Value: By default, the permissions for the Docker socket file is correctly set to 660. References: 1. https://docs.docker.com/engine/reference/commandline/dockerd/#daemon- socket-option 2. https://docs.docker.com/engine/reference/commandline/dockerd/#bind-docker-to- another-hostport-or-a-unix-socket CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_socket_file_permissions_restrictive",
+      "docker_socket_file_permissions_660_or_stricter",
+      "docker_socket_file_permissions_secure",
+      "docker_socket_file_permissions_minimum_660",
+      "docker_socket_file_permissions_not_world_writable"
+    ]
+  },
+  {
+    "id": "3.17",
+    "title": "Ensure that the daemon.json file ownership is set to root:root",
+    "assessment": "Manual",
+    "remediation": "If the daemon.json file is present, you should execute the command below: chown root:root /etc/docker/daemon.json This sets the ownership and group ownership for the file to root. Default Value: This file may not be present on the system, and in that case, this recommendation is not applicable. References: 1. https://docs.docker.com/engine/reference/commandline/dockerd/#daemon- configuration-file CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_daemon_file_ownership_root",
+      "docker_daemon_json_root_owned",
+      "container_daemon_config_root_ownership",
+      "docker_config_file_root_user",
+      "container_daemon_json_root_permissions"
+    ]
+  },
+  {
+    "id": "3.18",
+    "title": "Ensure that daemon.json file permissions are set to 644 or more restrictive",
+    "assessment": "Manual",
+    "remediation": "If the file is present, you should execute the command below: chmod 644 /etc/docker/daemon.json This sets the file permissions for this file to 644. Default Value: This file may not be present on the system, and in that case, this recommendation is not applicable. References: 1. https://docs.docker.com/engine/reference/commandline/dockerd/#daemon- configuration-file CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "container_daemon_json_file_permissions_restrictive",
+      "container_daemon_json_file_permissions_644_or_stricter",
+      "container_daemon_config_file_permissions_secure",
+      "container_daemon_json_file_permissions_compliant",
+      "container_daemon_config_file_permissions_restricted"
+    ]
+  },
+  {
+    "id": "3.19",
+    "title": "Ensure that the /etc/default/docker file ownership is set to root:root",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_config_file_owner_root",
+      "docker_config_file_group_root",
+      "docker_config_file_permissions_secure",
+      "docker_config_file_ownership_root_root",
+      "docker_default_file_owner_root",
+      "docker_default_file_group_root",
+      "docker_default_file_ownership_secure",
+      "docker_etc_default_file_owner_root",
+      "docker_etc_default_file_group_root",
+      "docker_etc_default_file_ownership_root_root"
+    ]
+  },
+  {
+    "id": "3.20",
+    "title": "Ensure that the /etc/default/docker file permissions are set to 644 or more restrictively",
+    "assessment": "Manual",
+    "remediation": "You should execute the following command: chmod 644 /etc/default/docker This sets the file permissions for this file to 644. Default Value: This file may not be present on the system and in this case, this recommendation is not applicable. References: 1. https://docs.docker.com/engine/admin/configuring/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_config_file_permissions_restrictive",
+      "docker_default_file_permissions_644",
+      "docker_config_file_permissions_secure",
+      "docker_default_file_permissions_restricted",
+      "docker_etc_default_file_permissions_644"
+    ]
+  },
+  {
+    "id": "3.21",
+    "title": "Ensure that the /etc/sysconfig/docker file permissions are set to 644 or more restrictively",
+    "assessment": "Manual",
+    "remediation": "You should execute the following command: chmod 644 /etc/sysconfig/docker This sets the file permissions for this file to 644. Default Value: This file may not be present on the system and in this case, this recommendation is not applicable. References: 1. https://docs.docker.com/engine/admin/configuring/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_docker_config_file_permissions_restrictive",
+      "compute_docker_config_file_permissions_644_or_stricter",
+      "compute_docker_config_file_permissions_secure",
+      "compute_docker_config_file_permissions_cis_3_21",
+      "compute_docker_config_file_permissions_compliant"
+    ]
+  },
+  {
+    "id": "3.22",
+    "title": "Ensure that the /etc/sysconfig/docker file ownership is set to root:root",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_docker_config_file_owner_root",
+      "compute_docker_config_file_group_root",
+      "compute_docker_config_file_permissions_secure",
+      "compute_docker_config_file_ownership_root_root"
+    ]
+  },
+  {
+    "id": "3.23",
+    "title": "Ensure that the Containerd socket file ownership is set to root:root",
+    "assessment": "Automated",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_runtime_socket_file_owner_root",
+      "container_runtime_socket_file_group_root",
+      "container_runtime_socket_file_permissions_secure",
+      "containerd_socket_file_ownership_correct",
+      "containerd_socket_file_root_owned"
+    ]
+  },
+  {
+    "id": "3.24",
+    "title": "Ensure that the Containerd socket file permissions are set to 660 or more restrictively",
+    "assessment": "Automated",
+    "remediation": "You should execute the command below. chmod 660 /run/containerd/containerd.sock This sets the file permissions of the Containerd socket file to 660. Default Value: By default, the permissions for the Containerd socket file is correctly set to 660. CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "container_runtime_socket_file_permissions_restrictive",
+      "containerd_socket_file_permissions_660_or_stricter",
+      "container_runtime_socket_file_permissions_secure",
+      "containerd_socket_file_permissions_compliant",
+      "container_runtime_socket_file_permissions_cis_benchmark"
+    ]
+  },
+  {
+    "id": "4.1",
+    "title": "Ensure that a user for the container has been created",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_user_created",
+      "compute_container_user_configured",
+      "compute_container_non_root_user",
+      "compute_container_user_defined",
+      "compute_container_user_specified",
+      "compute_container_user_non_privileged",
+      "compute_container_user_explicit",
+      "compute_container_user_assigned"
+    ]
+  },
+  {
+    "id": "4.2",
+    "title": "Ensure that containers use only trusted base images",
+    "assessment": "Manual",
+    "remediation": "The following procedures are useful for establishing trust for a specific image. • Configure and use Docker Content trust. • View the history of each Docker image to evaluate its risk, dependent on the sensitivity of the application you wish to deploy using it. • Scan Docker images for vulnerabilities at regular intervals. Default Value: Not Applicable. References: 1. https://docs.docker.com/engine/reference/commandline/pull/ 2. https://registry.hub.docker.com/ 3. https://access.redhat.com/blogs/766093/posts/1976473 CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://docs.docker.com/engine/reference/commandline/pull/ 2. https://registry.hub.docker.com/ 3. https://access.redhat.com/blogs/766093/posts/1976473 CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16.7 Use Standard Hardening Configuration Templates for Application Infrastructure Use standard, industry-recommended hardening configuration templates for application infrastructure components. This includes underlying servers, databases, and web servers, and applies to cloud containers, Platform as a Service (PaaS) components, and SaaS components. Do not allow in-house developed software to weaken configuration hardening. ● ● v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ●",
+    "function_names": [
+      "container_image_trusted_base",
+      "container_image_approved_registry",
+      "container_image_vulnerability_scanned",
+      "container_image_signed_verified",
+      "container_image_minimal_os",
+      "container_image_no_known_vulnerabilities",
+      "container_image_immutable_tags",
+      "container_image_no_root_user",
+      "container_image_regularly_updated",
+      "container_image_no_hardcoded_secrets"
+    ]
+  },
+  {
+    "id": "4.3",
+    "title": "Ensure that unnecessary packages are not installed in the container",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_image_unnecessary_packages_removed",
+      "container_image_minimal_packages_installed",
+      "container_image_unused_dependencies_removed",
+      "container_image_non_essential_packages_absent",
+      "container_image_essential_packages_only",
+      "container_image_unnecessary_binaries_removed",
+      "container_image_minimal_software_installed",
+      "container_image_unused_libraries_removed"
+    ]
+  },
+  {
+    "id": "4.4",
+    "title": "Ensure images are scanned and rebuilt to include security patches",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_image_security_scanning_enabled",
+      "compute_image_patch_rebuild_required",
+      "compute_image_vulnerability_scanning_enabled",
+      "compute_image_auto_rebuild_on_patch",
+      "compute_image_security_patches_applied",
+      "compute_image_scan_and_rebuild_policy_enabled",
+      "compute_image_continuous_security_scanning",
+      "compute_image_patch_compliance_enforced"
+    ]
+  },
+  {
+    "id": "4.5",
+    "title": "Ensure Content trust for Docker is Enabled",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/security/trust/ 2. https://docs.docker.com/notary/service_architecture/ 3. https://docs.docker.com/engine/reference/commandline/cli/#environment- variables CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3 Data Protection Develop processes and technical controls to identify, classify, securely handle, retain, and dispose of data.  v7 13 Data Protection Data Protection",
+    "function_names": [
+      "docker_image_content_trust_enabled",
+      "docker_image_content_trust_required",
+      "docker_image_content_trust_enforced",
+      "docker_image_content_trust_configured",
+      "docker_image_content_trust_active"
+    ]
+  },
+  {
+    "id": "4.6",
+    "title": "Ensure that HEALTHCHECK instructions have been added to container images",
+    "assessment": "Manual",
+    "remediation": "You should follow the Docker documentation and rebuild your container images to include the HEALTHCHECK instruction. Default Value: By default, HEALTHCHECK is not set. References: 1. https://docs.docker.com/engine/reference/builder/#healthcheck CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "container_image_healthcheck_instructions_added",
+      "container_image_healthcheck_configured",
+      "container_image_healthcheck_defined",
+      "container_image_healthcheck_required",
+      "container_image_healthcheck_present"
+    ]
+  },
+  {
+    "id": "4.7",
+    "title": "Ensure update instructions are not used alone in Dockerfiles",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16.7 Use Standard Hardening Configuration Templates for Application Infrastructure Use standard, industry-recommended hardening configuration templates for application infrastructure components. This includes underlying servers, databases, and web servers, and applies to cloud containers, Platform as a Service (PaaS) components, and SaaS components. Do not allow in-house developed software to weaken configuration hardening. ● ● v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ●",
+    "function_names": [
+      "dockerfile_update_instructions_not_alone",
+      "dockerfile_no_standalone_update_instructions",
+      "dockerfile_update_instructions_combined",
+      "dockerfile_update_instructions_with_run",
+      "dockerfile_secure_update_instructions",
+      "dockerfile_update_instructions_chained",
+      "dockerfile_no_unpaired_update_instructions"
+    ]
+  },
+  {
+    "id": "4.8",
+    "title": "Ensure setuid and setgid permissions are removed",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux- capabilities 2. http://man7.org/linux/man-pages/man2/setuid.2.html 3. http://man7.org/linux/man-pages/man2/setgid.2.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 5.4 Restrict Administrator Privileges to Dedicated Administrator Accounts Restrict administrator privileges to dedicated administrator accounts on enterprise assets. Conduct general computing activities, such as internet browsing, email, and productivity suite use, from the user’s primary, non-privileged account. ● ● ● v7 4 Controlled Use of Administrative Privileges Controlled Use of Administrative Privileges",
+    "function_names": [
+      "compute_file_setuid_removed",
+      "compute_file_setgid_removed",
+      "compute_file_setuid_setgid_removed",
+      "compute_file_special_permissions_removed",
+      "compute_file_privilege_escalation_prevented"
+    ]
+  },
+  {
+    "id": "4.9",
+    "title": "Ensure that COPY is used instead of ADD in Dockerfiles",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "dockerfile_copy_instead_of_add",
+      "container_build_copy_used",
+      "dockerfile_add_avoided",
+      "container_image_copy_preferred",
+      "dockerfile_instruction_copy_required"
+    ]
+  },
+  {
+    "id": "4.10",
+    "title": "Ensure secrets are not stored in Dockerfiles",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_dockerfile_no_secrets_stored",
+      "compute_dockerfile_no_hardcoded_credentials",
+      "compute_dockerfile_no_sensitive_data",
+      "compute_dockerfile_no_environment_secrets",
+      "compute_dockerfile_no_plaintext_secrets"
+    ]
+  },
+  {
+    "id": "4.11",
+    "title": "Ensure only verified packages are installed",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "package_manager_installed_packages_verified",
+      "package_manager_repository_signed",
+      "package_manager_package_integrity_checked",
+      "package_manager_unverified_packages_removed",
+      "package_manager_trusted_sources_only",
+      "package_manager_package_signature_validated",
+      "package_manager_unsigned_packages_blocked",
+      "package_manager_package_origin_verified"
+    ]
+  },
+  {
+    "id": "4.12",
+    "title": "Ensure all signed artifacts are validated",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "codebuild_project_artifact_validation_enabled",
+      "codebuild_project_signed_artifact_validation_required",
+      "codebuild_artifact_integrity_validation_enabled",
+      "codebuild_signed_artifact_verification_enabled",
+      "codebuild_artifact_signature_validation_required"
+    ]
+  },
+  {
+    "id": "5.1",
+    "title": "Ensure swarm mode is not Enabled, if not needed",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/commandline/swarm_leave/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4.8 Uninstall or Disable Unnecessary Services on Enterprise Assets and Software Uninstall or disable unnecessary services on enterprise assets and software, such as an unused file sharing service, web application module, or service function. ● ● v7 9.2 Ensure Only Approved Ports, Protocols and Services Are Running Ensure that only network ports, protocols, and services listening on a system with validated business needs, are running on each system. ● ●",
+    "function_names": [
+      "compute_swarm_mode_disabled",
+      "compute_swarm_mode_unused_disabled",
+      "compute_swarm_mode_unnecessary_disabled",
+      "compute_swarm_mode_not_required_disabled",
+      "compute_swarm_mode_default_disabled"
+    ]
+  },
+  {
+    "id": "5.2",
+    "title": "Ensure that, if applicable, an AppArmor Profile is enabled",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "apparmor_profile_enabled",
+      "apparmor_profile_active",
+      "apparmor_profile_applied",
+      "apparmor_profile_enforced",
+      "apparmor_profile_configured",
+      "apparmor_profile_loaded",
+      "apparmor_profile_operational",
+      "apparmor_profile_compliant"
+    ]
+  },
+  {
+    "id": "5.3",
+    "title": "Ensure that, if applicable, SELinux security options are set",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_selinux_enabled",
+      "compute_instance_selinux_enforcing",
+      "compute_instance_selinux_policy_configured",
+      "compute_instance_selinux_no_unconfined_processes",
+      "compute_instance_selinux_targeted_policy",
+      "compute_instance_selinux_bootloader_configured",
+      "compute_instance_selinux_no_disabled_modules",
+      "compute_instance_selinux_audit_logging_enabled"
+    ]
+  },
+  {
+    "id": "5.4",
+    "title": "Ensure that Linux kernel capabilities are restricted within containers",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/security/#linux-kernel-capabilities 2. https://docs.docker.com/compose/compose-file/compose-file-v3/#cap_add- cap_drop 3. https://docs.docker.com/engine/reference/commandline/service_create/#options 4. https://docs.docker.com/engine/reference/commandline/run/#configure- namespaced-kernel-parameters-sysctls-at-runtime CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16.7 Use Standard Hardening Configuration Templates for Application Infrastructure Use standard, industry-recommended hardening configuration templates for application infrastructure components. This includes underlying servers, databases, and web servers, and applies to cloud containers, Platform as a Service (PaaS) components, and SaaS components. Do not allow in-house developed software to weaken configuration hardening. ● ● v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ●",
+    "function_names": [
+      "compute_container_capabilities_restricted",
+      "compute_container_kernel_capabilities_restricted",
+      "container_runtime_capabilities_restricted",
+      "container_runtime_kernel_capabilities_restricted",
+      "container_runtime_linux_capabilities_restricted",
+      "container_runtime_drop_all_capabilities",
+      "container_runtime_default_capabilities_restricted",
+      "container_runtime_privileged_capabilities_disabled"
+    ]
+  },
+  {
+    "id": "5.5",
+    "title": "Ensure that privileged containers are not used",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_no_privileged_mode",
+      "compute_container_privilege_escalation_disabled",
+      "compute_container_root_user_disabled",
+      "compute_container_read_only_root_filesystem",
+      "compute_container_capabilities_dropped",
+      "compute_container_host_process_disabled",
+      "compute_container_host_network_disabled",
+      "compute_container_host_pid_disabled",
+      "compute_container_host_ipc_disabled",
+      "compute_container_seccomp_profile_enabled"
+    ]
+  },
+  {
+    "id": "5.6",
+    "title": "Ensure sensitive host system directories are not mounted on containers",
+    "assessment": "Manual",
+    "rationale": "If sensitive directories are mounted in read-write mode, it could be possible to make changes to files within them. This has obvious security implications and should be avoided. Impact: None. Audit: You should run the following command: docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Volumes={{ .Mounts }}' This command returns a list of currently mapped directories and indicates whether they are mounted in read-write mode for each container instance. Remediation: You should not mount directories which are security sensitive on the host within containers, especially in read-write mode. Default Value: Docker defaults to using a read-write volume but you can also mount a directory read- only. By default, no sensitive host directories are mounted within containers. References: 1. https://docs.docker.com/storage/volumes/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3 Data Protection Develop processes and technical controls to identify, classify, securely handle, retain, and dispose of data.  v7 13 Data Protection Data Protection",
+    "description": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/storage/volumes/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3 Data Protection Develop processes and technical controls to identify, classify, securely handle, retain, and dispose of data.  v7 13 Data Protection Data Protection",
+    "function_names": [
+      "compute_container_sensitive_host_directories_unmounted",
+      "container_host_system_directories_restricted",
+      "compute_container_host_directory_mount_protected",
+      "container_sensitive_host_paths_unmounted",
+      "compute_container_host_path_isolation_enabled"
+    ]
+  },
+  {
+    "id": "5.7",
+    "title": "Ensure sshd is not run within containers",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_sshd_disabled",
+      "container_runtime_sshd_restricted",
+      "container_image_sshd_uninstalled",
+      "container_security_sshd_prohibited",
+      "container_process_sshd_blocked"
+    ]
+  },
+  {
+    "id": "5.8",
+    "title": "Ensure privileged ports are not mapped within containers",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_privileged_ports_restricted",
+      "container_privileged_ports_unmapped",
+      "compute_container_ports_privileged_blocked",
+      "container_ports_privileged_range_restricted",
+      "compute_container_no_privileged_ports",
+      "container_privileged_ports_disabled",
+      "compute_container_privileged_ports_unassigned",
+      "container_ports_privileged_protected"
+    ]
+  },
+  {
+    "id": "5.9",
+    "title": "Ensure that only needed ports are open on the container",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_ports_restricted",
+      "compute_container_unnecessary_ports_closed",
+      "compute_container_minimal_ports_exposed",
+      "compute_container_port_access_limited",
+      "compute_container_non_essential_ports_blocked"
+    ]
+  },
+  {
+    "id": "5.10",
+    "title": "Ensure that the host's network namespace is not shared",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_instance_network_namespace_not_shared",
+      "compute_container_network_namespace_isolated",
+      "compute_pod_network_namespace_restricted",
+      "compute_vm_network_namespace_separated",
+      "compute_host_network_namespace_protected"
+    ]
+  },
+  {
+    "id": "5.11",
+    "title": "Ensure that the memory usage for containers is limited",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_memory_limits_enabled",
+      "compute_container_memory_usage_limited",
+      "compute_container_memory_quota_set",
+      "compute_container_memory_constraints_enforced",
+      "compute_container_memory_max_threshold_defined"
+    ]
+  },
+  {
+    "id": "5.12",
+    "title": "Ensure that CPU priority is set appropriately on containers",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_cpu_priority_configured",
+      "compute_container_cpu_priority_optimized",
+      "compute_container_cpu_priority_limited",
+      "compute_container_cpu_priority_not_boosted",
+      "compute_container_cpu_priority_baseline_set"
+    ]
+  },
+  {
+    "id": "5.13",
+    "title": "Ensure that the container's root filesystem is mounted as read only",
+    "assessment": "Manual",
+    "audit": "You should run the following command on the docker host: docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: ReadonlyRootfs={{ .HostConfig.ReadonlyRootfs }}' If the above command returns true, it means the container's root filesystem is mounted read-only. If the above command returns false, it means the container's root filesystem is writeable. Remediation: You should add a --read-only flag at a container's runtime to enforce the container's root filesystem being mounted as read only. docker run <Run arguments> --read-only <Container Image Name or ID> <Command> Enabling the --read-only option at a container's runtime should be used by administrators to force a container's executable processes to only write container data to explicit storage locations during its lifetime. Examples of explicit storage locations during a container's runtime include, but are not limited to: 1. Using the --tmpfs option to mount a temporary file system for non-persistent data writes. docker run --interactive --tty --read-only --tmpfs \"/run\" --tmpfs \"/tmp\" centos /bin/bash 2. Enabling Docker rw mounts at a container's runtime to persist container data directly on the Docker host filesystem. docker run --interactive --tty --read-only -v /opt/app/data:/run/app/data:rw centos /bin/bash 3. Utilizing the Docker shared-storage volume plugin for Docker data volume to persist container data. docker volume create -d convoy --opt o=size=20GB my-named-volume docker run --interactive --tty --read-only -v my-named-volume:/run/app/data centos /bin/bash 3. Transmitting container data outside of the Docker controlled area during the container's runtime for container data in order to ensure that it is persistent. Examples include hosted databases, network file shares and APIs. Default Value: By default, a container has its root filesystem writeable, allowing all container processes to write files owned by the container's actual runtime user. References: 1. https://docs.docker.com/storage/volumes/ 2. https://docs.docker.com/storage/volumes/#use-a-read-only-volume 3. https://docs.docker.com/engine/reference/commandline/run/#mount-tmpfs--- tmpfs CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 6.8 Define and Maintain Role-Based Access Control Define and maintain role-based access control, through determining and documenting the access rights necessary for each role within the enterprise to successfully carry out its assigned duties. Perform access control reviews of enterprise assets to validate that all privileges are authorized, on a recurring schedule at a minimum annually, or more frequently. ● v7 14.6 Protect Information through Access Control Lists Protect all information stored on systems with file system, network share, claims, application, or database specific access control lists. These controls will enforce the principle that only authorized individuals should have access to the information based on their need to access the information as a part of their responsibilities. ● ● ●",
+    "description": "",
+    "rationale": "",
+    "remediation": null,
+    "function_names": [
+      "container_root_filesystem_read_only",
+      "container_root_filesystem_read_only_enabled",
+      "container_filesystem_root_read_only",
+      "container_root_volume_read_only",
+      "container_root_mount_read_only"
+    ]
+  },
+  {
+    "id": "5.14",
+    "title": "Ensure that incoming container traffic is bound to a specific host interface",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "container_network_host_interface_bound",
+      "container_network_incoming_traffic_restricted",
+      "container_network_interface_specific",
+      "container_network_host_binding_enabled",
+      "container_network_traffic_interface_bound",
+      "container_network_incoming_interface_restricted",
+      "container_network_host_interface_specific",
+      "container_network_traffic_host_bound"
+    ]
+  },
+  {
+    "id": "5.15",
+    "title": "Ensure that the 'on-failure' container restart policy is set to '5'",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_restart_policy_on_failure_5",
+      "container_restart_policy_on_failure_limit_5",
+      "container_restart_policy_on_failure_max_5",
+      "container_restart_policy_on_failure_count_5",
+      "compute_container_restart_policy_on_failure_max_attempts_5"
+    ]
+  },
+  {
+    "id": "5.16",
+    "title": "Ensure that the host's process namespace is not shared",
+    "assessment": "Manual",
+    "audit": "You should run the following command: docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: PidMode={{ .HostConfig.PidMode }}' If the command above returns host, it means that the host PID namespace is shared with its containers; any other result means that the system is configured in line with good security practice.",
+    "remediation": "You should not start a container with the --pid=host argument. For example, do not start a container with the command below: docker run --interactive --tty --pid=host centos /bin/bash Default Value: By default, all containers have the PID namespace enabled and the therefore the host's process namespace is not shared with its containers. References: 1. https://docs.docker.com/engine/reference/run/#pid-settings---pid 2. https://man7.org/linux/man-pages/man7/pid_namespaces.7.html CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "function_names": [
+      "compute_instance_process_namespace_not_shared",
+      "compute_container_process_namespace_isolated",
+      "compute_pod_process_namespace_restricted",
+      "compute_host_process_namespace_separated",
+      "compute_workload_process_namespace_protected"
+    ]
+  },
+  {
+    "id": "5.17",
+    "title": "Ensure that the host's IPC namespace is not shared",
+    "assessment": "Manual",
+    "audit": "You should run the following command: docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: IpcMode={{ .HostConfig.IpcMode }}' If the command returns host, it means that the host IPC namespace is shared with the container. Any other result means that it is not shared, and that the system is therefore configured in line with good security practice. Remediation: You should not start a container with the --ipc=host argument. For example, do not start a container as below: docker run --interactive --tty --ipc=host centos /bin/bash Default Value: By default, all containers have their IPC namespace enabled and host IPC namespace is not shared with any container. References: 1. https://docs.docker.com/engine/reference/run/#ipc-settings---ipc 2. https://www.man7.org/linux/man-pages/man7/ipc_namespaces.7.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.12 Segment Data Processing and Storage Based on Sensitivity Segment data processing and storage based on the sensitivity of the data. Do not process sensitive data on enterprise assets intended for lower sensitivity data. ● ● v7 14.1 Segment the Network Based on Sensitivity Segment the network based on the label or classification level of the information stored on the servers, locate all sensitive information on separated Virtual Local Area Networks (VLANs). ● ●",
+    "description": "",
+    "rationale": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_ipc_namespace_isolated",
+      "compute_container_ipc_namespace_not_shared",
+      "compute_container_ipc_namespace_restricted",
+      "compute_container_ipc_namespace_secure",
+      "compute_container_ipc_namespace_protected"
+    ]
+  },
+  {
+    "id": "5.18",
+    "title": "Ensure that host devices are not directly exposed to containers",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "impact": "You would not be able to use host devices directly within containers. Audit: You should use the command below: docker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: Devices={{ .HostConfig.Devices }}' The above command would list out each device with below information: • CgroupPermissions - For example, rwm • PathInContainer - Device path within the container • PathOnHost - Device path on the host You should verify that the host device is needed to be accessed from within the container and that the permissions required are correctly set. If the above command returns [], then the container does not have access to host devices and is configured in line with good security practice. Remediation: You should not directly expose host devices to containers. If you do need to expose host devices to containers, you should use granular permissions as appropriate to your organization: For example, do not start a container using the command below: docker run --interactive --tty --device=/dev/tty0:/dev/tty0:rwm -- device=/dev/temp_sda:/dev/temp_sda:rwm centos bash You should only share the host device using appropriate permissions: docker run --interactive --tty --device=/dev/tty0:/dev/tty0:rw -- device=/dev/temp_sda:/dev/temp_sda:r centos bash Default Value: By default, host devices are not exposed to containers. If you do not provide sharing permissions and choose to expose a host device to a container, the host device is be exposed with read, write and mknod permissions. References: 1. https://docs.docker.com/engine/reference/commandline/run/#add-host-device-to- container---device CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 5.4 Restrict Administrator Privileges to Dedicated Administrator Accounts Restrict administrator privileges to dedicated administrator accounts on enterprise assets. Conduct general computing activities, such as internet browsing, email, and productivity suite use, from the user’s primary, non-privileged account. ● ● ● v7 14 Controlled Access Based on the Need to Know Controlled Access Based on the Need to Know",
+    "function_names": [
+      "compute_container_host_device_exposure_disabled",
+      "container_host_device_isolation_enabled",
+      "compute_container_host_device_access_restricted",
+      "container_host_device_direct_access_blocked",
+      "compute_container_host_device_sharing_disabled"
+    ]
+  },
+  {
+    "id": "5.19",
+    "title": "Ensure that the default ulimit is overwritten at runtime if needed",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/commandline/run/#set-ulimits-in- container---ulimit CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.12 Segment Data Processing and Storage Based on Sensitivity Segment data processing and storage based on the sensitivity of the data. Do not process sensitive data on enterprise assets intended for lower sensitivity data. ● ● v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ●",
+    "function_names": [
+      "compute_container_ulimit_overwritten",
+      "compute_container_default_ulimit_customized",
+      "compute_container_runtime_ulimit_configured",
+      "compute_container_ulimit_runtime_override",
+      "compute_container_secure_ulimit_settings"
+    ]
+  },
+  {
+    "id": "5.20",
+    "title": "Ensure mount propagation mode is not set to shared",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_mount_propagation_not_shared",
+      "container_runtime_mount_propagation_disabled",
+      "kubernetes_pod_mount_propagation_restricted",
+      "docker_container_mount_propagation_not_shared",
+      "container_mount_propagation_mode_secure"
+    ]
+  },
+  {
+    "id": "5.21",
+    "title": "Ensure that the host's UTS namespace is not shared",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/run/#uts-settings---uts 2. https://www.man7.org/linux/man-pages/man7/uts_namespaces.7.html CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 13.4 Perform Traffic Filtering Between Network Segments Perform traffic filtering between network segments, where appropriate. ● ● v7 14.1 Segment the Network Based on Sensitivity Segment the network based on the label or classification level of the information stored on the servers, locate all sensitive information on separated Virtual Local Area Networks (VLANs). ● ●",
+    "function_names": [
+      "compute_container_uts_namespace_isolated",
+      "compute_pod_uts_namespace_restricted",
+      "container_host_uts_namespace_separated",
+      "kubernetes_pod_uts_namespace_unique",
+      "host_uts_namespace_sharing_disabled"
+    ]
+  },
+  {
+    "id": "5.22",
+    "title": "Ensure the default seccomp profile is not Disabled",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/run/#security-configuration 2. https://github.com/moby/moby/blob/master/profiles/seccomp/default.json 3. https://docs.docker.com/engine/security/seccomp/ 4. https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4.4 Implement and Manage a Firewall on Servers Implement and manage a firewall on servers, where supported. Example implementations include a virtual firewall, operating system firewall, or a third- party firewall agent. ● ● ● v7 9.5 Implement Application Firewalls Place application firewalls in front of any critical servers to verify and validate the traffic going to the server. Any unauthorized traffic should be blocked and logged. ●",
+    "function_names": [
+      "compute_container_seccomp_profile_enabled",
+      "compute_container_default_seccomp_not_disabled",
+      "compute_container_seccomp_profile_configured",
+      "compute_container_seccomp_profile_active",
+      "compute_container_seccomp_profile_enforced"
+    ]
+  },
+  {
+    "id": "5.23",
+    "title": "Ensure that docker exec commands are not used with the privileged option",
+    "assessment": "Manual",
+    "remediation": "You should not use the --privileged option in docker exec commands. Default Value: By default, the docker exec command runs without the --privileged option. References: 1. https://docs.docker.com/engine/reference/commandline/exec/ 2. https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux- capabilities CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_container_no_privileged_exec",
+      "docker_container_privileged_exec_disabled",
+      "container_runtime_privileged_exec_restricted",
+      "compute_docker_exec_privileged_denied",
+      "container_exec_privileged_option_disabled"
+    ]
+  },
+  {
+    "id": "5.24",
+    "title": "Ensure that docker exec commands are not used with the user=root option",
+    "assessment": "Manual",
+    "remediation": "You should not use the --user=root option in docker exec commands. Default Value: By default, the docker exec command runs without the --user option. References: 1. https://docs.docker.com/engine/reference/commandline/exec/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_container_no_root_exec",
+      "docker_exec_no_root_user",
+      "container_runtime_root_exec_disabled",
+      "docker_exec_user_not_root",
+      "container_exec_no_root_privileges"
+    ]
+  },
+  {
+    "id": "5.25",
+    "title": "Ensure that cgroup usage is confirmed",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_cgroup_usage_confirmed",
+      "container_runtime_cgroup_usage_enabled",
+      "kubernetes_cgroup_usage_verified",
+      "compute_instance_cgroup_usage_active",
+      "container_cgroup_usage_monitored"
+    ]
+  },
+  {
+    "id": "5.26",
+    "title": "Ensure that the container is restricted from acquiring additional privileges",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_no_privilege_escalation",
+      "compute_container_restricted_privileges",
+      "compute_container_no_additional_privileges",
+      "container_runtime_no_privilege_escalation",
+      "container_runtime_restricted_privileges",
+      "container_security_no_additional_privileges",
+      "container_runtime_no_privileged_mode",
+      "container_security_privilege_escalation_disabled"
+    ]
+  },
+  {
+    "id": "5.27",
+    "title": "Ensure that container health is checked at runtime",
+    "assessment": "Manual",
+    "remediation": "You should run the container using the --health-cmd parameter. For example: docker run -d --health-cmd='stat /etc/passwd || exit 1' nginx Default Value: By default, health checks are not carried out at container runtime. References: 1. https://docs.docker.com/engine/reference/run/#healthcheck CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_container_health_check_enabled",
+      "compute_container_health_monitoring_active",
+      "compute_container_runtime_health_verified",
+      "compute_container_liveness_probe_configured",
+      "compute_container_readiness_probe_configured",
+      "compute_container_health_check_interval_valid",
+      "compute_container_health_check_threshold_valid",
+      "compute_container_health_check_timeout_valid",
+      "compute_container_health_check_success_threshold_valid",
+      "compute_container_health_check_failure_threshold_valid"
+    ]
+  },
+  {
+    "id": "5.28",
+    "title": "Ensure that Docker commands always make use of the latest version of their image",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/engine/reference/commandline/pull/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 16 Application Software Security Manage the security life cycle of in-house developed, hosted, or acquired software to prevent, detect, and remediate security weaknesses before they can impact the enterprise.  v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ●",
+    "function_names": [
+      "container_image_latest_version_required",
+      "docker_image_tag_latest_enforced",
+      "container_runtime_image_version_current",
+      "docker_deployment_image_latest_used",
+      "container_image_pull_policy_always",
+      "docker_image_version_latest_required",
+      "container_image_tag_latest_only",
+      "docker_runtime_image_version_updated"
+    ]
+  },
+  {
+    "id": "5.29",
+    "title": "Ensure that the PIDs cgroup limit is used",
+    "assessment": "Manual",
+    "remediation": "Use --pids-limit flag with an appropriate value when launching the container. For example: docker run -it --pids-limit 100 <Image ID> In the above example, the number of processes allowed to run at any given time is set to 100. After a limit of 100 concurrently running processes is reached, Docker would restrict any new process creation. Default Value: The Default value for --pids-limit is 0 which means there is no restriction on the number of forks. Note that the PIDs cgroup limit works only for kernel versions 4.3 and higher. References: 1. https://docs.docker.com/engine/reference/commandline/run/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://docs.docker.com/engine/reference/commandline/run/ CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4 Secure Configuration of Enterprise Assets and Software Establish and maintain the secure configuration of enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/IoT devices; and servers) and software (operating systems and applications).  v7 5.2 Maintain Secure Images Maintain secure images or templates for all systems in the enterprise based on the organization's approved configuration standards. Any new system deployment or existing system that becomes compromised should be imaged using one of those images or templates. ● ●",
+    "function_names": [
+      "compute_container_pids_limit_enabled",
+      "compute_container_pids_limit_configured",
+      "compute_container_pids_limit_enforced",
+      "compute_container_pids_limit_set",
+      "compute_container_pids_limit_restricted"
+    ]
+  },
+  {
+    "id": "5.30",
+    "title": "Ensure that Docker's default bridge \"docker0\" is not used",
+    "assessment": "Manual",
+    "remediation": "You should follow the Docker documentation and set up a user-defined network. All the containers should be run in this network. Default Value: By default, Docker runs containers within the default docker0 bridge. References: 1. https://docs.docker.com/network/bridge/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_container_default_bridge_unused",
+      "docker_network_default_bridge_disabled",
+      "container_runtime_default_network_removed",
+      "docker_bridge_network_non_default_used",
+      "compute_container_network_default_bridge_avoided"
+    ]
+  },
+  {
+    "id": "5.31",
+    "title": "Ensure that the host's user namespaces are not shared",
+    "assessment": "Manual",
+    "remediation": "You should not share user namespaces between host and containers. For example, you should not run the command below: docker run --rm -it --userns=host ubuntu bash Default Value: By default, the host user namespace is shared with containers unless user namespace support is enabled. References: 1. https://docs.docker.com/engine/security/userns-remap/ 2. https://docs.docker.com/engine/reference/commandline/run/#options CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_instance_user_namespaces_not_shared",
+      "compute_host_user_namespaces_isolated",
+      "compute_user_namespaces_restricted",
+      "compute_instance_user_namespaces_disabled",
+      "compute_host_user_namespaces_not_shared"
+    ]
+  },
+  {
+    "id": "5.32",
+    "title": "Ensure that the Docker socket is not mounted inside any containers",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_container_docker_socket_not_mounted",
+      "container_runtime_docker_socket_unmounted",
+      "container_docker_socket_mount_disabled",
+      "compute_container_docker_socket_protected",
+      "container_runtime_docker_socket_restricted"
+    ]
+  },
+  {
+    "id": "6.1",
+    "title": "Ensure that image sprawl is avoided",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "compute_image_unused_over_90d",
+      "compute_image_minimum_usage_threshold",
+      "compute_image_orphaned_cleanup_enabled",
+      "compute_image_automatic_removal_enabled",
+      "compute_image_maximum_retention_period",
+      "compute_image_approved_list_only",
+      "compute_image_immutable_tags_required",
+      "compute_image_encryption_enabled",
+      "compute_image_regular_scan_scheduled",
+      "compute_image_deprecation_policy_enforced"
+    ]
+  },
+  {
+    "id": "6.2",
+    "title": "Ensure that container sprawl is avoided",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "references": "1. https://docs.docker.com/config/pruning/#prune-containers CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 3.12 Segment Data Processing and Storage Based on Sensitivity Segment data processing and storage based on the sensitivity of the data. Do not process sensitive data on enterprise assets intended for lower sensitivity data. ● ● v8 4 Secure Configuration of Enterprise Assets and Software Establish and maintain the secure configuration of enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/IoT devices; and servers) and software (operating systems and applications).  v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●  7 Docker Swarm Configuration This section lists the recommendations that alter and secure the behavior of the Docker Swarm. If you are not using Docker Swarm then the recommendations in this section do not apply.",
+    "function_names": [
+      "compute_container_minimum_count",
+      "compute_container_maximum_count",
+      "compute_container_auto_scaling_enabled",
+      "compute_container_inactive_cleanup_enabled",
+      "compute_container_resource_limits_set",
+      "compute_container_orphaned_removal_enabled",
+      "compute_container_usage_threshold_alert_enabled",
+      "compute_container_lifecycle_policy_enabled",
+      "compute_container_idle_timeout_set",
+      "compute_container_quota_enforced"
+    ]
+  },
+  {
+    "id": "7.1",
+    "title": "Ensure that the minimum number of manager nodes have been created in a swarm",
+    "assessment": "Manual",
+    "remediation": "If an excessive number of managers is configured, the excess nodes can be demoted to workers using the following command: docker node demote <ID> Where <ID> is the node ID value of the manager to be demoted. Default Value: Only a single manager is required to start a given cluster. References: 1. https://docs.docker.com/engine/swarm/manage-nodes/ 2. https://docs.docker.com/engine/swarm/admin_guide/#add-manager-nodes-for- fault-tolerance CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "references": "1. https://docs.docker.com/engine/swarm/manage-nodes/ 2. https://docs.docker.com/engine/swarm/admin_guide/#add-manager-nodes-for- fault-tolerance CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 4 Secure Configuration of Enterprise Assets and Software Establish and maintain the secure configuration of enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/IoT devices; and servers) and software (operating systems and applications).  v7 5.1 Establish Secure Configurations Maintain documented, standard security configuration standards for all authorized operating systems and software. ● ● ●",
+    "function_names": [
+      "swarm_manager_node_min_count",
+      "swarm_manager_node_sufficient_count",
+      "swarm_manager_node_quorum_configured",
+      "swarm_manager_node_high_availability",
+      "swarm_manager_node_recommended_count"
+    ]
+  },
+  {
+    "id": "7.2",
+    "title": "Ensure that swarm services are bound to a specific host interface",
+    "assessment": "Manual",
+    "remediation": "Resolving this issues requires re-initialization of the swarm, specifying a specific interface for the --listen-addr parameter. Default Value: By default, Docker swarm services listen on all available host interfaces. References: 1. https://docs.docker.com/engine/reference/commandline/swarm_init/#--listen-addr 2. https://docs.docker.com/engine/swarm/admin_guide/#recover-from-disaster CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_swarm_service_host_interface_bound",
+      "compute_swarm_service_specific_interface_required",
+      "compute_swarm_service_network_interface_restricted",
+      "compute_swarm_service_host_binding_enforced",
+      "compute_swarm_service_interface_binding_configured"
+    ]
+  },
+  {
+    "id": "7.3",
+    "title": "Ensure that all Docker swarm overlay networks are encrypted",
+    "assessment": "Manual",
+    "remediation": "You should create overlay networks the with --opt encrypted flag. Default Value: By default, data exchanged in overlay networks in Docker swarm mode is not encrypted. References: 1. https://docs.docker.com/network/overlay/#encrypt-traffic-on-an-overlay-network CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_swarm_overlay_network_encryption_enabled",
+      "compute_swarm_network_traffic_encrypted",
+      "compute_overlay_network_encryption_enabled",
+      "compute_swarm_network_encryption_enabled",
+      "compute_docker_swarm_network_encryption_enabled"
+    ]
+  },
+  {
+    "id": "7.4",
+    "title": "Ensure that Docker's secret management commands are used for managing secrets in a swarm cluster",
+    "assessment": "Manual",
+    "remediation": "You should follow the docker secret documentation and use it to manage secrets effectively. Default Value: Not Applicable References: 1. https://docs.docker.com/engine/reference/commandline/secret/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "docker_secret_management_enabled",
+      "docker_swarm_secret_management_used",
+      "docker_secret_management_commands_required",
+      "docker_swarm_secret_management_enabled",
+      "docker_secret_management_compliance_enforced"
+    ]
+  },
+  {
+    "id": "7.5",
+    "title": "Ensure that swarm manager is run in auto-lock mode",
+    "assessment": "Manual",
+    "remediation": "If you are initializing a swarm, use the command below. docker swarm init --autolock If you want to set --autolock on an existing swarm manager node, use the following command. docker swarm update --autolock Default Value: By default, the swarm manager does not run in auto-lock mode. References: 1. https://docs.docker.com/engine/swarm/swarm_manager_locking/ CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "swarm_manager_auto_lock_enabled",
+      "swarm_manager_auto_lock_configured",
+      "swarm_manager_auto_lock_active",
+      "swarm_manager_auto_lock_enforced",
+      "swarm_manager_auto_lock_rotation_enabled"
+    ]
+  },
+  {
+    "id": "7.6",
+    "title": "Ensure that the swarm manager auto-lock key is rotated periodically",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "docker_swarm_manager_auto_lock_key_rotated_periodically",
+      "docker_swarm_manager_auto_lock_key_rotation_enabled",
+      "docker_swarm_manager_auto_lock_key_rotation_over_90d",
+      "docker_swarm_manager_auto_lock_key_rotation_frequency",
+      "docker_swarm_manager_auto_lock_key_rotation_compliance"
+    ]
+  },
+  {
+    "id": "7.7",
+    "title": "Ensure that node certificates are rotated as appropriate",
+    "assessment": "Manual",
+    "remediation": "You should run the command to set the desired expiry time on the node certificate. For example: docker swarm update --cert-expiry 48h Default Value: By default, node certificates are rotated automatically every 90 days. References: 1. https://docs.docker.com/engine/reference/commandline/swarm_update/#exampl es CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "compute_node_certificate_rotated",
+      "compute_node_certificate_rotated_over_90d",
+      "compute_node_certificate_rotation_enabled",
+      "compute_node_certificate_expiry_under_30d",
+      "compute_node_certificate_auto_rotation_enabled"
+    ]
+  },
+  {
+    "id": "7.8",
+    "title": "Ensure that CA certificates are rotated as appropriate",
+    "assessment": "Manual",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "remediation": null,
+    "function_names": [
+      "cloud_cdn_ssl_certificate_rotation_enabled",
+      "cloud_cdn_ssl_certificate_rotation_over_90d",
+      "cloud_cdn_ssl_certificate_rotation_min_tls_1_2",
+      "cloud_cdn_ssl_certificate_rotation_all_regions",
+      "compute_ssl_certificate_rotation_enabled",
+      "compute_ssl_certificate_rotation_over_90d",
+      "compute_ssl_certificate_rotation_min_tls_1_2",
+      "compute_ssl_certificate_rotation_all_regions",
+      "iam_ssl_certificate_rotation_enabled",
+      "iam_ssl_certificate_rotation_over_90d"
+    ]
+  },
+  {
+    "id": "7.9",
+    "title": "Ensure that management plane traffic is separated from data plane traffic",
+    "assessment": "Manual",
+    "remediation": "You should initialize the swarm with dedicated interfaces for management and data planes respectively. For example, docker swarm init --advertise-addr=192.168.0.1 --data-path-addr=17.1.0.3 Default Value: By default, data plane traffic is not separated from management plane traffic. References: 1. https://docs.docker.com/engine/reference/commandline/swarm_init/#--data-path- addr CIS Controls:",
+    "description": "",
+    "rationale": "",
+    "audit": "",
+    "function_names": [
+      "network_traffic_management_plane_separated",
+      "network_traffic_data_plane_isolated",
+      "network_traffic_plane_separation_enabled",
+      "network_traffic_management_data_plane_split",
+      "network_traffic_plane_segregation_required"
+    ]
+  }
+]

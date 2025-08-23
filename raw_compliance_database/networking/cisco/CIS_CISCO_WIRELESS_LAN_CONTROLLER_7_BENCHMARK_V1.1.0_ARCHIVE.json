@@ -1,0 +1,359 @@
+[
+  {
+    "id": "1.1",
+    "title": "Install the Latest Firmware",
+    "assessment": "Automated",
+    "description": "The Wireless LAN Controllers should be upgraded to the latest firmware to resolve any discovered security vulnerabilities.",
+    "rationale": "Wireless LAN Controllers running firmware with documented vulnerabilities could be subject to attacks including ones that may allow for unauthorized configuration changes or denial of service.",
+    "audit": "Validate that the running Product Version is the same as the latest released version. 1. Run the following command to display the running Product Version: (Cisco Controller) ><strong>show sysinfo</strong> 2. Compare the Product Version to the latest version on Cisco's website.",
+    "remediation": "Download the latest firmware from the Cisco Website and apply it to the Wireless LAN Controller. References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1320208 Additional Information: PCI DSS \u00a72.11 \u00a74.2",
+    "function_names": [
+      "wireless_lan_controller_firmware_latest",
+      "wireless_lan_controller_firmware_updated",
+      "wireless_lan_controller_firmware_vulnerabilities_patched",
+      "wireless_lan_controller_firmware_security_fixes_applied",
+      "wireless_lan_controller_firmware_auto_update_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1320208 Additional Information: PCI DSS \u00a72.11 \u00a74.2"
+  },
+  {
+    "id": "1.2",
+    "title": "Ensure 'Password Strength' is Strong for configured 'User Names'",
+    "assessment": "Automated",
+    "description": "This control determines if local administrative passwords meet minimum complexity requirements and are determined as \"strong\" by the Wireless LAN Controller. To meet the \"strong\" requirement the selected password must meet the following criteria: \u2022 It is at least eight characters long. \u2022 It contains a combination of upper- and lowercase letters, numbers, and symbols. \u2022 It is not a word in any language.",
+    "rationale": "Password complexity for administrative accounts reduces the risk of an attacker guessing the password. An attacker could gain unauthorized access to the Wireless LAN Controller by guessing a weak password.",
+    "audit": "1. Perform the following to determine if the local management users are configured to use strong passwords. (Cisco Controller) ><strong>show mgmtuser </strong> 2. Verify returned users have Strong listed in the Password Strength column. User Name            Permissions      Description     Password Strength ------------------   --------------   --------------  ------------------ <Username>           read-write                       <strong>Strong</strong> Note: Cisco bug (CSCuc22601) may cause show mgmtuser to show only User Name and Permissions, but not Description and not Password Strength.",
+    "remediation": "Change the management user's password to one that meets the strong password requirements. The Wireless LAN Controller determines a password is strong if it meets the following requirements: \u2022 It is at least eight characters long. \u2022 It contains a combination of upper- and lowercase letters, numbers, and symbols. \u2022 It is not a word in any language.  The new password can be applied using: (Cisco Controller) ><strong>config mgmtuser password</strong> <username> <password> Additional Information: PCI DSS \u00a7 8.5.10.a \u00a74.2",
+    "function_names": [
+      "iam_user_password_strong_complexity",
+      "iam_user_password_min_length_8",
+      "iam_user_password_mixed_case_required",
+      "iam_user_password_numbers_required",
+      "iam_user_password_symbols_required",
+      "iam_user_password_no_dictionary_words"
+    ],
+    "profile_applicability": "\u2022  Level 1"
+  },
+  {
+    "id": "1.3",
+    "title": "Delete the 'User Name' admin",
+    "assessment": "Automated",
+    "description": "This control determines if the default system usernames and passwords have been removed. The recommended setting is to delete admin (default account).",
+    "rationale": "Default usernames and passwords are known to attackers and could allow unauthorized administrative access or to change the configuration of Access Points and/or the Wireless LAN Controller. The default is username is admin with a default password of admin.",
+    "audit": "1. Perform the following to determine the local management users configured on the Access Controller. (Cisco Controller) ><strong>show mgmtuser</strong> 2. Verify the return value does not include the default User Name admin . User Name                 Permissions    Description            Password Strength -----------------------   ------------   ---------------------  ------------- ----- <User Name>                read-write                            Strong",
+    "remediation": "New management users can be configured using the following command. (Cisco Controller) <strong>>config mgmtuser add</strong> <username> <password> <privilege level> After the creation of a new administrative username with the appropriate privileges the default one can be removed. (Cisco Controller) ><strong>config mgmtuser delete admin</strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp7649595  Additional Information: PCI DSS \u00a7 2.1.1.c \u00a7 4.2 PCI DSS Wireless Guidelines - Section 4.2 - Change Default Settings and Securely Configure Wireless Devices PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings.",
+    "function_names": [
+      "iam_user_no_admin_privileges",
+      "iam_user_default_removed",
+      "iam_user_admin_deleted",
+      "iam_user_no_default_credentials",
+      "iam_user_standard_naming",
+      "iam_user_secure_credentials",
+      "iam_user_non_default_only",
+      "iam_user_admin_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp7649595  Additional Information: PCI DSS \u00a7 2.1.1.c \u00a7 4.2 PCI DSS Wireless Guidelines - Section 4.2 - Change Default Settings and Securely Configure Wireless Devices PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings."
+  },
+  {
+    "id": "1.4",
+    "title": "Ensure 'Telnet' is disabled",
+    "assessment": "Automated",
+    "description": "This control determines whether the device allows administration via the telnet protocol. The recommended setting is telnet disabled.",
+    "rationale": "Administrative access to the controller should be allowed only using cryptographically secure access methods. Unsecured administrative access methods, such as telnet, do not encrypt traffic between the client and the administrative interface. This could allow for interception or manipulation of the administrative session or capture of administrative credentials.",
+    "audit": "Perform the following to determine if telnet is enabled. 1. Run the command below: (Cisco Controller) ><strong>show network summary</strong> 2. Ensure telnet is disabled. Telnet...................................... Disable",
+    "remediation": "1. Disable command-line administration through telnet. (Cisco Controller) ><strong>config network telnet disable</strong> 2. Enable command-line administration through Secure Shell Version 2 (SSHv2). (Cisco Controller) ><strong>config network ssh enable </strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319452 Additional Information: PCI DSS \u00a71.1.1 \u00a74.2.1.e  PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings.",
+    "function_names": [
+      "compute_instance_telnet_disabled",
+      "network_security_group_telnet_disabled",
+      "firewall_rule_telnet_disabled",
+      "network_acl_telnet_disabled",
+      "vpc_endpoint_telnet_disabled",
+      "load_balancer_telnet_disabled",
+      "security_policy_telnet_disabled",
+      "network_interface_telnet_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319452 Additional Information: PCI DSS \u00a71.1.1 \u00a74.2.1.e  PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings."
+  },
+  {
+    "id": "1.5",
+    "title": "Ensure 'Webmode' is disabled",
+    "assessment": "Automated",
+    "description": "This control determines whether the device allows administration via webmode. The recommended setting is network webmode disabled.",
+    "rationale": "Administrative access to the controller should only be allowed using cryptographically secure access methods. Unsecured administrative access methods, such as Hypertext Transfer Protocol (HTTP), do not encrypt traffic between the client and the administrative interface. This could allow for interception or manipulation of the administrative session or capturing administrative credentials. Enable Secure Shell Version 2 (SSHv2) or Hypertext Transfer Protocol Secure (HTTPS) for administration. The default setting is enabled.",
+    "audit": "Perform the following to determine if telnet is enabled. 1. Run the command below: (Cisco Controller) ><strong>show network summary</strong> 2. Validate that webmode is disabled. Webmode...................................... Disable",
+    "remediation": "1. Disable administration through webmode. (Cisco Controller) ><strong>config network webmode disable </strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319452 Additional Information: PCI DSS \u00a71.1.1 \u00a74.2.1.e  PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings.",
+    "function_names": [
+      "network_device_webmode_disabled",
+      "network_device_webmode_admin_disabled",
+      "network_device_admin_webmode_disabled",
+      "network_webmode_disabled",
+      "network_admin_webmode_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319452 Additional Information: PCI DSS \u00a71.1.1 \u00a74.2.1.e  PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings."
+  },
+  {
+    "id": "1.6",
+    "title": "Disable 'Management via Wireless Interface'",
+    "assessment": "Automated",
+    "description": "This control determines whether wireless clients can manage only the Cisco wireless LAN controller associated with the client and the associated Cisco lightweight access point. That is, clients cannot manage another Cisco wireless LAN controller with which they are not associated. The recommended setting is network mgmt-via-wireless disabled.",
+    "rationale": "Administrative access should not be allowed from wireless clients because the wireless client is mobile; it can be stolen, misplaced, or lent to an unauthorized user. Allowing administrative access from the wireless network increases the possibility of an attacker gaining access to the admin interface. The default setting for mgmt-via-wireless is enabled.",
+    "audit": "Perform the following to determine if administrative access is allowed from wireless clients. 1. Run the command below: (Cisco Controller) ><strong>show network summary</strong> 2. Validate that Mgmt Via Wireless Interface is set to disable. Mgmt Via Wireless Interface................. Disable",
+    "remediation": "Disable access to the admin interface from wireless clients using the following command. (Cisco Controller) ><strong>config network mgmt-via-wireless disable</strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1324232 Additional Information: PCI DSS \u00a72.3 \u00a74.1",
+    "function_names": [
+      "wireless_controller_client_network_mgmt_disabled",
+      "wireless_controller_client_management_restricted",
+      "wireless_controller_wireless_mgmt_disabled",
+      "wireless_controller_associated_mgmt_only",
+      "wireless_controller_non_associated_mgmt_blocked"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1324232 Additional Information: PCI DSS \u00a72.3 \u00a74.1"
+  },
+  {
+    "id": "1.7",
+    "title": "Ensure the 'CLI Login Timeout (minutes)' is less than or equal to 5",
+    "assessment": "Automated",
+    "description": "This control determines how long a command-line session will stay idle before it is logged out. The recommended setting is 5 minutes or less, but not set to zero.",
+    "rationale": "Command-line sessions timeout after a period of inactivity to reduce the risk of an unauthorized individual taking over an unattended, authenticated session. Validate that the inactivity timeout for CLI session's has not been set for more than the default or disabled altogether. The default inactivity timeout is 5 minutes.",
+    "audit": "Validate the currently configured inactivity timeout. 1. Run the following command: (Cisco Controller) ><strong>show sessions</strong> 2. Validate the timeout value is set to 5 minutes or less, but not 0. Zero indicates that timeout is disabled. CLI Login Timeout (minutes)............ 5",
+    "remediation": "Reset the default authentication timeout value to 5 minutes. (Cisco Controller) ><strong>config sessions timeout 5</strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319842",
+    "function_names": [
+      "iam_cli_login_timeout_less_than_or_equal_to_5",
+      "iam_session_idle_timeout_compliance",
+      "iam_cli_idle_timeout_within_limit",
+      "iam_login_session_timeout_configured",
+      "iam_cli_inactivity_timeout_enforced"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319842"
+  },
+  {
+    "id": "1.8",
+    "title": "Ensure 'SNMP v1 Mode' is disabled",
+    "assessment": "Automated",
+    "description": "This control determines whether or not Simple Network Management Protocol Version 1 (SNMP v1) can be used for remote network management. The recommended setting is disabled.",
+    "rationale": "Simple Network Management Protocol Version 1 (SNMPv1) is not encrypted and is authenticated using a shared password. Encryption thwarts eavesdropping and attempts to manipulate network management protocols.",
+    "audit": "Perform the following to determine which versions of Simple Network Management Protocol are enabled on the Wireless LAN Controller. 1. Run the following command: (Cisco Controller) ><strong>show snmpversion</strong> 2. Ensure SNMP v1 Mode is set to Disable . SNMP v1 Mode.................................... Disable",
+    "remediation": "Disable SNMP version v1 (Cisco Controller) ><strong>config snmp version v1 disable</strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319918 Additional Information: PCI DSS \u00a710.2 \u00a74.2 PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers  PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings.",
+    "function_names": [
+      "network_snmp_v1_disabled",
+      "network_snmp_protocol_secure",
+      "network_snmp_version_restricted",
+      "network_snmp_v1_mode_disabled",
+      "network_management_snmp_v1_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319918 Additional Information: PCI DSS \u00a710.2 \u00a74.2 PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers  PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings."
+  },
+  {
+    "id": "1.9",
+    "title": "Ensure 'SNMP v2c Mode' is disabled",
+    "assessment": "Automated",
+    "description": "This control determines whether Simple Network Management Protocol version 2c (SNMP v2) can be used for remote network management. The recommended setting is disabled.",
+    "rationale": "Simple Network Management Protocol Version 2c is not encrypted and is authenticated using a shared password. Encryption thwarts eavesdropping and attempts to manipulate network management protocols.",
+    "audit": "Perform the following to determine which versions of SNMP are enabled on the Wireless LAN Controller. 1. Run the following command: (Cisco Controller) ><strong>show snmpversion</strong> 2. Ensure that SNMP v2c Mode is set to Disable . SNMP v2c Mode.................................... Disable",
+    "remediation": "Disable SNMP version v2c (Cisco Controller) ><strong>config snmp version v2c disable</strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319918 Additional Information: PCI DSS \u00a710.2 \u00a74.2 PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers  PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings.",
+    "function_names": [
+      "network_snmp_v2c_disabled",
+      "network_snmp_protocol_restricted",
+      "network_snmp_secure_version_enabled",
+      "network_snmp_v2c_mode_disabled",
+      "network_snmp_legacy_protocol_disabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319918 Additional Information: PCI DSS \u00a710.2 \u00a74.2 PCI DSS Wireless Guidelines - Section 4.2.1 - Change Default Settings and Securely Configure Wireless Devices - Network Protocols and Identifiers  PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings."
+  },
+  {
+    "id": "1.10",
+    "title": "Delete the 'SNMP v3 User Name' default",
+    "assessment": "Automated",
+    "description": "This control determines whether the default Simple Network Management Protocol Version 3 (SNMPv3) username included in the default configuration has been removed. The recommended setting is to delete the SNMP v3 User Name default.",
+    "rationale": "Default username and password combinations are known to attackers and could be used to gain unauthorized access to the Wireless LAN Controller. SNMPv3 is disabled by default, however if enabled could allow unauthorized configuration changes using the default user.",
+    "audit": "Validate that the default Simple Network Management Protocol Version 3 user does not exist. 1. Run the following command: (Cisco Controller) ><strong>show snmpv3user</strong> Ensure default is not present for SNMP v3 User Name. SNMP v3 User Name      AccessMode    Authentication   Encryption --------------------   -----------   --------------   ---------- <strong>default </strong>              Read/Write    HMAC-SHA         CFB-AES",
+    "remediation": "Delete the default Simple Network Management Protocol Version 3 user. (Cisco Controller) ><strong>config snmp v3user delete<span style=\"color: black;\"> default</span></strong> If Simple Network Management Protocol Version 3 is to be used for network management, create a new Simple Network Management Protocol Version 3 user:  (Cisco Controller) ><strong>config snmp v3user create</strong> <username> <ro/rw> <authentication type> <encryption type> <authentication key> <encryption key> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319901",
+    "function_names": [
+      "snmp_user_default_deleted",
+      "snmp_v3_user_name_removed",
+      "snmp_default_credentials_cleaned",
+      "snmp_user_default_config_removed",
+      "snmp_v3_default_username_deleted"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp1319901"
+  },
+  {
+    "id": "1.11",
+    "title": "Configure 'an authorized IP Address' for 'Logging Syslog Host'",
+    "assessment": "Automated",
+    "description": "This control determines if the Wireless LAN Controller is configured to send logging information to a centralized syslog server for processing and alerting. The recommended setting is to configure an authorized IP address for logging syslog.",
+    "rationale": "Logging should be enabled on Wireless Termination Points and Access Controllers to detect access attempts, configuration changes, and system level events. Logs should be centrally collected and reviewed on a regular basis. It is recommended that logging is enabled on all devices and archived for a minimum of 12 months with 90 days of logs to be immediately available. Logging of wireless activity and administrative access is essential to detect anomalies and attacks on and from the wireless network.",
+    "audit": "Validate that logging is enabled and a syslog host is defined. This can be done using one of two methods. Method 1 1. Run the command below: (Cisco Controller) ><strong>show logging</strong> 2. Verify that a syslog server is defined under the \"Logging to syslog:\" section. Logging to syslog : - Number of remote syslog hosts.................. 1 - Host 0....................................... <IP Address> Method 2 1. Show the running configuration to the screen using the following command: (Cisco Controller) >s<strong>how run-config commands</strong> 2. Validate the return pattern matches: logging syslog host <IP Address>",
+    "remediation": "To enable external logging to a syslog server execute the following command:  (Cisco Controller) ><strong>config logging syslog host </strong><IP Address> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp5110363 Additional Information: PCI DSS \u00a710.2.2 \u00a74.3 PCI DSS Wireless Guidelines - Section 4.3 - Wireless Intrusion Prevention and Access Logging PCI DSS Requirement - Section 11.4 - Use intrusion-detection systems, and/or intrusion-prevention systems to monitor all traffic at the perimeter of the cardholder data environment as well as at critical points inside of the cardholder data environment, and alert personnel to suspected compromises. Keep all intrusion-detection and prevention engines, baselines, and signatures up-to-date.",
+    "function_names": [
+      "wireless_lan_controller_logging_syslog_host_authorized_ip_configured",
+      "wireless_lan_controller_logging_syslog_host_centralized_server_enabled",
+      "wireless_lan_controller_logging_syslog_host_ip_restricted",
+      "wireless_lan_controller_logging_syslog_host_alerting_enabled",
+      "wireless_lan_controller_logging_syslog_host_processing_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp5110363 Additional Information: PCI DSS \u00a710.2.2 \u00a74.3 PCI DSS Wireless Guidelines - Section 4.3 - Wireless Intrusion Prevention and Access Logging PCI DSS Requirement - Section 11.4 - Use intrusion-detection systems, and/or intrusion-prevention systems to monitor all traffic at the perimeter of the cardholder data environment as well as at critical points inside of the cardholder data environment, and alert personnel to suspected compromises. Keep all intrusion-detection and prevention engines, baselines, and signatures up-to-date."
+  },
+  {
+    "id": "1.12",
+    "title": "Configure 'an authorized IP Address' for 'NTP Server'",
+    "assessment": "Automated",
+    "description": "This control determines if Network Time Protocol is configured to synchronize time from an authorized external time source to the Wireless LAN Controller.",
+    "rationale": "Network Time Protocol is configured on the Wireless LAN Controller to synchronize the local time with an external time source. Consistent, accurate time is important for certificate validation, logging, and forensic analysis. Network Time Protocol is not configured by default.",
+    "audit": "1. Perform the following to determine if NTP is enabled. (Cisco Controller) ><strong>show time</strong> 2. Verify an authorized NTP Server address is configured: NTP Polling Interval.........................     86400 Index     NTP Key Index      NTP Server               NTP Msg Auth Status -------  --------------------------------------------------------------- 1              0           <IP Address>             <Authentication Status>",
+    "remediation": "Configure an authorized IP address for time NTP Server. (Cisco Controller) ><strong>config time ntp server</strong> <index> <IP Address> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp2505839  Additional Information: PCI DSS Wireless Guidelines - Section 4.2.3 - Change Default Settings and Securely Configure Wireless Devices - PCI DSS \u00a710.4 \u00a74.2 Recommendations PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings.",
+    "function_names": [
+      "ntp_server_authorized_ip_enabled",
+      "ntp_server_external_source_configured",
+      "wlan_controller_ntp_authorized_sync_enabled",
+      "ntp_server_time_source_restricted",
+      "wlan_controller_ntp_external_source_configured"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp2505839  Additional Information: PCI DSS Wireless Guidelines - Section 4.2.3 - Change Default Settings and Securely Configure Wireless Devices - PCI DSS \u00a710.4 \u00a74.2 Recommendations PCI DSS Requirement - Section 2.1.1 - For wireless environments connected to the cardholder data environment or transmitting cardholder data, change wireless vendor defaults, including but not limited to default wireless encryption keys, passwords, and SNMP community strings."
+  },
+  {
+    "id": "1.13",
+    "title": "Ensure 'Signature Processing' is enabled",
+    "assessment": "Automated",
+    "description": "This control determines whether Intrusion Detection System (IDS) signature processing is enabled for all IDS signatures. The recommended setting is enabled.",
+    "rationale": "Wireless Protection Policies are a basic set of signatures that can detect attacks on the wireless network or clients. The Wireless LAN Controller can monitor the RF spectrum and detect attackers attempting to compromise or manipulate wireless networks. The Wireless LAN Controller should be configured to detect rogue Access Points or attacks on the wireless infrastructure or wireless clients. By default Protection Policies are not enabled.",
+    "audit": "To validate that Wireless Protection Signature Policy Processing is enabled, 1. Run the following command: (Cisco Controller) ><strong>show wps summary</strong> 2. Check output to ensure that Signature Processing is enabled. Signature Policy Signature Processing........................... Enabled",
+    "remediation": "Enable all Wireless Protection Policies. (Cisco Controller) > <span class=\"content\"><span style=\"color: black; font- style: normal; font-weight: bold;\">config wps signature enable</span></span> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp6871472 Additional Information: PCI DSS \u00a711.1 \u00a73.2  PCI DSS Wireless Guidelines - Section 4.3 - Wireless Intrusion Prevention and Access Logging PCI DSS Requirement - Section 11.4 - Use intrusion-detection systems, and/or intrusion-prevention systems to monitor all traffic at the perimeter of the cardholder data environment as well as at critical points inside of the cardholder data environment, and alert personnel to suspected compromises. Keep all intrusion-detection and prevention engines, baselines, and signatures up-to-date.",
+    "function_names": [
+      "ids_signature_processing_enabled",
+      "ids_signature_processing_enabled_all_signatures",
+      "ids_signature_processing_enabled_default",
+      "ids_signature_processing_enabled_recommended",
+      "ids_signature_processing_enabled_standard"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp6871472 Additional Information: PCI DSS \u00a711.1 \u00a73.2  PCI DSS Wireless Guidelines - Section 4.3 - Wireless Intrusion Prevention and Access Logging PCI DSS Requirement - Section 11.4 - Use intrusion-detection systems, and/or intrusion-prevention systems to monitor all traffic at the perimeter of the cardholder data environment as well as at critical points inside of the cardholder data environment, and alert personnel to suspected compromises. Keep all intrusion-detection and prevention engines, baselines, and signatures up-to-date."
+  },
+  {
+    "id": "1.14",
+    "title": "Enable 'all' Policies for 'wps client-exclusion'",
+    "assessment": "Automated",
+    "description": "This control determines the client exclusion policies that are enforced when clients attempt to associate with the device: \u2022 802.11-assoc excludes clients on the sixth 802.11 association attempt, after five consecutive failures, \u2022 802.11-auth excludes clients on the sixth 802.11 authentication attempt, after five consecutive failures, \u2022 802.1x-auth excludes clients on the sixth 802.11X authentication attempt, after five consecutive failures, \u2022 ip-theft excludes clients if the IP address is already assigned to another device, \u2022 web-auth excludes clients on the fourth web authentication attempt, after three consecutive failures, \u2022 all excludes clients for all of the above reasons. The recommended setting is all.",
+    "rationale": "Client Exclusion Policies are a group of settings that can automatically restrict client access if the Wireless LAN Controller detects excessive authentication failures or the theft or reuse of IP addressing. Excessive authentication attempts could be an indication that a client is attempting to brute force entry onto the wireless network or executing a denial-of-service attack. The default setting is enabled.",
+    "audit": "Validate the Client Exclusion Policies are enabled. 1. Execute the following command: (Cisco Controller) ><strong>show wps summary</strong> 2. Validate the the output shows that all of the Client Exclusion Policies are set to Enabled.  Client Exclusion Policy Excessive 802.11-association failures.......... Enabled Excessive 802.11-authentication failures....... Enabled Excessive 802.1x-authentication................ Enabled IP-theft....................................... Enabled Excessive Web authentication failure........... Enabled",
+    "remediation": "Enable the Client Exclusion Policies: (Cisco Controller) ><strong>config wps client-exclusion all </strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp9541897",
+    "function_names": [
+      "wireless_client_exclusion_policy_all_enabled",
+      "wireless_client_exclusion_policy_802_11_assoc_enabled",
+      "wireless_client_exclusion_policy_802_11_auth_enabled",
+      "wireless_client_exclusion_policy_802_1x_auth_enabled",
+      "wireless_client_exclusion_policy_ip_theft_enabled",
+      "wireless_client_exclusion_policy_web_auth_enabled",
+      "wireless_client_exclusion_policy_all_recommended",
+      "wireless_client_exclusion_policy_all_enforced"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp9541897"
+  },
+  {
+    "id": "1.15",
+    "title": "Ensure 'Rogue Location Discovery Protocol' is enabled",
+    "assessment": "Automated",
+    "description": "This control determines whether the device will generate an alarm only, or automatically contain a rogue access point that is advertising your network's service set identifier (SSID).",
+    "rationale": "Rogue Access Points that do not require authentication or encryption could allow unauthorized or malicious users to connect to the network. Rogue Location Discovery Protocol can actively seek out these Rogue Access Points and alert administrators to their existence after validating that they are connected to the network. By default RLDP is not enabled.",
+    "audit": "Validate that Rogue Location Discovery Protocol is enabled. 1. Execute the following command: (Cisco Controller) ><strong>show rogue ap rldp summary</strong> 2. Validate the output shows that Rogue Location Discovery Protocol is set to Enabled. Rogue Location Discovery Protocol................ Enabled",
+    "remediation": "Enable the Rogue Location Discovery Protocol: (Cisco Controller) ><strong>config rogue ap rldp enable {alarm-only | auto- contain}</strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp4999879",
+    "function_names": [
+      "wireless_network_rogue_protection_enabled",
+      "wireless_network_rogue_protocol_alarm_enabled",
+      "wireless_network_rogue_ssid_containment_enabled",
+      "wireless_network_rogue_location_discovery_enabled",
+      "wireless_network_rogue_access_point_monitoring_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 2",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp4999879"
+  },
+  {
+    "id": "1.16",
+    "title": "Ensure 'Control Path Rate Limiting' is enabled",
+    "assessment": "Automated",
+    "description": "This control determines whether the switch control path rate limiting feature is enabled. The recommended setting is enabled.",
+    "rationale": "If the Wireless LAN Controller is not able to keep up with the volume of management traffic it is receiving, a denial-of-service condition could occur. When control plane policing is enabled this ensures that the CPU is not overwhelmed by management traffic. The default state is enabled.",
+    "audit": "Perform the following to determine if control plane policing is enabled or disabled. 1. Run the following command: (Cisco Controller) ><strong>show advanced rate</strong> 2. Verify the following output: Control Path Rate Limiting.......................  Enabled",
+    "remediation": "Enable control plane policing on the controller. (Cisco Controller) ><strong>config advanced rate enable </strong> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp7209817  2 Wireless Local Area Network (LAN) Configurations This section prescribes controls to secure Wireless Local Area Networks (LAN).",
+    "function_names": [
+      "network_switch_control_path_rate_limiting_enabled",
+      "network_switch_control_path_rate_limiting_configured",
+      "network_switch_control_path_rate_limiting_active",
+      "network_switch_control_path_rate_limiting_protected",
+      "network_switch_control_path_rate_limiting_enforced"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp7209817  2 Wireless Local Area Network (LAN) Configurations This section prescribes controls to secure Wireless Local Area Networks (LAN)."
+  },
+  {
+    "id": "2.1",
+    "title": "Ensure 'Broadcast SSID' is disabled",
+    "assessment": "Automated",
+    "description": "This control determines if the Wireless Local Area Networks (WLANs) Service Set Identifier (SSID) is broadcast. The recommended setting is disabled.",
+    "rationale": "Though it doesn't prevent an attacker from detecting the network, disabling broadcast Service Set Identifiers (SSIDs) will prevent casual users from seeing it on client side network lists. Disabling broadcast SSID will also make the identification of wireless networks more difficult.",
+    "audit": "To validate that broadcast SSIDs are disabled, 1. Run the following command; (Cisco Controller) ><strong>show wlan</strong> <WLAN ID> 2. Check the output for the status of Broadcast SSID for each WLAN. This should be set to Disabled. Broadcast SSID................................... Disabled",
+    "remediation": "1. Determine the WLANs to which the change will be made: (Cisco Controller) ><strong>show wlan summary </strong> 2. Disable broadcast SSID on all WLANs using: (Cisco Controller) ><strong>config wlan broadcast-ssid disable</strong> <WLAN ID> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp8366770",
+    "function_names": [
+      "wireless_wlan_broadcast_ssid_disabled",
+      "wireless_network_ssid_broadcast_disabled",
+      "wireless_access_point_ssid_hidden",
+      "wireless_wlan_ssid_broadcast_disabled_all_regions",
+      "wireless_network_ssid_broadcast_disabled_default"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp8366770"
+  },
+  {
+    "id": "2.2",
+    "title": "Ensure 'WPA2-Enterprise' is Enabled for configured 'Wireless LAN identifiers'",
+    "assessment": "Automated",
+    "description": "This control determines if configured Wireless Local Area Networks (WLANs) are configured to use Wi-Fi Protected Access 2 (WPA2) security protocol. The recommended setting is to enable WPA2 and 802.1x for configured Wireless LAN identifiers (WLAN IDs).",
+    "rationale": "Alternative encryption and authentication methods for connecting wireless clients to the wireless network have drawbacks. WEP has been proven ineffective and methods using pre-shared keys could be defeated by rainbow tables. 802.11i provides authenticated access using 802.1x and EAPoL and encryption using AES-based encryption.",
+    "audit": "1. Run the following command to display a list of WLAN IDs managed by the device: (Cisco Controller) ><strong>show wlan summary</strong> 2. Run the following command for each WLAN ID: (Cisco Controller) ><strong>show wlan</strong> <WLAN ID> 3. Ensure WPA2 is enabled. WPA2 (RSN IE).............................. Enabled AES Cipher.............................. Enabled 802.1x.................................. Enabled",
+    "remediation": "Run the following command for each WLAN ID when WPA2 is not enabled. <span style=\"color: #333333; text-align: left;\">(Cisco Controller) ></span><strong>config wlan security wpa2 enable </strong><WLAN ID> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp4891599  Additional Information: PCI DSS \u00a72.1.1 \u00a74.2 PCI DSS Wireless Guidelines - Section 4.4 - Strong Wireless Authentication and Encryption PCI DSS Requirement - Section 4.1.1 - Ensure wireless networks transmitting cardholder data or connected to the cardholder data environment, use industry best practices (for example, IEEE 802.11i) to implement strong encryption for authentication and transmission. Note: The use of WEP as a security control was prohibited as of 30 June 2010.",
+    "function_names": [
+      "wireless_lan_wpa2_enterprise_enabled",
+      "wireless_lan_802_1x_authentication_enabled",
+      "wireless_lan_security_protocol_compliant",
+      "wireless_lan_wpa2_encryption_enabled",
+      "wireless_lan_wlan_id_secure_config",
+      "wireless_lan_authentication_method_configured",
+      "wireless_lan_enterprise_security_enabled",
+      "wireless_lan_wpa2_802_1x_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp4891599  Additional Information: PCI DSS \u00a72.1.1 \u00a74.2 PCI DSS Wireless Guidelines - Section 4.4 - Strong Wireless Authentication and Encryption PCI DSS Requirement - Section 4.1.1 - Ensure wireless networks transmitting cardholder data or connected to the cardholder data environment, use industry best practices (for example, IEEE 802.11i) to implement strong encryption for authentication and transmission. Note: The use of WEP as a security control was prohibited as of 30 June 2010."
+  },
+  {
+    "id": "2.3",
+    "title": "Ensure 'Peer-to-Peer Blocking Action' is set to 'Drop' for All 'Wireless LAN Identifiers'",
+    "assessment": "Automated",
+    "description": "This control determines whether the Wireless LAN Controller is configured to prevent clients connected to the same Wireless Local Area Controller from communicating with each other.",
+    "rationale": "Wireless Client Isolation prevents wireless clients from communicating with each other over the RF. Packets that arrive on the wireless interface are forwarded only out the wired interface of an Access Point. One wireless client could potentially compromise another client sharing the same wireless network.",
+    "audit": "1. Determine which WLANs will be audited: (Cisco Controller) ><strong>show wlan summary</strong> 2. To validate if peer-to-peer blocking is enabled on a WLAN, run the following command: (Cisco Controller) ><strong>show wlan</strong> <WLAN ID> 3. Validate that the Peer-to-Peer Blocking Action is set to either Drop or Forward- Upstream . Peer-to-Peer Blocking Action..................... Drop",
+    "remediation": "1. Determine which WLANs will be changed: (Cisco Controller) ><strong>show wlan summary</strong> 2. Enable client isolation or Publicly Secure Packet Forwarding on WLANs:  (Cisco Controller) ><strong>config wlan peer-blocking drop</strong> <WLAN ID> References: 1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp10562677 Additional Information: PCI DSS \u00a74.1.1 \u00a74.4    Appendix: Summary Table CIS Benchmark Recommendation Set Correctly Yes No 1 Wireless LAN Controller 1.1 Install the Latest Firmware (Automated) \uf06f \uf06f 1.2 Ensure 'Password Strength' is Strong for configured 'User Names' (Automated) \uf06f \uf06f 1.3 Delete the 'User Name' admin (Automated) \uf06f \uf06f 1.4 Ensure 'Telnet' is disabled (Automated) \uf06f \uf06f 1.5 Ensure 'Webmode' is disabled (Automated) \uf06f \uf06f 1.6 Disable 'Management via Wireless Interface' (Automated) \uf06f \uf06f 1.7 Ensure the 'CLI Login Timeout (minutes)' is less than or equal to 5 (Automated) \uf06f \uf06f 1.8 Ensure 'SNMP v1 Mode' is disabled (Automated) \uf06f \uf06f 1.9 Ensure 'SNMP v2c Mode' is disabled (Automated) \uf06f \uf06f 1.10 Delete the 'SNMP v3 User Name' default (Automated) \uf06f \uf06f 1.11 Configure 'an authorized IP Address' for 'Logging Syslog Host' (Automated) \uf06f \uf06f 1.12 Configure 'an authorized IP Address' for 'NTP Server' (Automated) \uf06f \uf06f 1.13 Ensure 'Signature Processing' is enabled (Automated) \uf06f \uf06f 1.14 Enable 'all' Policies for 'wps client-exclusion' (Automated) \uf06f \uf06f 1.15 Ensure 'Rogue Location Discovery Protocol' is enabled (Automated) \uf06f \uf06f  CIS Benchmark Recommendation Set Correctly Yes No 1.16 Ensure 'Control Path Rate Limiting' is enabled (Automated) \uf06f \uf06f 2 Wireless Local Area Network (LAN) Configurations 2.1 Ensure 'Broadcast SSID' is disabled (Automated) \uf06f \uf06f 2.2 Ensure 'WPA2-Enterprise' is Enabled for configured 'Wireless LAN identifiers' (Automated) \uf06f \uf06f 2.3 Ensure 'Peer-to-Peer Blocking Action' is set to 'Drop' for All 'Wireless LAN Identifiers' (Automated) \uf06f \uf06f     Appendix: Change History Date Version Changes for this version",
+    "function_names": [
+      "wireless_lan_identifier_peer_blocking_drop",
+      "wireless_lan_identifier_peer_blocking_enabled",
+      "wireless_lan_identifier_peer_to_peer_blocked",
+      "wireless_lan_identifier_client_isolation_enabled",
+      "wireless_lan_identifier_peer_communication_drop",
+      "wireless_lan_identifier_peer_traffic_blocked",
+      "wireless_lan_identifier_peer_blocking_action_drop",
+      "wireless_lan_identifier_peer_to_peer_drop_enabled"
+    ],
+    "profile_applicability": "\u2022  Level 1",
+    "references": "1. http://www.cisco.com/en/US/docs/wireless/controller/7.0/command/reference/cli7 0commands.html#wp10562677 Additional Information: PCI DSS \u00a74.1.1 \u00a74.4    Appendix: Summary Table CIS Benchmark Recommendation Set Correctly Yes No 1 Wireless LAN Controller 1.1 Install the Latest Firmware (Automated) \uf06f \uf06f 1.2 Ensure 'Password Strength' is Strong for configured 'User Names' (Automated) \uf06f \uf06f 1.3 Delete the 'User Name' admin (Automated) \uf06f \uf06f 1.4 Ensure 'Telnet' is disabled (Automated) \uf06f \uf06f 1.5 Ensure 'Webmode' is disabled (Automated) \uf06f \uf06f 1.6 Disable 'Management via Wireless Interface' (Automated) \uf06f \uf06f 1.7 Ensure the 'CLI Login Timeout (minutes)' is less than or equal to 5 (Automated) \uf06f \uf06f 1.8 Ensure 'SNMP v1 Mode' is disabled (Automated) \uf06f \uf06f 1.9 Ensure 'SNMP v2c Mode' is disabled (Automated) \uf06f \uf06f 1.10 Delete the 'SNMP v3 User Name' default (Automated) \uf06f \uf06f 1.11 Configure 'an authorized IP Address' for 'Logging Syslog Host' (Automated) \uf06f \uf06f 1.12 Configure 'an authorized IP Address' for 'NTP Server' (Automated) \uf06f \uf06f 1.13 Ensure 'Signature Processing' is enabled (Automated) \uf06f \uf06f 1.14 Enable 'all' Policies for 'wps client-exclusion' (Automated) \uf06f \uf06f 1.15 Ensure 'Rogue Location Discovery Protocol' is enabled (Automated) \uf06f \uf06f  CIS Benchmark Recommendation Set Correctly Yes No 1.16 Ensure 'Control Path Rate Limiting' is enabled (Automated) \uf06f \uf06f 2 Wireless Local Area Network (LAN) Configurations 2.1 Ensure 'Broadcast SSID' is disabled (Automated) \uf06f \uf06f 2.2 Ensure 'WPA2-Enterprise' is Enabled for configured 'Wireless LAN identifiers' (Automated) \uf06f \uf06f 2.3 Ensure 'Peer-to-Peer Blocking Action' is set to 'Drop' for All 'Wireless LAN Identifiers' (Automated) \uf06f \uf06f     Appendix: Change History Date Version Changes for this version"
+  }
+]

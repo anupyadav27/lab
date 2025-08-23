@@ -1,0 +1,176 @@
+[
+  {
+    "function_name": "gke_cluster_admin_role_restriction",
+    "description": "Checks if the cluster-admin role is only used where required in GKE clusters",
+    "gcp_api_example": "gcloud container clusters get-credentials --project=PROJECT_ID",
+    "service_category": "Security"
+  },
+  {
+    "function_name": "secrets_access_minimized",
+    "description": "Checks if access to secrets is minimized by verifying least privilege access and secret rotation policies",
+    "gcp_api_example": "gcloud secrets versions access --project=PROJECT_ID",
+    "service_category": "Security"
+  },
+  {
+    "function_name": "iam_roles_minimize_wildcard_use",
+    "description": "Checks if IAM roles and ClusterRoles minimize the use of wildcards",
+    "gcp_api_example": "gcloud iam roles list --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "iam_service_account_no_default_usage",
+    "description": "Checks if default service accounts are not actively used",
+    "gcp_api_example": "gcloud iam service-accounts list --filter='email:PROJECT_ID@cloudservices.gserviceaccount.com' --format='value(email)' --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "iam_service_account_token_mount_restriction",
+    "description": "Checks if Service Account Tokens are only mounted where necessary",
+    "gcp_api_example": "gcloud iam service-accounts get-iam-policy --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "iam_group_system_masters_usage_avoided",
+    "description": "Checks if the system:masters group is being used in IAM",
+    "gcp_api_example": "gcloud iam groups list --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "gke_cluster_bind_impersonate_escalate_permissions_limited",
+    "description": "Checks if the Bind, Impersonate and Escalate permissions in the Kubernetes cluster are limited",
+    "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone=ZONE --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "iam_policy_avoid_system_anonymous_bindings",
+    "description": "Checks if IAM policies avoid bindings to system:anonymous",
+    "gcp_api_example": "gcloud iam policies describe --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "iam_policy_unauthenticated_bindings_check",
+    "description": "Checks if there are non-default bindings to system:unauthenticated in IAM policies",
+    "gcp_api_example": "gcloud iam policies describe --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "iam_bindings_system_authenticated_check",
+    "description": "Checks if non-default bindings to system:authenticated exist",
+    "gcp_api_example": "gcloud iam roles list --project=PROJECT_ID",
+    "service_category": "Identity"
+  },
+  {
+    "function_name": "gke_cluster_pod_security_baseline_enforced",
+    "description": "Checks if the GKE cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces",
+    "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(clusterAutoscaling.enableNodeAutoprovisioning)'",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "gke_namespace_network_policy_defined",
+    "description": "Checks if all GKE namespaces have network policies defined",
+    "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone ZONE --project PROJECT_ID",
+    "service_category": "Network"
+  },
+  {
+    "function_name": "secret_manager_external_secret_storage",
+    "description": "Checks if secrets are stored externally using Secret Manager",
+    "gcp_api_example": "gcloud secrets list --project=PROJECT_ID",
+    "service_category": "Security"
+  },
+  {
+    "function_name": "gke_image_provenance_configured",
+    "description": "Checks if ImagePolicyWebhook admission controller is configured for image provenance",
+    "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --zone=ZONE --format='value(addonsConfig.imagePolicyConfig.enabled)'",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "resource_namespace_boundaries_created",
+    "description": "Checks if administrative boundaries have been created between resources using namespaces",
+    "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "gke_pod_seccomp_profile_runtime_default",
+    "description": "Checks if the seccomp profile is set to RuntimeDefault in the pod definitions",
+    "gcp_api_example": "gcloud container clusters describe CLUSTER_ID --zone=ZONE --format='value(clusterIpv4Cidr)'",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "gke_pod_security_context_applied",
+    "description": "Checks if security context is applied to GKE pods and containers",
+    "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "kubernetes_default_namespace_not_used",
+    "description": "Checks if the default namespace is being used in Kubernetes",
+    "gcp_api_example": "gcloud container clusters get-credentials cluster-name --zone zone-name --project project-id",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "container_registry_image_vulnerability_scanning_enabled",
+    "description": "Checks if Image Vulnerability Scanning is enabled for Container Registry",
+    "gcp_api_example": "gcloud artifacts docker images list-tags --project=PROJECT_ID --format=json",
+    "service_category": "Container Registry"
+  },
+  {
+    "function_name": "container_image_repository_minimal_user_access",
+    "description": "Checks if user access to Container Image repositories is minimized",
+    "gcp_api_example": "gcloud container images list-tags --project=PROJECT_ID",
+    "service_category": "Container"
+  },
+  {
+    "function_name": "container_image_repository_read_only_access",
+    "description": "Checks if the access to container image repositories is set to read-only",
+    "gcp_api_example": "gcloud container images list-tags --project=PROJECT_ID",
+    "service_category": "Container"
+  },
+  {
+    "function_name": "gke_trusted_container_images_used",
+    "description": "Checks if only trusted container images are used in Google Kubernetes Engine",
+    "gcp_api_example": "gcloud container images list --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "gke_cluster_no_default_service_account",
+    "description": "Checks if GKE clusters are not running using the Compute Engine default service account",
+    "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(nodeConfig.serviceAccount)' --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "network_vpc_intranode_visibility_enabled",
+    "description": "Checks if Intranode Visibility is enabled for all VPC networks",
+    "gcp_api_example": "gcloud compute networks list --format='table(name,description,IPv4Range,gatewayIPv4,subnetworks[],routingConfig.routingMode,autoCreateSubnetworks,x_gcloud_bgp_routing_mode,x_gcloud_add_subnet_routes)' --project=PROJECT_ID",
+    "service_category": "Network"
+  },
+  {
+    "function_name": "gke_control_plane_authorized_networks_enabled",
+    "description": "Checks if Control Plane Authorized Networks is enabled for GKE clusters",
+    "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(privateClusterConfig.masterAuthorizedNetworksConfig.enabled)' --project=PROJECT_ID",
+    "service_category": "Network"
+  },
+  {
+    "function_name": "gke_cluster_private_endpoint_enabled_public_access_disabled",
+    "description": "Checks if GKE clusters are created with Private Endpoint Enabled and Public Access Disabled",
+    "gcp_api_example": "gcloud container clusters describe --project=PROJECT_ID --region=REGION --format='get(privateClusterConfig.enablePrivateEndpoint, privateClusterConfig.enablePrivateNodes)'",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "gke_cluster_private_nodes_enabled",
+    "description": "Checks if GKE clusters are created with private nodes",
+    "gcp_api_example": "gcloud container clusters describe CLUSTER_NAME --format='get(privateClusterConfig.enablePrivateNodes)' --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "gke_rbac_users_managed_with_google_groups",
+    "description": "Checks if Kubernetes RBAC users are managed with Google Groups for GKE",
+    "gcp_api_example": "gcloud container clusters get-credentials CLUSTER_NAME --zone=ZONE --project=PROJECT_ID",
+    "service_category": "Compute"
+  },
+  {
+    "function_name": "security_posture_enabled",
+    "description": "Checks if the security posture is enabled",
+    "gcp_api_example": "gcloud security posture get --project=PROJECT_ID",
+    "service_category": "Security"
+  }
+]
