@@ -1,0 +1,710 @@
+[
+  {
+    "name": "gcp_storage_sensitive_data_identification",
+    "gcp_api": "gcp.storage.buckets.list()",
+    "service": "gcp_storage",
+    "rationale": "To programmatically identify and list all sensitive data stored in GCP storage buckets."
+  },
+  {
+    "name": "gcp_bigquery_sensitive_data_identification",
+    "gcp_api": "gcp.bigquery.datasets.list()",
+    "service": "gcp_bigquery",
+    "rationale": "To programmatically identify and list all sensitive data stored in BigQuery datasets."
+  },
+  {
+    "name": "gcp_compute_sensitive_data_storage_identification",
+    "gcp_api": "gcp.compute.instances.list()",
+    "service": "gcp_compute",
+    "rationale": "To identify where sensitive data is stored across different storage types in compute instances."
+  },
+  {
+    "name": "gcp_security_sensitive_data_protection_controls",
+    "gcp_api": "gcp.security.policies.list()",
+    "service": "gcp_security",
+    "rationale": "To list and verify security controls implemented to protect sensitive data."
+  },
+  {
+    "name": "gcp_security_sensitive_data_validation",
+    "gcp_api": "gcp.security.scanner.run()",
+    "service": "gcp_security",
+    "rationale": "To programmatically validate the presence and protection of sensitive data as identified in previous requirements."
+  },
+  {
+    "name": "gcp_security_transaction_data_identification",
+    "gcp_api": "gcp.security.transactions.list()",
+    "service": "gcp_security",
+    "rationale": "To identify and confirm transaction types and card data elements supported by the software."
+  },
+  {
+    "name": "gcp_security_cryptographic_implementation_identification",
+    "gcp_api": "gcp.security.scanCryptographicImplementations()",
+    "service": "gcp_security",
+    "rationale": "To programmatically identify cryptographic implementations used by the software."
+  },
+  {
+    "name": "gcp_iam_account_credential_identification",
+    "gcp_api": "gcp.iam.listAccountsAndCredentials()",
+    "service": "gcp_iam",
+    "rationale": "To identify all accounts and credentials supported by the software."
+  },
+  {
+    "name": "gcp_compute_sensitive_config_options_identification",
+    "gcp_api": "gcp.compute.listSensitiveConfigOptions()",
+    "service": "gcp_compute",
+    "rationale": "To identify configuration options impacting sensitive data."
+  },
+  {
+    "name": "gcp_security_sensitive_functions_identification",
+    "gcp_api": "gcp.security.listSensitiveFunctions()",
+    "service": "gcp_security",
+    "rationale": "To maintain information on sensitive functions and resources used by the software."
+  },
+  {
+    "name": "gcp_storage_sensitive_data_location_identification",
+    "gcp_api": "gcp.storage.identifySensitiveDataLocations()",
+    "service": "gcp_storage",
+    "rationale": "To describe how and where sensitive data is stored, including temporary and non-volatile storage."
+  },
+  {
+    "name": "gcp_security_third_party_guidance_compliance_check",
+    "gcp_api": "gcp.security.checkThirdPartyCompliance()",
+    "service": "gcp_security",
+    "rationale": "To ensure third-party software follows available guidance, a function to programmatically verify compliance with standards like PTS or FIPS is needed."
+  },
+  {
+    "name": "gcp_security_critical_assets_inventory_maintenance",
+    "gcp_api": "gcp.security.maintainCriticalAssetsInventory()",
+    "service": "gcp_security",
+    "rationale": "A function to maintain an inventory of critical assets with classifications is needed to ensure compliance with classification requirements."
+  },
+  {
+    "name": "gcp_compute_exposed_interfaces_scan",
+    "gcp_api": "gcp.compute.scanExposedInterfaces()",
+    "service": "gcp_compute",
+    "rationale": "A function to scan for exposed interfaces and verify their documentation and justification is needed to ensure secure default configurations."
+  },
+  {
+    "name": "gcp_iam_external_authentication_verification",
+    "gcp_api": "gcp.iam.verifyExternalAuthentication()",
+    "service": "gcp_iam",
+    "rationale": "A function to verify external authentication mechanisms for exposed interfaces is needed to ensure proper authentication is in place."
+  },
+  {
+    "name": "gcp_network_external_data_protection_verification",
+    "gcp_api": "gcp.network.verifyExternalDataProtection()",
+    "service": "gcp_network",
+    "rationale": "To ensure proper protection of sensitive data during transmission, a function to verify external resources for data protection is needed."
+  },
+  {
+    "name": "gcp_security_check_public_vulnerabilities",
+    "gcp_api": "gcp.security.checkPublicVulnerabilities()",
+    "service": "gcp_security",
+    "rationale": "To programmatically check exposed protocols, methods, or services against public vulnerability databases."
+  },
+  {
+    "name": "gcp_security_mitigate_known_vulnerabilities",
+    "gcp_api": "gcp.security.mitigateKnownVulnerabilities()",
+    "service": "gcp_security",
+    "rationale": "To programmatically implement and verify mitigation methods for known vulnerabilities."
+  },
+  {
+    "name": "gcp_security_third_party_module_access_control",
+    "gcp_api": "gcp.security.thirdPartyModuleAccessControl()",
+    "service": "gcp_security",
+    "rationale": "To verify and control access to third-party module functions programmatically."
+  },
+  {
+    "name": "gcp_security_controls_enabled_on_install",
+    "gcp_api": "gcp.security.controlsEnabledOnInstall()",
+    "service": "gcp_security",
+    "rationale": "To ensure all security controls are enabled upon software installation."
+  },
+  {
+    "name": "gcp_security_sensitive_data_post_initialization",
+    "gcp_api": "gcp.security.sensitiveDataPostInitialization()",
+    "service": "gcp_security",
+    "rationale": "To ensure sensitive data is processed only after security controls are initialized."
+  },
+  {
+    "name": "gcp_iam_default_security_controls_enabled",
+    "gcp_api": "gcp.iam.setDefaultSecurityControls()",
+    "service": "iam",
+    "rationale": "To ensure all security controls are enabled by default upon installation."
+  },
+  {
+    "name": "gcp_iam_check_default_credentials",
+    "gcp_api": "gcp.iam.checkDefaultCredentials()",
+    "service": "iam",
+    "rationale": "To programmatically identify and verify the absence of default credentials."
+  },
+  {
+    "name": "gcp_iam_test_default_credentials_absence",
+    "gcp_api": "gcp.iam.testDefaultCredentialsAbsence()",
+    "service": "iam",
+    "rationale": "To test and confirm the absence of default credentials programmatically."
+  },
+  {
+    "name": "gcp_iam_user_guidance_on_credentials_change",
+    "gcp_api": "gcp.iam.provideUserGuidanceOnCredentialsChange()",
+    "service": "iam",
+    "rationale": "To ensure user guidance is provided programmatically for changing default credentials."
+  },
+  {
+    "name": "gcp_iam_verify_no_default_credentials_post_install",
+    "gcp_api": "gcp.iam.verifyNoDefaultCredentialsPostInstall()",
+    "service": "iam",
+    "rationale": "To verify that no default credentials are used after installation."
+  },
+  {
+    "name": "gcp_iam_check_default_credentials_absent",
+    "gcp_api": "gcp.iam.credentials.list()",
+    "service": "gcp_iam",
+    "rationale": "To ensure that no default IAM credentials are being used after initialization."
+  },
+  {
+    "name": "gcp_compute_check_minimal_privileges",
+    "gcp_api": "gcp.compute.instances.getIamPolicy()",
+    "service": "gcp_compute",
+    "rationale": "To verify that compute instances have the minimal necessary IAM roles assigned."
+  },
+  {
+    "name": "gcp_security_mechanisms_implementation_check",
+    "gcp_api": "gcp.securitycenter.findings.list()",
+    "service": "gcp_security",
+    "rationale": "To ensure mechanisms are in place to prevent unauthorized access to critical assets."
+  },
+  {
+    "name": "gcp_compute_check_legacy_feature_absence",
+    "gcp_api": "gcp.compute.instances.list()",
+    "service": "gcp_compute",
+    "rationale": "To ensure that legacy features are not used in compute instances."
+  },
+  {
+    "name": "gcp_iam_api_protection_check",
+    "gcp_api": "gcp.iam.check_api_protection()",
+    "service": "gcp_iam",
+    "rationale": "This function is needed to verify that APIs are protected from unauthorized access and modifications."
+  },
+  {
+    "name": "gcp_storage_secure_memory_location",
+    "gcp_api": "gcp.storage.objects.setIamPolicy()",
+    "service": "gcp_storage",
+    "rationale": "To ensure sensitive data is stored in secure memory locations with appropriate IAM policies."
+  },
+  {
+    "name": "gcp_storage_secure_delete",
+    "gcp_api": "gcp.storage.objects.delete()",
+    "service": "gcp_storage",
+    "rationale": "To programmatically ensure that persistent sensitive data is securely deleted and rendered irretrievable."
+  },
+  {
+    "name": "gcp_storage_platform_specific_secure_delete",
+    "gcp_api": "gcp.storage.objects.delete()",
+    "service": "gcp_storage",
+    "rationale": "To handle platform-specific secure deletion challenges such as SSD over-provisioning."
+  },
+  {
+    "name": "gcp_storage_forensic_analysis_support",
+    "gcp_api": "gcp.storage.objects.getMetadata()",
+    "service": "gcp_storage",
+    "rationale": "To support forensic analysis by providing metadata and ensuring secure deletion methods are verifiable."
+  },
+  {
+    "name": "gcp_compute_transient_data_secure_delete",
+    "gcp_api": "gcp.compute.instances.delete()",
+    "service": "gcp_compute",
+    "rationale": "To ensure transient sensitive data is securely deleted from temporary storage automatically."
+  },
+  {
+    "name": "gcp_compute_secure_delete_transient_data",
+    "gcp_api": "gcp.compute.instances.delete()",
+    "service": "compute",
+    "rationale": "To ensure transient sensitive data is securely deleted from temporary storage facilities."
+  },
+  {
+    "name": "gcp_compute_check_sensitive_data_residue",
+    "gcp_api": "gcp.compute.instances.get()",
+    "service": "compute",
+    "rationale": "To identify any sensitive data residue in the execution environment."
+  },
+  {
+    "name": "gcp_security_analyze_sensitive_data_leakage",
+    "gcp_api": "gcp.securitycenter.findings.list()",
+    "service": "security_command_center",
+    "rationale": "To analyze and account for all sensitive data disclosure attack vectors."
+  },
+  {
+    "name": "gcp_security_protect_sensitive_data",
+    "gcp_api": "gcp.kms.cryptoKeys.encrypt()",
+    "service": "kms",
+    "rationale": "To protect against unintended disclosure of sensitive data using cryptography."
+  },
+  {
+    "name": "gcp_iam_user_guidance_provided",
+    "gcp_api": "gcp.iam.policies.get()",
+    "service": "iam",
+    "rationale": "To ensure guidance on the proper configuration and use of protection methods is provided."
+  },
+  {
+    "name": "gcp_compute_instance_security_settings_verified",
+    "gcp_api": "compute.instances.get()",
+    "service": "gcp_compute",
+    "rationale": "To verify that security settings are applied by default upon installation."
+  },
+  {
+    "name": "gcp_iam_user_input_authentication_required",
+    "gcp_api": "iam.users.get()",
+    "service": "gcp_iam",
+    "rationale": "To ensure that user input requiring authentication is enforced."
+  },
+  {
+    "name": "gcp_compute_instance_execution_environment_settings_enabled",
+    "gcp_api": "compute.instances.get()",
+    "service": "gcp_compute",
+    "rationale": "To confirm guidance is provided on enabling execution environment settings."
+  },
+  {
+    "name": "gcp_compute_instance_mitigation_controls_status_checked",
+    "gcp_api": "compute.instances.get()",
+    "service": "gcp_compute",
+    "rationale": "To check if software verifies mitigation controls before launch."
+  },
+  {
+    "name": "gcp_network_vpn_configuration_guidance",
+    "gcp_api": "gcp.networks.vpnConfigurations.get()",
+    "service": "gcp_network",
+    "rationale": "This function is needed to provide guidance on configuring VPN authentication mechanisms."
+  },
+  {
+    "name": "gcp_iam_identify_sensitive_data",
+    "gcp_api": "gcp.iam.identifySensitiveData()",
+    "service": "gcp_iam",
+    "rationale": "This function is needed to identify and manage sensitive data associated with authentication credentials."
+  },
+  {
+    "name": "gcp_iam_api_unique_identification_required",
+    "gcp_api": "gcp.iam.api.requireUniqueIdentification()",
+    "service": "gcp_iam",
+    "rationale": "This function is needed to enforce unique identification for automated access to critical assets."
+  },
+  {
+    "name": "gcp_storage_data_encryption_methods_compliance",
+    "gcp_api": "gcp.storage.check_encryption_methods()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to verify that cryptographic methods used for securing sensitive data comply with defined standards."
+  },
+  {
+    "name": "gcp_storage_index_token_generation_validation",
+    "gcp_api": "gcp.storage.validateIndexTokenGeneration()",
+    "service": "gcp_storage",
+    "rationale": "To ensure index tokens are generated without correlation to sensitive data."
+  },
+  {
+    "name": "gcp_compute_execution_environment_security_validation",
+    "gcp_api": "gcp.compute.validateExecutionEnvironmentSecurity()",
+    "service": "gcp_compute",
+    "rationale": "To validate security properties of execution environments across all platforms."
+  },
+  {
+    "name": "gcp_security_third_party_software_vulnerability_check",
+    "gcp_api": "gcp.security.checkThirdPartySoftwareVulnerabilities()",
+    "service": "gcp_security",
+    "rationale": "To ensure third-party software has no unmitigated vulnerabilities."
+  },
+  {
+    "name": "gcp_network_sensitive_data_transmission_identification",
+    "gcp_api": "gcp.network.identifySensitiveDataTransmission()",
+    "service": "gcp_network",
+    "rationale": "To identify and confirm protection requirements for sensitive data transmission."
+  },
+  {
+    "name": "gcp_network_sensitive_data_encryption_verification",
+    "gcp_api": "gcp.network.verifySensitiveDataEncryption()",
+    "service": "gcp_network",
+    "rationale": "To verify encryption of sensitive data during transmission."
+  },
+  {
+    "name": "gcp_network_encryption_protocols_configured",
+    "gcp_api": "gcp.networks.setEncryptionProtocols()",
+    "service": "gcp_network",
+    "rationale": "This function is needed to ensure that encryption protocols are properly configured for data in transit."
+  },
+  {
+    "name": "gcp_network_secure_protocol_enforcement",
+    "gcp_api": "gcp.networks.enforceSecureProtocols()",
+    "service": "gcp_network",
+    "rationale": "This function is needed to enforce secure versions of protocols for all ingress and egress methods."
+  },
+  {
+    "name": "gcp_network_strong_cryptography_enforcement",
+    "gcp_api": "gcp.networks.enforceStrongCryptography()",
+    "service": "gcp_network",
+    "rationale": "This function is needed to ensure that strong cryptography is enforced during data transmission."
+  },
+  {
+    "name": "gcp_security_cryptography_compliance_check",
+    "gcp_api": "gcp.security.checkCryptographyCompliance()",
+    "service": "gcp_security",
+    "rationale": "This function is needed to verify that cryptography used is compliant with the specified requirements."
+  },
+  {
+    "name": "gcp_security_third_party_cryptography_guidance_check",
+    "gcp_api": "gcp.security.checkThirdPartyCryptographyGuidance()",
+    "service": "gcp_security",
+    "rationale": "This function is needed to ensure that guidance for third-party cryptography methods is provided."
+  },
+  {
+    "name": "gcp_logging_activity_records_protection",
+    "gcp_api": "gcp.logging.protectActivityRecords()",
+    "service": "gcp_logging",
+    "rationale": "This function is needed to ensure the protection methods for activity records are implemented."
+  },
+  {
+    "name": "gcp_logging_external_system_integration_guidance",
+    "gcp_api": "gcp.logging.provideIntegrationGuidance()",
+    "service": "gcp_logging",
+    "rationale": "This function is needed to provide guidance on integrating with external logging systems."
+  },
+  {
+    "name": "gcp_logging_authenticity_protection",
+    "gcp_api": "gcp.logging.protectAuthenticity()",
+    "service": "gcp_logging",
+    "rationale": "This function is needed to secure the authenticity of tracking data during transmission."
+  },
+  {
+    "name": "gcp_logging_activity_tracking_integrity",
+    "gcp_api": "gcp.logging.ensureTrackingIntegrity()",
+    "service": "gcp_logging",
+    "rationale": "This function is needed to ensure integrity of existing records during activity tracking failures."
+  },
+  {
+    "name": "gcp_logging_activity_tracking_failure_handling",
+    "gcp_api": "gcp.logging.handleTrackingFailures()",
+    "service": "gcp_logging",
+    "rationale": "This function is needed to handle failures in activity tracking securely."
+  },
+  {
+    "name": "gcp_security_anomaly_detection_enabled",
+    "gcp_api": "gcp.security.detect_anomalies()",
+    "service": "gcp_security",
+    "rationale": "This function is needed to detect and alert upon anomalous behavior in software execution."
+  },
+  {
+    "name": "gcp_security_integrity_check_interval",
+    "gcp_api": "gcp.security.check_integrity(interval='36h')",
+    "service": "gcp_security",
+    "rationale": "This function is needed to ensure integrity values are checked at specified intervals."
+  },
+  {
+    "name": "gcp_security_protect_cryptographic_primitives",
+    "gcp_api": "gcp.security.protect_cryptography()",
+    "service": "gcp_security",
+    "rationale": "This function is needed to ensure cryptographic primitives used in anomaly detection are adequately protected."
+  },
+  {
+    "name": "gcp_security_integrity_protection_on_update",
+    "gcp_api": "gcp.security.protect_integrity_on_update()",
+    "service": "gcp_security",
+    "rationale": "This function is needed to ensure integrity protections are in place during updates."
+  },
+  {
+    "name": "gcp_security_anomalous_behavior_detection",
+    "gcp_api": "gcp.securitycenter.detectAnomalousBehavior()",
+    "service": "security_command_center",
+    "rationale": "To detect and alert on anomalous behavior such as brute-force attacks."
+  },
+  {
+    "name": "gcp_security_third_party_tool_configuration",
+    "gcp_api": "gcp.securitycenter.configureThirdPartyTools()",
+    "service": "security_command_center",
+    "rationale": "To ensure third-party tools are configured to detect anomalous behavior as per the control objective."
+  },
+  {
+    "name": "gcp_security_threat_identification",
+    "gcp_api": "gcp.securitycenter.identifyThreats()",
+    "service": "security_command_center",
+    "rationale": "To identify common attack methods against the software."
+  },
+  {
+    "name": "gcp_security_attack_validation",
+    "gcp_api": "gcp.securitycenter.validateAttacks()",
+    "service": "security_command_center",
+    "rationale": "To validate identified attacks against industry-standard references."
+  },
+  {
+    "name": "gcp_security_mitigation_validation",
+    "gcp_api": "gcp.securitycenter.validateMitigations()",
+    "service": "security_command_center",
+    "rationale": "To ensure mitigations against identified attacks are implemented and validated."
+  },
+  {
+    "name": "gcp_security_vulnerability_scanning_integration",
+    "gcp_api": "gcp.securitycenter.vulnerabilityScans.list()",
+    "service": "gcp_security",
+    "rationale": "To ensure integration with security scanning tools that can detect vulnerabilities in software components."
+  },
+  {
+    "name": "gcp_security_code_vulnerability_detection",
+    "gcp_api": "gcp.securitycenter.findings.list()",
+    "service": "gcp_security",
+    "rationale": "To automate detection of vulnerabilities in code and during execution using suitable security testing tools."
+  },
+  {
+    "name": "gcp_security_vulnerability_ranking_and_remediation",
+    "gcp_api": "gcp.securitycenter.vulnerabilityManagement()",
+    "service": "gcp_security",
+    "rationale": "To classify vulnerabilities using industry-standard systems and maintain a remediation plan."
+  },
+  {
+    "name": "gcp_security_update_release_management",
+    "gcp_api": "gcp.deploymentmanager.deployments.insert()",
+    "service": "gcp_deploymentmanager",
+    "rationale": "To manage the release of software updates based on defined security criteria."
+  },
+  {
+    "name": "gcp_security_update_testing_and_release",
+    "gcp_api": "gcp.cloudbuild.builds.create()",
+    "service": "gcp_cloudbuild",
+    "rationale": "To ensure security updates are tested and released according to defined criteria."
+  },
+  {
+    "name": "gcp_compute_software_update_integrity_check",
+    "gcp_api": "gcp.compute.softwareUpdateIntegrityCheck()",
+    "service": "gcp_compute",
+    "rationale": "To programmatically verify the integrity of software updates using checksums or digital signatures."
+  },
+  {
+    "name": "gcp_security_update_guidance_provided",
+    "gcp_api": "gcp.security.updateGuidanceProvided()",
+    "service": "gcp_security",
+    "rationale": "To ensure stakeholders receive guidance on verifying software update integrity."
+  },
+  {
+    "name": "gcp_network_tls_cipher_suite_compliance",
+    "gcp_api": "gcp.network.tlsCipherSuiteCompliance()",
+    "service": "gcp_network",
+    "rationale": "To ensure TLS connections use compliant cipher suites for secure software distribution."
+  },
+  {
+    "name": "gcp_security_update_notification",
+    "gcp_api": "gcp.security.updateNotification()",
+    "service": "gcp_security",
+    "rationale": "To notify stakeholders of software updates and provide installation guidance."
+  },
+  {
+    "name": "gcp_security_vulnerability_notification",
+    "gcp_api": "gcp.security.vulnerabilityNotification()",
+    "service": "gcp_security",
+    "rationale": "To notify stakeholders of known vulnerabilities and provide mitigation suggestions."
+  },
+  {
+    "name": "gcp_compute_verify_update_integrity",
+    "gcp_api": "gcp.compute.instances.verifyUpdateIntegrity()",
+    "service": "gcp_compute",
+    "rationale": "This function is needed to verify the integrity of software updates through checksums or digital signatures."
+  },
+  {
+    "name": "gcp_iam_provide_secure_implementation_guidance",
+    "gcp_api": "gcp.iam.guidance.provideSecureImplementation()",
+    "service": "gcp_iam",
+    "rationale": "This function is needed to ensure that stakeholders receive clear guidance on secure implementation and configuration."
+  },
+  {
+    "name": "gcp_iam_provide_third_party_software_guidance",
+    "gcp_api": "gcp.iam.guidance.provideThirdPartySoftwareGuidance()",
+    "service": "gcp_iam",
+    "rationale": "This function is needed to provide instructions on the secure installation and configuration of third-party software."
+  },
+  {
+    "name": "gcp_storage_restrict_sensitive_auth_data_storage",
+    "gcp_api": "gcp.storage.restrictSensitiveAuthDataStorage()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to ensure sensitive authentication data is not retained after authorization."
+  },
+  {
+    "name": "gcp_storage_provide_secure_deletion_guidance",
+    "gcp_api": "gcp.storage.provideSecureDeletionGuidance()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to provide guidance on securely deleting cardholder data after retention periods."
+  },
+  {
+    "name": "gcp_storage_pan_masking_configuration",
+    "gcp_api": "gcp.storage.masking_config()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to ensure that PAN is masked according to business needs."
+  },
+  {
+    "name": "gcp_storage_pan_masking_configuration",
+    "gcp_api": "gcp.storage.masking_config()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to ensure that PAN is masked according to business needs."
+  },
+  {
+    "name": "gcp_storage_pan_masking_configuration",
+    "gcp_api": "gcp.storage.masking_config()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to ensure that guidance for configuring PAN masking features is programmatically available."
+  },
+  {
+    "name": "gcp_storage_pan_masking_configuration",
+    "gcp_api": "gcp.storage.masking_config()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to ensure that all displays of PAN are masked by default."
+  },
+  {
+    "name": "gcp_storage_pan_encryption_configuration",
+    "gcp_api": "gcp.storage.encryption_config()",
+    "service": "gcp_storage",
+    "rationale": "This function is needed to ensure that PAN is rendered unreadable using strong cryptography."
+  },
+  {
+    "name": "gcp_compute_rng_verification",
+    "gcp_api": "gcp.compute.verifyRng()",
+    "service": "compute",
+    "rationale": "To ensure that only approved RNG functions are used in cryptographic operations, aligned with terminal PTS evaluation."
+  },
+  {
+    "name": "gcp_storage_data_sharing_restrictions",
+    "gcp_api": "gcp.storage.setDataSharingRestrictions()",
+    "service": "storage",
+    "rationale": "To prevent sharing of clear-text account data with unauthorized software."
+  },
+  {
+    "name": "gcp_compute_shared_resource_security",
+    "gcp_api": "gcp.compute.ensureSharedResourceSecurity()",
+    "service": "compute",
+    "rationale": "To ensure secure integration and use of shared resources according to terminal vendor's security policy."
+  },
+  {
+    "name": "gcp_compute_application_segregation_enforcement",
+    "gcp_api": "gcp.compute.enforceApplicationSegregation()",
+    "service": "compute",
+    "rationale": "To ensure application segregation is enforced and not bypassed."
+  },
+  {
+    "name": "gcp_compute_software_signature_verification",
+    "gcp_api": "gcp.compute.verifySoftwareSignature()",
+    "service": "compute",
+    "rationale": "To ensure all software files are cryptographically signed and verified by terminal firmware."
+  },
+  {
+    "name": "gcp_compute_software_integrity_verification",
+    "gcp_api": "gcp.compute.images.get()",
+    "service": "compute",
+    "rationale": "To ensure software integrity by verifying images and binaries against known good states."
+  },
+  {
+    "name": "gcp_security_input_validation_enforcement",
+    "gcp_api": "gcp.securitycenter.findings.list()",
+    "service": "securitycenter",
+    "rationale": "To programmatically validate all user and external inputs against security policies."
+  },
+  {
+    "name": "gcp_compute_error_handling_verification",
+    "gcp_api": "gcp.compute.instances.get()",
+    "service": "compute",
+    "rationale": "To ensure return values are checked and error conditions are handled securely."
+  },
+  {
+    "name": "gcp_compute_race_condition_prevention",
+    "gcp_api": "gcp.compute.instances.list()",
+    "service": "compute",
+    "rationale": "To detect and prevent race conditions in software execution."
+  },
+  {
+    "name": "gcp_cloudbuild_vulnerability_testing",
+    "gcp_api": "gcp.cloudbuild.builds.list()",
+    "service": "cloudbuild",
+    "rationale": "To ensure that software is tested for vulnerabilities before updates or releases."
+  },
+  {
+    "name": "gcp_compute_terminal_software_guidance_check",
+    "gcp_api": "gcp.compute.instances.get()",
+    "service": "compute",
+    "rationale": "To programmatically verify that terminal software implementation guidance is followed on GCP-hosted payment terminals."
+  },
+  {
+    "name": "gcp_compute_terminal_vendor_guidance_check",
+    "gcp_api": "gcp.compute.instances.get()",
+    "service": "compute",
+    "rationale": "To ensure that implementation guidance adheres to vendor guidance for secure configuration on GCP-hosted payment terminals."
+  },
+  {
+    "name": "gcp_security_sbom_component_catalog",
+    "gcp_api": "gcp.securitycenter.assets.list()",
+    "service": "securitycenter",
+    "rationale": "To programmatically catalog software components and services in a software bill of materials (SBOM) using GCP Security Center."
+  },
+  {
+    "name": "gcp_security_sbom_dependency_mapping",
+    "gcp_api": "gcp.securitycenter.assets.list()",
+    "service": "securitycenter",
+    "rationale": "To document primary components and their transitive dependencies in an SBOM using GCP Security Center."
+  },
+  {
+    "name": "gcp_security_sbom_service_dependency_info",
+    "gcp_api": "gcp.securitycenter.assets.list()",
+    "service": "securitycenter",
+    "rationale": "To include software dependencies in the production environment in an SBOM for services provided 'as a service'."
+  },
+  {
+    "name": "gcp_iam_strong_authentication_mechanisms_enforced",
+    "gcp_api": "iam.policies.get()",
+    "service": "iam",
+    "rationale": "To ensure that industry-standard authentication mechanisms are enforced for user access to sensitive functions."
+  },
+  {
+    "name": "gcp_iam_credential_protection_strength_verification",
+    "gcp_api": "iam.credentials.get()",
+    "service": "iam",
+    "rationale": "To verify that the methods used to protect authentication credentials are sufficiently strong and robust."
+  },
+  {
+    "name": "gcp_iam_secure_authentication_decision_enforcement",
+    "gcp_api": "iam.policies.testIamPermissions()",
+    "service": "iam",
+    "rationale": "To ensure that authentication decisions are enforced within a secure area of the software."
+  },
+  {
+    "name": "gcp_network_interface_access_restriction",
+    "gcp_api": "compute.instances.get()",
+    "service": "compute",
+    "rationale": "To ensure that access to software functions and resources through Internet-accessible interfaces is restricted to authorized users."
+  },
+  {
+    "name": "gcp_network_firewall_rules_restrict_access",
+    "gcp_api": "gcp.network.firewallRules.create()",
+    "service": "gcp_network",
+    "rationale": "This function is needed to programmatically enforce access restrictions on firewall rules for Internet-accessible interfaces."
+  },
+  {
+    "name": "gcp_compute_instance_parsers_configuration",
+    "gcp_api": "gcp.compute.instances.setMetadata()",
+    "service": "gcp_compute",
+    "rationale": "This function is needed to configure instances with restrictive settings for parsers and interpreters."
+  },
+  {
+    "name": "gcp_network_firewall_resource_starvation_protection",
+    "gcp_api": "gcp.network.firewallRules.create()",
+    "service": "gcp_network",
+    "rationale": "This function is needed to implement specific firewall rules that mitigate resource starvation attacks."
+  },
+  {
+    "name": "gcp_compute_instance_file_content_validation",
+    "gcp_api": "gcp.compute.instances.setMetadata()",
+    "service": "gcp_compute",
+    "rationale": "This function is needed to validate file content before allowing uploads to prevent malicious files."
+  },
+  {
+    "name": "gcp_network_firewall_hostile_object_protection",
+    "gcp_api": "gcp.network.firewallRules.create()",
+    "service": "gcp_network",
+    "rationale": "This function is needed to create firewall rules that protect against hostile object creation and data tampering."
+  },
+  {
+    "name": "gcp_network_web_application_firewall_enabled",
+    "gcp_api": "gcp.network.firewalls.create()",
+    "service": "gcp_network",
+    "rationale": "To ensure web application firewalls are configured to protect against attacks on web interfaces."
+  }
+]

@@ -67,7 +67,7 @@ class KubernetesPCIComplianceMapper:
         """Initialize the compliance mapper"""
         
         # SET YOUR API KEY HERE:
-        self.api_key = "YOUR_OPENAI_API_KEY_HERE"
+        self.api_key = "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"
         
         # Model configuration with fallback
         self.model_default = "gpt-4o-mini"
@@ -595,7 +595,7 @@ Return ONLY the JSON response, no other text.
         
         if new_functions:
             # Load existing functions
-            kubernetes_file = "kubernetes_updated_20250817_051156.json"
+            kubernetes_file = "kubernetes_updated_nist_20250824_005159.json"
             try:
                 with open(kubernetes_file, 'r', encoding='utf-8') as f:
                     existing_data = json.load(f)
@@ -685,7 +685,7 @@ def main():
     
     # Load Kubernetes function database
     print("\nInitializing Kubernetes PCI DSS compliance mapper...")
-    if not mapper.load_kubernetes_database("kubernetes_updated_20250817_051156.json"):
+    if not mapper.load_kubernetes_database("kubernetes_updated_nist_20250824_005159.json"):
         print("❌ Failed to load Kubernetes function database")
         return
     
@@ -697,7 +697,7 @@ def main():
     
     # Process compliance framework
     print("Starting PCI DSS compliance framework processing...")
-    stats = mapper.process_pci_compliance_framework(compliance_items, test_mode=True, batch_size=5)
+    stats = mapper.process_pci_compliance_framework(compliance_items, test_mode=False, batch_size=5)
     
     print("\n=== Processing Complete ===")
     print(f"Results saved to: output/")

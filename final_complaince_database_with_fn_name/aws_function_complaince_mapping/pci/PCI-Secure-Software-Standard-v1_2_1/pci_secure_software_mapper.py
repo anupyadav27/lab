@@ -62,7 +62,7 @@ class PCISecureSoftwareMapper:
         """Initialize the compliance mapper"""
         
         # SET YOUR API KEY HERE:
-        self.api_key = "YOUR_OPENAI_API_KEY_HERE"
+        self.api_key = "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"
         
         # Model configuration with fallback
         self.model_default = "gpt-4o-mini"
@@ -579,7 +579,7 @@ Return ONLY the JSON response, no other text.
         
         # Load current prowler data
         current_data = {}
-        prowler_file = "prowler_updated_nist_20250822_145118.json"
+        prowler_file = "prowler_updated_pci_20250823_202730.json"
         
         if os.path.exists(prowler_file):
             with open(prowler_file, 'r', encoding='utf-8') as f:
@@ -632,7 +632,7 @@ def main():
     """Main function to run the PCI Secure Software Standard compliance mapper"""
     
     # Configuration
-    PROWLER_FILE = "prowler_updated_nist_20250822_145118.json"
+    PROWLER_FILE = "prowler_updated_pci_20250823_202730.json"
     PCI_SECURE_SOFTWARE_FILE = "PCI-Secure-Software-Standard-v1_2_1.json"
     OUTPUT_DIR = "output"
     
@@ -669,7 +669,7 @@ def main():
         # Process PCI Secure Software Standard compliance framework
         print("Starting PCI Secure Software Standard compliance framework processing...")
         # Test mode: process only 3 items with batch size 3 for testing
-        results = mapper.process_pci_secure_software_framework(PCI_SECURE_SOFTWARE_FILE, OUTPUT_DIR, batch_size=3, test_mode=True, test_items=3)
+        results = mapper.process_pci_secure_software_framework(PCI_SECURE_SOFTWARE_FILE, OUTPUT_DIR, batch_size=3, test_mode=False, test_items=3)
         
         if "error" in results:
             print(f"Error: {results['error']}")
