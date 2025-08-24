@@ -67,7 +67,7 @@ class KubernetesPCIComplianceMapper:
         """Initialize the compliance mapper"""
         
         # SET YOUR API KEY HERE:
-        self.api_key = "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"
+        self.api_key = os.getenv("OPENAI_API_KEY")
         
         # Model configuration with fallback
         self.model_default = "gpt-4o-mini"
