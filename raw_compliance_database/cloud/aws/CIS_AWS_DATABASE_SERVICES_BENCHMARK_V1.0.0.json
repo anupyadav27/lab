@@ -17,8 +17,8 @@
       "vpc_traffic_controls_configured",
       "vpc_launch_configuration_valid",
       "vpc_subnet_availability_verified",
-      "vpc_route_table_restricted",
-      "vpc_internet_gateway_secure",
+      "vpc_route_table_configured",
+      "vpc_internet_gateway_attached",
       "vpc_nat_gateway_configured",
       "vpc_security_group_default_deny",
       "vpc_network_acl_default_deny",
@@ -40,7 +40,8 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "rds_instance_security_group_attached",
-      "rds",
+      "rds_instance_security_group_inbound_restricted",
+      "rds_instance_security_group_outbound_restricted",
       "rds_instance_security_group_default_deny_all",
       "rds_instance_security_group_no_unrestricted_access",
       "rds_instance_security_group_no_wildcard_ingress",
@@ -62,11 +63,13 @@
     "impact": "Unauthorized users will not be able to access the account because a key would be needed that only authorized users have access to.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "rds",
-      "kms",
+      "aurora_db_encryption_enabled",
+      "aurora_db_kms_key_configured",
+      "aurora_db_storage_encrypted",
       "aurora_db_default_encryption_enabled",
       "aurora_db_customer_managed_key_used",
       "aurora_db_encryption_at_rest_enabled",
+      "aurora_db_kms_key_policy_valid",
       "aurora_db_encryption_in_transit_enabled"
     ]
   },
@@ -125,7 +128,7 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "rds",
+      "rds_db_instance_audit_logging_enabled",
       "rds_db_instance_activity_streams_enabled",
       "rds_db_instance_cloudtrail_logging_enabled",
       "rds_db_instance_audit_logging_retention_over_90d",
@@ -148,7 +151,7 @@
     "function_names": [
       "rds_aurora_password_rotation_enabled",
       "rds_aurora_password_rotation_over_90d",
-      "iam",
+      "iam_user_access_key_rotation_enabled",
       "iam_user_access_key_rotation_over_90d"
     ]
   },
@@ -176,9 +179,9 @@
     "impact": "Users would need to create a IAM role to implement POLP into their database.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "iam_role_reviewed_regularly",
-      "iam",
-      "iam_user_created",
+      "iam_role_least_privilege",
+      "iam_policy_least_privilege",
+      "iam_user_least_privilege",
       "aurora_db_user_least_privilege",
       "aurora_db_role_least_privilege",
       "aurora_db_grant_least_privilege",
@@ -219,8 +222,8 @@
     "impact": "The user is required to complete the second step which is the multi-factor authentication before any access is granted to them.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "iam",
-      "iam_root_mfa_active",
+      "iam_user_mfa_enabled",
+      "iam_root_mfa_enabled",
       "iam_role_mfa_required",
       "iam_policy_mfa_enforced",
       "iam_credential_mfa_protected",
@@ -254,7 +257,7 @@
       "compute_instance_multi_az_deployment_enabled",
       "compute_instance_single_az_deployment_configured",
       "compute_instance_deployment_configuration_valid",
-      "compute_instance_az_deployment_configured",
+      "compute_instance_az_deployment_compliance",
       "compute_instance_high_availability_deployment_enabled"
     ]
   },
@@ -320,9 +323,14 @@
     "function_names": [
       "cloudtrail_trail_encryption_enabled",
       "cloudtrail_trail_kms_key_configured",
-      "cloudtrail_trail_sse_enabled",
+      "cloudtrail_trail_sse_s3_enabled",
       "cloudtrail_trail_sse_kms_enabled",
-      "cloudtrail"
+      "cloudtrail_trail_encryption_at_rest_enabled",
+      "cloudtrail_trail_log_file_encryption_enabled",
+      "cloudtrail_trail_encryption_key_specified",
+      "cloudtrail_trail_encryption_key_rotation_enabled",
+      "cloudtrail_trail_encryption_key_customer_managed",
+      "cloudtrail_trail_encryption_key_aws_managed"
     ]
   },
   {
@@ -336,8 +344,11 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "rds",
-      "rds_instance_client_ssl_authentication_enabled"
+      "rds_instance_encryption_in_transit_enabled",
+      "rds_instance_min_tls_1_2_required",
+      "rds_instance_ssl_certificate_valid",
+      "rds_instance_client_ssl_authentication_enabled",
+      "rds_instance_secure_connection_required"
     ]
   },
   {
@@ -373,11 +384,11 @@
       "compute_instance_automatic_patching_enabled",
       "compute_instance_patch_compliance_over_30d",
       "compute_instance_security_updates_installed",
-      "compute_instance_patch_baseline_assigned",
+      "compute_instance_patch_baseline_compliance",
       "compute_instance_rebootless_patching_enabled",
       "compute_instance_patch_management_enabled",
       "compute_instance_critical_patches_installed",
-      "compute_instance_patch_schedule_active",
+      "compute_instance_patch_schedule_configured",
       "compute_instance_patch_level_current",
       "compute_instance_auto_update_enabled"
     ]
@@ -394,14 +405,15 @@
     "impact": "If the individual is not monitoring and logging their activity it allows the attacker to attack the system and extract or destroy data.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudtrail",
-      "cloudtrail_trail_logging_file_validation_enabled",
-      "cloudtrail",
-      "cloudwatch_log_group_alerting_enabled",
-      "cloudwatch",
-      "cloudwatch",
-      "cloudwatch_log_metric_filter_alerting_enabled",
-      "cloudwatch",
+      "cloudtrail_trail_logging_enabled",
+      "cloudtrail_trail_log_file_validation_enabled",
+      "cloudtrail_trail_multi_region_enabled",
+      "cloudwatch_log_group_retention_set",
+      "cloudwatch_log_group_encryption_enabled",
+      "cloudwatch_alarm_actions_configured",
+      "cloudwatch_log_metric_filter_configured",
+      "cloudwatch_log_group_all_regions",
+      "cloudwatch_log_group_logging_enabled",
       "cloudwatch_log_group_logging_to_s3_enabled"
     ]
   },
@@ -417,10 +429,12 @@
     "impact": "It would result in having the files protected and being able to retrieve those files in the event of an accidental loss.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "rds_instance_automated_backup_enabled",
+      "rds_instance_backup_enabled",
       "rds_instance_recovery_enabled",
+      "rds_instance_automated_backup_enabled",
       "rds_instance_retention_period_configured",
-      "rds",
+      "rds_instance_point_in_time_recovery_enabled",
+      "rds_instance_backup_window_configured",
       "rds_instance_backup_encryption_enabled",
       "rds_instance_backup_replication_enabled",
       "rds_instance_backup_min_retention_7d",
@@ -443,7 +457,7 @@
       "database_instance_details_review",
       "database_security_networks_review",
       "database_encryption_settings_review",
-      "database_audit_logging_review_required",
+      "database_audit_logging_review",
       "database_authentication_review",
       "database_excessive_permissions_review",
       "database_security_configuration_review_periodic",
@@ -461,8 +475,8 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "iam_user_created",
-      "iam",
+      "iam_user_active",
+      "iam_policy_attached",
       "iam_root_account_no_access_keys",
       "iam_password_policy_strong",
       "iam_mfa_enabled_all_users",
@@ -484,8 +498,11 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "dynamodb",
-      "dynamodb_table_iam_policy_condition_restricted"
+      "dynamodb_table_fine_grained_access_control_enabled",
+      "dynamodb_table_row_level_security_enabled",
+      "dynamodb_table_iam_policy_condition_restricted",
+      "dynamodb_table_request_content_based_access_restricted",
+      "dynamodb_table_attribute_based_access_control_enabled"
     ]
   },
   {
@@ -500,8 +517,11 @@
     "impact": "Add an additional layer of security by preventing any unauthorized personnel from accessing the data since both IAM access to the data and access to the encryption key would be required.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "dynamodb",
-      "kms"
+      "dynamodb_table_encryption_enabled",
+      "dynamodb_table_kms_encryption_enabled",
+      "dynamodb_table_encryption_at_rest_enabled",
+      "dynamodb_table_default_encryption_enabled",
+      "dynamodb_table_cmk_encryption_enabled"
     ]
   },
   {
@@ -516,8 +536,11 @@
     "impact": "If the user does not have the code configured correctly it would not be able to connect to the DynamoDB.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "dynamodb",
-      "dynamodb"
+      "dynamodb_table_encryption_in_transit_enabled",
+      "dynamodb_table_tls_enabled",
+      "dynamodb_table_min_tls_1_2",
+      "dynamodb_table_ssl_certificate_valid",
+      "dynamodb_table_endpoint_https_only"
     ]
   },
   {
@@ -552,10 +575,14 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "dynamodb",
-      "dynamodb",
-      "dynamodb",
-      "dynamodb"
+      "dynamodb_table_streams_enabled",
+      "dynamodb_table_lambda_integration_enabled",
+      "dynamodb_table_compliance_automation_enabled",
+      "dynamodb_stream_lambda_trigger_configured",
+      "dynamodb_table_change_tracking_enabled",
+      "dynamodb_stream_compliance_checking_enabled",
+      "dynamodb_lambda_automated_response_enabled",
+      "dynamodb_table_event_notification_enabled"
     ]
   },
   {
@@ -569,8 +596,14 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "dynamodb",
-      "dynamodb"
+      "dynamodb_table_activity_monitoring_enabled",
+      "dynamodb_table_audit_logging_enabled",
+      "dynamodb_table_cloudtrail_integration_enabled",
+      "dynamodb_table_event_monitoring_enabled",
+      "dynamodb_table_continuous_auditing_enabled",
+      "dynamodb_table_activity_tracking_enabled",
+      "dynamodb_table_aws_cloudtrail_logging_enabled",
+      "dynamodb_table_operation_auditing_enabled"
     ]
   },
   {
@@ -584,12 +617,16 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "elasticache",
+      "elasticache_cluster_authentication_enabled",
       "elasticache_cluster_iam_auth_enabled",
-      "elasticache",
-      "elasticache",
-      "elasticache",
-      "elasticache_cluster_security_group_attached"
+      "elasticache_cluster_transit_encryption_enabled",
+      "elasticache_cluster_at_rest_encryption_enabled",
+      "elasticache_cluster_no_public_access",
+      "elasticache_cluster_security_group_restricted",
+      "elasticache_cluster_redis_auth_token_configured",
+      "elasticache_cluster_redis_auth_token_rotation_enabled",
+      "elasticache_cluster_redis_auth_token_min_length",
+      "elasticache_cluster_redis_auth_token_complexity_requirements"
     ]
   },
   {
@@ -603,12 +640,16 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "elasticache",
-      "elasticache_cluster_vpc_enabled",
-      "elasticache_cluster_security_group_attached",
-      "elasticache",
+      "elasticache_cluster_network_security_enabled",
+      "elasticache_cluster_vpc_configured",
+      "elasticache_cluster_security_group_restricted",
+      "elasticache_cluster_network_access_controlled",
+      "elasticache_cluster_inbound_traffic_restricted",
+      "elasticache_cluster_outbound_traffic_restricted",
+      "elasticache_cluster_public_access_disabled",
       "elasticache_cluster_subnet_group_configured",
-      "elasticache_cluster_security_group_no_wildcard_ingress"
+      "elasticache_cluster_security_group_no_wildcard_ingress",
+      "elasticache_cluster_network_acl_restricted"
     ]
   },
   {
@@ -623,8 +664,18 @@
     "impact": "If the user didn’t enable encryption and rest and during transit, there is a possibility of the data being vulnerable to a ransomware attack.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "elasticache",
-      "elasticache"
+      "elasticache_replication_group_encryption_at_rest_enabled",
+      "elasticache_replication_group_encryption_in_transit_enabled",
+      "elasticache_replication_group_encryption_enabled",
+      "elasticache_cluster_encryption_at_rest_enabled",
+      "elasticache_cluster_encryption_in_transit_enabled",
+      "elasticache_cluster_encryption_enabled",
+      "elasticache_cache_node_encryption_at_rest_enabled",
+      "elasticache_cache_node_encryption_in_transit_enabled",
+      "elasticache_cache_node_encryption_enabled",
+      "elasticache_redis_cluster_encryption_at_rest_enabled",
+      "elasticache_redis_cluster_encryption_in_transit_enabled",
+      "elasticache_redis_cluster_encryption_enabled"
     ]
   },
   {
@@ -638,8 +689,14 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "elasticache",
-      "elasticache"
+      "elasticache_cluster_automatic_updates_enabled",
+      "elasticache_replication_group_automatic_patching_enabled",
+      "elasticache_engine_version_auto_upgrade_enabled",
+      "elasticache_maintenance_window_auto_patching_enabled",
+      "elasticache_security_patches_auto_apply_enabled",
+      "elasticache_minor_version_updates_auto_enabled",
+      "elasticache_cluster_patch_compliance_auto_enabled",
+      "elasticache_service_updates_auto_apply_enabled"
     ]
   },
   {
@@ -654,6 +711,7 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "elasticache_cluster_vpc_enabled",
+      "elasticache_cluster_vpc_configured",
       "elasticache_cluster_vpc_security_groups_restricted",
       "elasticache_cluster_vpc_subnet_groups_configured",
       "elasticache_cluster_vpc_flow_logs_enabled",
@@ -676,7 +734,14 @@
     "impact": "If the individual is not monitoring and logging their activity it allows the attacker to attack the system and extract or destroy data.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "elasticache"
+      "elasticache_cluster_logging_enabled",
+      "elasticache_cluster_monitoring_enabled",
+      "elasticache_cluster_logs_exported",
+      "elasticache_cluster_metrics_collected",
+      "elasticache_cluster_log_retention_set",
+      "elasticache_cluster_logs_encrypted",
+      "elasticache_cluster_monitoring_alerts_configured",
+      "elasticache_cluster_logs_all_events_captured"
     ]
   },
   {
@@ -691,7 +756,14 @@
     "impact": "Updating the system and being updated with security configurations keeps everything secure and prevents it from an attack.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "elasticache"
+      "elasticache_cluster_security_config_reviewed_regularly",
+      "elasticache_cluster_security_config_updated_regularly",
+      "elasticache_cluster_security_config_reviewed_over_90d",
+      "elasticache_cluster_security_config_updated_over_90d",
+      "elasticache_cluster_security_config_reviewed_recently",
+      "elasticache_cluster_security_config_updated_recently",
+      "elasticache_cluster_security_config_reviewed_consistently",
+      "elasticache_cluster_security_config_updated_consistently"
     ]
   },
   {
@@ -707,9 +779,9 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "iam_role_permissions_restricted",
-      "iam",
-      "iam_role_reviewed_regularly",
-      "iam_role_secure_access_control",
+      "iam_role_no_admin_privileges",
+      "iam_role_least_privilege_enforced",
+      "iam_role_access_control_enabled",
       "iam_role_explicit_permissions_only",
       "iam_role_no_wildcard_permissions",
       "iam_role_conditional_access_enabled",
@@ -751,10 +823,11 @@
     "impact": "If you are not updating these regularly, your database would most likely become susceptible to a vulnerable attack. Not updating your IAM permission, network, and encryption setting, and controlling audit logging, would lead to the attacker getting into the system which would result in data loss.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "keyspaces_table_security_config_compliance_verified",
+      "keyspaces_table_security_config_reviewed_regularly",
+      "keyspaces_table_security_config_updated_recently",
       "keyspaces_table_security_config_aligned_requirements",
       "keyspaces_table_security_config_vulnerability_protected",
-      "keyspaces_table_security_config_updated_over_90d"
+      "keyspaces_table_security_config_reviewed_over_90d"
     ]
   },
   {
@@ -791,24 +864,26 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "s3",
-      "s3",
+      "s3_bucket_encryption_enabled",
+      "s3_bucket_ssl_enabled",
       "ebs_volume_encryption_enabled",
-      "rds",
+      "rds_instance_encryption_enabled",
       "cloudtrail_logging_encryption_enabled",
-      "cloudfront",
-      "elasticache",
-      "sqs",
-      "sns",
-      "dynamodb",
-      "lambda",
-      "efs",
+      "cloudfront_distribution_ssl_enabled",
+      "elasticache_replication_group_encryption_enabled",
+      "sqs_queue_encryption_enabled",
+      "sns_topic_encryption_enabled",
+      "dynamodb_table_encryption_enabled",
+      "lambda_function_encryption_enabled",
+      "efs_file_system_encryption_enabled",
       "redshift_cluster_encryption_enabled",
-      "cloudwatch",
+      "cloudwatch_log_group_encryption_enabled",
       "api_gateway_rest_api_encryption_enabled",
       "elasticsearch_domain_encryption_enabled",
-      "kms",
-      "rds"
+      "kms_key_rotation_enabled",
+      "s3_bucket_default_encryption_enabled",
+      "rds_instance_ssl_enabled",
+      "cloudfront_distribution_tls_min_1_2"
     ]
   },
   {
@@ -823,11 +898,16 @@
     "impact": "Allowing authentication verifies the identity of the person and who has appropriate access to a company’s data.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront"
+      "cloud_cdn_distribution_authentication_enabled",
+      "cloud_cdn_distribution_access_control_enabled",
+      "cloud_cdn_distribution_secure_auth_required",
+      "cloud_cdn_distribution_token_auth_enabled",
+      "cloud_cdn_distribution_origin_access_identity_enabled",
+      "cloud_cdn_distribution_signed_urls_required",
+      "cloud_cdn_distribution_signed_cookies_required",
+      "cloud_cdn_distribution_ip_restrictions_enabled",
+      "cloud_cdn_distribution_geo_restrictions_enabled",
+      "cloud_cdn_distribution_waf_integration_enabled"
     ]
   },
   {
@@ -842,7 +922,11 @@
     "impact": "Reduces risks of any fraud since worker activity is being monitored and tracked.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "memorydb"
+      "memorydb_cluster_audit_logging_enabled",
+      "memorydb_cluster_audit_logging_export_enabled",
+      "memorydb_cluster_audit_logging_retention_over_90d",
+      "memorydb_cluster_audit_logging_encryption_enabled",
+      "memorydb_cluster_audit_logging_all_events_captured"
     ]
   },
   {
@@ -857,15 +941,15 @@
     "impact": "By regularly checking these settings in the database the user is preventing the database from a cyber threat.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "iam_role_permissions_restricted",
+      "iam_role_permissions_reviewed_regularly",
       "security_network_acl_reviewed_regularly",
       "encryption_settings_reviewed_regularly",
       "audit_logging_reviewed_regularly",
       "authentication_settings_reviewed_regularly",
-      "iam_user_permissions_least_privilege",
-      "security_group_reviewed_regularly",
+      "iam_user_permissions_reviewed_regularly",
+      "security_group_rules_reviewed_regularly",
       "cloudtrail_logging_reviewed_regularly",
-      "s3",
+      "s3_bucket_encryption_reviewed_regularly",
       "compute_instance_security_reviewed_regularly"
     ]
   },
@@ -881,8 +965,14 @@
     "impact": "Enabling monitoring and alerting has a positive impact in the business operations when the issue is identified and addressed accordingly.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "memorydb",
-      "memorydb"
+      "memorydb_cluster_monitoring_enabled",
+      "memorydb_cluster_alerting_enabled",
+      "memorydb_cluster_logs_exported",
+      "memorydb_cluster_metrics_enabled",
+      "memorydb_cluster_events_monitored",
+      "memorydb_cluster_anomaly_detection_enabled",
+      "memorydb_cluster_performance_alerts_enabled",
+      "memorydb_cluster_security_events_monitored"
     ]
   },
   {
@@ -898,8 +988,8 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "vpc_documentdb_isolated",
-      "vpc_security_group_attached",
-      "vpc_network_acl_associated",
+      "vpc_security_group_restricted",
+      "vpc_network_acl_restricted",
       "documentdb_inbound_traffic_restricted",
       "documentdb_outbound_traffic_restricted",
       "vpc_documentdb_private_subnet",
@@ -922,9 +1012,9 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "vpc_subnet_isolated",
-      "vpc_security_group_attached",
+      "vpc_security_group_restricted",
       "vpc_flow_logs_enabled",
-      "vpc_network_acl_associated",
+      "vpc_network_acl_restricted",
       "vpc_default_security_group_closed",
       "vpc_peering_connection_secure",
       "vpc_endpoint_policy_restricted",
@@ -946,15 +1036,15 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "cloudtrail_trail_encryption_enabled",
-      "s3",
+      "s3_bucket_encryption_enabled",
       "ebs_volume_encryption_enabled",
-      "rds",
-      "dynamodb",
-      "cloudfront",
+      "rds_instance_encryption_enabled",
+      "dynamodb_table_encryption_enabled",
+      "cloud_cdn_distribution_encryption_enabled",
       "compute_disk_encryption_enabled",
       "secretsmanager_secret_encryption_enabled",
-      "kms",
-      "elasticache"
+      "kms_key_encryption_enabled",
+      "elasticache_cluster_encryption_enabled"
     ]
   },
   {
@@ -968,10 +1058,16 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront"
+      "cloud_cdn_distribution_https_redirect_enabled",
+      "cloud_cdn_distribution_tls_enabled",
+      "cloud_cdn_distribution_min_tls_1_2",
+      "cloud_cdn_distribution_encryption_in_transit_enabled",
+      "cloud_cdn_distribution_ssl_certificate_valid",
+      "cloud_cdn_distribution_security_policy_enforced",
+      "cloud_cdn_distribution_secure_protocol_enabled",
+      "cloud_cdn_distribution_endpoint_https_only",
+      "cloud_cdn_distribution_client_certificate_required",
+      "cloud_cdn_distribution_cipher_suite_secure"
     ]
   },
   {
@@ -1007,13 +1103,13 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "rds_instance_audit_logging_enabled",
-      "rds_instance_audit_logs_cloudwatch_exported",
+      "rds_instance_audit_logs_cloudwatch_export_enabled",
       "rds_cluster_audit_logging_enabled",
-      "rds_cluster_audit_logs_cloudwatch_exported",
+      "rds_cluster_audit_logs_cloudwatch_export_enabled",
       "aurora_instance_audit_logging_enabled",
-      "aurora_instance_audit_logs_cloudwatch_exported",
+      "aurora_instance_audit_logs_cloudwatch_export_enabled",
       "aurora_cluster_audit_logging_enabled",
-      "aurora_cluster_audit_logs_cloudwatch_exported",
+      "aurora_cluster_audit_logs_cloudwatch_export_enabled",
       "database_audit_log_retention_over_90d",
       "database_audit_log_encryption_enabled"
     ]
@@ -1072,6 +1168,7 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "documentdb_instance_backup_enabled",
+      "documentdb_instance_automated_backup_enabled",
       "documentdb_instance_cross_region_replication_enabled",
       "documentdb_instance_multi_az_replication_enabled",
       "documentdb_instance_disaster_recovery_plan_configured",
@@ -1091,14 +1188,16 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "rds_instance_automated_backup_enabled",
+      "rds_instance_backup_window_configured",
       "rds_instance_backup_window_within_maintenance",
       "rds_instance_backup_window_min_duration",
       "rds_instance_backup_window_no_overlap",
+      "rds_instance_backup_window_daily_scheduled",
       "rds_cluster_backup_window_configured",
       "rds_cluster_backup_window_within_maintenance",
       "rds_cluster_backup_window_min_duration",
-      "rds_cluster_backup_window_no_overlap"
+      "rds_cluster_backup_window_no_overlap",
+      "rds_cluster_backup_window_daily_scheduled"
     ]
   },
   {
@@ -1136,11 +1235,11 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "keyspaces_table_encryption_enabled",
-      "keyspaces_table_iam_authentication_enabled",
+      "keyspaces_table_iam_authentication_required",
       "keyspaces_table_fine_grained_access_enabled",
       "keyspaces_table_vpc_endpoint_enabled",
-      "keyspaces_table_tls_enabled",
-      "keyspaces_table_backup_enabled",
+      "keyspaces_table_tls_1_2_enabled",
+      "keyspaces_table_backup_retention_enabled",
       "keyspaces_table_point_in_time_recovery_enabled",
       "keyspaces_table_public_access_blocked"
     ]
@@ -1183,10 +1282,10 @@
     "function_names": [
       "keyspaces_table_encryption_at_rest_enabled",
       "keyspaces_table_encryption_in_transit_enabled",
-      "kms",
+      "keyspaces_table_encryption_at_rest_kms_key_specified",
       "keyspaces_table_encryption_in_transit_tls_enabled",
       "keyspaces_table_encryption_at_rest_customer_managed_key",
-      "keyspaces_table_encryption_in_transit_client_certificate_enabled"
+      "keyspaces_table_encryption_in_transit_client_certificate_required"
     ]
   },
   {
@@ -1249,14 +1348,21 @@
     "impact": "If an unauthorized user steals the data, it would be unreadable for them because a key would be required to decrypt the message into plaintext.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudfront",
+      "cloud_cdn_distribution_https_enabled",
+      "cloud_cdn_distribution_tls_1_2_enabled",
+      "cloud_cdn_distribution_min_tls_1_2",
       "compute_load_balancer_https_redirect_enabled",
-      "compute_load_balancer_https_enabled",
+      "compute_load_balancer_tls_enabled",
+      "compute_load_balancer_min_tls_1_2",
       "storage_bucket_encryption_in_transit_enabled",
       "storage_bucket_https_only_enabled",
       "database_instance_tls_enabled",
-      "api_gateway_endpoint_min_tls_1_2",
-      "elasticache"
+      "database_instance_min_tls_1_2",
+      "api_gateway_endpoint_https_enabled",
+      "api_gateway_endpoint_tls_1_2_enabled",
+      "cloudfront_distribution_https_enabled",
+      "cloudfront_distribution_tls_1_2_enabled",
+      "elasticache_replication_group_in_transit_encryption_enabled"
     ]
   },
   {
@@ -1271,12 +1377,14 @@
     "impact": "Allowing authentication verifies the identity of the person and who has appropriate access to a company’s data.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "neptune",
-      "neptune",
+      "neptune_db_cluster_authentication_enabled",
+      "neptune_db_cluster_access_control_enabled",
       "neptune_db_cluster_iam_roles_configured",
-      "neptune_db_cluster_iam_policies_attached",
+      "neptune_db_cluster_iam_policies_configured",
       "neptune_db_cluster_secure_iam_permissions",
-      "neptune_db_cluster_minimum_iam_privileges"
+      "neptune_db_cluster_minimum_iam_privileges",
+      "neptune_db_cluster_auth_required",
+      "neptune_db_cluster_access_restricted"
     ]
   },
   {
@@ -1291,13 +1399,14 @@
     "impact": "Reduces risks of any fraud since worker activity is being monitored and tracked.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudtrail",
-      "cloudtrail",
-      "cloudtrail_trail_immutable_logs_enabled",
+      "cloudtrail_trail_logging_enabled",
+      "cloudtrail_trail_logging_all_regions",
+      "cloudtrail_trail_logging_immutable",
       "cloudtrail_trail_logging_encryption_enabled",
       "cloudtrail_trail_logging_file_validation_enabled",
       "cloudtrail_trail_logging_multi_region_enabled",
-      "cloudtrail_trail_log_retention_over_90d",
+      "cloudtrail_trail_logging_continuous",
+      "cloudtrail_trail_logging_retention_over_90d",
       "cloudtrail_trail_logging_management_events_enabled",
       "cloudtrail_trail_logging_data_events_enabled"
     ]
@@ -1314,11 +1423,11 @@
     "impact": "By updating and revising the control within our Amazon Neptune cluster it would keep the system as secure as possible.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "iam_role_permissions_restricted",
-      "iam_user_permissions_least_privilege",
+      "iam_role_permissions_reviewed_regularly",
+      "iam_user_permissions_reviewed_regularly",
       "network_security_group_rules_reviewed_regularly",
       "encryption_settings_reviewed_regularly",
-      "cloudtrail_logging_reviewed_regularly",
+      "cloudtrail_logging_enabled_reviewed_regularly",
       "authentication_methods_reviewed_regularly",
       "security_configurations_reviewed_regularly",
       "excessive_permissions_removed_regularly",
@@ -1337,15 +1446,25 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudtrail",
-      "cloudtrail_trail_logging_file_validation_enabled",
-      "cloudwatch",
+      "cloudtrail_trail_logging_enabled",
+      "cloudtrail_trail_log_file_validation_enabled",
+      "cloudtrail_trail_monitoring_enabled",
+      "cloudtrail_trail_alerting_enabled",
+      "cloudwatch_alarm_monitoring_enabled",
+      "cloudwatch_alarm_alerting_enabled",
+      "cloudwatch_log_group_monitoring_enabled",
       "cloudwatch_log_group_alerting_enabled",
+      "cloudwatch_metric_monitoring_enabled",
       "cloudwatch_metric_alerting_enabled",
-      "cloudwatch",
+      "cloudwatch_dashboard_monitoring_enabled",
+      "cloudwatch_dashboard_alerting_enabled",
+      "cloudwatch_events_rule_monitoring_enabled",
       "cloudwatch_events_rule_alerting_enabled",
+      "cloudwatch_log_metric_filter_monitoring_enabled",
       "cloudwatch_log_metric_filter_alerting_enabled",
+      "cloudwatch_log_subscription_monitoring_enabled",
       "cloudwatch_log_subscription_alerting_enabled",
+      "cloudwatch_log_stream_monitoring_enabled",
       "cloudwatch_log_stream_alerting_enabled"
     ]
   },
@@ -1360,15 +1479,16 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront",
-      "cloudfront"
+      "cloud_cdn_distribution_https_enabled",
+      "cloud_cdn_distribution_tls_min_version_1_2",
+      "cloud_cdn_distribution_waf_integration_enabled",
+      "cloud_cdn_distribution_origin_ssl_verification_enabled",
+      "cloud_cdn_distribution_geo_restriction_enabled",
+      "cloud_cdn_distribution_secure_token_enabled",
+      "cloud_cdn_distribution_logging_enabled",
+      "cloud_cdn_distribution_encryption_in_transit_enabled",
+      "cloud_cdn_distribution_origin_shield_enabled",
+      "cloud_cdn_distribution_cache_policy_secure_headers_enabled"
     ]
   },
   {
@@ -1383,7 +1503,7 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "timestream_database_encryption_enabled",
-      "kms",
+      "timestream_database_kms_encryption_enabled",
       "timestream_database_customer_managed_key_enabled",
       "timestream_database_aws_managed_key_enabled",
       "timestream_database_encryption_at_rest_enabled"
@@ -1402,9 +1522,11 @@
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
       "timestream_database_encryption_in_transit_enabled",
-      "timestream_database_https_required",
+      "timestream_database_tls_enabled",
       "timestream_database_secure_endpoint_enabled",
       "timestream_database_private_connection_enabled",
+      "timestream_database_https_required",
+      "timestream_database_min_tls_1_2",
       "timestream_database_endpoint_policy_secure"
     ]
   },
@@ -1461,12 +1583,13 @@
     "impact": "This reduces risks of any fraud since worker activity is being monitored and tracked.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudtrail",
+      "cloudtrail_trail_logging_enabled",
       "cloudtrail_trail_timestream_events_captured",
       "cloudtrail_trail_secure_log_storage",
-      "cloudtrail",
-      "cloudtrail_trail_logging_file_validation_enabled",
-      "cloudtrail_trail_logging_encryption_enabled",
+      "cloudtrail_trail_log_review_regularly",
+      "cloudtrail_trail_multi_region_enabled",
+      "cloudtrail_trail_log_file_validation_enabled",
+      "cloudtrail_trail_log_encryption_enabled",
       "cloudtrail_trail_log_retention_over_90d"
     ]
   },
@@ -1502,7 +1625,13 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "cloudwatch"
+      "cloudwatch_timestream_monitoring_enabled",
+      "cloudwatch_timestream_alerting_enabled",
+      "cloudwatch_timestream_metrics_configured",
+      "cloudwatch_timestream_event_logging_enabled",
+      "cloudwatch_timestream_alarms_configured",
+      "cloudwatch_timestream_security_incident_notifications_enabled",
+      "cloudwatch_timestream_abnormal_behavior_detection_enabled"
     ]
   },
   {
@@ -1541,9 +1670,9 @@
     "impact": "Only authorized personnel can access the database and configure the applications by using their IAM credentials. If the user credentials are compromised by an unauthorized user, it would limit them to access specific areas within the database due to the leverage IAM roles established.",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "iam",
-      "iam_role_reviewed_regularly",
-      "iam",
+      "iam_user_no_admin_privileges",
+      "iam_role_least_privilege",
+      "iam_policy_no_wildcard_permissions",
       "iam_password_policy_strong",
       "iam_mfa_enabled_all_users",
       "iam_access_key_rotated_over_90d",
@@ -1598,7 +1727,7 @@
       "cloud_storage_bucket_encryption_key_min_tls_1_2",
       "cloud_storage_bucket_encryption_key_all_regions",
       "cloud_storage_bucket_encryption_key_secure_storage",
-      "cloud_storage_bucket_encryption_key_restricted_access"
+      "cloud_storage_bucket_encryption_key_access_restricted"
     ]
   },
   {
@@ -1615,6 +1744,7 @@
     "function_names": [
       "qldb_ledger_tls_enabled",
       "qldb_ledger_encryption_in_transit_enabled",
+      "qldb_ledger_min_tls_1_2",
       "qldb_ledger_client_tls_required"
     ]
   },
@@ -1632,14 +1762,14 @@
     "function_names": [
       "qldb_ledger_iam_policy_attached",
       "qldb_ledger_access_control_enabled",
-      "qldb_ledger_authentication_enabled",
+      "qldb_ledger_authentication_required",
       "qldb_ledger_iam_roles_restricted",
       "qldb_ledger_cross_service_access_secure",
       "qldb_ledger_iam_policy_min_permissions",
       "qldb_ledger_user_access_reviewed",
       "qldb_ledger_role_based_access_enabled",
       "qldb_ledger_iam_policy_no_wildcards",
-      "qldb_ledger_secure_integration_enabled"
+      "qldb_ledger_secure_integration_configured"
     ]
   },
   {
@@ -1653,10 +1783,10 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/products/databases/",
     "function_names": [
-      "qldb_ledger_log_export_enabled",
+      "qldb_ledger_logging_enabled",
       "qldb_ledger_cloudwatch_logs_export_enabled",
       "qldb_ledger_monitoring_alarms_configured",
-      "qldb_ledger_security_event_monitoring_enabled",
+      "qldb_ledger_security_event_notifications_enabled",
       "qldb_ledger_log_retention_policy_set",
       "qldb_ledger_cloudwatch_metrics_enabled",
       "qldb_ledger_log_encryption_enabled",
@@ -1680,7 +1810,7 @@
       "database_instance_backup_enabled",
       "storage_bucket_backup_enabled",
       "storage_volume_backup_enabled",
-      "compute_instance_recovery_plan_updated",
+      "compute_instance_recovery_plan_enabled",
       "database_instance_recovery_plan_enabled",
       "storage_bucket_recovery_plan_enabled",
       "compute_instance_backup_retention_over_30d",

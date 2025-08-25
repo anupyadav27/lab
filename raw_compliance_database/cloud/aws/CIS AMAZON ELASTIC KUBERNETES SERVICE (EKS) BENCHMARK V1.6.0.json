@@ -30,9 +30,10 @@
     "impact": "Implementing comprehensive audit logging may require additional storage and processing resources. Care must be taken to ensure that logs are properly secured and managed to avoid any potential security risks associated with log data.",
     "references": "1. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/ 2. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#audit-policy",
     "function_names": [
-      "kubernetes_cluster_audit_logs_retention_set",
+      "kubernetes_cluster_audit_logging_enabled",
       "kubernetes_component_audit_logs_collected",
       "kubernetes_audit_logs_managed_centrally",
+      "kubernetes_audit_log_retention_configured",
       "kubernetes_audit_log_export_enabled",
       "kubernetes_audit_log_access_restricted",
       "kubernetes_audit_log_integrity_verified",
@@ -54,6 +55,7 @@
       "kubernetes_kubeconfig_file_permissions_restrictive",
       "kubernetes_kubeconfig_file_permissions_644_or_stricter",
       "kubernetes_kubeconfig_file_permissions_secure",
+      "kubernetes_kubeconfig_file_permissions_compliant",
       "kubernetes_kubeconfig_file_permissions_protected"
     ]
   },
@@ -91,6 +93,7 @@
       "kubernetes_kubelet_config_file_permissions_restrictive",
       "kubernetes_kubelet_config_file_permissions_644_or_stricter",
       "kubernetes_kubelet_config_file_permissions_secure",
+      "kubernetes_kubelet_config_file_permissions_compliant",
       "kubernetes_kubelet_config_file_permissions_protected"
     ]
   },
@@ -106,8 +109,9 @@
     "impact": "None",
     "references": "1. https://kubernetes.io/docs/admin/kube-proxy/",
     "function_names": [
-      "kubernetes_kubelet_config_file_root_ownership",
+      "kubernetes_kubelet_config_file_ownership_root",
       "kubernetes_kubelet_config_file_owned_by_root",
+      "kubernetes_kubelet_config_file_root_ownership",
       "kubernetes_kubelet_config_root_ownership",
       "kubernetes_kubelet_config_file_root_owner"
     ]
@@ -127,7 +131,8 @@
       "kubernetes_kubelet_anonymous_auth_disabled",
       "kubernetes_kubelet_auth_enabled",
       "kubernetes_kubelet_anonymous_requests_blocked",
-      "kubernetes_kubelet_unauthenticated_access_blocked"
+      "kubernetes_kubelet_unauthenticated_access_disabled",
+      "kubernetes_kubelet_auth_required"
     ]
   },
   {
@@ -163,6 +168,7 @@
       "kubernetes_kubelet_client_ca_configured",
       "kubernetes_kubelet_certificate_authentication_enabled",
       "kubernetes_kubelet_client_ca_file_present",
+      "kubernetes_kubelet_authentication_certificate_required",
       "kubernetes_kubelet_tls_client_ca_configured"
     ]
   },
@@ -216,9 +222,10 @@
     "impact": "Kubelet would manage the iptables on the system and keep it in sync. If you are using any other iptables management solution, then there might be some conflicts.",
     "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/",
     "function_names": [
-      "kubernetes_kubelet_iptables_util_chains_set",
+      "kubernetes_kubelet_iptables_util_chains_enabled",
       "kubernetes_kubelet_iptables_management_enabled",
       "kubernetes_kubelet_iptables_chains_configured",
+      "kubernetes_kubelet_iptables_util_chains_set",
       "kubernetes_kubelet_iptables_util_chains_true"
     ]
   },
@@ -359,7 +366,7 @@
       "kubernetes_service_account_pod_creation_denied",
       "kubernetes_rbac_pod_creation_scoped",
       "kubernetes_policy_pod_creation_controlled",
-      "kubernetes_user_pod_creation_limited",
+      "kubernetes_user_pod_creation_restricted",
       "kubernetes_group_pod_creation_minimized"
     ]
   },
@@ -477,7 +484,9 @@
     "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-admission/",
     "function_names": [
       "compute_container_host_pid_disabled",
+      "compute_container_host_pid_restricted",
       "compute_container_host_pid_not_shared",
+      "compute_container_host_pid_denied",
       "compute_container_host_pid_protected"
     ]
   },
@@ -512,7 +521,7 @@
     "impact": "Pods defined with spec.hostNetwork: true will not be permitted unless they are run under a specific policy.",
     "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-admission/",
     "function_names": [
-      "compute_container_host_network_restricted",
+      "compute_container_host_network_disabled",
       "compute_pod_host_network_disabled",
       "kubernetes_pod_host_network_restricted",
       "kubernetes_container_host_network_denied",
@@ -534,8 +543,11 @@
     "impact": "Pods defined with spec.allowPrivilegeEscalation: true will not be permitted unless they are run under a specific policy.",
     "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-admission/",
     "function_names": [
+      "compute_container_privilege_escalation_disabled",
+      "compute_container_allow_privilege_escalation_false",
+      "compute_container_privilege_escalation_restricted",
       "compute_container_escalation_protection_enabled",
-      "compute_container_allow_privilege_escalation_false"
+      "compute_container_secure_privilege_escalation"
     ]
   },
   {
@@ -550,10 +562,11 @@
     "impact": "None.",
     "references": "1. https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage- net/network-plugins/ 2. https://aws.github.io/aws-eks-best-practices/network/ Additional Information: One example here is Flannel (https://github.com/coreos/flannel) which does not support Network policy unless Calico is also in use.",
     "function_names": [
-      "kubernetes_cni_network_policy_required",
+      "kubernetes_cni_network_policy_supported",
       "kubernetes_network_plugin_policy_enabled",
       "kubernetes_cni_policy_compliance",
-      "kubernetes_network_policy_plugin_valid"
+      "kubernetes_network_policy_plugin_valid",
+      "kubernetes_cni_network_policy_required"
     ]
   },
   {
@@ -568,9 +581,11 @@
     "impact": "Once there is any Network Policy in a namespace selecting a particular pod, that pod will reject any connections that are not allowed by any Network Policy. Other pods in the namespace that are not selected by any Network Policy will continue to accept all traffic\"",
     "references": "1. https://kubernetes.io/docs/concepts/services-networking/networkpolicies/ 2. https://octetz.com/posts/k8s-network-policy-apis 3. https://kubernetes.io/docs/tasks/configure-pod-container/declare-network-policy/",
     "function_names": [
+      "kubernetes_namespace_network_policy_defined",
       "kubernetes_namespace_network_policy_required",
       "kubernetes_namespace_traffic_isolation_enabled",
-      "kubernetes_network_policy_namespace_coverage"
+      "kubernetes_network_policy_namespace_coverage",
+      "kubernetes_namespace_network_policy_enforced"
     ]
   },
   {
@@ -628,7 +643,7 @@
       "kubernetes_namespace_secure_isolation_config",
       "kubernetes_namespace_boundary_compliance",
       "kubernetes_namespace_segmentation_enforced",
-      "kubernetes_namespace_security_boundaries_defined"
+      "kubernetes_namespace_security_boundaries_configured"
     ]
   },
   {
@@ -836,13 +851,14 @@
     "impact": "Network Policy requires the Network Policy add-on. This add-on is included automatically when a cluster with Network Policy is created, but for an existing cluster, needs to be added prior to enabling Network Policy. Enabling/Disabling Network Policy causes a rolling update of all cluster nodes, similar to performing a cluster upgrade. This operation is long-running and will block other operations on the cluster (including delete) until it has run to completion. Enabling Network Policy enforcement consumes additional resources in nodes. Specifically, it increases the memory footprint of the kube-system process by approximately 128MB, and requires approximately 300 millicores of CPU.",
     "references": "1. https://docs.aws.amazon.com/eks/latest/userguide/eks-networking-add-ons.html",
     "function_names": [
-      "eks",
+      "eks_cluster_network_policy_enabled",
       "eks_cluster_calico_policy_configured",
       "eks_cluster_network_policy_appropriate",
       "eks_cluster_iptables_rules_enforced",
       "eks_cluster_network_policy_all_namespaces",
       "eks_cluster_network_policy_default_deny",
       "eks_cluster_network_policy_logging_enabled",
+      "eks_cluster_network_policy_minimum_rules",
       "eks_cluster_network_policy_no_allow_all",
       "eks_cluster_network_policy_peer_validation"
     ]
@@ -860,7 +876,7 @@
     "function_names": [
       "cloud_cdn_load_balancer_tls_encryption_enabled",
       "compute_load_balancer_https_tls_certificate_bound",
-      "cloud_cdn_load_balancer_https_enabled",
+      "cloud_cdn_load_balancer_min_tls_1_2",
       "compute_load_balancer_ssl_certificate_valid",
       "cloud_cdn_load_balancer_https_redirect_enabled"
     ]
@@ -878,6 +894,7 @@
     "references": "1. https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html 2. https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html",
     "function_names": [
       "eks_cluster_iam_authenticator_enabled",
+      "eks_cluster_iam_authenticator_min_version",
       "eks_cluster_aws_cli_min_version_1_16_156",
       "eks_cluster_rbac_iam_integration_enabled",
       "eks_cluster_kubernetes_auth_iam_managed"

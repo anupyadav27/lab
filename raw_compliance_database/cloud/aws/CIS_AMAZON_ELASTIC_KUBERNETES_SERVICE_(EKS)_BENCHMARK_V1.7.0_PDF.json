@@ -11,7 +11,16 @@
     "impact": "Enabling control plane logs, including API server audit logs for Amazon EKS clusters, significantly strengthens our security posture by providing detailed visibility into all API requests, thereby reducing our attack surface. By exporting these logs to a CloudWatch Log Group, we ensure persistent storage and facilitate both manual and automated analysis to quickly identify and remediate anomalous activities. While this configuration might slightly impact usability or performance due to the overhead of logging, the enhanced security and compliance benefits far outweigh these drawbacks, making it a critical component of our security strategy.",
     "references": "1. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/ 2. https://aws.github.io/aws-eks-best-practices/detective/ 3. https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html 4. https://docs.aws.amazon.com/eks/latest/userguide/logging-using-cloudtrail.html",
     "function_names": [
-      "eks"
+      "eks_control_plane_audit_logs_enabled",
+      "eks_cluster_audit_logging_enabled",
+      "eks_api_server_audit_logs_enabled",
+      "eks_control_plane_logs_exported_to_cloudwatch",
+      "eks_cluster_audit_logs_persisted",
+      "eks_control_plane_logging_enabled",
+      "eks_audit_logs_cloudwatch_export_enabled",
+      "eks_cluster_audit_logs_enabled",
+      "eks_control_plane_audit_logs_exported",
+      "eks_audit_logs_enabled_and_exported"
     ]
   },
   {
@@ -26,11 +35,14 @@
     "impact": "Implementing comprehensive audit logging may require additional storage and processing resources. Care must be taken to ensure that logs are properly secured and managed to avoid any potential security risks associated with log data.",
     "references": "1. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/ 2. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#audit-policy",
     "function_names": [
+      "kubernetes_cluster_audit_logs_enabled",
+      "kubernetes_cluster_audit_logs_centralized",
       "kubernetes_cluster_audit_logs_retention_set",
       "kubernetes_cluster_audit_logs_immutable",
       "kubernetes_cluster_audit_logs_all_components",
       "kubernetes_cluster_audit_logs_encrypted",
-      "kubernetes_cluster_audit_logs_access_restricted"
+      "kubernetes_cluster_audit_logs_access_restricted",
+      "kubernetes_cluster_audit_logs_monitoring_enabled"
     ]
   },
   {
@@ -79,6 +91,7 @@
       "kubernetes_kubelet_config_file_permissions_restrictive",
       "kubernetes_kubelet_config_file_permissions_644_or_stricter",
       "kubernetes_kubelet_config_file_permissions_secure",
+      "kubernetes_kubelet_config_file_permissions_compliant",
       "kubernetes_kubelet_config_file_permissions_protected"
     ]
   },
@@ -94,8 +107,8 @@
     "impact": "None",
     "references": "1. https://kubernetes.io/docs/admin/kube-proxy/",
     "function_names": [
-      "kubernetes_kubelet_config_file_root_ownership",
-      "kubernetes_kubelet_config_file_root_owner",
+      "kubernetes_kubelet_config_file_ownership_root",
+      "kubernetes_kubelet_config_file_owner_root",
       "kubernetes_kubelet_config_file_group_root",
       "kubernetes_kubelet_config_file_permissions_root",
       "kubernetes_kubelet_config_file_secure_ownership"
@@ -132,7 +145,11 @@
     "impact": "Unauthorized requests will be denied.",
     "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/ 2. https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn- authz/#kubelet-authentication 3. https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/",
     "function_names": [
-      "eks"
+      "eks_cluster_authorization_mode_not_always_allow",
+      "eks_cluster_explicit_authorization_required",
+      "eks_cluster_authorization_restricted",
+      "eks_cluster_always_allow_disabled",
+      "eks_cluster_authorization_mode_secure"
     ]
   },
   {
@@ -188,6 +205,7 @@
       "kubernetes_api_server_streaming_connection_timeout_enabled",
       "kubernetes_api_server_streaming_connection_idle_timeout_set",
       "kubernetes_api_server_streaming_connection_timeout_non_zero",
+      "kubernetes_api_server_streaming_connection_timeout_configured",
       "kubernetes_api_server_streaming_connection_timeout_valid"
     ]
   },
@@ -203,7 +221,7 @@
     "impact": "Kubelet would manage the iptables on the system and keep it in sync. If you are using any other iptables management solution, then there might be some conflicts.",
     "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/",
     "function_names": [
-      "kubernetes_kubelet_iptables_util_chains_set",
+      "kubernetes_kubelet_iptables_util_chains_enabled",
       "kubernetes_kubelet_iptables_management_enabled",
       "kubernetes_kubelet_iptables_util_chains_true",
       "kubernetes_kubelet_iptables_chains_configured",
@@ -243,6 +261,7 @@
       "kubernetes_kubelet_certificate_rotation_enabled",
       "kubernetes_kubelet_rotate_certificates_set_true",
       "kubernetes_kubelet_no_rotate_certificates_false",
+      "kubernetes_kubelet_certificate_rotation_required",
       "kubernetes_kubelet_rotate_certificates_configured"
     ]
   },
@@ -280,6 +299,7 @@
       "kubernetes_role_no_cluster_admin",
       "kubernetes_role_cluster_admin_restricted",
       "kubernetes_role_cluster_admin_minimal_usage",
+      "kubernetes_role_cluster_admin_least_privilege",
       "kubernetes_role_cluster_admin_conditional_usage"
     ]
   },
@@ -340,7 +360,7 @@
       "kubernetes_namespace_pod_creation_restricted",
       "kubernetes_role_pod_creation_minimized",
       "kubernetes_cluster_pod_creation_limited",
-      "kubernetes_service_account_pod_creation_denied",
+      "kubernetes_service_account_pod_creation_restricted",
       "kubernetes_rbac_pod_creation_minimized",
       "kubernetes_policy_pod_creation_restricted",
       "kubernetes_user_pod_creation_limited",
@@ -361,7 +381,7 @@
     "function_names": [
       "compute_instance_default_service_account_not_used",
       "compute_instance_default_service_account_disabled",
-      "compute_service_account_no_default_usage",
+      "compute_default_service_account_no_active_usage",
       "compute_service_account_default_not_in_use",
       "compute_default_service_account_no_iam_roles",
       "compute_instance_service_account_default_unused",
@@ -402,9 +422,14 @@
     "impact": "The shift to using the Cluster Access Manager API instead of the aws-auth ConfigMap impacts EKS RBAC and Service Accounts by simplifying access control management, reducing the risk of misconfigurations, and enhancing security. It allows for more granular, direct management of IAM permissions and Kubernetes roles, eliminating manual ConfigMap edits and reducing operational overhead. For Service Accounts, it better integrates with existing mechanisms like IAM Roles for Service Accounts (IRSA) for secure pod access to AWS resources, making it easier to enforce least-privilege principles. This transition improves scalability, auditing, and compliance, while providing a future-proof solution aligned with AWS’s Kubernetes identity management roadmap.",
     "references": "1. https://aws.amazon.com/blogs/containers/a-deep-dive-into-simplified-amazon- eks-access-management-controls/ 2. https://www.eksworkshop.com/docs/security/cluster-access- management/understanding",
     "function_names": [
-      "eks",
+      "eks_cluster_access_manager_api_enabled",
+      "eks_cluster_aws_auth_configmap_disabled",
       "eks_cluster_access_policy_iam_principal_attached",
-      "eks"
+      "eks_cluster_rbac_managed_via_api",
+      "eks_cluster_service_account_access_managed_via_api",
+      "eks_cluster_access_entry_auditable",
+      "eks_cluster_access_policy_predefined_used",
+      "eks_cluster_access_config_visibility_enabled"
     ]
   },
   {
@@ -480,7 +505,9 @@
     "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-admission/",
     "function_names": [
       "compute_container_host_ipc_disabled",
+      "compute_container_host_ipc_restricted",
       "compute_container_host_ipc_not_shared",
+      "compute_container_host_ipc_denied",
       "compute_container_host_ipc_protected"
     ]
   },
@@ -496,7 +523,10 @@
     "impact": "Pods defined with spec.hostNetwork: true will not be permitted unless they are run under a specific policy.",
     "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-admission/",
     "function_names": [
+      "compute_container_host_network_disabled",
       "compute_container_host_network_restricted",
+      "compute_container_host_network_prohibited",
+      "compute_container_host_network_denied",
       "compute_container_host_network_not_shared"
     ]
   },
@@ -514,7 +544,9 @@
     "function_names": [
       "container_pod_allow_privilege_escalation_disabled",
       "container_pod_privilege_escalation_blocked",
-      "container_pod_privilege_escalation_minimized"
+      "container_pod_privilege_escalation_restricted",
+      "container_pod_privilege_escalation_minimized",
+      "container_pod_privilege_escalation_denied"
     ]
   },
   {
@@ -529,8 +561,9 @@
     "impact": "None.",
     "references": "1. https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage- net/network-plugins/ 2. https://aws.github.io/aws-eks-best-practices/network/ Additional Information: One example here is Flannel (https://github.com/flannel-io/flannel) which does not support Network policy unless Calico is also in use.",
     "function_names": [
-      "kubernetes_cni_network_policy_required",
-      "kubernetes_network_plugin_policy_enabled",
+      "kubernetes_cni_network_policy_supported",
+      "kubernetes_network_plugin_policy_compliance",
+      "kubernetes_cni_network_policy_enabled",
       "kubernetes_network_policy_plugin_compatible",
       "kubernetes_cni_plugin_policy_restriction"
     ]
@@ -547,9 +580,11 @@
     "impact": "Once there is any Network Policy in a namespace selecting a particular pod, that pod will reject any connections that are not allowed by any Network Policy. Other pods in the namespace that are not selected by any Network Policy will continue to accept all traffic\"",
     "references": "1. https://kubernetes.io/docs/concepts/services-networking/networkpolicies/ 2. https://octetz.com/posts/k8s-network-policy-apis 3. https://kubernetes.io/docs/tasks/configure-pod-container/declare-network-policy/",
     "function_names": [
+      "kubernetes_namespace_network_policy_defined",
       "kubernetes_namespace_network_policy_required",
       "kubernetes_namespace_traffic_isolation_enabled",
-      "kubernetes_network_policy_namespace_coverage"
+      "kubernetes_network_policy_namespace_coverage",
+      "kubernetes_namespace_network_policy_enforced"
     ]
   },
   {
@@ -602,8 +637,8 @@
     "references": "1. https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html",
     "function_names": [
       "kubernetes_namespace_isolation_enabled",
-      "kubernetes_namespace_admin_boundaries_enforced",
-      "kubernetes_namespace_resource_separation_required",
+      "kubernetes_namespace_admin_boundaries_configured",
+      "kubernetes_namespace_resource_separation_enforced",
       "kubernetes_namespace_security_boundaries_defined",
       "kubernetes_namespace_isolation_policy_applied"
     ]
@@ -638,11 +673,14 @@
     "impact": "If you are utilizing AWS ECR The following are common image scan failures. You can view errors like this in the Amazon ECR console by displaying the image details or through the API or AWS CLI by using the DescribeImageScanFindings API. UnsupportedImageError You may get an UnsupportedImageError error when attempting to scan an image that was built using an operating system that Amazon ECR doesn't support image scanning for. Amazon ECR supports package vulnerability scanning for major versions of Amazon Linux, Amazon Linux 2, Debian, Ubuntu, CentOS, Oracle Linux, Alpine, and RHEL Linux distributions. Amazon ECR does not support scanning images built from the Docker scratch image. An UNDEFINED severity level is returned You may receive a scan finding that has a severity level of UNDEFINED. The following are the common causes for this: The vulnerability was not assigned a priority by the CVE source. The vulnerability was assigned a priority that Amazon ECR did not recognize. To determine the severity and description of a vulnerability, you can view the CVE directly from the source.",
     "references": "1. https://docs.aws.amazon.com/AmazonECR/latest/userguide/image- scanning.html",
     "function_names": [
-      "ecr",
-      "ecr",
-      "eks",
-      "ecr",
-      "ecr"
+      "ecr_image_vulnerability_scanning_enabled",
+      "ecr_image_scanning_on_push_enabled",
+      "eks_image_vulnerability_scanning_required",
+      "ecr_repository_scanning_configuration_valid",
+      "eks_deployment_image_scanning_enforced",
+      "ecr_image_scan_findings_monitored",
+      "eks_pod_image_scan_policy_applied",
+      "ecr_image_scan_results_retained_over_90d"
     ]
   },
   {
@@ -657,9 +695,14 @@
     "impact": "Care should be taken not to remove access to Amazon ECR for accounts that require this for their operation.",
     "references": "1. https://docs.aws.amazon.com/AmazonECR/latest/userguide/image- scanning.html#scanning-repository",
     "function_names": [
-      "ecr",
+      "ecr_repository_access_restricted",
+      "ecr_repository_authorized_users_only",
+      "ecr_repository_service_accounts_restricted",
       "ecr_repository_iam_policy_minimized",
-      "ecr"
+      "ecr_repository_public_access_blocked",
+      "ecr_repository_cross_account_access_restricted",
+      "ecr_repository_principal_least_privilege",
+      "ecr_repository_deny_unauthorized_principal"
     ]
   },
   {
@@ -674,8 +717,11 @@
     "impact": "A separate dedicated service account may be required for use by build servers and other robot users pushing or managing container images.",
     "references": "1. https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_EKS.html",
     "function_names": [
-      "ecr",
-      "ecr"
+      "ecr_repository_read_only_access",
+      "ecr_cluster_service_account_read_only",
+      "ecr_storage_object_viewer_role",
+      "ecr_cluster_read_only_permissions",
+      "ecr_repository_restrict_write_access"
     ]
   },
   {
@@ -708,8 +754,13 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service- accounts.html 2. https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service- accounts-cni-walkthrough.html 3. https://aws.github.io/aws-eks-best-practices/security/docs/iam/#scope-the-iam- role-trust-policy-for-irsa-to-the-service-account-name",
     "function_names": [
-      "eks",
-      "eks_workload_iam_dedicated_service_account"
+      "eks_service_account_dedicated_for_workloads",
+      "eks_workload_service_account_no_node_sharing",
+      "eks_service_account_no_default_node_usage",
+      "eks_workload_iam_dedicated_service_account",
+      "eks_service_account_workload_isolation",
+      "eks_workload_service_account_no_shared_credentials",
+      "eks_service_account_no_node_service_account_usage"
     ]
   },
   {
@@ -723,8 +774,11 @@
     "profile_applicability": "•  Level 1",
     "references": "1. https://aws.amazon.com/about-aws/whats-new/2020/03/amazon-eks-adds- envelope-encryption-for-secrets-with-aws-kms/ 2. https://docs.aws.amazon.com/eks/latest/APIReference/API_DescribeCluster.html",
     "function_names": [
-      "eks",
-      "kms"
+      "eks_cluster_secrets_encryption_enabled",
+      "eks_cluster_secrets_kms_cmk_encryption_enabled",
+      "eks_cluster_secrets_etcd_encryption_enabled",
+      "eks_cluster_secrets_encryption_kms_managed",
+      "eks_cluster_secrets_encryption_customer_key_enabled"
     ]
   },
   {
@@ -739,8 +793,11 @@
     "impact": "When implementing Endpoint Private Access, be careful to ensure all desired networks are on the allowlist (whitelist) to prevent inadvertently blocking external access to your cluster's control plane.",
     "references": "1. https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html",
     "function_names": [
-      "eks",
-      "eks"
+      "eks_cluster_control_plane_private_access_enabled",
+      "eks_cluster_control_plane_ip_allowlist_restricted",
+      "eks_cluster_control_plane_endpoint_public_access_disabled",
+      "eks_cluster_control_plane_network_access_restricted",
+      "eks_cluster_control_plane_authorized_ips_configured"
     ]
   },
   {
@@ -795,7 +852,13 @@
     "impact": "Network Policy requires the Network Policy add-on. This add-on is included automatically when a cluster with Network Policy is created, but for an existing cluster, needs to be added prior to enabling Network Policy. Enabling/Disabling Network Policy causes a rolling update of all cluster nodes, similar to performing a cluster upgrade. This operation is long-running and will block other operations on the cluster (including delete) until it has run to completion. Enabling Network Policy enforcement consumes additional resources in nodes. Specifically, it increases the memory footprint of the kube-system process by approximately 128MB, and requires approximately 300 millicores of CPU.",
     "references": "1. https://docs.aws.amazon.com/eks/latest/userguide/eks-networking-add-ons.html",
     "function_names": [
-      "eks"
+      "eks_cluster_network_policy_enabled",
+      "eks_cluster_network_policy_calico_enabled",
+      "eks_cluster_network_policy_appropriate",
+      "eks_cluster_network_policy_immutable",
+      "eks_cluster_network_policy_iptables_enforced",
+      "eks_cluster_network_policy_ip_pairs_configured",
+      "eks_cluster_network_policy_filter_rules_configured"
     ]
   },
   {
@@ -812,7 +875,7 @@
       "cloud_cdn_load_balancer_tls_encryption_enabled",
       "cloud_cdn_load_balancer_https_redirect_enabled",
       "cloud_cdn_load_balancer_ssl_certificate_valid",
-      "cloud_cdn_load_balancer_https_enabled",
+      "cloud_cdn_load_balancer_min_tls_1_2",
       "cloud_cdn_load_balancer_tls_termination_enabled",
       "cloud_cdn_load_balancer_secure_cipher_suites",
       "cloud_cdn_load_balancer_certificate_expiry_over_90d",
@@ -832,7 +895,8 @@
     "references": "1. https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html",
     "function_names": [
       "eks_cluster_iam_authenticator_enabled",
-      "eks",
+      "eks_cluster_iam_authenticator_min_version",
+      "eks_cluster_aws_cli_min_version_1_16_156",
       "eks_cluster_rbac_iam_integration_enabled",
       "eks_cluster_kubernetes_auth_iam_required"
     ]
