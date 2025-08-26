@@ -1,15 +1,37 @@
 {
-  "service_name": "entra_id_directory",
+  "service_name": "ENTRA_ID_DIRECTORY",
   "display_name": "Azure Entra_Id_Directory",
-  "check_count": 1,
-  "check_functions": [
-    "entra_id_directory_subscription_leaving_entering_permit_no_one"
+  "total_functions": 1,
+  "original_categories": ["Identity"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Identity"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.entra_id_directory",
+    "client_class": "Entra_Id_DirectoryManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "entra_id_directory_subscription_leaving_entering_permit_no_one",
+      "category": "identity",
+      "description": "Checks if subscription leaving/entering is permitted for no one in Entra ID Directory.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "entra_id_directory_alt"
+  "notes": [
+    "All functions are based on Azure Entra_Id_Directory API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

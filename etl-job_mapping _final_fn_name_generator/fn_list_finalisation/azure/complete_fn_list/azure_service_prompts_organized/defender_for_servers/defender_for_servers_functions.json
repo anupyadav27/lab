@@ -1,15 +1,37 @@
 {
-  "service_name": "defender_for_servers",
+  "service_name": "DEFENDER_FOR_SERVERS",
   "display_name": "Azure Defender_For_Servers",
-  "check_count": 1,
-  "check_functions": [
-    "defender_for_servers_data_deletion_prevention_enabled"
+  "total_functions": 1,
+  "original_categories": ["Security"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Security"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.defender_for_servers",
+    "client_class": "Defender_For_ServersManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "defender_for_servers_data_deletion_prevention_enabled",
+      "category": "security",
+      "description": "Checks if data deletion prevention is enabled for Defender for Servers.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "defender_for_servers"
+  "notes": [
+    "All functions are based on Azure Defender_For_Servers API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

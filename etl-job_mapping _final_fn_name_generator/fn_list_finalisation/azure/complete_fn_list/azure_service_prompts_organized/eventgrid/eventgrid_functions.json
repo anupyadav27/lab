@@ -1,15 +1,37 @@
 {
-  "service_name": "eventgrid",
+  "service_name": "EVENTGRID",
   "display_name": "Azure Eventgrid",
-  "check_count": 1,
-  "check_functions": [
-    "eventgrid_schemaregistry_resource_policy_attached"
+  "total_functions": 1,
+  "original_categories": ["Security"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Security"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.eventgrid",
+    "client_class": "EventgridManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "eventgrid_schemaregistry_resource_policy_attached",
+      "category": "security",
+      "description": "Checks if schema registry resource policy is attached in Eventgrid.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "eventgrid_alt"
+  "notes": [
+    "All functions are based on Azure Eventgrid API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

@@ -1,17 +1,32 @@
 {
-  "service_name": "get_service_properties",
+  "service_name": "GET_SERVICE_PROPERTIES",
   "display_name": "Azure Get_Service_Properties()",
-  "check_count": 3,
-  "check_functions": [
-    "aisearch_service_end_to_end_encryption_enabled",
-    "cognitive_search_domain_rbac_enabled",
-    "cognitive_search_domain_advanced_security_enabled"
+  "total_functions": 3,
+  "original_categories": ["Security"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Security"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.get_service_properties",
+    "client_class": "Get_Service_PropertiesManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {"name": "aisearch_service_end_to_end_encryption_enabled", "category": "security", "description": "Checks if end-to-end encryption is enabled for AI Search service.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "cognitive_search_domain_rbac_enabled", "category": "security", "description": "Checks if RBAC is enabled for Cognitive Search domain.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "cognitive_search_domain_advanced_security_enabled", "category": "security", "description": "Checks if advanced security is enabled for Cognitive Search domain.", "execution_type": "Code Executable", "remediation_effort": "Programmable"}
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "get_service_properties"
+  "notes": [
+    "All functions are based on Azure Get_Service_Properties API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

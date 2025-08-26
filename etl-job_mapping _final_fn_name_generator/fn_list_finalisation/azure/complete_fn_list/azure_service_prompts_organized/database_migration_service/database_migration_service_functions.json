@@ -1,20 +1,65 @@
 {
-  "service_name": "database_migration_service",
+  "service_name": "DATABASE_MIGRATION_SERVICE",
   "display_name": "Azure Database_Migration_Service",
-  "check_count": 5,
-  "check_functions": [
-    "dms_instance_public_access_enabled",
-    "dms_instance_public_access_disabled",
-    "dms_endpoints_ssl_connection_configured",
-    "dms_redis_endpoint_tls_encryption_enabled",
-    "dms_replication_task_logging_severity_enabled"
+  "total_functions": 5,
+  "original_categories": ["Compute", "Network"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Compute",
-    "Network"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.database_migration_service",
+    "client_class": "Database_Migration_ServiceManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "dms_instance_public_access_enabled",
+      "category": "network",
+      "description": "Checks if DMS instance public access is enabled.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "dms_instance_public_access_disabled",
+      "category": "network",
+      "description": "Checks if DMS instance public access is disabled.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "dms_endpoints_ssl_connection_configured",
+      "category": "security",
+      "description": "Checks if DMS endpoints have SSL connection configured.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "dms_redis_endpoint_tls_encryption_enabled",
+      "category": "encryption",
+      "description": "Checks if Redis endpoint TLS encryption is enabled for DMS.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "dms_replication_task_logging_severity_enabled",
+      "category": "logging",
+      "description": "Checks if replication task logging severity is enabled for DMS.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "database_migration_service"
+  "notes": [
+    "All functions are based on Azure Database_Migration_Service API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

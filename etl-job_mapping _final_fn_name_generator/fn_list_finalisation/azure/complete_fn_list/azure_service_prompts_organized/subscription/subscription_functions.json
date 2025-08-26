@@ -1,17 +1,36 @@
 {
   "service_name": "subscription",
   "display_name": "Azure Subscription",
-  "check_count": 3,
-  "check_functions": [
-    "subscription_aad_directory_permit_no_one",
-    "azure_subscription_root_user_no_access_key",
-    "subscription_root_user_no_access_key"
+  "functions": [
+    {
+      "name": "subscription_aad_directory_permit_no_one",
+      "category": "Identity",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable",
+      "description": "Ensure no one is permitted in the AAD directory for the subscription.",
+      "notes": "Review and restrict directory permissions."
+    },
+    {
+      "name": "azure_subscription_root_user_no_access_key",
+      "category": "Identity",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable",
+      "description": "Ensure the root user of the Azure subscription has no access key assigned.",
+      "notes": "Remove access keys from root user accounts."
+    },
+    {
+      "name": "subscription_root_user_no_access_key",
+      "category": "Identity",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable",
+      "description": "Ensure the root user of the subscription has no access key assigned.",
+      "notes": "Audit and remove access keys from root user accounts."
+    }
   ],
-  "original_categories": [
-    "Identity"
-  ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "subscription"
+  "summary": {
+    "total_functions": 3,
+    "categories": ["Identity"],
+    "execution_types": ["Code Executable"],
+    "remediation_efforts": ["Programmable"]
+  }
 }

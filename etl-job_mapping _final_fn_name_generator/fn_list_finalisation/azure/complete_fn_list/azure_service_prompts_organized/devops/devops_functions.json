@@ -1,28 +1,40 @@
 {
-  "service_name": "devops",
+  "service_name": "DEVOPS",
   "display_name": "Azure DevOps",
-  "check_count": 10,
-  "check_functions": [
-    "devops_repository_no_embedded_credentials",
-    "devops_pipeline_project_environment_log_enabled",
-    "devops_pipeline_project_environment_log_option_enabled",
-    "devops_pipeline_project_artifacts_encryption_enabled",
-    "devops_project_no_plaintext_credentials",
-    "devops_pipeline_blob_storage_logs_encryption_enabled",
-    "devops_pipelines_deployment_stage_limit",
-    "devops_pipelines_single_deployment_limit",
-    "devops_pipeline_environment_privileged_mode_enabled",
-    "devops_security_testing_implementation"
+  "total_functions": 10,
+  "original_categories": ["Compute", "Security", "Storage", "DevOps", "Identity"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Compute",
-    "Security",
-    "Storage",
-    "DevOps",
-    "Identity"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.devops",
+    "client_class": "DevopsManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {"name": "devops_repository_no_embedded_credentials", "category": "security", "description": "Checks if repositories have no embedded credentials.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_pipeline_project_environment_log_enabled", "category": "logging", "description": "Checks if pipeline project environment log is enabled.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_pipeline_project_environment_log_option_enabled", "category": "logging", "description": "Checks if pipeline project environment log option is enabled.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_pipeline_project_artifacts_encryption_enabled", "category": "encryption", "description": "Checks if pipeline project artifacts encryption is enabled.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_project_no_plaintext_credentials", "category": "security", "description": "Checks if project has no plaintext credentials.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_pipeline_blob_storage_logs_encryption_enabled", "category": "encryption", "description": "Checks if pipeline blob storage logs encryption is enabled.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_pipelines_deployment_stage_limit", "category": "devops", "description": "Checks if pipelines deployment stage limit is set.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_pipelines_single_deployment_limit", "category": "devops", "description": "Checks if pipelines single deployment limit is set.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_pipeline_environment_privileged_mode_enabled", "category": "security", "description": "Checks if pipeline environment privileged mode is enabled.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "devops_security_testing_implementation", "category": "security", "description": "Checks if security testing is implemented in DevOps.", "execution_type": "Code Executable", "remediation_effort": "Programmable"}
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "devops"
+  "notes": [
+    "All functions are based on Azure DevOps API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

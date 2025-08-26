@@ -1,15 +1,36 @@
 {
-  "service_name": "firewall",
+  "service_name": "FIREWALL",
   "display_name": "Azure Firewall",
-  "check_count": 1,
-  "check_functions": [
-    "firewall_policy_user_defined_default_stateless_action_full_packets"
+  "total_functions": 1,
+  "original_categories": ["Network"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Network"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.firewall",
+    "client_class": "FirewallManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "firewall_policy_user_defined_default_stateless_action_full_packets",
+      "category": "network",
+      "description": "Checks if user-defined default stateless action for full packets is enforced in Azure Firewall.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "firewall"
+  "notes": [
+    "All functions are based on Azure Firewall API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

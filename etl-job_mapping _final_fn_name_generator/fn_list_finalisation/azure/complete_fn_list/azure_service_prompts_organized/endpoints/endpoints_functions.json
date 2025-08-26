@@ -1,17 +1,32 @@
 {
-  "service_name": "endpoints",
+  "service_name": "ENDPOINTS",
   "display_name": "Azure Endpoints",
-  "check_count": 2,
-  "check_functions": [
-    "cdn_endpoint_non_default_ssl_certificate",
-    "cdn_blobstorage_managed_identity_auth_configured"
+  "total_functions": 2,
+  "original_categories": ["Network", "Network|Storage|Identity"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Network",
-    "Network|Storage|Identity"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.endpoints",
+    "client_class": "EndpointsManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {"name": "cdn_endpoint_non_default_ssl_certificate", "category": "security", "description": "Checks if CDN endpoint uses a non-default SSL certificate.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "cdn_blobstorage_managed_identity_auth_configured", "category": "identity", "description": "Checks if CDN blob storage managed identity authentication is configured.", "execution_type": "Code Executable", "remediation_effort": "Programmable"}
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "endpoints"
+  "notes": [
+    "All functions are based on Azure Endpoints API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

@@ -1,17 +1,32 @@
 {
-  "service_name": "entra",
+  "service_name": "ENTRA",
   "display_name": "Azure Entra",
-  "check_count": 2,
-  "check_functions": [
-    "entra_admin_center_restrict_access",
-    "entra_device_registration_require_mfa"
+  "total_functions": 2,
+  "original_categories": ["Identity", "Security"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Identity",
-    "Security"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.entra",
+    "client_class": "EntraManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {"name": "entra_admin_center_restrict_access", "category": "identity", "description": "Checks if Entra admin center access is restricted.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "entra_device_registration_require_mfa", "category": "security", "description": "Checks if device registration requires MFA.", "execution_type": "Code Executable", "remediation_effort": "Programmable"}
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "entra_alt"
+  "notes": [
+    "All functions are based on Azure Entra API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

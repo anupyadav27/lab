@@ -1,19 +1,34 @@
 {
-  "service_name": "diagnostic_settings",
+  "service_name": "DIAGNOSTIC_SETTINGS",
   "display_name": "Azure Diagnostic_Settings",
-  "check_count": 4,
-  "check_functions": [
-    "monitor_blob_storage_diagnostic_setting_presence",
-    "monitor_diagnostic_settings_send_logs_to_log_analytics",
-    "monitor_blob_storage_diagnostic_settings_exist",
-    "monitor_diagnostic_setting_logs_to_log_analytics"
+  "total_functions": 4,
+  "original_categories": ["Storage", "Security"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Storage",
-    "Security"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.diagnostic_settings",
+    "client_class": "Diagnostic_SettingsManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {"name": "monitor_blob_storage_diagnostic_setting_presence", "category": "storage", "description": "Checks for presence of blob storage diagnostic setting.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "monitor_diagnostic_settings_send_logs_to_log_analytics", "category": "logging", "description": "Checks if diagnostic settings send logs to Log Analytics.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "monitor_blob_storage_diagnostic_settings_exist", "category": "storage", "description": "Checks if blob storage diagnostic settings exist.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "monitor_diagnostic_setting_logs_to_log_analytics", "category": "logging", "description": "Checks if diagnostic setting logs are sent to Log Analytics.", "execution_type": "Code Executable", "remediation_effort": "Programmable"}
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "diagnostic_settings_alt"
+  "notes": [
+    "All functions are based on Azure Diagnostic_Settings API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

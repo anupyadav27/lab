@@ -1,18 +1,33 @@
 {
-  "service_name": "front_doors",
+  "service_name": "FRONT_DOORS",
   "display_name": "Azure Front_Doors",
-  "check_count": 4,
-  "check_functions": [
-    "frontdoor_cdn_profiles_custom_ssl_sni_configured",
-    "frontdoor_cdn_origin_protocol_policy_https_only",
-    "frontdoor_cdn_profiles_https_enforced",
-    "frontdoor_cdn_https_enforcement"
+  "total_functions": 4,
+  "original_categories": ["Network"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Network"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.front_doors",
+    "client_class": "Front_DoorsManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {"name": "frontdoor_cdn_profiles_custom_ssl_sni_configured", "category": "network", "description": "Checks if custom SSL SNI is configured for CDN profiles.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "frontdoor_cdn_origin_protocol_policy_https_only", "category": "network", "description": "Checks if origin protocol policy is set to HTTPS only.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "frontdoor_cdn_profiles_https_enforced", "category": "network", "description": "Checks if HTTPS is enforced for CDN profiles.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "frontdoor_cdn_https_enforcement", "category": "network", "description": "Checks if HTTPS enforcement is enabled for CDN.", "execution_type": "Code Executable", "remediation_effort": "Programmable"}
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "front_doors"
+  "notes": [
+    "All functions are based on Azure Front_Doors API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

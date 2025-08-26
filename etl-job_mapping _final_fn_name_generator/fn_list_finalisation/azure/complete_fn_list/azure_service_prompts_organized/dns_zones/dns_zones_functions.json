@@ -1,15 +1,37 @@
 {
-  "service_name": "dns_zones",
+  "service_name": "DNS_ZONES",
   "display_name": "Azure Dns_Zones",
-  "check_count": 1,
-  "check_functions": [
-    "dns_public_zones_dns_query_logging_enabled"
+  "total_functions": 1,
+  "original_categories": ["Network"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Network"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.dns_zones",
+    "client_class": "Dns_ZonesManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "dns_public_zones_dns_query_logging_enabled",
+      "category": "logging",
+      "description": "Checks if DNS query logging is enabled for public zones.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "dns_zones_alt"
+  "notes": [
+    "All functions are based on Azure Dns_Zones API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

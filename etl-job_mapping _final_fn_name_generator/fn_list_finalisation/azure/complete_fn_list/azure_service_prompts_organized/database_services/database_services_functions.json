@@ -1,25 +1,79 @@
 {
-  "service_name": "database_services",
+  "service_name": "DATABASE_SERVICES",
   "display_name": "Azure Database Services",
-  "check_count": 7,
-  "check_functions": [
-    "database_firewall_custom_unrestricted_access",
-    "database_instance_public_access_disabled",
-    "database_instance_public_network_access_disabled",
-    "database_postgresql_mysql_aad_authentication_enabled",
-    "azure_sql_data_mining_prevention",
-    "azure_sql_database_data_encryption_verification",
-    "azure_sql_sensitive_data_retention_check"
+  "total_functions": 7,
+  "original_categories": ["Identity", "Security", "Unknown", "Network"],
+  "categorization_methods": ["sdk_example", "function_name"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Identity",
-    "Security",
-    "Unknown",
-    "Network"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.database_services",
+    "client_class": "Database_ServicesManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "database_firewall_custom_unrestricted_access",
+      "category": "network",
+      "description": "Checks for custom firewall rules with unrestricted access.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "database_instance_public_access_disabled",
+      "category": "network",
+      "description": "Checks if public access to database instance is disabled.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "database_instance_public_network_access_disabled",
+      "category": "network",
+      "description": "Checks if public network access to database instance is disabled.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "database_postgresql_mysql_aad_authentication_enabled",
+      "category": "identity",
+      "description": "Checks if AAD authentication is enabled for PostgreSQL/MySQL databases.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "azure_sql_data_mining_prevention",
+      "category": "security",
+      "description": "Checks for prevention of data mining in Azure SQL databases.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "azure_sql_database_data_encryption_verification",
+      "category": "encryption",
+      "description": "Verifies data encryption for Azure SQL databases.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "azure_sql_sensitive_data_retention_check",
+      "category": "security",
+      "description": "Checks retention of sensitive data in Azure SQL databases.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example",
-    "function_name"
-  ],
-  "original_name": "database_services"
+  "notes": [
+    "All functions are based on Azure Database Services API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

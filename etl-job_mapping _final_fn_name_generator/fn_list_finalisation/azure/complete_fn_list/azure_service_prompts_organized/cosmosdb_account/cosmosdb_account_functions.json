@@ -1,19 +1,58 @@
 {
-  "service_name": "cosmosdb_account",
+  "service_name": "COSMOSDB_ACCOUNT",
   "display_name": "Azure Cosmosdb_Account",
-  "check_count": 4,
-  "check_functions": [
-    "cosmosdb_account_private_endpoints_enabled",
-    "cosmosdb_account_limit_firewall_networks",
-    "cosmosdb_account_private_endpoints_usage",
-    "cosmosdb_account_use_aad_and_rbac"
+  "total_functions": 4,
+  "original_categories": ["Identity", "Network"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Identity",
-    "Network"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.cosmosdb_account",
+    "client_class": "Cosmosdb_AccountManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "cosmosdb_account_private_endpoints_enabled",
+      "category": "network",
+      "description": "Checks if private endpoints are enabled for CosmosDB Account.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "cosmosdb_account_limit_firewall_networks",
+      "category": "network",
+      "description": "Checks if firewall networks are limited for CosmosDB Account.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "cosmosdb_account_private_endpoints_usage",
+      "category": "network",
+      "description": "Checks usage of private endpoints for CosmosDB Account.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    },
+    {
+      "name": "cosmosdb_account_use_aad_and_rbac",
+      "category": "identity",
+      "description": "Checks if AAD and RBAC are used for CosmosDB Account.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "cosmosdb_account"
+  "notes": [
+    "All functions are based on Azure Cosmosdb_Account API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

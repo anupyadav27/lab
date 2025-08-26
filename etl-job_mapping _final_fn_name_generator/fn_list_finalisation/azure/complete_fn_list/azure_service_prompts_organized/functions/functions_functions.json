@@ -1,16 +1,31 @@
 {
-  "service_name": "functions",
+  "service_name": "FUNCTIONS",
   "display_name": "Azure Functions",
-  "check_count": 2,
-  "check_functions": [
-    "functions_compute_platform_deployment_group_non_default_configuration",
-    "functions_compute_platform_non_default_deployment"
+  "total_functions": 2,
+  "original_categories": ["Compute"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Compute"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.functions",
+    "client_class": "FunctionsManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {"name": "functions_compute_platform_deployment_group_non_default_configuration", "category": "compute", "description": "Checks if deployment group uses non-default configuration.", "execution_type": "Code Executable", "remediation_effort": "Programmable"},
+    {"name": "functions_compute_platform_non_default_deployment", "category": "compute", "description": "Checks if compute platform uses non-default deployment.", "execution_type": "Code Executable", "remediation_effort": "Programmable"}
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "functions_alt"
+  "notes": [
+    "All functions are based on Azure Functions API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }

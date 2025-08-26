@@ -1,15 +1,37 @@
 {
-  "service_name": "devices",
+  "service_name": "DEVICES",
   "display_name": "Azure Devices",
-  "check_count": 1,
-  "check_functions": [
-    "endpoint_device_information_protection"
+  "total_functions": 1,
+  "original_categories": ["Security"],
+  "categorization_methods": ["sdk_example"],
+  "compliance_frameworks": [
+    "NIST Cybersecurity Framework",
+    "PCI DSS v4.0",
+    "ISO 27001",
+    "SOC 2",
+    "GDPR",
+    "HIPAA",
+    "Azure Security Benchmark"
   ],
-  "original_categories": [
-    "Security"
+  "sdk_integration": {
+    "namespace": "azure.mgmt.devices",
+    "client_class": "DevicesManagementClient",
+    "authentication": ["DefaultAzureCredential", "ServicePrincipalCredential"]
+  },
+  "functions": [
+    {
+      "name": "endpoint_device_information_protection",
+      "category": "security",
+      "description": "Checks if endpoint device information protection is enabled.",
+      "execution_type": "Code Executable",
+      "remediation_effort": "Programmable"
+    }
   ],
-  "categorization_methods": [
-    "sdk_example"
-  ],
-  "original_name": "devices_alt"
+  "notes": [
+    "All functions are based on Azure Devices API.",
+    "Ensure proper Azure RBAC permissions are configured.",
+    "Consider regional vs global service differences.",
+    "Implement appropriate retry logic for API calls.",
+    "Use Azure Resource Graph for efficient resource queries."
+  ]
 }
