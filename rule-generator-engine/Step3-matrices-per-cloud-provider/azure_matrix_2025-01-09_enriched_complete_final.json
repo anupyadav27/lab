@@ -1,0 +1,5616 @@
+{
+  "identity_access.authentication": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "identity.group",
+        "resource_type": "identity.group",
+        "adapter": "azure.azuread.group_mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_groups",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/group_mfa_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "sql",
+        "resource": "db.user",
+        "resource_type": "db.user",
+        "adapter": "azure.sql.database_users_managed_identity",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_sql_databases",
+        "signal": {
+          "fields": [
+            "users"
+          ],
+          "predicate": "users.every(u => u.type === 'ExternalUser' || u.authenticationType === 'AzureAD')",
+          "paths_doc": [
+            "GET /sqlServers/{server}/databases/{db}/users"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.service_account",
+        "resource_type": "identity.service_account",
+        "adapter": "azure.azuread.service_principal_secret_rotation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_service_principals",
+        "signal": {
+          "fields": [
+            "secretExpiry"
+          ],
+          "predicate": "secretExpiry <= 90",
+          "paths_doc": [
+            "GET /servicePrincipals/{id}/keyCredentials"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "identity_access.authorization": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.role_definitions",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_roles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/role_definitions"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.conditional_access_policies",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/conditional_access_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.policy",
+        "resource_type": "identity.policy",
+        "adapter": "azure.azuread.conditional_access_policy_mfa_required",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_conditional_access",
+        "signal": {
+          "fields": [
+            "policies"
+          ],
+          "predicate": "policies.some(p => p.grantControls.requireMfa === true)",
+          "paths_doc": [
+            "GET /identity/conditionalAccess/policies -> grantControls"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.app_consent_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/app_consent_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.group",
+        "resource_type": "rbac.group",
+        "adapter": "azure.azuread.group_membership_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_groups",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/group_membership_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.privileged_identity_management",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_pim_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/privileged_identity_management"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.application",
+        "resource_type": "identity.application",
+        "adapter": "azure.azuread.app_registrations_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_app_registrations",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/app_registrations_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.policy",
+        "resource_type": "identity.policy",
+        "adapter": "azure.azuread.authentication_strength_policy_configured",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_configured",
+        "signal": {
+          "fields": [
+            "authenticationStrengthPolicies"
+          ],
+          "predicate": "authenticationStrengthPolicies.length >= 1",
+          "paths_doc": [
+            "GET /policies/authenticationStrengthPolicies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.custom_role_permissions",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_custom_roles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/custom_role_permissions"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.risk_based_conditional_access",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_conditional_access",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/risk_based_conditional_access"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.device_based_conditional_access",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_conditional_access",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/device_based_conditional_access"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.emergency_access_accounts",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_tenant",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/emergency_access_accounts"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.service_principal",
+        "resource_type": "identity.service_principal",
+        "adapter": "azure.azuread.service_principal_secret_expiry",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_service_principals",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/service_principal_secret_expiry"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "identity_access.federation": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.external_identity_providers",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_external_identity_providers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/external_identity_providers"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.saml_identity_providers",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_saml_providers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/saml_identity_providers"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.oidc_identity_providers",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_oidc_providers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/oidc_identity_providers"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.b2b_guest_settings",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_b2b_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/b2b_guest_settings"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.cross_tenant_access_settings",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_cross_tenant_access",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/cross_tenant_access_settings"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "identity_access.mfa": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.mfa_registration",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/mfa_registration"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.mfa_policy",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_tenant",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/mfa_policy"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.authentication_methods_available",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "availableMethods"
+          ],
+          "predicate": "Array.isArray(availableMethods) && availableMethods.length >= 2",
+          "paths_doc": [
+            "GET /policies/authenticationMethodsPolicy -> authenticationMethods"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.microsoft_authenticator",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/microsoft_authenticator"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.fido2_authentication",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/fido2_authentication"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.phone_authentication",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/phone_authentication"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.email_authentication",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/email_authentication"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "identity_access.session_management": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.sign_in_frequency",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/sign_in_frequency"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.session_timeout",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/session_timeout"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.conditional_access_session_controls",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_conditional_access",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/conditional_access_session_controls"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.risk_based_session_controls",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/risk_based_session_controls"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.user",
+        "resource_type": "identity.user",
+        "adapter": "azure.azuread.device_based_session_controls",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_users",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/device_based_session_controls"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.tenant",
+        "resource_type": "identity.tenant",
+        "adapter": "azure.azuread.device_compliance_requirements",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_conditional_access",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/device_compliance_requirements"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "rbac_entitlements.role_definition": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "rbac.group",
+        "resource_type": "rbac.group",
+        "adapter": "azure.azuread.group_roles",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_groups",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/group_roles"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "rbac_entitlements.role_assignment": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.role_assignments",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_roles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/role_assignments"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "identity.role",
+        "resource_type": "identity.role",
+        "adapter": "azure.azuread.directory_roles_assignment_limited",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_roles",
+        "signal": {
+          "fields": [
+            "roleAssignments"
+          ],
+          "predicate": "roleAssignments.length <= 10",
+          "paths_doc": [
+            "GET /roleManagement/directory/roleAssignments"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.privileged_role_assignments",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_pim_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/privileged_role_assignments"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.group",
+        "resource_type": "rbac.group",
+        "adapter": "azure.azuread.group_role_assignments",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_groups",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/group_role_assignments"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.just_in_time_access",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_pim_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/just_in_time_access"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.emergency_access",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_pim_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/emergency_access"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "rbac_entitlements.least_privilege": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.role_permissions_audit",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_roles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/role_permissions_audit"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.permission_analytics",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/permission_analytics"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.unused_permissions",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_roles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/unused_permissions"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.permission_creep_analysis",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_roles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/permission_creep_analysis"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.role",
+        "resource_type": "rbac.role",
+        "adapter": "azure.azuread.access_review_automation",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_azure_ad_roles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/access_review_automation"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "rbac_entitlements.entitlement_management": {
+    "core": [
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.entitlement_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_entitlement_management",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/entitlement_management"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.access_packages",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_access_packages",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/access_packages"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.catalog_management",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_catalogs",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/catalog_management"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.lifecycle_workflows",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_lifecycle_workflows",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/lifecycle_workflows"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "azuread",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.azuread.connected_organizations",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_connected_organizations",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/azuread/connected_organizations"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "secrets_key_mgmt.secret_storage": {
+    "core": [
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_encryption_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabledForDiskEncryption",
+            "enabledForTemplateDeployment"
+          ],
+          "predicate": "enabledForDiskEncryption === true",
+          "paths_doc": [
+            "properties.enabledForDiskEncryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.access_policies_restrictive",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "accessPolicies"
+          ],
+          "predicate": "accessPolicies.every(p => p.permissions.secrets.includes('get') && !p.permissions.secrets.includes('all'))",
+          "paths_doc": [
+            "properties.accessPolicies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.store",
+        "resource_type": "secrets.store",
+        "adapter": "azure.keyvault.vault_soft_delete_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enableSoftDelete"
+          ],
+          "predicate": "enableSoftDelete === true",
+          "paths_doc": [
+            "properties.enableSoftDelete"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_rotation",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_rotation"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_versioning",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_versioning"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_soft_delete",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_soft_delete"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.store",
+        "resource_type": "secrets.store",
+        "adapter": "azure.keyvault.vault_purge_protection_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enablePurgeProtection"
+          ],
+          "predicate": "enablePurgeProtection === true",
+          "paths_doc": [
+            "properties.enablePurgeProtection"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_import_export",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_import_export"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_backup",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_backup"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_attestation",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_attestation"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "secrets_key_mgmt.key_rotation": {
+    "core": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_rotation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_rotation"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.auto_rotation",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/auto_rotation"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.rotation_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/rotation_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.rotation_monitoring",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/rotation_monitoring"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.rotation_alerts",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/rotation_alerts"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "secrets_key_mgmt.key_protection": {
+    "core": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_access_policies",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_access_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_backup",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_backup"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_versioning",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_versioning"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "keyvault.vault",
+        "resource_type": "keyvault.vault",
+        "adapter": "azure.keyvault.rbac_authorization_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/rbac_authorization_enabled"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "keyvault.vault",
+        "resource_type": "keyvault.vault",
+        "adapter": "azure.keyvault.purge_protection_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/purge_protection_enabled"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.hsm_protection",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/hsm_protection"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_attestation",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_attestation"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "secrets_key_mgmt.secret_retrieval": {
+    "core": [
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_access_logging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_access_logging"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_audit_logs",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_audit_logs"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_access_monitoring",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_access_monitoring"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_access_analytics",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_access_analytics"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "secrets.secret",
+        "resource_type": "secrets.secret",
+        "adapter": "azure.keyvault.secret_anomaly_detection",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_anomaly_detection"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "crypto_data_protection.encryption_at_rest": {
+    "core": [
+      {
+        "service": "storage",
+        "resource": "storage.fileshare",
+        "resource_type": "storage.fileshare",
+        "adapter": "azure.storage.fileshare_encryption",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_storage_fileshares",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/fileshare_encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "servicebus",
+        "resource": "storage.queue",
+        "resource_type": "storage.queue",
+        "adapter": "azure.servicebus.queue_encryption",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_servicebus_queues",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/servicebus/queue_encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "cosmosdb",
+        "resource": "storage.table",
+        "resource_type": "storage.table",
+        "adapter": "azure.cosmosdb.table_encryption",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cosmosdb_tables",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/cosmosdb/table_encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "compute",
+        "resource": "storage.snapshot",
+        "resource_type": "storage.snapshot",
+        "adapter": "azure.compute.snapshot_encryption",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_compute_snapshots",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/snapshot_encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "compute",
+        "resource": "storage.volume",
+        "resource_type": "storage.volume",
+        "adapter": "azure.compute.disk_encryption",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_compute_disks",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/disk_encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "sql",
+        "resource": "db.cluster",
+        "resource_type": "db.cluster",
+        "adapter": "azure.sql.server_encryption_at_rest",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_sql_servers",
+        "signal": {
+          "fields": [
+            "transparentDataEncryption"
+          ],
+          "predicate": "transparentDataEncryption.state === 'Enabled'",
+          "paths_doc": [
+            "properties.transparentDataEncryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "cosmosdb",
+        "resource": "db.cluster",
+        "resource_type": "db.cluster",
+        "adapter": "azure.cosmosdb.account_encryption_at_rest",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cosmosdb_accounts",
+        "signal": {
+          "fields": [
+            "encryption"
+          ],
+          "predicate": "encryption.keyVaultKeyUri !== null",
+          "paths_doc": [
+            "properties.encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "crypto_data_protection.encryption_in_transit": {
+    "core": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.account_https_only",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "httpsOnly",
+            "minimumTlsVersion"
+          ],
+          "predicate": "httpsOnly === true && compareTls(minimumTlsVersion, 'TLS1_2') >= 0",
+          "paths_doc": [
+            "properties.supportsHttpsTrafficOnly",
+            "properties.minimumTlsVersion"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "compute",
+        "resource": "compute.vm",
+        "resource_type": "compute.vm",
+        "adapter": "azure.compute.rdp_encryption",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_virtual_machines",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/rdp_encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "appservice",
+        "resource": "paas.app",
+        "resource_type": "paas.app",
+        "adapter": "azure.appservice.https_only",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_app_services",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appservice/https_only"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "sql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.sql.ssl_enforcement",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_sql_databases",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/sql/ssl_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "cosmosdb",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.cosmosdb.ssl_enforcement",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_cosmosdb_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/cosmosdb/ssl_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "postgresql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.postgresql.ssl_enforcement",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_postgresql_servers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/postgresql/ssl_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "mysql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.mysql.ssl_enforcement",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_mysql_servers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/mysql/ssl_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "redis",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.redis.ssl_enforcement",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_redis_caches",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/redis/ssl_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "servicebus",
+        "resource": "storage.queue",
+        "resource_type": "storage.queue",
+        "adapter": "azure.servicebus.tls_enforcement",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_service_bus_namespaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/servicebus/tls_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "eventhub",
+        "resource": "storage.queue",
+        "resource_type": "storage.queue",
+        "adapter": "azure.eventhub.tls_enforcement",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_event_hub_namespaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/eventhub/tls_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "apimanagement",
+        "resource": "platform.api_endpoint",
+        "resource_type": "platform.api_endpoint",
+        "adapter": "azure.apimanagement.tls_enforcement",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_api_management_instances",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/apimanagement/tls_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.minimum_tls_1_2",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/minimum_tls_1_2"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "sql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.sql.minimum_tls_1_2",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_sql_databases",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/sql/minimum_tls_1_2"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "redis",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.redis.minimum_tls_1_2",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_redis_caches",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/redis/minimum_tls_1_2"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "apimanagement",
+        "resource": "platform.api_endpoint",
+        "resource_type": "platform.api_endpoint",
+        "adapter": "azure.apimanagement.minimum_tls_1_2",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_api_management_instances",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/apimanagement/minimum_tls_1_2"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "frontdoor",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.frontdoor.minimum_tls_1_2",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_frontdoor",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/frontdoor/minimum_tls_1_2"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "application-gateway",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.appgw.minimum_tls_1_2",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_app_gateways",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appgw/minimum_tls_1_2"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "storage",
+        "resource": "storage.queue",
+        "resource_type": "storage.queue",
+        "adapter": "azure.storage.minimum_tls_1_2_queue",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/minimum_tls_1_2_queue"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "storage",
+        "resource": "storage.table",
+        "resource_type": "storage.table",
+        "adapter": "azure.storage.minimum_tls_1_2_table",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/minimum_tls_1_2_table"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "application-gateway",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.appgw.https_listeners",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_app_gateways",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appgw/https_listeners"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "frontdoor",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.frontdoor.https_enforcement",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_frontdoor",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/frontdoor/https_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "crypto_data_protection.key_management": {
+    "core": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_rotation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_rotation"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_access_policies",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_access_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_backup",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_backup"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_versioning",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_versioning"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_import_export",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_import_export"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.hsm_protection",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/hsm_protection"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_attestation",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_attestation"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms.key",
+        "resource_type": "crypto.kms.key",
+        "adapter": "azure.keyvault.key_escrow",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_escrow"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "crypto_data_protection.certificate_management": {
+    "core": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.certificate",
+        "resource_type": "crypto.certificate",
+        "adapter": "azure.keyvault.certificate_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/certificate_management"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.certificate",
+        "resource_type": "crypto.certificate",
+        "adapter": "azure.keyvault.certificate_auto_rotation",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/certificate_auto_rotation"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.certificate",
+        "resource_type": "crypto.certificate",
+        "adapter": "azure.keyvault.certificate_policy",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/certificate_policy"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.certificate",
+        "resource_type": "crypto.certificate",
+        "adapter": "azure.keyvault.certificate_issuance",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/certificate_issuance"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.certificate",
+        "resource_type": "crypto.certificate",
+        "adapter": "azure.keyvault.certificate_renewal",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/certificate_renewal"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "crypto_data_protection.crypto_policies": {
+    "core": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms",
+        "resource_type": "crypto.kms",
+        "adapter": "azure.keyvault.crypto_policies",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/crypto_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms",
+        "resource_type": "crypto.kms",
+        "adapter": "azure.keyvault.key_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/key_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms",
+        "resource_type": "crypto.kms",
+        "adapter": "azure.keyvault.secret_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/secret_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms",
+        "resource_type": "crypto.kms",
+        "adapter": "azure.keyvault.certificate_policies",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/certificate_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "keyvault",
+        "resource": "crypto.kms",
+        "resource_type": "crypto.kms",
+        "adapter": "azure.keyvault.access_policies",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_key_vault",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/keyvault/access_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "data_protection_storage.data_classification": {
+    "core": [
+      {
+        "service": "purview",
+        "resource": "data.catalog",
+        "resource_type": "data.catalog",
+        "adapter": "azure.purview.data_map_scans",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_purview_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/purview/data_map_scans"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.blob_classification",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/blob_classification"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "storage",
+        "resource": "storage.object",
+        "resource_type": "storage.object",
+        "adapter": "azure.storage.sensitive_data_discovery",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/sensitive_data_discovery"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "purview",
+        "resource": "data.catalog",
+        "resource_type": "data.catalog",
+        "adapter": "azure.purview.sensitive_data_classification",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_purview_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/purview/sensitive_data_classification"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "data_protection_storage.data_retention": {
+    "core": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.lifecycle_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/lifecycle_management"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.immutability_policy",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/immutability_policy"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.versioning",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/versioning"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.soft_delete",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/soft_delete"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.time_based_retention",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/time_based_retention"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "data_protection_storage.backup_recovery": {
+    "core": [
+      {
+        "service": "recoveryservices",
+        "resource": "backup.vault",
+        "resource_type": "backup.vault",
+        "adapter": "azure.backup.vault_protection",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_recovery_vaults",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/backup/vault_protection"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "recoveryservices",
+        "resource": "backup.plan",
+        "resource_type": "backup.plan",
+        "adapter": "azure.backup.protection_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_recovery_vaults",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/backup/protection_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "recoveryservices",
+        "resource": "backup.item",
+        "resource_type": "backup.item",
+        "adapter": "azure.backup.item_protection",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_recovery_vaults",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/backup/item_protection"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "sql",
+        "resource": "storage.snapshot",
+        "resource_type": "storage.snapshot",
+        "adapter": "azure.sql.long_term_retention_backups",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_sql_databases",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/sql/long_term_retention_backups"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "compute",
+        "resource": "storage.snapshot",
+        "resource_type": "storage.snapshot",
+        "adapter": "azure.compute.disk_snapshots",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_virtual_machines",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/disk_snapshots"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "cosmosdb",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.cosmosdb.backup_policy",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_cosmosdb_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/cosmosdb/backup_policy"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "data_protection_storage.data_masking": {
+    "core": [
+      {
+        "service": "sql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.sql.dynamic_data_masking",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_sql_databases",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/sql/dynamic_data_masking"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "synapse",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.synapse.dynamic_data_masking",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_synapse_workspaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/synapse/dynamic_data_masking"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "postgresql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.postgresql.column_masking_policies",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_postgresql_servers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/postgresql/column_masking_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "data_protection_storage.storage_security": {
+    "core": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.public_access_disabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "publicNetworkAccess"
+          ],
+          "predicate": "publicNetworkAccess === 'Disabled'",
+          "paths_doc": [
+            "properties.publicNetworkAccess"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.logging_and_monitoring",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/logging_and_monitoring"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.firewall_vnet_rules",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/firewall_vnet_rules"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "storage",
+        "resource": "storage.bucket",
+        "resource_type": "storage.bucket",
+        "adapter": "azure.storage.immutability_scoped_policies",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_storage_accounts",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/storage/immutability_scoped_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_perimeter.network_segmentation": {
+    "core": [
+      {
+        "service": "network",
+        "resource": "network.vnet",
+        "resource_type": "network.vnet",
+        "adapter": "azure.network.vnet_segmentation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_vnets",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/vnet_segmentation"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "network",
+        "resource": "network.subnet",
+        "resource_type": "network.subnet",
+        "adapter": "azure.network.subnet_nsg_association",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_subnets",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/subnet_nsg_association"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "network",
+        "resource": "route_table",
+        "resource_type": "route_table",
+        "adapter": "azure.network.route_tables",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_route_tables",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/route_tables"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "network",
+        "resource": "route_table",
+        "resource_type": "route_table",
+        "adapter": "azure.network.route_table_restrictions",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_route_tables",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/route_table_restrictions"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "network",
+        "resource": "network.endpoint",
+        "resource_type": "network.endpoint",
+        "adapter": "azure.private_link.endpoints",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_vnets",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/private_link/endpoints"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "network",
+        "resource": "peering",
+        "resource_type": "peering",
+        "adapter": "azure.network.vnet_peering",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_vnets",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/vnet_peering"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_perimeter.firewall_rules": {
+    "core": [
+      {
+        "service": "network",
+        "resource": "network.security_group",
+        "resource_type": "network.security_group",
+        "adapter": "azure.network.nsg_rules_restrictive",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_nsgs",
+        "signal": {
+          "fields": [
+            "securityRules"
+          ],
+          "predicate": "securityRules.every(r => r.destinationPortRange !== '3389' && r.destinationPortRange !== '22')",
+          "paths_doc": [
+            "properties.securityRules"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "network",
+        "resource": "network.security_group",
+        "resource_type": "network.security_group",
+        "adapter": "azure.network.nsg_default_deny_inbound",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_nsgs",
+        "signal": {
+          "fields": [
+            "defaultSecurityRules"
+          ],
+          "predicate": "defaultSecurityRules.some(r => r.name === 'DenyAllInBound' && r.access === 'Deny')",
+          "paths_doc": [
+            "properties.defaultSecurityRules"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "network",
+        "resource": "network.security_group",
+        "resource_type": "network.security_group",
+        "adapter": "azure.network.nsg_restrict_admin_ports",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_nsgs",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/nsg_restrict_admin_ports"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "frontdoor",
+        "resource": "edge.waf",
+        "resource_type": "edge.waf",
+        "adapter": "azure.frontdoor.waf_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_frontdoor",
+        "signal": {
+          "fields": [
+            "wafPolicy"
+          ],
+          "predicate": "wafPolicy !== null && wafPolicy.enabled === true",
+          "paths_doc": [
+            "properties.frontendEndpoints.wafPolicy"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "firewall",
+        "resource": "network.firewall",
+        "resource_type": "network.firewall",
+        "adapter": "azure.firewall.policy",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_firewalls",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/firewall/policy"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "application-gateway",
+        "resource": "network.waf",
+        "resource_type": "network.waf",
+        "adapter": "azure.appgw.waf_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_app_gateways",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appgw/waf_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "firewall",
+        "resource": "network.firewall",
+        "resource_type": "network.firewall",
+        "adapter": "azure.firewall.dns_proxy_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_firewalls",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/firewall/dns_proxy_enabled"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "cdn",
+        "resource": "edge.cdn",
+        "resource_type": "edge.cdn",
+        "adapter": "azure.cdn.https_enforcement",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_cdn_profiles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/cdn/https_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "frontdoor",
+        "resource": "network.waf",
+        "resource_type": "network.waf",
+        "adapter": "azure.frontdoor.waf_policies",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_frontdoor",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/frontdoor/waf_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_perimeter.dns_security": {
+    "core": [
+      {
+        "service": "dns",
+        "resource": "dns.hosted_zone",
+        "resource_type": "dns.hosted_zone",
+        "adapter": "azure.dns.secure_records",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_dns_zones",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/dns/secure_records"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "private-dns",
+        "resource": "dns.resolver",
+        "resource_type": "dns.resolver",
+        "adapter": "azure.private_dns.resolver_rules",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_dns_resolvers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/private_dns/resolver_rules"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "dns",
+        "resource": "dns.resolver",
+        "resource_type": "dns.resolver",
+        "adapter": "azure.dns.resolver_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_dns_resolvers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/dns/resolver_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "dns",
+        "resource": "dns.zone",
+        "resource_type": "dns.zone",
+        "adapter": "azure.dns.zone_private_endpoints_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_dns_zones",
+        "signal": {
+          "fields": [
+            "privateEndpoints"
+          ],
+          "predicate": "(privateEndpoints?.length || 0) > 0",
+          "paths_doc": [
+            "properties.privateEndpoints"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "dns",
+        "resource": "dns.hosted_zone",
+        "resource_type": "dns.hosted_zone",
+        "adapter": "azure.dns.dnssec_enabled",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_dns_zones",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/dns/dnssec_enabled"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_perimeter.load_balancing": {
+    "core": [
+      {
+        "service": "load-balancer",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.lb.security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_load_balancers",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/lb/security"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "application-gateway",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.appgw.security",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_app_gateways",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appgw/security"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "frontdoor",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.frontdoor.security",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_frontdoor",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/frontdoor/security"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "traffic-manager",
+        "resource": "network.load_balancer",
+        "resource_type": "network.load_balancer",
+        "adapter": "azure.traffic_manager.profile_security",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_traffic_manager_profiles",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/traffic_manager/profile_security"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_perimeter.vpn_connectivity": {
+    "core": [
+      {
+        "service": "vpn",
+        "resource": "network.connection",
+        "resource_type": "network.connection",
+        "adapter": "azure.vpn.connections",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_vpn_gateways",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/vpn/connections"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "expressroute",
+        "resource": "network.connection",
+        "resource_type": "network.connection",
+        "adapter": "azure.expressroute.circuit_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_expressroute_circuits",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/expressroute/circuit_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "virtual-wan",
+        "resource": "network.gateway",
+        "resource_type": "network.gateway",
+        "adapter": "azure.virtual_wan.hub_connections",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_virtual_wans",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/virtual_wan/hub_connections"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_perimeter.ddos_protection": {
+    "core": [
+      {
+        "service": "network",
+        "resource": "network.ddos_plan",
+        "resource_type": "network.ddos_plan",
+        "adapter": "azure.network.ddos_protection_plan",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ddos_plans",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/ddos_protection_plan"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "network",
+        "resource": "network.vnet",
+        "resource_type": "network.vnet",
+        "adapter": "azure.network.ddos_protection_on_vnet",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_vnets",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/ddos_protection_on_vnet"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "network",
+        "resource": "network.vpc",
+        "resource_type": "network.vpc",
+        "adapter": "azure.network.vnet_ddos_protection_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_vnets",
+        "signal": {
+          "fields": [
+            "ddosProtectionPlan"
+          ],
+          "predicate": "ddosProtectionPlan !== null",
+          "paths_doc": [
+            "properties.ddosProtectionPlan"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "compute_host_security.os_hardening": {
+    "core": [
+      {
+        "service": "compute",
+        "resource": "compute.vm",
+        "resource_type": "compute.vm",
+        "adapter": "azure.compute.vm_disk_encryption_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_virtual_machines",
+        "signal": {
+          "fields": [
+            "diskEncryptionEnabled"
+          ],
+          "predicate": "diskEncryptionEnabled === true",
+          "paths_doc": [
+            "properties.storageProfile.osDisk.encryptionSettings"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "compute",
+        "resource": "compute.disk",
+        "resource_type": "compute.disk",
+        "adapter": "azure.compute.disk_encryption_set_usage",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_virtual_machines",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/disk_encryption_set_usage"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "compute",
+        "resource": "compute.vm",
+        "resource_type": "compute.vm",
+        "adapter": "azure.compute.guest_configuration_baselines",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_virtual_machines",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/guest_configuration_baselines"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "compute_host_security.patch_management": {
+    "core": [
+      {
+        "service": "automation",
+        "resource": "patch_baseline",
+        "resource_type": "patch_baseline",
+        "adapter": "azure.automation.update_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_automation_account",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/automation/update_management"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "update-manager",
+        "resource": "patch_group",
+        "resource_type": "patch_group",
+        "adapter": "azure.update_manager.patch_groups",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_update_manager",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/update_manager/patch_groups"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "update-manager",
+        "resource": "maintenance_window",
+        "resource_type": "maintenance_window",
+        "adapter": "azure.update_manager.maintenance_windows",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_update_manager",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/update_manager/maintenance_windows"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "compute_host_security.endpoint_protection": {
+    "core": [
+      {
+        "service": "defender",
+        "resource": "compute.vm",
+        "resource_type": "compute.vm",
+        "adapter": "azure.defender.mde_vm",
+        "coverage_tier": "core",
+        "not_applicable_when": "defender_not_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/defender/mde_vm"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "compute_host_security.vulnerability_management": {
+    "core": [
+      {
+        "service": "defender",
+        "resource": "assessment",
+        "resource_type": "assessment",
+        "adapter": "azure.defender.vulnerability_assessments",
+        "coverage_tier": "core",
+        "not_applicable_when": "defender_not_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/defender/vulnerability_assessments"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "compute_host_security.compliance_monitoring": {
+    "core": [
+      {
+        "service": "defender",
+        "resource": "findings",
+        "resource_type": "findings",
+        "adapter": "azure.defender.secure_score",
+        "coverage_tier": "core",
+        "not_applicable_when": "defender_not_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/defender/secure_score"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "policy",
+        "resource": "standards",
+        "resource_type": "standards",
+        "adapter": "azure.policy.regulatory_compliance",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_policy_assignments",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/policy/regulatory_compliance"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "containers_kubernetes.image_security": {
+    "core": [
+      {
+        "service": "acr",
+        "resource": "repository",
+        "resource_type": "repository",
+        "adapter": "azure.acr.image_scanning",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_acr_registries",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/acr/image_scanning"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "acr",
+        "resource": "repository",
+        "resource_type": "repository",
+        "adapter": "azure.acr.defender_vulnerability_scans",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_acr_registries",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/acr/defender_vulnerability_scans"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "acr",
+        "resource": "repository",
+        "resource_type": "repository",
+        "adapter": "azure.acr.image_signing",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_acr_registries",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/acr/image_signing"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "containers_kubernetes.runtime_security": {
+    "core": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.defender_runtime",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/defender_runtime"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "aks",
+        "resource": "k8s.workload",
+        "resource_type": "k8s.workload",
+        "adapter": "azure.aks.pod_security_policies_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "podSecurityPolicies"
+          ],
+          "predicate": "podSecurityPolicies.enabled === true",
+          "paths_doc": [
+            "GET /managedClusters/{cluster}/podSecurityPolicies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "containers_kubernetes.network_policies": {
+    "core": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.network_policies",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/network_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "aks",
+        "resource": "k8s.network_policy",
+        "resource_type": "k8s.network_policy",
+        "adapter": "azure.aks.network_policy_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "networkPolicy"
+          ],
+          "predicate": "networkPolicy === 'azure' || networkPolicy === 'calico'",
+          "paths_doc": [
+            "properties.networkProfile.networkPolicy"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.private_cluster",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/private_cluster"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "aks",
+        "resource": "k8s.namespace",
+        "resource_type": "k8s.namespace",
+        "adapter": "azure.aks.namespace_network_policies_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "networkPolicies"
+          ],
+          "predicate": "networkPolicies.some(np => np.namespace !== 'kube-system' && np.enabled === true)",
+          "paths_doc": [
+            "GET /managedClusters/{cluster}/namespaces/{ns}/networkPolicies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "containers_kubernetes.rbac_policies": {
+    "core": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.azure_rbac",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/azure_rbac"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "aks",
+        "resource": "platform.control_plane",
+        "resource_type": "platform.control_plane",
+        "adapter": "azure.aks.api_server_authorized_ip_ranges",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "apiServerAccessProfile"
+          ],
+          "predicate": "apiServerAccessProfile.authorizedIPRanges.length > 0",
+          "paths_doc": [
+            "properties.apiServerAccessProfile.authorizedIPRanges"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.oidc_issuer_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/oidc_issuer_enabled"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "containers_kubernetes.admission_control": {
+    "core": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.admission_webhooks",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/admission_webhooks"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.gatekeeper",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/gatekeeper"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.pod_security_admission",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/pod_security_admission"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "aks",
+        "resource": "k8s.admission",
+        "resource_type": "k8s.admission",
+        "adapter": "azure.aks.admission_webhooks_enabled",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "admissionControllers"
+          ],
+          "predicate": "admissionControllers.includes('ValidatingAdmissionWebhook') && admissionControllers.includes('MutatingAdmissionWebhook')",
+          "paths_doc": [
+            "GET /managedClusters/{cluster}/admissionControllers"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "serverless_paas.function_security": {
+    "core": [
+      {
+        "service": "functions",
+        "resource": "serverless.function",
+        "resource_type": "serverless.function",
+        "adapter": "azure.functions.app_settings_secrets_encrypted",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_functions_apps",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/functions/app_settings_secrets_encrypted"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "functions",
+        "resource": "serverless.function",
+        "resource_type": "serverless.function",
+        "adapter": "azure.functions.managed_identity_enforced",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_functions_apps",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/functions/managed_identity_enforced"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "functions",
+        "resource": "serverless.function",
+        "resource_type": "serverless.function",
+        "adapter": "azure.functions.https_only",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_functions_apps",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/functions/https_only"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "serverless_paas.api_security": {
+    "core": [
+      {
+        "service": "apimanagement",
+        "resource": "platform.api_endpoint",
+        "resource_type": "platform.api_endpoint",
+        "adapter": "azure.apimanagement.api_policies_tls",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_api_management_instances",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/apimanagement/api_policies_tls"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "apimanagement",
+        "resource": "platform.api_endpoint",
+        "resource_type": "platform.api_endpoint",
+        "adapter": "azure.apimanagement.rate_limiting",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_api_management_instances",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/apimanagement/rate_limiting"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "apimanagement",
+        "resource": "platform.api_endpoint",
+        "resource_type": "platform.api_endpoint",
+        "adapter": "azure.apimanagement.api_keys",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_api_management_instances",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/apimanagement/api_keys"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "serverless_paas.paas_security": {
+    "core": [
+      {
+        "service": "appservice",
+        "resource": "paas.app",
+        "resource_type": "paas.app",
+        "adapter": "azure.appservice.https_only",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_app_services",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appservice/https_only"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "appservice",
+        "resource": "paas.app",
+        "resource_type": "paas.app",
+        "adapter": "azure.appservice.ftps_state",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_app_services",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appservice/ftps_state"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "appservice",
+        "resource": "paas.app",
+        "resource_type": "paas.app",
+        "adapter": "azure.appservice.scm_basic_auth_disabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_app_services",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appservice/scm_basic_auth_disabled"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "appservice",
+        "resource": "paas.app",
+        "resource_type": "paas.app",
+        "adapter": "azure.appservice.managed_identity_required",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_app_services",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appservice/managed_identity_required"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "serverless_paas.event_security": {
+    "core": [
+      {
+        "service": "servicebus",
+        "resource": "storage.queue",
+        "resource_type": "storage.queue",
+        "adapter": "azure.servicebus.queue_encryption_tls",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_service_bus_namespaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/servicebus/queue_encryption_tls"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "eventgrid",
+        "resource": "platform.api_endpoint",
+        "resource_type": "platform.api_endpoint",
+        "adapter": "azure.eventgrid.minimum_tls_1_2",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_eventgrid_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/eventgrid/minimum_tls_1_2"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "eventhub",
+        "resource": "storage.queue",
+        "resource_type": "storage.queue",
+        "adapter": "azure.eventhub.tls_enforcement",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_event_hub_namespaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/eventhub/tls_enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "servicebus",
+        "resource": "storage.queue",
+        "resource_type": "storage.queue",
+        "adapter": "azure.servicebus.access_policies",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_service_bus_namespaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/servicebus/access_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "eventgrid",
+        "resource": "network.endpoint",
+        "resource_type": "network.endpoint",
+        "adapter": "azure.eventgrid.private_endpoints",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_eventgrid_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/eventgrid/private_endpoints"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "eventgrid",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.eventgrid.subscription_auth_policies",
+        "coverage_tier": "exhaustive",
+        "not_applicable_when": "no_eventgrid_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/eventgrid/subscription_auth_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "serverless_paas.resource_limits": {
+    "core": [],
+    "extended": [
+      {
+        "service": "appservice",
+        "resource": "paas.app",
+        "resource_type": "paas.app",
+        "adapter": "azure.appservice.resource_limits",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_app_services",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appservice/resource_limits"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "functions",
+        "resource": "serverless.function",
+        "resource_type": "serverless.function",
+        "adapter": "azure.functions.resource_limits",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_functions_apps",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/functions/resource_limits"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "supply_chain_registries.registry_security": {
+    "core": [
+      {
+        "service": "containerregistry",
+        "resource": "registry.policy",
+        "resource_type": "registry.policy",
+        "adapter": "azure.containerregistry.access_policy",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_container_registries",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/containerregistry/access_policy"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "supply_chain_registries.dependency_management": {
+    "core": [],
+    "extended": [
+      {
+        "service": "devops",
+        "resource": "repository",
+        "resource_type": "repository",
+        "adapter": "azure.devops.artifacts_retention_and_permissions",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_devops_projects",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/devops/artifacts_retention_and_permissions"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "supply_chain_registries.build_security": {
+    "core": [
+      {
+        "service": "devops",
+        "resource": "governance.project",
+        "resource_type": "governance.project",
+        "adapter": "azure.devops.pipelines.build_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_devops_projects",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/devops/pipelines/build_security"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "supply_chain_registries.vulnerability_scanning": {
+    "core": [
+      {
+        "service": "containerregistry",
+        "resource": "registry.policy",
+        "resource_type": "registry.policy",
+        "adapter": "azure.containerregistry.vulnerability_scanning",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_container_registries",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/containerregistry/vulnerability_scanning"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "acr",
+        "resource": "registry.repo",
+        "resource_type": "registry.repo",
+        "adapter": "azure.acr.repository_vulnerability_scanning_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_acr_registries",
+        "signal": {
+          "fields": [
+            "vulnerabilityScanning"
+          ],
+          "predicate": "vulnerabilityScanning.enabled === true",
+          "paths_doc": [
+            "properties.policies.trustPolicy.status"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "supply_chain_registries.signing_verification": {
+    "core": [],
+    "extended": [
+      {
+        "service": "acr",
+        "resource": "repository",
+        "resource_type": "repository",
+        "adapter": "azure.acr.image_signing",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_acr_registries",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/acr/image_signing"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "logging_monitoring.log_collection": {
+    "core": [
+      {
+        "service": "monitor",
+        "resource": "trail",
+        "resource_type": "trail",
+        "adapter": "azure.monitor.activity_logs_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_tenant",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/monitor/activity_logs_enabled"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "monitor",
+        "resource": "logging.sink",
+        "resource_type": "logging.sink",
+        "adapter": "azure.monitor.diagnostic_settings_sink_configured",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_diagnostic_settings",
+        "signal": {
+          "fields": [
+            "diagnosticSettings"
+          ],
+          "predicate": "diagnosticSettings.some(ds => ds.logs.length > 0 || ds.metrics.length > 0)",
+          "paths_doc": [
+            "GET /providers/Microsoft.Insights/diagnosticSettings"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "diagnostic",
+        "resource": "log_group",
+        "resource_type": "log_group",
+        "adapter": "azure.diagnostic_settings.to_log_analytics",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_log_analytics_workspaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/diagnostic_settings/to_log_analytics"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "network-watcher",
+        "resource": "flow_log",
+        "resource_type": "flow_log",
+        "adapter": "azure.network_watcher.nsg_flow_logs",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_network_watcher",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network_watcher/nsg_flow_logs"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "logging_monitoring.monitoring_alerting": {
+    "core": [
+      {
+        "service": "monitor",
+        "resource": "alarm",
+        "resource_type": "alarm",
+        "adapter": "azure.monitor.metric_alerts",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_log_analytics_workspaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/monitor/metric_alerts"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "monitor",
+        "resource": "monitoring.alert",
+        "resource_type": "monitoring.alert",
+        "adapter": "azure.monitor.alert_rules_security_configured",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_monitoring_alerts",
+        "signal": {
+          "fields": [
+            "alertRules"
+          ],
+          "predicate": "alertRules.filter(r => r.category === 'Security').length >= 5",
+          "paths_doc": [
+            "GET /providers/Microsoft.Insights/metricAlerts"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "monitor",
+        "resource": "monitoring.metric",
+        "resource_type": "monitoring.metric",
+        "adapter": "azure.monitor.metrics_collection_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_monitoring_configured",
+        "signal": {
+          "fields": [
+            "metricsEnabled"
+          ],
+          "predicate": "metricsEnabled === true",
+          "paths_doc": [
+            "properties.metrics"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "monitor",
+        "resource": "alarm",
+        "resource_type": "alarm",
+        "adapter": "azure.monitor.action_groups",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_log_analytics_workspaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/monitor/action_groups"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "logging_monitoring.audit_logging": {
+    "core": [
+      {
+        "service": "monitor",
+        "resource": "trail",
+        "resource_type": "trail",
+        "adapter": "azure.activity_logs.retention_and_categories",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_tenant",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/activity_logs/retention_and_categories"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "monitor",
+        "resource": "logging.trail",
+        "resource_type": "logging.trail",
+        "adapter": "azure.monitor.activity_logs_enabled",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_azure_ad_tenant",
+        "signal": {
+          "fields": [
+            "activityLogs"
+          ],
+          "predicate": "activityLogs.enabled === true",
+          "paths_doc": [
+            "GET /providers/Microsoft.Insights/eventTypes/management/values"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "monitor",
+        "resource": "logging.trail",
+        "resource_type": "logging.trail",
+        "adapter": "azure.monitor.activity_logs_retention_configured",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_azure_ad_tenant",
+        "signal": {
+          "fields": [
+            "retentionDays"
+          ],
+          "predicate": "retentionDays >= 365",
+          "paths_doc": [
+            "GET /subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "logging_monitoring.log_retention": {
+    "core": [
+      {
+        "service": "log-analytics",
+        "resource": "log_group",
+        "resource_type": "log_group",
+        "adapter": "azure.log_analytics.workspace_retention",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_log_analytics_workspaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/log_analytics/workspace_retention"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "log-analytics",
+        "resource": "logging.store",
+        "resource_type": "logging.store",
+        "adapter": "azure.log_analytics.workspace_retention_configured",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_log_analytics_workspaces",
+        "signal": {
+          "fields": [
+            "retentionInDays"
+          ],
+          "predicate": "retentionInDays >= 90",
+          "paths_doc": [
+            "properties.retentionInDays"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "logging_monitoring.log_analysis": {
+    "core": [],
+    "extended": [
+      {
+        "service": "sentinel",
+        "resource": "findings",
+        "resource_type": "findings",
+        "adapter": "azure.sentinel.analytics_rules",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_sentinel",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/sentinel/analytics_rules"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "resilience_recovery.backup_strategy": {
+    "core": [
+      {
+        "service": "recoveryservices",
+        "resource": "backup.vault",
+        "resource_type": "backup.vault",
+        "adapter": "azure.backup.vaults_and_policies",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_recovery_vaults",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/backup/vaults_and_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "recoveryservices",
+        "resource": "backup.vault",
+        "resource_type": "backup.vault",
+        "adapter": "azure.backup.vault_immutability",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_recovery_vaults",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/backup/vault_immutability"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "resilience_recovery.disaster_recovery": {
+    "core": [
+      {
+        "service": "site-recovery",
+        "resource": "replication_configuration",
+        "resource_type": "replication_configuration",
+        "adapter": "azure.asr.replication_policies",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_asr_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/asr/replication_policies"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "site-recovery",
+        "resource": "dr.plan",
+        "resource_type": "dr.plan",
+        "adapter": "azure.asr.replication_policies_configured",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_asr_configured",
+        "signal": {
+          "fields": [
+            "replicationPolicies"
+          ],
+          "predicate": "replicationPolicies.length >= 1 && replicationPolicies.every(p => p.recoveryPointRetentionInHours >= 24)",
+          "paths_doc": [
+            "GET /replicationPolicies"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "resilience_recovery.high_availability": {
+    "core": [
+      {
+        "service": "compute",
+        "resource": "compute.vm",
+        "resource_type": "compute.vm",
+        "adapter": "azure.compute.availability_zones_sets",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_virtual_machines",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/availability_zones_sets"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "sql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.sql.ha_config",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_sql_databases",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/sql/ha_config"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "resilience_recovery.recovery_testing": {
+    "core": [],
+    "extended": [
+      {
+        "service": "site-recovery",
+        "resource": "replication_configuration",
+        "resource_type": "replication_configuration",
+        "adapter": "azure.asr.test_failover_drills",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_asr_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/asr/test_failover_drills"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "governance_compliance.policy_management": {
+    "core": [
+      {
+        "service": "policy",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.policy.assignment_and_effects",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_policy_assignments",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/policy/assignment_and_effects"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "policy",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.policy.initiatives",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_policy_assignments",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/policy/initiatives"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "governance_compliance.compliance_framework": {
+    "core": [
+      {
+        "service": "defender",
+        "resource": "standards",
+        "resource_type": "standards",
+        "adapter": "azure.defender.regulatory_compliance_scores",
+        "coverage_tier": "core",
+        "not_applicable_when": "defender_not_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/defender/regulatory_compliance_scores"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "policy",
+        "resource": "standards",
+        "resource_type": "standards",
+        "adapter": "azure.policy.regulatory_compliance",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_policy_assignments",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/policy/regulatory_compliance"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "governance_compliance.resource_governance": {
+    "core": [
+      {
+        "service": "management-groups",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.management_groups.hierarchy",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_management_groups",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/management_groups/hierarchy"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "management-groups",
+        "resource": "governance.org",
+        "resource_type": "governance.org",
+        "adapter": "azure.management_groups.hierarchy_governance",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_management_groups",
+        "signal": {
+          "fields": [
+            "governancePolicies"
+          ],
+          "predicate": "governancePolicies.length >= 3",
+          "paths_doc": [
+            "GET /providers/Microsoft.Management/managementGroups/{mg}/providers/Microsoft.Authorization/policyAssignments"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "locks",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.resource_locks.locks",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_resource_locks",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/resource_locks/locks"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "tag",
+        "resource": "rbac.policy",
+        "resource_type": "rbac.policy",
+        "adapter": "azure.tags.enforcement",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_policy_assignments",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/tags/enforcement"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "governance_compliance.cost_governance": {
+    "core": [
+      {
+        "service": "cost-management",
+        "resource": "budget",
+        "resource_type": "budget",
+        "adapter": "azure.cost_management.budgets",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cost_management_configured",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/cost_management/budgets"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "advisor",
+        "resource": "report",
+        "resource_type": "report",
+        "adapter": "azure.advisor.recommendations",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_advisor_recommendations",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/advisor/recommendations"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "platform_surfaces_versions.version_management": {
+    "core": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.version_policy",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/version_policy"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [
+      {
+        "service": "appservice",
+        "resource": "paas.app",
+        "resource_type": "paas.app",
+        "adapter": "azure.appservice.runtime_versions",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_app_services",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/appservice/runtime_versions"
+          ],
+          "evidence_type": "config_read"
+        }
+      },
+      {
+        "service": "sql",
+        "resource": "db.instance",
+        "resource_type": "db.instance",
+        "adapter": "azure.sql.minor_version",
+        "coverage_tier": "extended",
+        "not_applicable_when": "no_sql_databases",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/sql/minor_version"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "exhaustive": []
+  },
+  "platform_surfaces_versions.deprecation_mgmt": {
+    "core": [
+      {
+        "service": "compute",
+        "resource": "compute.vm",
+        "resource_type": "compute.vm",
+        "adapter": "azure.compute.deprecated_images_detection",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_virtual_machines",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/deprecated_images_detection"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "platform_surfaces_versions.api_management": {
+    "core": [
+      {
+        "service": "apimanagement",
+        "resource": "platform.api_endpoint",
+        "resource_type": "platform.api_endpoint",
+        "adapter": "azure.apimanagement.api_version_sets",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_api_management_instances",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/apimanagement/api_version_sets"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "platform_surfaces_versions.platform_monitoring": {
+    "core": [
+      {
+        "service": "monitor",
+        "resource": "alarm",
+        "resource_type": "alarm",
+        "adapter": "azure.monitor.service_health_alerts",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_log_analytics_workspaces",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/monitor/service_health_alerts"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "platform_surfaces_versions.security_updates": {
+    "core": [
+      {
+        "service": "update-manager",
+        "resource": "patch_baseline",
+        "resource_type": "patch_baseline",
+        "adapter": "azure.update_manager.baselines",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_update_manager",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/update_manager/baselines"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ],
+    "extended": [],
+    "exhaustive": []
+  },
+  "templates_images.golden_images": {
+    "core": [
+      {
+        "service": "compute",
+        "resource": "compute.image",
+        "resource_type": "compute.image",
+        "adapter": "azure.compute.image_approval",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_compute_images",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/image_approval"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "templates_images.image_scanning": {
+    "core": [
+      {
+        "service": "compute",
+        "resource": "compute.image",
+        "resource_type": "compute.image",
+        "adapter": "azure.compute.image_vulnerability_scan",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_compute_images",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/image_vulnerability_scan"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "cluster_management_plane.capacity_management": {
+    "core": [
+      {
+        "service": "compute",
+        "resource": "compute.instance_group",
+        "resource_type": "compute.instance_group",
+        "adapter": "azure.compute.vmss_configuration",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_vmss_groups",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/compute/vmss_configuration"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_segmentation.microsegmentation": {
+    "core": [
+      {
+        "service": "network",
+        "resource": "network.security_group",
+        "resource_type": "network.security_group",
+        "adapter": "azure.network.nsg_rules_restrictive",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_network_security_groups",
+        "signal": {
+          "fields": [
+            "securityRules"
+          ],
+          "predicate": "securityRules.every(r => r.destinationPortRange !== '3389' && r.destinationPortRange !== '22')",
+          "paths_doc": [
+            "properties.securityRules"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "network_segmentation.network_segmentation": {
+    "core": [
+      {
+        "service": "network",
+        "resource": "network.route_table",
+        "resource_type": "network.route_table",
+        "adapter": "azure.network.route_table_routes",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_route_tables",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/network/route_table_routes"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "containers_kubernetes.crypto_data_protection": {
+    "core": [
+      {
+        "service": "aks",
+        "resource": "k8s.cluster",
+        "resource_type": "k8s.cluster",
+        "adapter": "azure.aks.cluster_encryption",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_clusters",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/cluster_encryption"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  },
+  "containers_kubernetes.host_hardening": {
+    "core": [
+      {
+        "service": "aks",
+        "resource": "k8s.node_pool",
+        "resource_type": "k8s.node_pool",
+        "adapter": "azure.aks.node_pool_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_aks_node_pools",
+        "signal": {
+          "fields": [
+            "enabled",
+            "configured"
+          ],
+          "predicate": "enabled === true && configured === true",
+          "paths_doc": [
+            "GET /azure/aks/node_pool_security"
+          ],
+          "evidence_type": "config_read"
+        }
+      }
+    ]
+  }
+}
