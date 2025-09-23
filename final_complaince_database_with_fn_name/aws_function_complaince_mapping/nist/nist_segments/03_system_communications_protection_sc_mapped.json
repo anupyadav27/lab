@@ -1,0 +1,889 @@
+{
+  "nist_aws_function_mapping": {
+    "metadata": {
+      "segment": "03_system_communications_protection_sc",
+      "description": "NIST System & Communications Protection (SC) Family - AWS Function Mapping",
+      "total_controls": 134,
+      "mapping_status": "complete",
+      "created": "2025-01-27",
+      "priority": "HIGH"
+    },
+    "system_communications_protection_family": {
+      "SC-1": {
+        "title": "System and Communications Protection Policy and Procedures",
+        "controls": {
+          "SC-1-description": {
+            "description": "Develop, document, and disseminate system and communications protection policy and procedures",
+            "aws_functions": [],
+            "manual_effort": "Policy documentation review and validation",
+            "manual_details": "Review system and communications protection policies, procedures, and documentation for completeness and accuracy.",
+            "compliance_level": "manual_only"
+          }
+        }
+      },
+      "SC-2": {
+        "title": "Separation of System and User Functionality",
+        "controls": {
+          "SC-2-description": {
+            "description": "Separate user functionality from system management functionality",
+            "aws_functions": [
+              "iam_access_control_model_check",
+              "iam_access_control_pre_production_check",
+              "iam_policy_access_enforcement_check",
+              "iam_policy_check_restricted_access"
+            ],
+            "manual_effort": "System separation review",
+            "manual_details": "Review system architecture to ensure proper separation between user and management functionality.",
+            "compliance_level": "function_plus_manual"
+          },
+          "SC-2(1)": {
+            "description": "Prevent system management functionality at non-privileged interfaces",
+            "aws_functions": [
+              "iam_policy_access_enforcement_check",
+              "iam_policy_check_restricted_access",
+              "iam_policy_condition_check"
+            ],
+            "manual_effort": "Interface access review",
+            "manual_details": "Review system interfaces to ensure management functions are not accessible to non-privileged users.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-3": {
+        "title": "Security Function Isolation",
+        "controls": {
+          "SC-3-description": {
+            "description": "Isolate security functions from non-security functions",
+            "aws_functions": [
+              "vpc_network_segmentation_test_results_check",
+              "vpc_segmentation_control_test_results_check",
+              "ec2_instance_network_segmentation_check"
+            ],
+            "manual_effort": "Security function isolation review",
+            "manual_details": "Review system architecture to ensure security functions are properly isolated from non-security functions.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-4": {
+        "title": "Information in Shared Resources",
+        "controls": {
+          "SC-4-description": {
+            "description": "Prevent unauthorized information flow in shared resources",
+            "aws_functions": [
+              "s3_bucket_public_access",
+              "s3_bucket_public_access_check",
+              "s3_bucket_public_list_acl",
+              "s3_bucket_public_write_acl",
+              "s3_bucket_public_write_access",
+              "ec2_instance_public_ip",
+              "rds_instance_public_access_check"
+            ],
+            "manual_effort": "Shared resource access review",
+            "manual_details": "Review shared resources to ensure proper access controls and prevent unauthorized information flow.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-5": {
+        "title": "Denial of Service Protection",
+        "controls": {
+          "SC-5-description": {
+            "description": "Protect against denial of service attacks",
+            "aws_functions": [
+              "shield_advanced_protection_in_associated_elastic_ips",
+              "shield_advanced_protection_in_classic_load_balancers",
+              "shield_advanced_protection_in_cloudfront_distributions",
+              "shield_advanced_protection_in_global_accelerators",
+              "shield_advanced_protection_in_internet_facing_load_balancers",
+              "shield_advanced_protection_in_route53_hosted_zones",
+              "waf_web_acl_exists",
+              "waf_web_acl_rule_exists"
+            ],
+            "manual_effort": "DoS protection review",
+            "manual_details": "Review DoS protection mechanisms, validate configuration, and ensure proper protection coverage.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-6": {
+        "title": "Resource Availability",
+        "controls": {
+          "SC-6-description": {
+            "description": "Protect the availability of resources",
+            "aws_functions": [
+              "ec2_instance_multi_az",
+              "rds_instance_multi_az",
+              "rds_cluster_multi_az",
+              "elasticache_cluster_multi_az",
+              "neptune_cluster_multi_az",
+              "documentdb_cluster_multi_az"
+            ],
+            "manual_effort": "Resource availability review",
+            "manual_details": "Review resource availability configurations, validate redundancy, and ensure proper availability protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-7": {
+        "title": "Boundary Protection",
+        "controls": {
+          "SC-7-description": {
+            "description": "Monitor and control communications at system boundaries",
+            "aws_functions": [
+              "vpc_network_segmentation_test_results_check",
+              "vpc_segmentation_control_test_results_check",
+              "ec2_instance_network_segmentation_check",
+              "ec2_instance_public_ip",
+              "ec2_instance_ssh_access_restriction_check",
+              "ec2_instance_rdp_access_restriction_check",
+              "networkfirewall_deletion_protection",
+              "networkfirewall_in_all_vpc",
+              "networkfirewall_logging_enabled",
+              "networkfirewall_multi_az"
+            ],
+            "manual_effort": "Boundary protection review",
+            "manual_details": "Review network boundaries, validate security controls, and ensure proper boundary protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-8": {
+        "title": "Transmission Confidentiality and Integrity",
+        "controls": {
+          "SC-8-description": {
+            "description": "Protect the confidentiality and integrity of transmitted information",
+            "aws_functions": [
+              "elb_ssl_certificate_check",
+              "elb_ssl_listener_check",
+              "elb_ssl_policy_check",
+              "elb_ssl_protocol_check",
+              "elb_ssl_cipher_check",
+              "elb_ssl_certificate_expiration_check",
+              "elb_ssl_certificate_validation_check",
+              "elb_ssl_certificate_chain_check",
+              "elb_ssl_certificate_authority_check",
+              "elb_ssl_certificate_revocation_check",
+              "elb_ssl_certificate_transparency_check",
+              "elb_ssl_certificate_pinning_check",
+              "elb_ssl_certificate_verification_check",
+              "elb_ssl_certificate_trust_check",
+              "elb_ssl_certificate_validation_check",
+              "elb_ssl_certificate_chain_check",
+              "elb_ssl_certificate_authority_check",
+              "elb_ssl_certificate_revocation_check",
+              "elb_ssl_certificate_transparency_check",
+              "elb_ssl_certificate_pinning_check",
+              "elb_ssl_certificate_verification_check",
+              "elb_ssl_certificate_trust_check"
+            ],
+            "manual_effort": "Transmission security review",
+            "manual_details": "Review transmission security configurations, validate encryption, and ensure proper data protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-9": {
+        "title": "Transmission Confidentiality",
+        "controls": {
+          "SC-9-description": {
+            "description": "Protect the confidentiality of transmitted information",
+            "aws_functions": [
+              "elb_ssl_certificate_check",
+              "elb_ssl_listener_check",
+              "elb_ssl_policy_check",
+              "elb_ssl_protocol_check",
+              "elb_ssl_cipher_check"
+            ],
+            "manual_effort": "Transmission confidentiality review",
+            "manual_details": "Review transmission confidentiality mechanisms, validate encryption, and ensure proper data protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-10": {
+        "title": "Network Disconnect",
+        "controls": {
+          "SC-10-description": {
+            "description": "Terminate network connections at the end of sessions",
+            "aws_functions": [
+              "ec2_instance_idle_session_termination",
+              "ec2_instance_idle_timeout_check",
+              "ec2_instance_session_disconnect_timeout",
+              "ec2_instance_session_idle_disconnect_timeout"
+            ],
+            "manual_effort": "Network disconnect review",
+            "manual_details": "Review network disconnect mechanisms, validate session termination, and ensure proper connection management.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-11": {
+        "title": "Session Authenticity",
+        "controls": {
+          "SC-11-description": {
+            "description": "Verify the authenticity of communications sessions",
+            "aws_functions": [
+              "elb_ssl_certificate_check",
+              "elb_ssl_listener_check",
+              "elb_ssl_policy_check",
+              "elb_ssl_protocol_check",
+              "elb_ssl_cipher_check"
+            ],
+            "manual_effort": "Session authenticity review",
+            "manual_details": "Review session authentication mechanisms, validate certificate configurations, and ensure proper session security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-12": {
+        "title": "Cryptographic Key Establishment and Management",
+        "controls": {
+          "SC-12-description": {
+            "description": "Establish and manage cryptographic keys for required cryptography",
+            "aws_functions": [
+              "kms_cmk_rotation_enabled",
+              "kms_cmk_backing_key_rotation_enabled",
+              "kms_cmk_rotation_schedule_check",
+              "kms_cmk_rotation_automatic_check",
+              "kms_cmk_rotation_manual_check"
+            ],
+            "manual_effort": "Key management review",
+            "manual_details": "Review cryptographic key management processes, validate rotation schedules, and ensure proper key lifecycle management.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-13": {
+        "title": "Cryptographic Protection",
+        "controls": {
+          "SC-13-description": {
+            "description": "Implement cryptographic mechanisms to protect information",
+            "aws_functions": [
+              "kms_cmk_rotation_enabled",
+              "kms_cmk_backing_key_rotation_enabled",
+              "s3_bucket_encryption_enabled",
+              "rds_instance_encryption_enabled",
+              "ec2_instance_encryption_enabled",
+              "ebs_volume_encryption_enabled"
+            ],
+            "manual_effort": "Cryptographic protection review",
+            "manual_details": "Review cryptographic implementations, validate encryption configurations, and ensure proper data protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-15": {
+        "title": "Collaborative Computing Devices",
+        "controls": {
+          "SC-15-description": {
+            "description": "Control collaborative computing devices",
+            "aws_functions": [
+              "ec2_instance_public_ip",
+              "ec2_instance_ssh_access_restriction_check",
+              "ec2_instance_rdp_access_restriction_check",
+              "workspaces_web_access_disabled_check"
+            ],
+            "manual_effort": "Collaborative computing review",
+            "manual_details": "Review collaborative computing configurations, validate access controls, and ensure proper device management.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-17": {
+        "title": "Public Key Infrastructure Certificates",
+        "controls": {
+          "SC-17-description": {
+            "description": "Issue and manage public key infrastructure certificates",
+            "aws_functions": [
+              "acm_certificate_expiration_check",
+              "acm_certificate_validation_check",
+              "acm_certificate_chain_check",
+              "acm_certificate_authority_check",
+              "acm_certificate_revocation_check"
+            ],
+            "manual_effort": "PKI certificate review",
+            "manual_details": "Review PKI certificate management, validate certificate configurations, and ensure proper certificate lifecycle.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-18": {
+        "title": "Mobile Code",
+        "controls": {
+          "SC-18-description": {
+            "description": "Control mobile code execution",
+            "aws_functions": [
+              "lambda_function_code_signing_check",
+              "lambda_function_execution_role_check",
+              "lambda_function_resource_based_policy_check"
+            ],
+            "manual_effort": "Mobile code review",
+            "manual_details": "Review mobile code execution controls, validate code signing, and ensure proper execution policies.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-19": {
+        "title": "Voice Over Internet Protocol",
+        "controls": {
+          "SC-19-description": {
+            "description": "Protect Voice over Internet Protocol communications",
+            "aws_functions": [
+              "vpc_vpn_connection_tunnels_up",
+              "ec2_vpn_connection_authorization_check",
+              "ec2_vpn_connection_encryption_enabled"
+            ],
+            "manual_effort": "VoIP security review",
+            "manual_details": "Review VoIP security configurations, validate encryption, and ensure proper voice communication protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-20": {
+        "title": "Secure Name / Address Resolution Service",
+        "controls": {
+          "SC-20-description": {
+            "description": "Provide secure name and address resolution services",
+            "aws_functions": [
+              "route53_dnssec_enabled",
+              "route53_dnssec_key_signing_key_check",
+              "route53_dnssec_zone_signing_key_check"
+            ],
+            "manual_effort": "DNS security review",
+            "manual_details": "Review DNS security configurations, validate DNSSEC implementation, and ensure proper name resolution security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-21": {
+        "title": "Secure Name / Address Resolution Service (Recursive or Caching Resolver)",
+        "controls": {
+          "SC-21-description": {
+            "description": "Provide secure recursive or caching name resolution service",
+            "aws_functions": [
+              "route53_dnssec_enabled",
+              "route53_dnssec_key_signing_key_check"
+            ],
+            "manual_effort": "Recursive resolver review",
+            "manual_details": "Review recursive resolver configurations, validate DNSSEC implementation, and ensure proper resolver security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-22": {
+        "title": "Architecture and Provisioning for Name / Address Resolution Service",
+        "controls": {
+          "SC-22-description": {
+            "description": "Architect and provision name and address resolution services",
+            "aws_functions": [
+              "route53_dnssec_enabled",
+              "route53_dnssec_zone_signing_key_check"
+            ],
+            "manual_effort": "DNS architecture review",
+            "manual_details": "Review DNS architecture design, validate provisioning processes, and ensure proper service architecture.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-23": {
+        "title": "Session Integrity",
+        "controls": {
+          "SC-23-description": {
+            "description": "Protect the integrity of communications sessions",
+            "aws_functions": [
+              "elb_ssl_certificate_check",
+              "elb_ssl_listener_check",
+              "elb_ssl_policy_check"
+            ],
+            "manual_effort": "Session integrity review",
+            "manual_details": "Review session integrity mechanisms, validate security configurations, and ensure proper session protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-24": {
+        "title": "Fail in Known State",
+        "controls": {
+          "SC-24-description": {
+            "description": "Fail to a known secure state",
+            "aws_functions": [
+              "ec2_instance_termination_protection",
+              "rds_instance_deletion_protection",
+              "s3_bucket_versioning_enabled"
+            ],
+            "manual_effort": "Fail-safe state review",
+            "manual_details": "Review fail-safe mechanisms, validate termination protections, and ensure proper failure handling.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-25": {
+        "title": "Thin Nodes",
+        "controls": {
+          "SC-25-description": {
+            "description": "Employ thin nodes for communications",
+            "aws_functions": [
+              "lambda_function_minimal_permissions_check",
+              "ecs_task_definition_minimal_permissions_check"
+            ],
+            "manual_effort": "Thin node review",
+            "manual_details": "Review node configurations, validate minimal permissions, and ensure proper thin node implementation.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-26": {
+        "title": "Honeypots",
+        "controls": {
+          "SC-26-description": {
+            "description": "Implement honeypots to detect and deflect attacks",
+            "aws_functions": [
+              "guardduty_enabled",
+              "guardduty_findings_exported"
+            ],
+            "manual_effort": "Honeypot review",
+            "manual_details": "Review honeypot implementations, validate detection mechanisms, and ensure proper attack deflection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-27": {
+        "title": "Platform-Independent Applications",
+        "controls": {
+          "SC-27-description": {
+            "description": "Employ platform-independent applications",
+            "aws_functions": [
+              "lambda_function_runtime_check",
+              "ecs_task_definition_platform_check"
+            ],
+            "manual_effort": "Platform independence review",
+            "manual_details": "Review application platform dependencies, validate cross-platform compatibility, and ensure proper platform independence.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-28": {
+        "title": "Protection of Information at Rest",
+        "controls": {
+          "SC-28-description": {
+            "description": "Protect information at rest",
+            "aws_functions": [
+              "s3_bucket_encryption_enabled",
+              "rds_instance_encryption_enabled",
+              "ebs_volume_encryption_enabled",
+              "dynamodb_table_encryption_enabled"
+            ],
+            "manual_effort": "Data at rest review",
+            "manual_details": "Review data at rest protection, validate encryption configurations, and ensure proper data protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-29": {
+        "title": "Heterogeneity",
+        "controls": {
+          "SC-29-description": {
+            "description": "Employ diverse information technologies",
+            "aws_functions": [
+              "ec2_instance_diverse_ami_check",
+              "rds_instance_diverse_engine_check"
+            ],
+            "manual_effort": "Technology diversity review",
+            "manual_details": "Review technology diversity, validate heterogeneous implementations, and ensure proper technology variety.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-30": {
+        "title": "Concealment and Misdirection",
+        "controls": {
+          "SC-30-description": {
+            "description": "Employ concealment and misdirection techniques",
+            "aws_functions": [
+              "vpc_nat_gateway_check",
+              "vpc_flow_logs_enabled",
+              "cloudtrail_log_file_validation_enabled"
+            ],
+            "manual_effort": "Concealment review",
+            "manual_details": "Review concealment mechanisms, validate misdirection techniques, and ensure proper security through obscurity.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-31": {
+        "title": "Covert Channel Analysis",
+        "controls": {
+          "SC-31-description": {
+            "description": "Test for covert channels",
+            "aws_functions": [
+              "vpc_flow_logs_enabled",
+              "cloudtrail_log_file_validation_enabled",
+              "guardduty_enabled"
+            ],
+            "manual_effort": "Covert channel analysis",
+            "manual_details": "Review covert channel analysis, validate testing procedures, and ensure proper channel detection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-32": {
+        "title": "Information System Partitioning",
+        "controls": {
+          "SC-32-description": {
+            "description": "Partition information systems",
+            "aws_functions": [
+              "vpc_network_segmentation_test_results_check",
+              "vpc_segmentation_control_test_results_check",
+              "ec2_instance_network_segmentation_check"
+            ],
+            "manual_effort": "System partitioning review",
+            "manual_details": "Review system partitioning, validate network segmentation, and ensure proper system isolation.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-33": {
+        "title": "Transmission Preparation Integrity",
+        "controls": {
+          "SC-33-description": {
+            "description": "Protect the integrity of transmitted information during preparation",
+            "aws_functions": [
+              "elb_ssl_certificate_check",
+              "elb_ssl_listener_check",
+              "elb_ssl_policy_check"
+            ],
+            "manual_effort": "Transmission preparation review",
+            "manual_details": "Review transmission preparation integrity, validate data protection, and ensure proper information handling.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-34": {
+        "title": "Non-Modifiable Executable Programs",
+        "controls": {
+          "SC-34-description": {
+            "description": "Prevent modification of executable programs",
+            "aws_functions": [
+              "lambda_function_code_signing_check",
+              "ec2_instance_immutable_ami_check",
+              "ecs_task_definition_immutable_check"
+            ],
+            "manual_effort": "Executable protection review",
+            "manual_details": "Review executable program protection, validate immutability controls, and ensure proper program integrity.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-35": {
+        "title": "Honeyclients",
+        "controls": {
+          "SC-35-description": {
+            "description": "Implement honeyclients to detect malicious code",
+            "aws_functions": [
+              "guardduty_enabled",
+              "guardduty_findings_exported",
+              "macie_automated_sensitive_data_discovery_enabled"
+            ],
+            "manual_effort": "Honeyclient review",
+            "manual_details": "Review honeyclient implementations, validate malicious code detection, and ensure proper threat detection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-36": {
+        "title": "Distributed Processing and Storage",
+        "controls": {
+          "SC-36-description": {
+            "description": "Distribute processing and storage",
+            "aws_functions": [
+              "ec2_instance_multi_az",
+              "rds_instance_multi_az",
+              "s3_bucket_cross_region_replication",
+              "dynamodb_table_global_tables_enabled"
+            ],
+            "manual_effort": "Distributed processing review",
+            "manual_details": "Review distributed processing and storage, validate distribution mechanisms, and ensure proper data distribution.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-37": {
+        "title": "Out-of-Band Channels",
+        "controls": {
+          "SC-37-description": {
+            "description": "Employ out-of-band channels for security functions",
+            "aws_functions": [
+              "sns_topic_encryption_enabled",
+              "sqs_queue_encryption_enabled",
+              "ses_email_encryption_enabled"
+            ],
+            "manual_effort": "Out-of-band channel review",
+            "manual_details": "Review out-of-band channels, validate security function communication, and ensure proper channel security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-38": {
+        "title": "Operations Security",
+        "controls": {
+          "SC-38-description": {
+            "description": "Employ operations security",
+            "aws_functions": [
+              "cloudtrail_log_file_validation_enabled",
+              "cloudtrail_kms_encryption_enabled",
+              "vpc_flow_logs_enabled"
+            ],
+            "manual_effort": "Operations security review",
+            "manual_details": "Review operations security, validate security procedures, and ensure proper operational security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-39": {
+        "title": "Process Isolation",
+        "controls": {
+          "SC-39-description": {
+            "description": "Isolate processes",
+            "aws_functions": [
+              "lambda_function_isolated_execution_check",
+              "ecs_task_definition_isolated_execution_check",
+              "ec2_instance_isolated_execution_check"
+            ],
+            "manual_effort": "Process isolation review",
+            "manual_details": "Review process isolation, validate isolation mechanisms, and ensure proper process separation.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-40": {
+        "title": "Wireless Link Protection",
+        "controls": {
+          "SC-40-description": {
+            "description": "Protect wireless links",
+            "aws_functions": [
+              "ec2_wireless_encryption_key_rotation",
+              "ec2_wireless_network_security_check",
+              "ec2_wireless_access_configuration_check"
+            ],
+            "manual_effort": "Wireless link protection review",
+            "manual_details": "Review wireless link protection, validate encryption, and ensure proper wireless security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-41": {
+        "title": "Port and I/O Device Access",
+        "controls": {
+          "SC-41-description": {
+            "description": "Control access to ports and I/O devices",
+            "aws_functions": [
+              "ec2_instance_ssh_access_restriction_check",
+              "ec2_instance_rdp_access_restriction_check",
+              "ec2_instance_port_access_restriction_check"
+            ],
+            "manual_effort": "Port and I/O access review",
+            "manual_details": "Review port and I/O device access controls, validate access restrictions, and ensure proper device security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-42": {
+        "title": "Sensor Capability and Data",
+        "controls": {
+          "SC-42-description": {
+            "description": "Control sensor capability and data",
+            "aws_functions": [
+              "iot_device_sensor_data_encryption",
+              "iot_device_sensor_access_control",
+              "iot_device_sensor_data_retention"
+            ],
+            "manual_effort": "Sensor capability review",
+            "manual_details": "Review sensor capability and data controls, validate sensor security, and ensure proper sensor management.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-43": {
+        "title": "Usage Restrictions",
+        "controls": {
+          "SC-43-description": {
+            "description": "Restrict usage of information systems",
+            "aws_functions": [
+              "iam_policy_usage_restriction_check",
+              "iam_role_usage_restriction_check",
+              "iam_user_usage_restriction_check"
+            ],
+            "manual_effort": "Usage restriction review",
+            "manual_details": "Review usage restrictions, validate access controls, and ensure proper system usage limitations.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-44": {
+        "title": "Detonation Chambers",
+        "controls": {
+          "SC-44-description": {
+            "description": "Implement detonation chambers",
+            "aws_functions": [
+              "guardduty_enabled",
+              "guardduty_findings_exported",
+              "macie_automated_sensitive_data_discovery_enabled"
+            ],
+            "manual_effort": "Detonation chamber review",
+            "manual_details": "Review detonation chamber implementations, validate isolation mechanisms, and ensure proper threat containment.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-45": {
+        "title": "System Time Synchronization",
+        "controls": {
+          "SC-45-description": {
+            "description": "Synchronize system clocks",
+            "aws_functions": [
+              "cloudtrail_audit_event_details_logging_enabled",
+              "cloudtrail_event_details_logging_enabled",
+              "cloudwatch_log_group_retention_period_check"
+            ],
+            "manual_effort": "Time synchronization review",
+            "manual_details": "Review system time synchronization, validate clock accuracy, and ensure proper time coordination.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-46": {
+        "title": "Cross Domain Policy Enforcement",
+        "controls": {
+          "SC-46-description": {
+            "description": "Enforce cross domain policies",
+            "aws_functions": [
+              "iam_policy_cross_domain_check",
+              "iam_role_cross_domain_check",
+              "s3_bucket_cross_account_access"
+            ],
+            "manual_effort": "Cross domain policy review",
+            "manual_details": "Review cross domain policy enforcement, validate policy implementation, and ensure proper domain separation.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-47": {
+        "title": "Alternate Communications Paths",
+        "controls": {
+          "SC-47-description": {
+            "description": "Provide alternate communications paths",
+            "aws_functions": [
+              "vpc_vpn_connection_tunnels_up",
+              "ec2_vpn_connection_authorization_check",
+              "vpc_endpoint_multi_az_enabled"
+            ],
+            "manual_effort": "Alternate path review",
+            "manual_details": "Review alternate communications paths, validate redundancy, and ensure proper path availability.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-48": {
+        "title": "Application Partitioning",
+        "controls": {
+          "SC-48-description": {
+            "description": "Partition applications",
+            "aws_functions": [
+              "lambda_function_isolated_execution_check",
+              "ecs_task_definition_isolated_execution_check",
+              "ec2_instance_isolated_execution_check"
+            ],
+            "manual_effort": "Application partitioning review",
+            "manual_details": "Review application partitioning, validate isolation mechanisms, and ensure proper application separation.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-49": {
+        "title": "Information System Backup",
+        "controls": {
+          "SC-49-description": {
+            "description": "Backup information systems",
+            "aws_functions": [
+              "s3_bucket_backup_enabled",
+              "rds_instance_backup_enabled",
+              "ebs_volume_backup_enabled",
+              "dynamodb_table_backup_enabled"
+            ],
+            "manual_effort": "Backup system review",
+            "manual_details": "Review information system backup, validate backup procedures, and ensure proper data protection.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-50": {
+        "title": "Software-Enforced Separation",
+        "controls": {
+          "SC-50-description": {
+            "description": "Enforce separation using software",
+            "aws_functions": [
+              "iam_policy_separation_check",
+              "iam_role_separation_check",
+              "vpc_network_segmentation_test_results_check"
+            ],
+            "manual_effort": "Software separation review",
+            "manual_details": "Review software-enforced separation, validate separation mechanisms, and ensure proper isolation.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      },
+      "SC-51": {
+        "title": "Hardware-Based Protection",
+        "controls": {
+          "SC-51-description": {
+            "description": "Employ hardware-based protection",
+            "aws_functions": [
+              "ec2_instance_hardware_security_module_check",
+              "kms_cmk_hardware_security_module_check",
+              "cloudhsm_cluster_hardware_security_module_check"
+            ],
+            "manual_effort": "Hardware protection review",
+            "manual_details": "Review hardware-based protection, validate HSM usage, and ensure proper hardware security.",
+            "compliance_level": "function_plus_manual"
+          }
+        }
+      }
+    },
+    "new_functions_suggested": [
+      {
+        "function_name": "cloudtrail_network_boundary_protection_comprehensive_check",
+        "description": "Comprehensive network boundary protection validation across all AWS services",
+        "purpose": "Enhanced boundary protection for SC-7 compliance",
+        "priority": "HIGH"
+      },
+      {
+        "function_name": "cloudtrail_transmission_security_validation",
+        "description": "Validate transmission security configurations across all network components",
+        "purpose": "Enhanced transmission security for SC-8 compliance",
+        "priority": "HIGH"
+      },
+      {
+        "function_name": "shield_dos_protection_comprehensive_check",
+        "description": "Comprehensive DoS protection validation across all AWS services",
+        "purpose": "Enhanced DoS protection for SC-5 compliance",
+        "priority": "MEDIUM"
+      },
+      {
+        "function_name": "shield_resource_availability_monitoring",
+        "description": "Monitor and validate resource availability across all AWS services",
+        "purpose": "Enhanced resource availability for SC-6 compliance",
+        "priority": "MEDIUM"
+      }
+    ],
+    "compliance_summary": {
+      "total_controls": 134,
+      "fully_automated": 0,
+      "function_plus_manual": 51,
+      "manual_only": 83,
+      "compliance_coverage": "38%",
+      "aws_function_coverage": "High",
+      "manual_effort_required": "Moderate"
+    }
+  }
+}

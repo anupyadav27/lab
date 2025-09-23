@@ -1,0 +1,1783 @@
+{
+  "identity_access.authentication": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "identity.user",
+        "adapter": "aws.iam.account_password_policy",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cognito",
+        "resource": "identity.user",
+        "adapter": "aws.cognito.user_pool_policies",
+        "not_applicable_when": "cognito_not_used"
+      },
+      {
+        "service": "identity-center",
+        "resource": "identity.tenant",
+        "adapter": "aws.sso.instance_settings"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "directory-service",
+        "resource": "identity.tenant",
+        "adapter": "aws.ds.directory_settings"
+      }
+    ]
+  },
+  "identity_access.authorization": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "rbac.role",
+        "adapter": "aws.iam.role_policies",
+        "not_applicable_when": "no_iam_resources"
+      },
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.managed_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.permission_boundaries",
+        "not_applicable_when": "no_iam_resources"
+      },
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.inline_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.organization_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ]
+  },
+  "identity_access.federation": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "identity.tenant",
+        "adapter": "aws.iam.saml_providers",
+        "not_applicable_when": "no_iam_resources"
+      },
+      {
+        "service": "iam",
+        "resource": "identity.tenant",
+        "adapter": "aws.iam.oidc_providers",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cognito",
+        "resource": "identity.tenant",
+        "adapter": "aws.cognito.identity_pools",
+        "not_applicable_when": "cognito_not_used"
+      },
+      {
+        "service": "identity-center",
+        "resource": "identity.tenant",
+        "adapter": "aws.sso.external_identity_providers"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "directory-service",
+        "resource": "identity.tenant",
+        "adapter": "aws.ds.trust_relationships"
+      }
+    ]
+  },
+  "identity_access.mfa": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "identity.user",
+        "adapter": "aws.iam.mfa",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "identity-center",
+        "resource": "identity.tenant",
+        "adapter": "aws.sso.mfa"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "cognito",
+        "resource": "identity.user",
+        "adapter": "aws.cognito.mfa_settings",
+        "not_applicable_when": "cognito_not_used"
+      }
+    ]
+  },
+  "identity_access.session_management": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "rbac.role",
+        "adapter": "aws.iam.session_duration",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cognito",
+        "resource": "identity.user",
+        "adapter": "aws.cognito.session_settings",
+        "not_applicable_when": "cognito_not_used"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "identity-center",
+        "resource": "identity.tenant",
+        "adapter": "aws.sso.session_settings"
+      }
+    ]
+  },
+  "rbac_entitlements.role_definition": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "rbac.role",
+        "adapter": "aws.iam.role_definitions",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.custom_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.service_linked_roles",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ]
+  },
+  "rbac_entitlements.role_assignment": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "rbac.role",
+        "adapter": "aws.iam.role_assignments",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "iam",
+        "resource": "rbac.group",
+        "adapter": "aws.iam.group_memberships",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.resource_based_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ]
+  },
+  "rbac_entitlements.least_privilege": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.least_privilege_analysis",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "access-analyzer",
+        "resource": "governance.org",
+        "adapter": "aws.access_analyzer.findings"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.permission_boundaries",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ]
+  },
+  "rbac_entitlements.entitlement_management": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.entitlement_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "iam",
+        "resource": "rbac.role",
+        "adapter": "aws.iam.role_permissions",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.organization_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ]
+  },
+  "secrets_key_mgmt.secret_storage": {
+    "core": [
+      {
+        "service": "secrets-manager",
+        "resource": "secrets.secret",
+        "adapter": "aws.secrets_manager.secret_storage"
+      }
+    ],
+    "extended": [
+      {
+        "service": "parameter-store",
+        "resource": "parameter",
+        "adapter": "aws.ssm.parameter_storage"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.key_storage",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ]
+  },
+  "secrets_key_mgmt.key_rotation": {
+    "core": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.key_rotation",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ],
+    "extended": [
+      {
+        "service": "secrets-manager",
+        "resource": "secrets.secret",
+        "adapter": "aws.secrets_manager.rotation"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "rds",
+        "resource": "identity.tenant",
+        "adapter": "aws.rds.master_key_rotation",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ]
+  },
+  "secrets_key_mgmt.key_protection": {
+    "core": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.key_protection",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ],
+    "extended": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.key_policies",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.hsm_protection",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ]
+  },
+  "secrets_key_mgmt.secret_retrieval": {
+    "core": [
+      {
+        "service": "secrets-manager",
+        "resource": "secrets.secret",
+        "adapter": "aws.secrets_manager.retrieval"
+      }
+    ],
+    "extended": [
+      {
+        "service": "parameter-store",
+        "resource": "parameter",
+        "adapter": "aws.ssm.parameter_retrieval"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.key_usage",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ]
+  },
+  "crypto_data_protection.encryption_at_rest": {
+    "core": [
+      {
+        "service": "s3",
+        "resource": "storage.bucket",
+        "adapter": "aws.s3.encryption",
+        "not_applicable_when": "no_s3_buckets"
+      },
+      {
+        "service": "ec2-ebs",
+        "resource": "identity.user",
+        "adapter": "aws.ebs.default_encryption",
+        "not_applicable_when": "no_ec2_instances"
+      },
+      {
+        "service": "rds",
+        "resource": "identity.tenant",
+        "adapter": "aws.rds.storage_encrypted",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ],
+    "extended": [
+      {
+        "service": "dynamodb",
+        "resource": "storage.table",
+        "adapter": "aws.dynamodb.sse",
+        "not_applicable_when": "no_dynamodb_tables"
+      },
+      {
+        "service": "efs",
+        "resource": "filesystem",
+        "adapter": "aws.efs.encrypted"
+      },
+      {
+        "service": "redshift",
+        "resource": "k8s.cluster",
+        "adapter": "aws.redshift.encrypted",
+        "not_applicable_when": "no_redshift_clusters"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "opensearch",
+        "resource": "domain",
+        "adapter": "aws.opensearch.encryption_at_rest"
+      },
+      {
+        "service": "elasticache",
+        "resource": "k8s.cluster",
+        "adapter": "aws.elasticache.at_rest_encryption"
+      },
+      {
+        "service": "neptune",
+        "resource": "k8s.cluster",
+        "adapter": "aws.neptune.encryption_at_rest"
+      }
+    ]
+  },
+  "crypto_data_protection.encryption_in_transit": {
+    "core": [
+      {
+        "service": "elb",
+        "resource": "network.load_balancer",
+        "adapter": "aws.elb.ssl_termination"
+      },
+      {
+        "service": "cloudfront",
+        "resource": "distribution",
+        "adapter": "aws.cloudfront.https_enforcement",
+        "not_applicable_when": "no_cloudfront_distributions"
+      }
+    ],
+    "extended": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.ssl_enforcement"
+      },
+      {
+        "service": "rds",
+        "resource": "identity.tenant",
+        "adapter": "aws.rds.ssl_enforcement",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "elasticache",
+        "resource": "k8s.cluster",
+        "adapter": "aws.elasticache.in_transit_encryption"
+      },
+      {
+        "service": "redshift",
+        "resource": "k8s.cluster",
+        "adapter": "aws.redshift.ssl_enforcement",
+        "not_applicable_when": "no_redshift_clusters"
+      }
+    ]
+  },
+  "crypto_data_protection.key_management": {
+    "core": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.key_management",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ],
+    "extended": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.customer_managed_keys",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.hsm_keys",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ]
+  },
+  "crypto_data_protection.certificate_management": {
+    "core": [
+      {
+        "service": "acm",
+        "resource": "certificate",
+        "adapter": "aws.acm.certificate_management"
+      }
+    ],
+    "extended": [
+      {
+        "service": "acm",
+        "resource": "certificate",
+        "adapter": "aws.acm.private_ca"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "acm",
+        "resource": "certificate",
+        "adapter": "aws.acm.certificate_authority"
+      }
+    ]
+  },
+  "crypto_data_protection.crypto_policies": {
+    "core": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.crypto_policies",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ],
+    "extended": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.crypto_policies",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "kms",
+        "resource": "crypto.kms.key",
+        "adapter": "aws.kms.import_key_material",
+        "not_applicable_when": "no_kms_keys"
+      }
+    ]
+  },
+  "data_protection_storage.data_classification": {
+    "core": [
+      {
+        "service": "s3",
+        "resource": "storage.bucket",
+        "adapter": "aws.s3.data_classification",
+        "not_applicable_when": "no_s3_buckets"
+      }
+    ],
+    "extended": [
+      {
+        "service": "macie",
+        "resource": "job",
+        "adapter": "aws.macie.data_classification"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "s3",
+        "resource": "storage.object",
+        "adapter": "aws.s3.object_classification",
+        "not_applicable_when": "no_s3_buckets"
+      }
+    ]
+  },
+  "data_protection_storage.data_retention": {
+    "core": [
+      {
+        "service": "s3",
+        "resource": "storage.bucket",
+        "adapter": "aws.s3.lifecycle_policies",
+        "not_applicable_when": "no_s3_buckets"
+      }
+    ],
+    "extended": [
+      {
+        "service": "glacier",
+        "resource": "backup.vault",
+        "adapter": "aws.glacier.retention_policies"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "s3",
+        "resource": "storage.object",
+        "adapter": "aws.s3.object_lifecycle",
+        "not_applicable_when": "no_s3_buckets"
+      }
+    ]
+  },
+  "data_protection_storage.backup_recovery": {
+    "core": [
+      {
+        "service": "ebs",
+        "resource": "storage.snapshot",
+        "adapter": "aws.ebs.snapshots"
+      },
+      {
+        "service": "rds",
+        "resource": "storage.snapshot",
+        "adapter": "aws.rds.snapshots",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ],
+    "extended": [
+      {
+        "service": "backup",
+        "resource": "backup.vault",
+        "adapter": "aws.backup.vault_policies",
+        "not_applicable_when": "backup_service_not_used"
+      },
+      {
+        "service": "s3",
+        "resource": "storage.bucket",
+        "adapter": "aws.s3.versioning",
+        "not_applicable_when": "no_s3_buckets"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "dynamodb",
+        "resource": "storage.table",
+        "adapter": "aws.dynamodb.point_in_time_recovery",
+        "not_applicable_when": "no_dynamodb_tables"
+      },
+      {
+        "service": "efs",
+        "resource": "filesystem",
+        "adapter": "aws.efs.backup_policies"
+      }
+    ]
+  },
+  "data_protection_storage.data_masking": {
+    "core": [
+      {
+        "service": "rds",
+        "resource": "identity.tenant",
+        "adapter": "aws.rds.data_masking",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ],
+    "extended": [
+      {
+        "service": "redshift",
+        "resource": "k8s.cluster",
+        "adapter": "aws.redshift.data_masking",
+        "not_applicable_when": "no_redshift_clusters"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "dynamodb",
+        "resource": "storage.table",
+        "adapter": "aws.dynamodb.data_masking",
+        "not_applicable_when": "no_dynamodb_tables"
+      }
+    ]
+  },
+  "data_protection_storage.storage_security": {
+    "core": [
+      {
+        "service": "s3",
+        "resource": "storage.bucket",
+        "adapter": "aws.s3.public_access_block",
+        "not_applicable_when": "no_s3_buckets"
+      },
+      {
+        "service": "s3",
+        "resource": "storage.bucket",
+        "adapter": "aws.s3.access_logging",
+        "not_applicable_when": "no_s3_buckets"
+      }
+    ],
+    "extended": [
+      {
+        "service": "efs",
+        "resource": "filesystem",
+        "adapter": "aws.efs.access_points"
+      },
+      {
+        "service": "fsx",
+        "resource": "filesystem",
+        "adapter": "aws.fsx.access_control"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "s3",
+        "resource": "storage.object",
+        "adapter": "aws.s3.object_locking",
+        "not_applicable_when": "no_s3_buckets"
+      },
+      {
+        "service": "glacier",
+        "resource": "backup.vault",
+        "adapter": "aws.glacier.vault_lock"
+      }
+    ]
+  },
+  "network_perimeter.network_segmentation": {
+    "core": [
+      {
+        "service": "vpc",
+        "resource": "network.vpc",
+        "adapter": "aws.ec2.vpc_segmentation",
+        "not_applicable_when": "no_vpc_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "vpc",
+        "resource": "network.subnet",
+        "adapter": "aws.ec2.subnet_segmentation",
+        "not_applicable_when": "no_vpc_resources"
+      },
+      {
+        "service": "vpc",
+        "resource": "route_table",
+        "adapter": "aws.ec2.route_tables",
+        "not_applicable_when": "no_vpc_resources"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "vpc",
+        "resource": "network.endpoint",
+        "adapter": "aws.ec2.vpc_endpoints",
+        "not_applicable_when": "no_vpc_resources"
+      },
+      {
+        "service": "vpc",
+        "resource": "peering",
+        "adapter": "aws.ec2.vpc_peering",
+        "not_applicable_when": "no_vpc_resources"
+      }
+    ]
+  },
+  "network_perimeter.firewall_rules": {
+    "core": [
+      {
+        "service": "vpc-sg",
+        "resource": "network.security_group",
+        "adapter": "aws.ec2.security_groups",
+        "not_applicable_when": "no_vpc_resources"
+      },
+      {
+        "service": "nacl",
+        "resource": "acl",
+        "adapter": "aws.ec2.network_acls"
+      }
+    ],
+    "extended": [
+      {
+        "service": "network-firewall",
+        "resource": "rbac.policy",
+        "adapter": "aws.network_firewall.policy"
+      },
+      {
+        "service": "route53-resolver-dns-firewall",
+        "resource": "rule_group",
+        "adapter": "aws.r53r.df.rule_groups"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "vpc-endpoints",
+        "resource": "network.endpoint",
+        "adapter": "aws.ec2.vpc_endpoints_policy_enforcement",
+        "not_applicable_when": "no_vpc_resources"
+      },
+      {
+        "service": "wafv2-cloudfront",
+        "resource": "web_acl",
+        "adapter": "aws.wafv2.cloudfront_web_acl",
+        "not_applicable_when": "no_public_web_applications"
+      }
+    ]
+  },
+  "network_perimeter.dns_security": {
+    "core": [
+      {
+        "service": "route53",
+        "resource": "hosted_zone",
+        "adapter": "aws.route53.dns_security"
+      }
+    ],
+    "extended": [
+      {
+        "service": "route53-resolver",
+        "resource": "resolver",
+        "adapter": "aws.r53r.resolver_rules"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "route53-resolver-dns-firewall",
+        "resource": "rule_group",
+        "adapter": "aws.r53r.df.rule_groups"
+      }
+    ]
+  },
+  "network_perimeter.load_balancing": {
+    "core": [
+      {
+        "service": "elb",
+        "resource": "network.load_balancer",
+        "adapter": "aws.elb.load_balancer_security"
+      }
+    ],
+    "extended": [
+      {
+        "service": "alb",
+        "resource": "network.load_balancer",
+        "adapter": "aws.alb.load_balancer_security"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "nlb",
+        "resource": "network.load_balancer",
+        "adapter": "aws.nlb.load_balancer_security"
+      }
+    ]
+  },
+  "network_perimeter.vpn_connectivity": {
+    "core": [
+      {
+        "service": "vpn",
+        "resource": "connection",
+        "adapter": "aws.ec2.vpn_connections"
+      }
+    ],
+    "extended": [
+      {
+        "service": "direct-connect",
+        "resource": "connection",
+        "adapter": "aws.directconnect.connections"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "transit-gateway",
+        "resource": "network.gateway",
+        "adapter": "aws.ec2.transit_gateway"
+      }
+    ]
+  },
+  "compute_host_security.os_hardening": {
+    "core": [
+      {
+        "service": "ec2",
+        "resource": "identity.tenant",
+        "adapter": "aws.ec2.os_hardening",
+        "not_applicable_when": "no_ec2_instances"
+      }
+    ],
+    "extended": [
+      {
+        "service": "ec2",
+        "resource": "launch_template",
+        "adapter": "aws.ec2.launch_template_hardening",
+        "not_applicable_when": "no_ec2_instances"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "ec2",
+        "resource": "ami",
+        "adapter": "aws.ec2.ami_hardening",
+        "not_applicable_when": "no_ec2_instances"
+      }
+    ]
+  },
+  "compute_host_security.patch_management": {
+    "core": [
+      {
+        "service": "ssm",
+        "resource": "patch_baseline",
+        "adapter": "aws.ssm.patch_management",
+        "not_applicable_when": "no_ssm_parameters"
+      }
+    ],
+    "extended": [
+      {
+        "service": "ssm",
+        "resource": "patch_group",
+        "adapter": "aws.ssm.patch_groups",
+        "not_applicable_when": "no_ssm_parameters"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "ssm",
+        "resource": "maintenance_window",
+        "adapter": "aws.ssm.maintenance_windows",
+        "not_applicable_when": "no_ssm_parameters"
+      }
+    ]
+  },
+  "compute_host_security.endpoint_protection": {
+    "core": [
+      {
+        "service": "ec2",
+        "resource": "identity.tenant",
+        "adapter": "aws.ec2.endpoint_protection",
+        "not_applicable_when": "no_ec2_instances"
+      }
+    ],
+    "extended": [
+      {
+        "service": "inspector",
+        "resource": "assessment",
+        "adapter": "aws.inspector.assessments",
+        "not_applicable_when": "inspector_not_configured"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "guardduty",
+        "resource": "detector",
+        "adapter": "aws.guardduty.threat_detection",
+        "not_applicable_when": "guardduty_not_configured"
+      }
+    ]
+  },
+  "compute_host_security.vulnerability_management": {
+    "core": [
+      {
+        "service": "inspector",
+        "resource": "assessment",
+        "adapter": "aws.inspector.vulnerability_assessments",
+        "not_applicable_when": "inspector_not_configured"
+      }
+    ],
+    "extended": [
+      {
+        "service": "security-hub",
+        "resource": "findings",
+        "adapter": "aws.security_hub.findings"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "macie",
+        "resource": "job",
+        "adapter": "aws.macie.sensitive_data_discovery"
+      }
+    ]
+  },
+  "compute_host_security.compliance_monitoring": {
+    "core": [
+      {
+        "service": "config",
+        "resource": "rule",
+        "adapter": "aws.config.compliance_rules",
+        "not_applicable_when": "config_not_configured"
+      }
+    ],
+    "extended": [
+      {
+        "service": "security-hub",
+        "resource": "standards",
+        "adapter": "aws.security_hub.compliance_standards"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "audit-manager",
+        "resource": "assessment",
+        "adapter": "aws.audit_manager.assessments"
+      }
+    ]
+  },
+  "containers_kubernetes.image_security": {
+    "core": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.image_scanning",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ],
+    "extended": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.image_vulnerability_scanning",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.image_signing",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ]
+  },
+  "containers_kubernetes.runtime_security": {
+    "core": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.runtime_security",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ],
+    "extended": [
+      {
+        "service": "eks",
+        "resource": "node_group",
+        "adapter": "aws.eks.node_security",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "fargate",
+        "resource": "profile",
+        "adapter": "aws.eks.fargate_security"
+      }
+    ]
+  },
+  "containers_kubernetes.network_policies": {
+    "core": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.network_policies",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ],
+    "extended": [
+      {
+        "service": "eks",
+        "resource": "addon",
+        "adapter": "aws.eks.cni_addon",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.service_mesh",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ]
+  },
+  "containers_kubernetes.rbac_policies": {
+    "core": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.rbac_configuration",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ],
+    "extended": [
+      {
+        "service": "iam",
+        "resource": "rbac.role",
+        "adapter": "aws.iam.eks_service_roles",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.oidc_identity_provider",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ]
+  },
+  "containers_kubernetes.admission_control": {
+    "core": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.admission_controllers",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ],
+    "extended": [
+      {
+        "service": "eks",
+        "resource": "addon",
+        "adapter": "aws.eks.opa_gatekeeper",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.kyverno_policies",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ]
+  },
+  "serverless_paas.function_security": {
+    "core": [
+      {
+        "service": "lambda",
+        "resource": "serverless.function",
+        "adapter": "aws.lambda.function_security",
+        "not_applicable_when": "no_lambda_functions"
+      }
+    ],
+    "extended": [
+      {
+        "service": "lambda",
+        "resource": "layer",
+        "adapter": "aws.lambda.layer_security",
+        "not_applicable_when": "no_lambda_functions"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "lambda",
+        "resource": "serverless.function",
+        "adapter": "aws.lambda.code_signing",
+        "not_applicable_when": "no_lambda_functions"
+      }
+    ]
+  },
+  "serverless_paas.api_security": {
+    "core": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.api_security"
+      }
+    ],
+    "extended": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.rate_limiting"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.api_keys"
+      }
+    ]
+  },
+  "serverless_paas.paas_security": {
+    "core": [
+      {
+        "service": "elastic-beanstalk",
+        "resource": "application",
+        "adapter": "aws.elasticbeanstalk.application_security"
+      }
+    ],
+    "extended": [
+      {
+        "service": "app-runner",
+        "resource": "service",
+        "adapter": "aws.apprunner.service_security"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "lightsail",
+        "resource": "identity.tenant",
+        "adapter": "aws.lightsail.instance_security"
+      }
+    ]
+  },
+  "serverless_paas.event_security": {
+    "core": [
+      {
+        "service": "eventbridge",
+        "resource": "rule",
+        "adapter": "aws.eventbridge.rule_security"
+      }
+    ],
+    "extended": [
+      {
+        "service": "sqs",
+        "resource": "storage.queue",
+        "adapter": "aws.sqs.queue_security"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "sns",
+        "resource": "topic",
+        "adapter": "aws.sns.topic_security"
+      }
+    ]
+  },
+  "serverless_paas.resource_limits": {
+    "core": [
+      {
+        "service": "lambda",
+        "resource": "serverless.function",
+        "adapter": "aws.lambda.resource_limits",
+        "not_applicable_when": "no_lambda_functions"
+      }
+    ],
+    "extended": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.resource_limits"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "elastic-beanstalk",
+        "resource": "application",
+        "adapter": "aws.elasticbeanstalk.resource_limits"
+      }
+    ]
+  },
+  "supply_chain_registries.registry_security": {
+    "core": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.registry_security",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ],
+    "extended": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.repository_policies",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.lifecycle_policies",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ]
+  },
+  "supply_chain_registries.dependency_management": {
+    "core": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.dependency_scanning",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ],
+    "extended": [
+      {
+        "service": "codeartifact",
+        "resource": "repository",
+        "adapter": "aws.codeartifact.dependency_management"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.software_bill_of_materials",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ]
+  },
+  "supply_chain_registries.build_security": {
+    "core": [
+      {
+        "service": "codebuild",
+        "resource": "governance.project",
+        "adapter": "aws.codebuild.build_security"
+      }
+    ],
+    "extended": [
+      {
+        "service": "codepipeline",
+        "resource": "pipeline",
+        "adapter": "aws.codepipeline.pipeline_security"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "codecommit",
+        "resource": "repository",
+        "adapter": "aws.codecommit.repository_security"
+      }
+    ]
+  },
+  "supply_chain_registries.vulnerability_scanning": {
+    "core": [
+      {
+        "service": "inspector",
+        "resource": "assessment",
+        "adapter": "aws.inspector.vulnerability_scanning",
+        "not_applicable_when": "inspector_not_configured"
+      }
+    ],
+    "extended": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.vulnerability_scanning",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "security-hub",
+        "resource": "findings",
+        "adapter": "aws.security_hub.vulnerability_findings"
+      }
+    ]
+  },
+  "supply_chain_registries.signing_verification": {
+    "core": [
+      {
+        "service": "ecr",
+        "resource": "repository",
+        "adapter": "aws.ecr.image_signing",
+        "not_applicable_when": "no_ecr_repositories"
+      }
+    ],
+    "extended": [
+      {
+        "service": "codebuild",
+        "resource": "governance.project",
+        "adapter": "aws.codebuild.artifact_signing"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "signer",
+        "resource": "profile",
+        "adapter": "aws.signer.code_signing"
+      }
+    ]
+  },
+  "logging_monitoring.log_collection": {
+    "core": [
+      {
+        "service": "cloudtrail",
+        "resource": "trail",
+        "adapter": "aws.cloudtrail.log_collection",
+        "not_applicable_when": "cloudtrail_not_configured"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cloudwatch",
+        "resource": "log_group",
+        "adapter": "aws.cloudwatch.log_collection",
+        "not_applicable_when": "no_cloudwatch_logs"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "vpc-flow-logs",
+        "resource": "flow_log",
+        "adapter": "aws.ec2.vpc_flow_logs",
+        "not_applicable_when": "no_vpc_resources"
+      }
+    ]
+  },
+  "logging_monitoring.monitoring_alerting": {
+    "core": [
+      {
+        "service": "cloudwatch",
+        "resource": "alarm",
+        "adapter": "aws.cloudwatch.alarms",
+        "not_applicable_when": "no_cloudwatch_logs"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cloudwatch",
+        "resource": "dashboard",
+        "adapter": "aws.cloudwatch.dashboards",
+        "not_applicable_when": "no_cloudwatch_logs"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "sns",
+        "resource": "topic",
+        "adapter": "aws.sns.alerting_topics"
+      }
+    ]
+  },
+  "logging_monitoring.audit_logging": {
+    "core": [
+      {
+        "service": "cloudtrail",
+        "resource": "trail",
+        "adapter": "aws.cloudtrail.audit_logging",
+        "not_applicable_when": "cloudtrail_not_configured"
+      }
+    ],
+    "extended": [
+      {
+        "service": "config",
+        "resource": "rule",
+        "adapter": "aws.config.audit_rules",
+        "not_applicable_when": "config_not_configured"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "cloudtrail",
+        "resource": "insight",
+        "adapter": "aws.cloudtrail.insights",
+        "not_applicable_when": "cloudtrail_not_configured"
+      }
+    ]
+  },
+  "logging_monitoring.log_retention": {
+    "core": [
+      {
+        "service": "cloudwatch",
+        "resource": "log_group",
+        "adapter": "aws.cloudwatch.log_retention",
+        "not_applicable_when": "no_cloudwatch_logs"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cloudtrail",
+        "resource": "trail",
+        "adapter": "aws.cloudtrail.log_retention",
+        "not_applicable_when": "cloudtrail_not_configured"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "s3",
+        "resource": "storage.bucket",
+        "adapter": "aws.s3.log_retention_policies",
+        "not_applicable_when": "no_s3_buckets"
+      }
+    ]
+  },
+  "logging_monitoring.log_analysis": {
+    "core": [
+      {
+        "service": "cloudwatch",
+        "resource": "insights",
+        "adapter": "aws.cloudwatch.insights_queries",
+        "not_applicable_when": "no_cloudwatch_logs"
+      }
+    ],
+    "extended": [
+      {
+        "service": "athena",
+        "resource": "query",
+        "adapter": "aws.athena.log_analysis"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "opensearch",
+        "resource": "domain",
+        "adapter": "aws.opensearch.log_analysis"
+      }
+    ]
+  },
+  "resilience_recovery.backup_strategy": {
+    "core": [
+      {
+        "service": "backup",
+        "resource": "backup.vault",
+        "adapter": "aws.backup.backup_strategy",
+        "not_applicable_when": "backup_service_not_used"
+      }
+    ],
+    "extended": [
+      {
+        "service": "backup",
+        "resource": "backup.plan",
+        "adapter": "aws.backup.backup_plans",
+        "not_applicable_when": "backup_service_not_used"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "backup",
+        "resource": "selection",
+        "adapter": "aws.backup.backup_selections",
+        "not_applicable_when": "backup_service_not_used"
+      }
+    ]
+  },
+  "resilience_recovery.disaster_recovery": {
+    "core": [
+      {
+        "service": "backup",
+        "resource": "backup.vault",
+        "adapter": "aws.backup.disaster_recovery",
+        "not_applicable_when": "backup_service_not_used"
+      }
+    ],
+    "extended": [
+      {
+        "service": "drs",
+        "resource": "replication_configuration",
+        "adapter": "aws.drs.replication"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "route53",
+        "resource": "health_check",
+        "adapter": "aws.route53.health_checks"
+      }
+    ]
+  },
+  "resilience_recovery.high_availability": {
+    "core": [
+      {
+        "service": "elb",
+        "resource": "network.load_balancer",
+        "adapter": "aws.elb.high_availability"
+      }
+    ],
+    "extended": [
+      {
+        "service": "rds",
+        "resource": "identity.tenant",
+        "adapter": "aws.rds.multi_az",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "elasticache",
+        "resource": "k8s.cluster",
+        "adapter": "aws.elasticache.cluster_mode"
+      }
+    ]
+  },
+  "resilience_recovery.recovery_testing": {
+    "core": [
+      {
+        "service": "backup",
+        "resource": "backup.vault",
+        "adapter": "aws.backup.recovery_testing",
+        "not_applicable_when": "backup_service_not_used"
+      }
+    ],
+    "extended": [
+      {
+        "service": "drs",
+        "resource": "replication_configuration",
+        "adapter": "aws.drs.recovery_testing"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "fis",
+        "resource": "experiment",
+        "adapter": "aws.fis.chaos_engineering"
+      }
+    ]
+  },
+  "governance_compliance.policy_management": {
+    "core": [
+      {
+        "service": "iam",
+        "resource": "rbac.policy",
+        "adapter": "aws.iam.policy_management",
+        "not_applicable_when": "no_iam_resources"
+      }
+    ],
+    "extended": [
+      {
+        "service": "organizations",
+        "resource": "rbac.policy",
+        "adapter": "aws.organizations.policy_management",
+        "not_applicable_when": "not_using_organizations"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "access-analyzer",
+        "resource": "governance.org",
+        "adapter": "aws.access_analyzer.policy_analysis"
+      }
+    ]
+  },
+  "governance_compliance.compliance_framework": {
+    "core": [
+      {
+        "service": "config",
+        "resource": "rule",
+        "adapter": "aws.config.compliance_framework",
+        "not_applicable_when": "config_not_configured"
+      }
+    ],
+    "extended": [
+      {
+        "service": "security-hub",
+        "resource": "standards",
+        "adapter": "aws.security_hub.compliance_frameworks"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "audit-manager",
+        "resource": "assessment",
+        "adapter": "aws.audit_manager.compliance_assessments"
+      }
+    ]
+  },
+  "governance_compliance.resource_governance": {
+    "core": [
+      {
+        "service": "organizations",
+        "resource": "rbac.policy",
+        "adapter": "aws.organizations.resource_governance",
+        "not_applicable_when": "not_using_organizations"
+      }
+    ],
+    "extended": [
+      {
+        "service": "tag",
+        "resource": "rbac.policy",
+        "adapter": "aws.tag.resource_tagging"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "resource-groups",
+        "resource": "rbac.group",
+        "adapter": "aws.resource_groups.governance"
+      }
+    ]
+  },
+  "governance_compliance.cost_governance": {
+    "core": [
+      {
+        "service": "budgets",
+        "resource": "budget",
+        "adapter": "aws.budgets.cost_governance"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cost-explorer",
+        "resource": "report",
+        "adapter": "aws.cost_explorer.cost_analysis"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "budgets",
+        "resource": "budget",
+        "adapter": "aws.budgets.cost_anomaly_detection"
+      }
+    ]
+  },
+  "platform_surfaces_versions.version_management": {
+    "core": [
+      {
+        "service": "ec2",
+        "resource": "identity.tenant",
+        "adapter": "aws.ec2.version_management",
+        "not_applicable_when": "no_ec2_instances"
+      }
+    ],
+    "extended": [
+      {
+        "service": "rds",
+        "resource": "identity.tenant",
+        "adapter": "aws.rds.version_management",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "eks",
+        "resource": "k8s.cluster",
+        "adapter": "aws.eks.version_management",
+        "not_applicable_when": "no_eks_clusters"
+      }
+    ]
+  },
+  "platform_surfaces_versions.deprecation_mgmt": {
+    "core": [
+      {
+        "service": "ec2",
+        "resource": "identity.tenant",
+        "adapter": "aws.ec2.deprecation_management",
+        "not_applicable_when": "no_ec2_instances"
+      }
+    ],
+    "extended": [
+      {
+        "service": "rds",
+        "resource": "identity.tenant",
+        "adapter": "aws.rds.deprecation_management",
+        "not_applicable_when": "no_rds_instances"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "lambda",
+        "resource": "serverless.function",
+        "adapter": "aws.lambda.deprecation_management",
+        "not_applicable_when": "no_lambda_functions"
+      }
+    ]
+  },
+  "platform_surfaces_versions.api_management": {
+    "core": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.api_management"
+      }
+    ],
+    "extended": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.api_versioning"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "api-gateway",
+        "resource": "api",
+        "adapter": "aws.apigateway.api_documentation"
+      }
+    ]
+  },
+  "platform_surfaces_versions.platform_monitoring": {
+    "core": [
+      {
+        "service": "cloudwatch",
+        "resource": "alarm",
+        "adapter": "aws.cloudwatch.platform_monitoring",
+        "not_applicable_when": "no_cloudwatch_logs"
+      }
+    ],
+    "extended": [
+      {
+        "service": "cloudwatch",
+        "resource": "dashboard",
+        "adapter": "aws.cloudwatch.platform_dashboards",
+        "not_applicable_when": "no_cloudwatch_logs"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "x-ray",
+        "resource": "trace",
+        "adapter": "aws.xray.platform_tracing"
+      }
+    ]
+  },
+  "platform_surfaces_versions.security_updates": {
+    "core": [
+      {
+        "service": "ssm",
+        "resource": "patch_baseline",
+        "adapter": "aws.ssm.security_updates",
+        "not_applicable_when": "no_ssm_parameters"
+      }
+    ],
+    "extended": [
+      {
+        "service": "ssm",
+        "resource": "patch_group",
+        "adapter": "aws.ssm.patch_deployment",
+        "not_applicable_when": "no_ssm_parameters"
+      }
+    ],
+    "exhaustive": [
+      {
+        "service": "ssm",
+        "resource": "maintenance_window",
+        "adapter": "aws.ssm.automated_patching",
+        "not_applicable_when": "no_ssm_parameters"
+      }
+    ]
+  }
+}

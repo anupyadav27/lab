@@ -1,0 +1,2133 @@
+[
+  {
+    "requirement_id": "1.1.1",
+    "title": "PCI DSS 1.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is primarily about documentation and procedures, which cannot be enforced or verified through GCP SDK/API calls."
+    }
+  },
+  {
+    "requirement_id": "1.1.2",
+    "title": "PCI DSS 1.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement focuses on roles and responsibilities, which are typically documented and not enforceable via GCP SDK/API calls."
+    }
+  },
+  {
+    "requirement_id": "1.2.1",
+    "title": "PCI DSS 1.2.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [
+        {
+          "function_names": [],
+          "consolidated_name": "network_security_policy_rules_compliance",
+          "rationale": "Consolidation needed to provide a comprehensive check of firewall rules compliance with configuration standards."
+        }
+      ],
+      "mapping_notes": "Existing functions cover the verification of firewall rules and policies, which are key components of NSC configuration standards."
+    }
+  },
+  {
+    "requirement_id": "1.2.2",
+    "title": "PCI DSS 1.2.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_change_control_compliance",
+          "gcp_api": "gcp.network.getChangeHistory()",
+          "service": "gcp_network",
+          "rationale": "Needed to verify that changes to network configurations are approved and managed according to a change control process."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly address change control compliance; a new function is needed to track and verify changes."
+    }
+  },
+  {
+    "requirement_id": "1.2.3",
+    "title": "PCI DSS 1.2.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_diagram_maintenance",
+          "gcp_api": "gcp.network.getTopology()",
+          "service": "gcp_network",
+          "rationale": "Needed to programmatically verify and maintain an accurate network diagram showing all connections."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Maintaining an accurate network diagram is not fully covered by existing functions; a new function is needed to automate this process."
+    }
+  },
+  {
+    "requirement_id": "1.3.1",
+    "title": "PCI DSS 1.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_inbound_traffic_restriction",
+          "gcp_api": "gcp.network.firewallRules.list()",
+          "service": "gcp_network",
+          "rationale": "To ensure all inbound traffic to the CDE is restricted to necessary traffic only and all other traffic is denied."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover specific protocols and logging, but a comprehensive check for all inbound traffic restrictions is needed."
+    }
+  },
+  {
+    "requirement_id": "1.3.2",
+    "title": "PCI DSS 1.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_outbound_traffic_restriction",
+          "gcp_api": "gcp.network.firewallRules.list()",
+          "service": "gcp_network",
+          "rationale": "To ensure all outbound traffic from the CDE is restricted to necessary traffic only and all other traffic is denied."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide partial coverage for outbound traffic restrictions. A dedicated function for outbound traffic is required."
+    }
+  },
+  {
+    "requirement_id": "1.3.3",
+    "title": "PCI DSS 1.3.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_wireless_traffic_restriction",
+          "gcp_api": "gcp.network.firewallRules.list()",
+          "service": "gcp_network",
+          "rationale": "To ensure all wireless traffic into the CDE is denied by default unless explicitly authorized."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions specifically address wireless traffic restrictions. A new function is needed to ensure compliance."
+    }
+  },
+  {
+    "requirement_id": "1.4.1",
+    "title": "PCI DSS 1.4.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_trusted_untrusted_boundary",
+          "gcp_api": "gcp.network.firewallRules.list()",
+          "service": "gcp_network",
+          "rationale": "To verify that NSCs are implemented between trusted and untrusted networks."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover VPC attachment but lack comprehensive checks for NSC implementation between trusted and untrusted networks."
+    }
+  },
+  {
+    "requirement_id": "1.4.2",
+    "title": "PCI DSS 1.4.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_inbound_untrusted_traffic_restriction",
+          "gcp_api": "gcp.network.firewallRules.list()",
+          "service": "gcp_network",
+          "rationale": "To ensure inbound traffic from untrusted networks is restricted to authorized communications only."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions partially cover inbound traffic restrictions but do not fully address the requirement for stateful responses and authorized communications."
+    }
+  },
+  {
+    "requirement_id": "1.4.3",
+    "title": "PCI DSS 1.4.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_anti_spoofing_measures_enabled",
+          "gcp_api": "gcp.network.firewall.setAntiSpoofing()",
+          "service": "gcp_network",
+          "rationale": "To programmatically enable and verify anti-spoofing measures on network firewalls."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover some aspects of network security, but a specific function to enable anti-spoofing measures is needed for full compliance."
+    }
+  },
+  {
+    "requirement_id": "1.4.4",
+    "title": "PCI DSS 1.4.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_cardholder_data_access_restriction",
+          "gcp_api": "gcp.network.firewall.setAccessRestrictions()",
+          "service": "gcp_network",
+          "rationale": "To ensure that system components storing cardholder data are not directly accessible from untrusted networks."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help in monitoring and restricting access, but a specific function to restrict access to cardholder data is needed."
+    }
+  },
+  {
+    "requirement_id": "1.4.5",
+    "title": "PCI DSS 1.4.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_internal_ip_disclosure_prevention",
+          "gcp_api": "gcp.network.firewall.setIpDisclosurePrevention()",
+          "service": "gcp_network",
+          "rationale": "To prevent unauthorized disclosure of internal IP addresses and routing information."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide some level of security, but a dedicated function to prevent IP disclosure is required."
+    }
+  },
+  {
+    "requirement_id": "1.5.1",
+    "title": "PCI DSS 1.5.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_device_security_controls_enforced",
+          "gcp_api": "gcp.compute.instances.setSecurityControls()",
+          "service": "gcp_compute",
+          "rationale": "To ensure security controls are enforced on devices connecting to both untrusted networks and the CDE."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some security measures, but additional functions are needed to enforce security controls on devices."
+    }
+  },
+  {
+    "requirement_id": "2.1.1",
+    "title": "PCI DSS 2.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is primarily focused on documentation and procedural controls, which cannot be implemented programmatically using GCP SDK/API calls."
+    }
+  },
+  {
+    "requirement_id": "2.1.2",
+    "title": "PCI DSS 2.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_roles_responsibility_matrix_verification",
+          "gcp_api": "gcp.iam.getRole()",
+          "service": "gcp_iam",
+          "rationale": "To programmatically verify the assignment of roles and responsibilities in a structured format like a RACI matrix."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "The existing IAM functions can help verify role assignments, but they do not fully cover the documentation and understanding aspects of roles and responsibilities."
+    }
+  },
+  {
+    "requirement_id": "2.2.1",
+    "title": "PCI DSS 2.2.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_configuration_standards_enforcement",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "gcp_compute",
+          "rationale": "To ensure that configuration standards are enforced and verified against industry standards programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover vulnerability scanning and inventory updates but do not ensure compliance with specific configuration standards."
+    }
+  },
+  {
+    "requirement_id": "2.2.2",
+    "title": "PCI DSS 2.2.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_vendor_default_account_management",
+          "gcp_api": "gcp.iam.getServiceAccount()",
+          "service": "gcp_iam",
+          "rationale": "To automate the detection and management of vendor default accounts and ensure they are either disabled or have their passwords changed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "IAM functions can monitor account usage but do not specifically address vendor default account management."
+    }
+  },
+  {
+    "requirement_id": "2.2.3",
+    "title": "PCI DSS 2.2.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_function_isolation_verification",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "gcp_compute",
+          "rationale": "To verify that functions with different security levels are isolated or secured appropriately on the same system component."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide separation and security context but do not fully verify isolation of functions with different security levels."
+    }
+  },
+  {
+    "requirement_id": "2.2.4",
+    "title": "PCI DSS 2.2.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_unnecessary_services_disabling",
+          "gcp_api": "gcp.compute.instances.setMetadata()",
+          "service": "gcp_compute",
+          "rationale": "To programmatically disable or remove unnecessary services, protocols, and functions on system components."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions ensure non-default settings but do not specifically target unnecessary services and protocols."
+    }
+  },
+  {
+    "requirement_id": "2.2.5",
+    "title": "PCI DSS 2.2.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_insecure_protocols_detection",
+          "gcp_api": "gcp.compute.instances.list()",
+          "service": "compute",
+          "rationale": "To identify and manage instances using insecure protocols or services."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions can help restrict insecure services, but a specific function to detect insecure protocols is needed for comprehensive coverage."
+    }
+  },
+  {
+    "requirement_id": "2.2.6",
+    "title": "PCI DSS 2.2.6",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_security_parameters_verification",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To verify that security parameters are configured to prevent misuse."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide partial coverage by ensuring non-default configurations, but a specific function to verify security parameters is needed."
+    }
+  },
+  {
+    "requirement_id": "2.2.7",
+    "title": "PCI DSS 2.2.7",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_encrypted_admin_access_enforcement",
+          "gcp_api": "gcp.network.firewalls.list()",
+          "service": "network",
+          "rationale": "To ensure all non-console administrative access is encrypted using strong cryptography."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While logging functions exist, specific enforcement of encrypted admin access is necessary for full compliance."
+    }
+  },
+  {
+    "requirement_id": "2.3.1",
+    "title": "PCI DSS 2.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_wireless_defaults_check",
+          "gcp_api": "gcp.network.wifi.list()",
+          "service": "network",
+          "rationale": "To verify that wireless vendor defaults are changed or confirmed secure."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly address wireless vendor defaults; a new function is needed to check these settings."
+    }
+  },
+  {
+    "requirement_id": "2.3.2",
+    "title": "PCI DSS 2.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_wireless_key_rotation",
+          "gcp_api": "gcp.network.wifi.update()",
+          "service": "network",
+          "rationale": "To automate the rotation of wireless encryption keys based on personnel changes or suspected compromise."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "There is a significant gap in automating wireless key management; a new function is necessary to address this requirement."
+    }
+  },
+  {
+    "requirement_id": "3.3.1.2",
+    "title": "PCI DSS 3.3.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_card_verification_code_removal",
+          "gcp_api": "gcp.storage.remove_object()",
+          "service": "gcp_storage",
+          "rationale": "To ensure that card verification codes are not stored after authorization, a function to programmatically remove or verify the absence of such data in storage is needed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "There are no existing GCP functions that directly address the removal of card verification codes post-authorization. A new function is required to automate this verification."
+    }
+  },
+  {
+    "requirement_id": "3.3.1.3",
+    "title": "PCI DSS 3.3.1.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_pin_block_removal",
+          "gcp_api": "gcp.storage.remove_object()",
+          "service": "gcp_storage",
+          "rationale": "To ensure that PINs and PIN blocks are not stored after authorization, a function to programmatically remove or verify the absence of such data in storage is needed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "There are no existing GCP functions that directly address the removal of PINs and PIN blocks post-authorization. A new function is required to automate this verification."
+    }
+  },
+  {
+    "requirement_id": "3.3.2",
+    "title": "PCI DSS 3.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_sad_encryption_verification",
+          "gcp_api": "gcp.kms.verify_encryption()",
+          "service": "gcp_kms",
+          "rationale": "To ensure that Sensitive Authentication Data (SAD) is encrypted using strong cryptography prior to authorization completion."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover encryption at rest using customer-managed keys, but a specific function to verify encryption of SAD is needed for complete coverage."
+    }
+  },
+  {
+    "requirement_id": "3.3.3",
+    "title": "PCI DSS 3.3.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_sad_business_need_verification",
+          "gcp_api": "gcp.storage.metadata_check()",
+          "service": "gcp_storage",
+          "rationale": "To verify that storage of SAD is limited to legitimate business needs and is encrypted."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing encryption functions provide partial coverage, but additional verification of business need for storing SAD is required."
+    }
+  },
+  {
+    "requirement_id": "3.4.1",
+    "title": "PCI DSS 3.4.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_pan_display_masking",
+          "gcp_api": "gcp.iam.set_policy()",
+          "service": "gcp_iam",
+          "rationale": "To ensure that PAN is masked when displayed, except for roles with a legitimate business need."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "IAM policies can help control access, but specific masking functionality for PAN display is needed to fully meet the requirement."
+    }
+  },
+  {
+    "requirement_id": "5.2.3.1",
+    "title": "PCI DSS 5.2.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_system_component_risk_analysis_frequency",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To programmatically retrieve and evaluate the frequency of system component evaluations based on risk analysis."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions directly address the periodic evaluation frequency of system components based on risk analysis. A new function is needed to automate this assessment."
+    }
+  },
+  {
+    "requirement_id": "5.3.1",
+    "title": "PCI DSS 5.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_antimalware_auto_update_verification",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "securitycenter",
+          "rationale": "To verify that anti-malware solutions are configured for automatic updates and that updates are current."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "GCP does not have a specific function for verifying anti-malware automatic updates. A new function is needed to ensure compliance with this requirement."
+    }
+  },
+  {
+    "requirement_id": "5.3.2",
+    "title": "PCI DSS 5.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_antimalware_scan_configuration",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "securitycenter",
+          "rationale": "To ensure anti-malware solutions are configured for periodic and real-time scans."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "There is no existing function to verify anti-malware scan configurations. A new function is necessary to automate this verification."
+    }
+  },
+  {
+    "requirement_id": "5.3.2.1",
+    "title": "PCI DSS 5.3.2.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_malware_scan_frequency_analysis",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To evaluate the frequency of malware scans based on targeted risk analysis."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions address the frequency of malware scans based on risk analysis. A new function is required to automate this process."
+    }
+  },
+  {
+    "requirement_id": "5.3.3",
+    "title": "PCI DSS 5.3.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_removable_media_scan_configuration",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "securitycenter",
+          "rationale": "To verify that anti-malware solutions are configured to scan removable media upon connection."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "There are no existing GCP functions to verify anti-malware configurations for removable media. A new function is needed to ensure compliance."
+    }
+  },
+  {
+    "requirement_id": "5.3.4",
+    "title": "PCI DSS 5.3.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_antimalware_audit_logging_enabled",
+          "gcp_api": "gcp.security.antimalware.setAuditLogging()",
+          "service": "gcp_security",
+          "rationale": "Specific function needed to ensure anti-malware audit logs are enabled and retained."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing logging functions cover general audit logging but do not specifically address anti-malware logs. A new function is needed to ensure anti-malware logs are enabled and retained."
+    }
+  },
+  {
+    "requirement_id": "5.3.5",
+    "title": "PCI DSS 5.3.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_antimalware_protection_enforcement",
+          "gcp_api": "gcp.security.antimalware.enforceProtection()",
+          "service": "gcp_security",
+          "rationale": "Function needed to ensure anti-malware mechanisms cannot be disabled or altered by unauthorized users."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "IAM functions help prevent unauthorized changes, but a specific function to enforce anti-malware protection is needed."
+    }
+  },
+  {
+    "requirement_id": "5.4.1",
+    "title": "PCI DSS 5.4.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_phishing_protection_mechanisms",
+          "gcp_api": "gcp.security.phishing.protect()",
+          "service": "gcp_security",
+          "rationale": "Function needed to implement and verify anti-phishing mechanisms."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions cover general security event reporting and vulnerability scanning but do not specifically address phishing protection. A new function is needed."
+    }
+  },
+  {
+    "requirement_id": "6.1.1",
+    "title": "PCI DSS 6.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement pertains to documentation and policy management, which is outside the scope of programmatically implemented GCP functions."
+    }
+  },
+  {
+    "requirement_id": "6.1.2",
+    "title": "PCI DSS 6.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is about roles and responsibilities documentation, which cannot be enforced or verified through GCP SDK/API calls."
+    }
+  },
+  {
+    "requirement_id": "6.5.5",
+    "title": "PCI DSS 6.5.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_pan_detection_in_preprod",
+          "gcp_api": "gcp.compute.instances.list()",
+          "service": "gcp_compute",
+          "rationale": "To programmatically verify that live PANs are not present in pre-production environments, a function to scan for PAN patterns in compute instances is needed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current function ensures environment separation but does not specifically detect PANs. A new function is needed to scan for PAN patterns in pre-production environments."
+    }
+  },
+  {
+    "requirement_id": "6.5.6",
+    "title": "PCI DSS 6.5.6",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_test_data_removal_check",
+          "gcp_api": "gcp.compute.instances.list()",
+          "service": "gcp_compute",
+          "rationale": "To ensure test data and accounts are removed before production, a function to check for test patterns in compute instances is needed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function updates inventory but does not verify removal of test data/accounts. A function to detect and ensure removal of test data/accounts is needed."
+    }
+  },
+  {
+    "requirement_id": "7.1.1",
+    "title": "PCI DSS 7.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "The existing function helps in reviewing IAM policies but does not cover documentation and update processes. This aspect is beyond programmatic control."
+    }
+  },
+  {
+    "requirement_id": "7.1.2",
+    "title": "PCI DSS 7.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "The existing function ensures roles and responsibilities are assigned via IAM policies, but understanding and documentation are outside programmatic scope."
+    }
+  },
+  {
+    "requirement_id": "7.2.1",
+    "title": "PCI DSS 7.2.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover role-based access control and separation of duties, aligning with access control models. However, full access control model definition and documentation are outside programmatic scope."
+    }
+  },
+  {
+    "requirement_id": "8.2.2",
+    "title": "PCI DSS 8.2.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_shared_id_usage_monitoring",
+          "gcp_api": "gcp.iam.getSharedIdUsage()",
+          "service": "gcp_iam",
+          "rationale": "To monitor and log the usage of shared IDs to ensure they are only used under exceptional circumstances."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover monitoring and attachment of policies to user accounts, but specific tracking of shared ID usage is needed."
+    }
+  },
+  {
+    "requirement_id": "8.2.3",
+    "title": "PCI DSS 8.2.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_unique_authentication_factors_per_customer",
+          "gcp_api": "gcp.iam.ensureUniqueAuthFactors()",
+          "service": "gcp_iam",
+          "rationale": "To ensure unique authentication factors are used for each customer premises."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function ensures policies are attached but does not specifically enforce unique authentication factors per customer."
+    }
+  },
+  {
+    "requirement_id": "8.2.4",
+    "title": "PCI DSS 8.2.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_user_id_lifecycle_management",
+          "gcp_api": "gcp.iam.manageUserIdLifecycle()",
+          "service": "gcp_iam",
+          "rationale": "To manage the lifecycle of user IDs including additions, deletions, and modifications with appropriate authorization."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide risk assessment and compliance review, but a dedicated lifecycle management function is needed."
+    }
+  },
+  {
+    "requirement_id": "8.2.5",
+    "title": "PCI DSS 8.2.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_terminate_user_access",
+          "gcp_api": "gcp.iam.revokeUserAccess()",
+          "service": "gcp_iam",
+          "rationale": "To immediately revoke access for terminated users to prevent unauthorized access."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Monitoring usage is covered, but immediate revocation of access for terminated users needs a specific function."
+    }
+  },
+  {
+    "requirement_id": "8.2.6",
+    "title": "PCI DSS 8.2.6",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_inactive_user_account_management",
+          "gcp_api": "gcp.iam.disableInactiveAccounts()",
+          "service": "gcp_iam",
+          "rationale": "To automatically disable or remove inactive user accounts after 90 days of inactivity."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Usage monitoring is in place, but automated management of inactive accounts is required."
+    }
+  },
+  {
+    "requirement_id": "8.2.7",
+    "title": "PCI DSS 8.2.7",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_third_party_account_temporary_enablement",
+          "gcp_api": "gcp.iam.setAccountStatus()",
+          "service": "gcp_iam",
+          "rationale": "To programmatically enable and disable third-party accounts based on time schedules."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help monitor account usage and attachment, but a specific function to manage third-party account enablement based on time is needed."
+    }
+  },
+  {
+    "requirement_id": "8.2.8",
+    "title": "PCI DSS 8.2.8",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_instance_idle_timeout_configuration",
+          "gcp_api": "gcp.compute.instances.setIdleTimeout()",
+          "service": "gcp_compute",
+          "rationale": "To enforce idle timeout settings for user sessions on compute instances."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing function directly addresses session idle timeout. A new function to configure idle timeout is necessary."
+    }
+  },
+  {
+    "requirement_id": "8.3.1",
+    "title": "PCI DSS 8.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_multi_factor_authentication_enforcement",
+          "gcp_api": "gcp.iam.enforceMFA()",
+          "service": "gcp_iam",
+          "rationale": "To ensure that at least one authentication factor is required for user access."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover policy attachment and privilege abuse prevention, but explicit MFA enforcement is needed."
+    }
+  },
+  {
+    "requirement_id": "8.3.2",
+    "title": "PCI DSS 8.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Encryption functions provide strong cryptography for data at rest and in transit, covering the requirement effectively."
+    }
+  },
+  {
+    "requirement_id": "8.3.3",
+    "title": "PCI DSS 8.3.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_identity_verification_before_modification",
+          "gcp_api": "gcp.iam.verifyIdentityBeforeChange()",
+          "service": "gcp_iam",
+          "rationale": "To ensure identity verification before any authentication factor modification."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Risk assessment functions are helpful, but specific identity verification before modification is required."
+    }
+  },
+  {
+    "requirement_id": "8.4.2",
+    "title": "PCI DSS 8.4.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_mfa_non_console_enforcement",
+          "gcp_api": "gcp.iam.setMfaPolicy()",
+          "service": "gcp_iam",
+          "rationale": "To enforce MFA for all non-console access into the CDE."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing IAM functions provide partial coverage by assessing access risks and policy attachments, but a specific function to enforce MFA for non-console access is needed."
+    }
+  },
+  {
+    "requirement_id": "8.4.3",
+    "title": "PCI DSS 8.4.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_mfa_remote_access_enforcement",
+          "gcp_api": "gcp.iam.setMfaPolicy()",
+          "service": "gcp_iam",
+          "rationale": "To enforce MFA for all remote access originating from outside the entity’s network."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions assess access risks and restrict RDP access, but a dedicated function to enforce MFA for remote access is necessary."
+    }
+  },
+  {
+    "requirement_id": "8.5",
+    "title": "PCI DSS 8.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_mfa_replay_protection",
+          "gcp_api": "gcp.iam.setReplayProtection()",
+          "service": "gcp_iam",
+          "rationale": "To configure MFA systems to prevent replay attacks and ensure proper MFA configuration."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing IAM functions provide some risk assessment capabilities, but specific replay protection and MFA configuration functions are required."
+    }
+  },
+  {
+    "requirement_id": "8.6.1",
+    "title": "PCI DSS 8.6.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_interactive_login_prevention",
+          "gcp_api": "gcp.iam.setInteractiveLoginPolicy()",
+          "service": "gcp_iam",
+          "rationale": "To prevent interactive login for system and application accounts unless explicitly authorized."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions help manage service account roles and prevent default service account usage, but a function to prevent interactive logins is needed."
+    }
+  },
+  {
+    "requirement_id": "8.6.2",
+    "title": "PCI DSS 8.6.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_password_hardcoding_detection",
+          "gcp_api": "gcp.security.scanForHardcodedPasswords()",
+          "service": "gcp_security",
+          "rationale": "To detect and prevent hardcoded passwords in scripts, configuration files, and source code."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "KMS functions provide secure key management, but a specific function to detect hardcoded passwords is necessary."
+    }
+  },
+  {
+    "requirement_id": "9.3.2",
+    "title": "PCI DSS 9.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_visitor_access_management",
+          "gcp_api": "gcp.security.manageVisitorAccess()",
+          "service": "gcp_security",
+          "rationale": "Automate the management of visitor access to the CDE, including authorization and monitoring."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions directly manage physical visitor access. A new function is needed to automate visitor access management."
+    }
+  },
+  {
+    "requirement_id": "9.3.3",
+    "title": "PCI DSS 9.3.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_visitor_badge_deactivation",
+          "gcp_api": "gcp.security.deactivateVisitorBadge()",
+          "service": "gcp_security",
+          "rationale": "Automate the deactivation of visitor badges upon exit or expiration to prevent unauthorized reuse."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions handle the deactivation of physical visitor badges. A new function is needed for badge deactivation."
+    }
+  },
+  {
+    "requirement_id": "9.3.4",
+    "title": "PCI DSS 9.3.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_visitor_log_management",
+          "gcp_api": "gcp.security.manageVisitorLogs()",
+          "service": "gcp_security",
+          "rationale": "Automate the maintenance and retention of visitor logs for at least three months."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions manage physical visitor logs. A new function is needed to automate log management and retention."
+    }
+  },
+  {
+    "requirement_id": "9.4.1",
+    "title": "PCI DSS 9.4.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_media_physical_security",
+          "gcp_api": "gcp.storage.ensureMediaSecurity()",
+          "service": "gcp_storage",
+          "rationale": "Ensure that all media containing cardholder data is physically secured."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions address physical security of media. A new function is needed to ensure media is secured."
+    }
+  },
+  {
+    "requirement_id": "9.4.1.1",
+    "title": "PCI DSS 9.4.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_offline_backup_security",
+          "gcp_api": "gcp.storage.secureOfflineBackups()",
+          "service": "gcp_storage",
+          "rationale": "Ensure offline media backups with cardholder data are stored securely."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions ensure the physical security of offline backups. A new function is needed to secure offline backups."
+    }
+  },
+  {
+    "requirement_id": "10.2.1",
+    "title": "PCI DSS 10.2.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_audit_logs_enabled_for_all_components",
+          "gcp_api": "logging.projects.logs.list()",
+          "service": "gcp_logging",
+          "rationale": "To ensure audit logs are enabled for all system components and cardholder data."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover some aspects of logging but do not comprehensively ensure that all system components have audit logs enabled."
+    }
+  },
+  {
+    "requirement_id": "10.2.1.1",
+    "title": "PCI DSS 10.2.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_user_access_to_cardholder_data",
+          "gcp_api": "logging.projects.logs.list()",
+          "service": "gcp_logging",
+          "rationale": "To specifically capture all individual user access to cardholder data."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some logging capabilities, but specific user access to cardholder data needs dedicated logging."
+    }
+  },
+  {
+    "requirement_id": "10.2.1.2",
+    "title": "PCI DSS 10.2.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_admin_access_actions",
+          "gcp_api": "logging.projects.logs.list()",
+          "service": "gcp_logging",
+          "rationale": "To ensure all actions taken by individuals with administrative access are logged."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not specifically ensure logging of actions taken by administrative users."
+    }
+  },
+  {
+    "requirement_id": "10.2.1.3",
+    "title": "PCI DSS 10.2.1.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_access_to_audit_logs",
+          "gcp_api": "logging.projects.logs.list()",
+          "service": "gcp_logging",
+          "rationale": "To capture all access to audit logs to prevent tampering."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not specifically track access to audit logs."
+    }
+  },
+  {
+    "requirement_id": "10.2.1.4",
+    "title": "PCI DSS 10.2.1.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_invalid_access_attempts",
+          "gcp_api": "logging.projects.logs.list()",
+          "service": "gcp_logging",
+          "rationale": "To ensure that all invalid logical access attempts are logged."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not specifically log invalid access attempts."
+    }
+  },
+  {
+    "requirement_id": "10.2.1.5",
+    "title": "PCI DSS 10.2.1.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover audit logging for changes to accounts and privileges, but additional checks on specific account types may be needed."
+    }
+  },
+  {
+    "requirement_id": "10.2.1.6",
+    "title": "PCI DSS 10.2.1.6",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_audit_log_initialization_tracking",
+          "gcp_api": "gcp.logging.audit_logs.initialize()",
+          "service": "gcp_logging",
+          "rationale": "To track initialization and status changes of audit logs."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some coverage, but specific tracking of log status changes is not currently available."
+    }
+  },
+  {
+    "requirement_id": "10.2.1.7",
+    "title": "PCI DSS 10.2.1.7",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_system_object_creation_deletion_tracking",
+          "gcp_api": "gcp.logging.track.system_objects()",
+          "service": "gcp_logging",
+          "rationale": "To specifically track creation and deletion of system-level objects."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide general audit logging but lack specific tracking for system-level object changes."
+    }
+  },
+  {
+    "requirement_id": "10.2.2",
+    "title": "PCI DSS 10.2.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover audit logging but may not capture all specified details for each auditable event."
+    }
+  },
+  {
+    "requirement_id": "10.3.1",
+    "title": "PCI DSS 10.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_audit_log_access_control_check",
+          "gcp_api": "gcp.logging.check.audit_log_access()",
+          "service": "gcp_logging",
+          "rationale": "To ensure that access to audit log files is limited based on job-related needs."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some access monitoring, but specific checks for audit log file access control are needed."
+    }
+  },
+  {
+    "requirement_id": "10.6.2",
+    "title": "PCI DSS 10.6.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_time_server_configuration_check",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To verify that instances are configured to use designated time servers and that time synchronization settings are compliant with PCI DSS requirements."
+        },
+        {
+          "name": "gcp_network_time_server_access_control",
+          "gcp_api": "gcp.network.firewalls.get()",
+          "service": "network",
+          "rationale": "To ensure that only designated time servers receive time updates from specific industry-accepted external sources."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "GCP does not have a direct function to manage or verify time server configurations. New functions are needed to ensure time synchronization settings are compliant."
+    }
+  },
+  {
+    "requirement_id": "10.6.3",
+    "title": "PCI DSS 10.6.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_time_change_logging",
+          "gcp_api": "gcp.logging.entries.list()",
+          "service": "logging",
+          "rationale": "To ensure that any changes to time settings on critical systems are logged and monitored."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing logging functions can be used to monitor changes to time settings, but a specific function to log time changes is needed."
+    }
+  },
+  {
+    "requirement_id": "10.7.1",
+    "title": "PCI DSS 10.7.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_critical_control_failure_alerts",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "securitycenter",
+          "rationale": "To detect and alert on failures of critical security control systems."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Security Command Center can be used to monitor and alert on security control failures, but a specific function for critical control failure alerts is needed."
+    }
+  },
+  {
+    "requirement_id": "10.7.2",
+    "title": "PCI DSS 10.7.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_critical_control_failure_detection",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "securitycenter",
+          "rationale": "To ensure prompt detection and alerting of failures in critical security control systems."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing logging and security functions provide good coverage, but additional specific detection functions are needed for comprehensive compliance."
+    }
+  },
+  {
+    "requirement_id": "10.7.3",
+    "title": "PCI DSS 10.7.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_control_failure_response",
+          "gcp_api": "gcp.securitycenter.findings.update()",
+          "service": "securitycenter",
+          "rationale": "To document and respond to failures of critical security control systems, including identifying causes and implementing remediation."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While Security Command Center can report events, a specific function for responding to and documenting security control failures is needed."
+    }
+  },
+  {
+    "requirement_id": "11.1.1",
+    "title": "PCI DSS 11.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is primarily focused on documentation and procedural management, which cannot be directly implemented or verified through GCP SDK/API calls."
+    }
+  },
+  {
+    "requirement_id": "11.1.2",
+    "title": "PCI DSS 11.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement involves documentation and understanding of roles and responsibilities, which is not directly mappable to GCP SDK/API functions."
+    }
+  },
+  {
+    "requirement_id": "11.2.1",
+    "title": "PCI DSS 11.2.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_wireless_access_point_detection",
+          "gcp_api": "gcp.network.list_access_points()",
+          "service": "gcp_network",
+          "rationale": "To programmatically detect and list authorized and unauthorized wireless access points."
+        },
+        {
+          "name": "gcp_network_wireless_alert_configuration",
+          "gcp_api": "gcp.network.configure_alerts()",
+          "service": "gcp_network",
+          "rationale": "To configure alerts for unauthorized wireless access points detection."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "GCP does not natively manage wireless access points, but custom functions can be developed to detect and alert on unauthorized access points using network scanning tools integrated with GCP."
+    }
+  },
+  {
+    "requirement_id": "11.2.2",
+    "title": "PCI DSS 11.2.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_authorized_access_point_inventory",
+          "gcp_api": "gcp.network.get_authorized_access_points()",
+          "service": "gcp_network",
+          "rationale": "To maintain an inventory of authorized wireless access points programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Maintaining an inventory of authorized wireless access points requires integration with external systems or custom implementations."
+    }
+  },
+  {
+    "requirement_id": "11.3.1",
+    "title": "PCI DSS 11.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_vulnerability_rescan_verification",
+          "gcp_api": "gcp.security.rescan_vulnerabilities()",
+          "service": "gcp_security",
+          "rationale": "To verify that rescans confirm resolution of high-risk vulnerabilities."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "GCP Security Command Center can be used for vulnerability scanning and reporting. Additional functions are needed to ensure rescans confirm vulnerability resolution."
+    }
+  },
+  {
+    "requirement_id": "11.3.1.1",
+    "title": "PCI DSS 11.3.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_vulnerability_rescan_scheduling",
+          "gcp_api": "gcp.security.command_center.scheduleRescan()",
+          "service": "security_command_center",
+          "rationale": "To automate the scheduling of rescans based on risk assessment."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover vulnerability scanning and risk assessment, but automated rescan scheduling based on risk is not fully addressed."
+    }
+  },
+  {
+    "requirement_id": "11.3.1.2",
+    "title": "PCI DSS 11.3.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_authenticated_scan_configuration",
+          "gcp_api": "gcp.security.command_center.configureAuthenticatedScan()",
+          "service": "security_command_center",
+          "rationale": "To ensure authenticated scans are configured with sufficient privileges."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "The existing functions ensure proper role assignments, but authenticated scan configuration needs a specific function."
+    }
+  },
+  {
+    "requirement_id": "11.3.1.3",
+    "title": "PCI DSS 11.3.1.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_post_change_vulnerability_scan",
+          "gcp_api": "gcp.security.command_center.scanAfterChange()",
+          "service": "security_command_center",
+          "rationale": "To ensure scans are automatically triggered after significant changes."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions handle vulnerability scanning but do not specifically address post-change scanning."
+    }
+  },
+  {
+    "requirement_id": "11.3.2",
+    "title": "PCI DSS 11.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_external_vulnerability_scan_scheduling",
+          "gcp_api": "gcp.security.command_center.scheduleExternalScan()",
+          "service": "security_command_center",
+          "rationale": "To automate the scheduling of external vulnerability scans every three months."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions specifically address external vulnerability scan scheduling."
+    }
+  },
+  {
+    "requirement_id": "11.3.2.1",
+    "title": "PCI DSS 11.3.2.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_external_post_change_scan",
+          "gcp_api": "gcp.security.command_center.externalScanAfterChange()",
+          "service": "security_command_center",
+          "rationale": "To ensure external scans are conducted after significant changes."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "There is a need for a specific function to handle external scans post significant changes."
+    }
+  },
+  {
+    "requirement_id": "11.4.1",
+    "title": "PCI DSS 11.4.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_penetration_testing_scheduling",
+          "gcp_api": "gcp.security.schedulePenetrationTest()",
+          "service": "gcp_security",
+          "rationale": "Automate scheduling and execution of penetration tests to ensure coverage and frequency requirements are met."
+        },
+        {
+          "name": "gcp_security_penetration_test_results_retention",
+          "gcp_api": "gcp.security.storeTestResults()",
+          "service": "gcp_security",
+          "rationale": "Ensure retention of penetration test results and remediation activities for at least 12 months."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions focus on vulnerability scanning rather than full penetration testing. New functions are needed to automate scheduling, execution, and results retention of penetration tests."
+    }
+  },
+  {
+    "requirement_id": "11.4.2",
+    "title": "PCI DSS 11.4.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_internal_penetration_testing",
+          "gcp_api": "gcp.security.executeInternalPenTest()",
+          "service": "gcp_security",
+          "rationale": "Automate internal penetration testing to ensure it is performed according to defined methodology and frequency."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions focus on vulnerability scanning. A new function is needed to automate internal penetration testing."
+    }
+  },
+  {
+    "requirement_id": "11.4.3",
+    "title": "PCI DSS 11.4.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_external_penetration_testing",
+          "gcp_api": "gcp.security.executeExternalPenTest()",
+          "service": "gcp_security",
+          "rationale": "Automate external penetration testing to ensure it is performed according to defined methodology and frequency."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions focus on vulnerability scanning. A new function is needed to automate external penetration testing."
+    }
+  },
+  {
+    "requirement_id": "11.4.4",
+    "title": "PCI DSS 11.4.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_vulnerability_remediation_tracking",
+          "gcp_api": "gcp.security.trackRemediation()",
+          "service": "gcp_security",
+          "rationale": "Track and verify remediation of vulnerabilities found during penetration testing."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover vulnerability scanning but not the remediation verification process. A new function is needed for tracking remediation."
+    }
+  },
+  {
+    "requirement_id": "11.4.5",
+    "title": "PCI DSS 11.4.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_segmentation_penetration_testing",
+          "gcp_api": "gcp.network.testSegmentation()",
+          "service": "gcp_network",
+          "rationale": "Automate penetration testing of segmentation controls to ensure they are operational and effective."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide logging and alerting but do not automate segmentation testing. A new function is needed to automate this process."
+    }
+  },
+  {
+    "requirement_id": "11.4.6",
+    "title": "PCI DSS 11.4.6",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_segmentation_penetration_test_scheduling",
+          "gcp_api": "gcp.network.schedulePenetrationTest()",
+          "service": "gcp_network",
+          "rationale": "To automate scheduling and verification of segmentation penetration tests."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions can help monitor network configurations and alert on changes, but do not cover penetration testing scheduling or execution."
+    }
+  },
+  {
+    "requirement_id": "11.4.7",
+    "title": "PCI DSS 11.4.7",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_customer_penetration_test_access",
+          "gcp_api": "gcp.iam.setCustomerAccess()",
+          "service": "gcp_iam",
+          "rationale": "To programmatically manage customer access for penetration testing purposes."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly support customer penetration testing access management."
+    }
+  },
+  {
+    "requirement_id": "11.5.1",
+    "title": "PCI DSS 11.5.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_intrusion_detection_configuration",
+          "gcp_api": "gcp.network.configureIDS()",
+          "service": "gcp_network",
+          "rationale": "To ensure IDS/IPS configurations are set and monitored programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide logging and event reporting but lack direct IDS/IPS configuration management."
+    }
+  },
+  {
+    "requirement_id": "11.5.1.1",
+    "title": "PCI DSS 11.5.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_malware_communication_detection",
+          "gcp_api": "gcp.security.detectMalwareCommunication()",
+          "service": "gcp_security",
+          "rationale": "To detect and alert on covert malware communication channels programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "DNS logging helps, but specific detection of covert malware communication is needed."
+    }
+  },
+  {
+    "requirement_id": "11.5.2",
+    "title": "PCI DSS 11.5.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_file_integrity_monitoring",
+          "gcp_api": "gcp.storage.monitorFileIntegrity()",
+          "service": "gcp_storage",
+          "rationale": "To implement file integrity monitoring for critical files programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly address file integrity monitoring for critical files."
+    }
+  },
+  {
+    "requirement_id": "11.6.1",
+    "title": "PCI DSS 11.6.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_http_header_tamper_detection",
+          "gcp_api": "gcp.security.httpHeaderTamperDetection()",
+          "service": "gcp_security",
+          "rationale": "To programmatically detect and alert on unauthorized modifications to HTTP headers and script contents of payment pages."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions partially cover logging and vulnerability scanning, but a specific tamper-detection mechanism for HTTP headers and scripts is needed."
+    }
+  },
+  {
+    "requirement_id": "12.1.1",
+    "title": "PCI DSS 12.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is primarily policy-based and cannot be directly implemented through GCP SDK/API calls."
+    }
+  },
+  {
+    "requirement_id": "12.1.2",
+    "title": "PCI DSS 12.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement involves policy review and updates, which are not applicable for programmatic implementation via GCP APIs."
+    }
+  },
+  {
+    "requirement_id": "12.1.3",
+    "title": "PCI DSS 12.1.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Defining roles and responsibilities is a policy and HR function, not directly implementable via GCP APIs."
+    }
+  },
+  {
+    "requirement_id": "12.1.4",
+    "title": "PCI DSS 12.1.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Assigning responsibility to a CISO is an organizational policy decision, not applicable for GCP API implementation."
+    }
+  },
+  {
+    "requirement_id": "12.6.3.1",
+    "title": "PCI DSS 12.6.3.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_phishing_protection_configuration",
+          "gcp_api": "gcp.security.phishingProtection()",
+          "service": "gcp_security",
+          "rationale": "To programmatically configure phishing protection settings and monitor for phishing attempts."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is primarily about training and awareness, which cannot be directly implemented via GCP APIs. However, technical controls like phishing protection can support the goal of minimizing phishing risks."
+    }
+  },
+  {
+    "requirement_id": "12.6.3.2",
+    "title": "PCI DSS 12.6.3.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement focuses on training content related to acceptable use, which is not directly implementable via GCP APIs. No technical controls are applicable."
+    }
+  },
+  {
+    "requirement_id": "12.7.1",
+    "title": "PCI DSS 12.7.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Screening of potential personnel is a process handled outside of GCP and cannot be implemented programmatically through GCP APIs."
+    }
+  },
+  {
+    "requirement_id": "12.8.1",
+    "title": "PCI DSS 12.8.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_third_party_service_provider_management",
+          "gcp_api": "gcp.iam.thirdPartyServiceProvider()",
+          "service": "gcp_iam",
+          "rationale": "To manage and maintain a list of third-party service providers programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Maintaining a list of third-party service providers is a documentation task, but a function to manage these providers could support compliance."
+    }
+  },
+  {
+    "requirement_id": "12.8.2",
+    "title": "PCI DSS 12.8.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Maintaining written agreements with TPSPs is a contractual and documentation requirement, not directly implementable via GCP APIs."
+    }
+  },
+  {
+    "requirement_id": "12.8.3",
+    "title": "PCI DSS 12.8.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_tpsp_engagement_audit",
+          "gcp_api": "gcp.iam.audit()",
+          "service": "gcp_iam",
+          "rationale": "To programmatically verify and audit the engagement process of TPSPs, ensuring due diligence is performed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is primarily procedural and involves due diligence processes that are not directly implementable via GCP APIs. A new function to audit TPSP engagement could partially address this requirement."
+    }
+  },
+  {
+    "requirement_id": "12.8.4",
+    "title": "PCI DSS 12.8.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_tpsp_compliance_monitoring",
+          "gcp_api": "gcp.iam.complianceStatus()",
+          "service": "gcp_iam",
+          "rationale": "To automate the monitoring of TPSPs' PCI DSS compliance status annually."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions like 'iam_access_risk_assessment' can help assess risk but do not directly monitor TPSP compliance status. A new function is needed to automate this process."
+    }
+  },
+  {
+    "requirement_id": "12.8.5",
+    "title": "PCI DSS 12.8.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_tpsp_responsibility_matrix",
+          "gcp_api": "gcp.iam.responsibilityMatrix()",
+          "service": "gcp_iam",
+          "rationale": "To maintain and programmatically verify the responsibility matrix for PCI DSS requirements between TPSPs and the entity."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement involves maintaining a responsibility matrix, which is not directly supported by existing GCP functions. A new function to manage this matrix is suggested."
+    }
+  },
+  {
+    "requirement_id": "12.9.1",
+    "title": "PCI DSS 12.9.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_tpsp_agreement_verification",
+          "gcp_api": "gcp.iam.agreementVerification()",
+          "service": "gcp_iam",
+          "rationale": "To verify that TPSPs provide written agreements acknowledging their security responsibilities."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is focused on written agreements, which are not directly managed via GCP APIs. A new function could help verify the existence of such agreements."
+    }
+  },
+  {
+    "requirement_id": "12.9.2",
+    "title": "PCI DSS 12.9.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_tpsp_information_provision",
+          "gcp_api": "gcp.iam.informationProvision()",
+          "service": "gcp_iam",
+          "rationale": "To support TPSPs in providing necessary information to customers for PCI DSS compliance."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement involves TPSPs providing information to customers, which is not directly supported by existing GCP functions. A new function is needed to facilitate this process."
+    }
+  },
+  {
+    "requirement_id": "12.10.5",
+    "title": "PCI DSS 12.10.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_incident_alert_response",
+          "gcp_api": "gcp.securitycenter.alerts.list()",
+          "service": "security_command_center",
+          "rationale": "To enable automated responses to alerts generated by security monitoring systems."
+        },
+        {
+          "name": "gcp_network_intrusion_detection_monitoring",
+          "gcp_api": "gcp.network.securityMonitoring()",
+          "service": "network_security",
+          "rationale": "To monitor and respond to intrusion-detection and intrusion-prevention alerts."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover some aspects of monitoring and logging, but new functions are needed for automated response and specific intrusion detection."
+    }
+  },
+  {
+    "requirement_id": "12.10.6",
+    "title": "PCI DSS 12.10.6",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_incident_plan_update",
+          "gcp_api": "gcp.securitycenter.incidentResponsePlan.update()",
+          "service": "security_command_center",
+          "rationale": "To programmatically update the incident response plan based on lessons learned and industry developments."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly support the modification of incident response plans. A new function is needed to automate updates based on lessons learned."
+    }
+  },
+  {
+    "requirement_id": "12.10.7",
+    "title": "PCI DSS 12.10.7",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_pan_detection",
+          "gcp_api": "gcp.storage.dataInspection()",
+          "service": "storage",
+          "rationale": "To detect stored PAN in unexpected locations and trigger incident response procedures."
+        },
+        {
+          "name": "gcp_security_pan_remediation",
+          "gcp_api": "gcp.securitycenter.panRemediation()",
+          "service": "security_command_center",
+          "rationale": "To automate the remediation process when PAN is detected outside the CDE."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While event reporting is covered, specific detection and remediation of PAN storage outside the CDE require new functions."
+    }
+  }
+]

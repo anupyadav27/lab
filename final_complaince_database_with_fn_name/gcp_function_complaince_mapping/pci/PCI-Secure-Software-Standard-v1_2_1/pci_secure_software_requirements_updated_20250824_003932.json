@@ -1,0 +1,3278 @@
+[
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.a",
+    "full_requirement_id": "1.1.1.1.a",
+    "title": "PCI Secure Software 1.1 - 1.1.a",
+    "function_names": [
+      "bigquery_datasets_data_mining_protection",
+      "storage_buckets_personal_info_management"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_sensitive_data_identification",
+          "gcp_api": "gcp.storage.buckets.list()",
+          "service": "gcp_storage",
+          "rationale": "To programmatically identify and list all sensitive data stored in GCP storage buckets."
+        },
+        {
+          "name": "gcp_bigquery_sensitive_data_identification",
+          "gcp_api": "gcp.bigquery.datasets.list()",
+          "service": "gcp_bigquery",
+          "rationale": "To programmatically identify and list all sensitive data stored in BigQuery datasets."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover some aspects of data protection but do not fully identify all sensitive data types as required."
+    }
+  },
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.b",
+    "full_requirement_id": "1.1.1.1.b",
+    "title": "PCI Secure Software 1.1 - 1.1.b",
+    "function_names": [
+      "compute_disk_default_encryption_enabled",
+      "sql_instance_private_ip_configured"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_sensitive_data_storage_identification",
+          "gcp_api": "gcp.compute.instances.list()",
+          "service": "gcp_compute",
+          "rationale": "To identify where sensitive data is stored across different storage types in compute instances."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions ensure encryption and private IP configuration but do not fully identify storage locations of sensitive data."
+    }
+  },
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.c",
+    "full_requirement_id": "1.1.1.1.c",
+    "title": "PCI Secure Software 1.1 - 1.1.c",
+    "function_names": [
+      "kms_keys_authorized_algorithms",
+      "network_vpc_secure_transmission_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_sensitive_data_protection_controls",
+          "gcp_api": "gcp.security.policies.list()",
+          "service": "gcp_security",
+          "rationale": "To list and verify security controls implemented to protect sensitive data."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide encryption and secure transmission but do not cover all security controls for sensitive data."
+    }
+  },
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.d",
+    "full_requirement_id": "1.1.1.1.d",
+    "title": "PCI Secure Software 1.1 - 1.1.d",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_sensitive_data_validation",
+          "gcp_api": "gcp.security.scanner.run()",
+          "service": "gcp_security",
+          "rationale": "To programmatically validate the presence and protection of sensitive data as identified in previous requirements."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly validate sensitive data presence and protection; a new function is needed."
+    }
+  },
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.e",
+    "full_requirement_id": "1.1.1.1.e",
+    "title": "PCI Secure Software 1.1 - 1.1.e",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_transaction_data_identification",
+          "gcp_api": "gcp.security.transactions.list()",
+          "service": "gcp_security",
+          "rationale": "To identify and confirm transaction types and card data elements supported by the software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not cover transaction data identification; a new function is necessary to meet the requirement."
+    }
+  },
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.f",
+    "full_requirement_id": "1.1.1.1.f",
+    "title": "PCI Secure Software 1.1 - 1.1.f",
+    "function_names": [
+      "security_assets_identification_critical",
+      "compute_persistent_disks_encrypted_with_cmek",
+      "firestore_database_tls_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_cryptographic_implementation_identification",
+          "gcp_api": "gcp.security.scanCryptographicImplementations()",
+          "service": "gcp_security",
+          "rationale": "To programmatically identify cryptographic implementations used by the software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover encryption and asset identification, but a specific function to identify cryptographic implementations is needed."
+    }
+  },
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.g",
+    "full_requirement_id": "1.1.1.1.g",
+    "title": "PCI Secure Software 1.1 - 1.1.g",
+    "function_names": [
+      "iam_policy_attached_to_trusted_identities",
+      "iam_user_min_password_change_days",
+      "iam_root_user_access_key_absent"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_account_credential_identification",
+          "gcp_api": "gcp.iam.listAccountsAndCredentials()",
+          "service": "gcp_iam",
+          "rationale": "To identify all accounts and credentials supported by the software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "IAM functions provide good coverage for account management, but a specific function to identify all accounts and credentials is needed."
+    }
+  },
+  {
+    "control_objective_id": "1.1",
+    "requirement_id": "1.1.h",
+    "full_requirement_id": "1.1.1.1.h",
+    "title": "PCI Secure Software 1.1 - 1.1.h",
+    "function_names": [
+      "compute_instance_config_sync_compliance_status",
+      "os_file_permissions_configured"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_sensitive_config_options_identification",
+          "gcp_api": "gcp.compute.listSensitiveConfigOptions()",
+          "service": "gcp_compute",
+          "rationale": "To identify configuration options impacting sensitive data."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions address configuration compliance but do not specifically identify sensitive configuration options."
+    }
+  },
+  {
+    "control_objective_id": "1.2",
+    "requirement_id": "1.2.a",
+    "full_requirement_id": "1.2.1.2.a",
+    "title": "PCI Secure Software 1.2 - 1.2.a",
+    "function_names": [
+      "security_assets_identification_critical",
+      "compute_instance_use_instance_specific_ssh_keys"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_sensitive_functions_identification",
+          "gcp_api": "gcp.security.listSensitiveFunctions()",
+          "service": "gcp_security",
+          "rationale": "To maintain information on sensitive functions and resources used by the software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Asset identification is covered, but a specific function to list sensitive functions is needed."
+    }
+  },
+  {
+    "control_objective_id": "1.2",
+    "requirement_id": "1.2.b",
+    "full_requirement_id": "1.2.1.2.b",
+    "title": "PCI Secure Software 1.2 - 1.2.b",
+    "function_names": [
+      "compute_persistent_disks_encrypted_with_cmek",
+      "storage_objects_access_restriction"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_sensitive_data_location_identification",
+          "gcp_api": "gcp.storage.identifySensitiveDataLocations()",
+          "service": "gcp_storage",
+          "rationale": "To describe how and where sensitive data is stored, including temporary and non-volatile storage."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions address encryption and access restrictions, but a function to identify sensitive data storage locations is needed."
+    }
+  },
+  {
+    "control_objective_id": "1.2",
+    "requirement_id": "1.2.c",
+    "full_requirement_id": "1.2.1.2.c",
+    "title": "PCI Secure Software 1.2 - 1.2.c",
+    "function_names": [
+      "security_assets_identification_critical",
+      "security_command_center_event_categorization"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_third_party_guidance_compliance_check",
+          "gcp_api": "gcp.security.checkThirdPartyCompliance()",
+          "service": "gcp_security",
+          "rationale": "To ensure third-party software follows available guidance, a function to programmatically verify compliance with standards like PTS or FIPS is needed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help in identifying critical assets but do not fully cover compliance verification for third-party software guidance."
+    }
+  },
+  {
+    "control_objective_id": "1.3",
+    "requirement_id": "1.3",
+    "full_requirement_id": "1.3.1.3",
+    "title": "PCI Secure Software 1.3 - 1.3",
+    "function_names": [
+      "security_assets_identification_critical"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_critical_assets_inventory_maintenance",
+          "gcp_api": "gcp.security.maintainCriticalAssetsInventory()",
+          "service": "gcp_security",
+          "rationale": "A function to maintain an inventory of critical assets with classifications is needed to ensure compliance with classification requirements."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions identify critical assets but do not maintain an inventory or classification, which is required for full compliance."
+    }
+  },
+  {
+    "control_objective_id": "2.1",
+    "requirement_id": "2.1.a",
+    "full_requirement_id": "2.1.2.1.a",
+    "title": "PCI Secure Software 2.1 - 2.1.a",
+    "function_names": [
+      "compute_instance_use_instance_specific_ssh_keys",
+      "compute_instance_config_sync_compliance_status"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_exposed_interfaces_scan",
+          "gcp_api": "gcp.compute.scanExposedInterfaces()",
+          "service": "gcp_compute",
+          "rationale": "A function to scan for exposed interfaces and verify their documentation and justification is needed to ensure secure default configurations."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions relate to instance-specific configurations but do not address scanning or documentation of exposed interfaces."
+    }
+  },
+  {
+    "control_objective_id": "2.1",
+    "requirement_id": "2.1.b",
+    "full_requirement_id": "2.1.2.1.b",
+    "title": "PCI Secure Software 2.1 - 2.1.b",
+    "function_names": [
+      "iam_authentication_mechanisms_integrity"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_external_authentication_verification",
+          "gcp_api": "gcp.iam.verifyExternalAuthentication()",
+          "service": "gcp_iam",
+          "rationale": "A function to verify external authentication mechanisms for exposed interfaces is needed to ensure proper authentication is in place."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing IAM functions cover authentication integrity but do not specifically address external resources for authentication."
+    }
+  },
+  {
+    "control_objective_id": "2.1",
+    "requirement_id": "2.1.c",
+    "full_requirement_id": "2.1.2.1.c",
+    "title": "PCI Secure Software 2.1 - 2.1.c",
+    "function_names": [
+      "network_ssl_certificates_expiration_within_days",
+      "firestore_database_tls_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_external_data_protection_verification",
+          "gcp_api": "gcp.network.verifyExternalDataProtection()",
+          "service": "gcp_network",
+          "rationale": "To ensure proper protection of sensitive data during transmission, a function to verify external resources for data protection is needed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions ensure TLS and certificate management but do not fully cover verification of external data protection resources."
+    }
+  },
+  {
+    "control_objective_id": "2.1",
+    "requirement_id": "2.1.d",
+    "full_requirement_id": "2.1.2.1.d",
+    "title": "PCI Secure Software 2.1 - 2.1.d",
+    "function_names": [
+      "cloudfunctions_cloudtrace_enabled",
+      "appengine_service_logging_enabled",
+      "logging_sink_export_all_logs"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_check_public_vulnerabilities",
+          "gcp_api": "gcp.security.checkPublicVulnerabilities()",
+          "service": "gcp_security",
+          "rationale": "To programmatically check exposed protocols, methods, or services against public vulnerability databases."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide logging and tracing capabilities but do not directly address checking for publicly disclosed vulnerabilities."
+    }
+  },
+  {
+    "control_objective_id": "2.1",
+    "requirement_id": "2.1.e",
+    "full_requirement_id": "2.1.2.1.e",
+    "title": "PCI Secure Software 2.1 - 2.1.e",
+    "function_names": [
+      "network_firewall_block_public_ingress_except_ssh",
+      "network_ssl_certificates_expiration_within_days"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_mitigate_known_vulnerabilities",
+          "gcp_api": "gcp.security.mitigateKnownVulnerabilities()",
+          "service": "gcp_security",
+          "rationale": "To programmatically implement and verify mitigation methods for known vulnerabilities."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions help with network security but do not provide direct mitigation for known vulnerabilities in software interfaces."
+    }
+  },
+  {
+    "control_objective_id": "2.1",
+    "requirement_id": "2.1.f",
+    "full_requirement_id": "2.1.2.1.f",
+    "title": "PCI Secure Software 2.1 - 2.1.f",
+    "function_names": [
+      "compute_instance_use_instance_specific_ssh_keys",
+      "iam_service_accounts_risk_management"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_third_party_module_access_control",
+          "gcp_api": "gcp.security.thirdPartyModuleAccessControl()",
+          "service": "gcp_security",
+          "rationale": "To verify and control access to third-party module functions programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some access control but do not specifically address third-party module exposure."
+    }
+  },
+  {
+    "control_objective_id": "2.2",
+    "requirement_id": "2.2.a",
+    "full_requirement_id": "2.2.2.2.a",
+    "title": "PCI Secure Software 2.2 - 2.2.a",
+    "function_names": [
+      "compute_engine_secure_configuration",
+      "iam_authentication_mechanisms_integrity"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_controls_enabled_on_install",
+          "gcp_api": "gcp.security.controlsEnabledOnInstall()",
+          "service": "gcp_security",
+          "rationale": "To ensure all security controls are enabled upon software installation."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions ensure secure configurations but do not explicitly verify all security controls are enabled on installation."
+    }
+  },
+  {
+    "control_objective_id": "2.2",
+    "requirement_id": "2.2.b",
+    "full_requirement_id": "2.2.2.2.b",
+    "title": "PCI Secure Software 2.2 - 2.2.b",
+    "function_names": [
+      "cloudsql_postgresql_enable_pgaudit_flag",
+      "logging_login_attempts_monitoring"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_sensitive_data_post_initialization",
+          "gcp_api": "gcp.security.sensitiveDataPostInitialization()",
+          "service": "gcp_security",
+          "rationale": "To ensure sensitive data is processed only after security controls are initialized."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions support logging and auditing but do not ensure data processing occurs only after security initialization."
+    }
+  },
+  {
+    "control_objective_id": "2.2",
+    "requirement_id": "2.2.c",
+    "full_requirement_id": "2.2.2.2.c",
+    "title": "PCI Secure Software 2.2 - 2.2.c",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_policy_no_full_access",
+      "iam_service_accounts_enforce_access_policies"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_default_security_controls_enabled",
+          "gcp_api": "gcp.iam.setDefaultSecurityControls()",
+          "service": "iam",
+          "rationale": "To ensure all security controls are enabled by default upon installation."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "The existing functions ensure no default usage and enforce access policies, but a specific function to enable all security controls by default is needed."
+    }
+  },
+  {
+    "control_objective_id": "2.3",
+    "requirement_id": "2.3.a",
+    "full_requirement_id": "2.3.2.3.a",
+    "title": "PCI Secure Software 2.3 - 2.3.a",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_user_root_access_key_absent"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_check_default_credentials",
+          "gcp_api": "gcp.iam.checkDefaultCredentials()",
+          "service": "iam",
+          "rationale": "To programmatically identify and verify the absence of default credentials."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions cover the absence of default usage but do not explicitly verify default credentials. A new function is needed for comprehensive coverage."
+    }
+  },
+  {
+    "control_objective_id": "2.3",
+    "requirement_id": "2.3.b",
+    "full_requirement_id": "2.3.2.3.b",
+    "title": "PCI Secure Software 2.3 - 2.3.b",
+    "function_names": [
+      "iam_service_account_no_default_usage"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_test_default_credentials_absence",
+          "gcp_api": "gcp.iam.testDefaultCredentialsAbsence()",
+          "service": "iam",
+          "rationale": "To test and confirm the absence of default credentials programmatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Testing for the absence of default credentials requires a specific function to ensure compliance."
+    }
+  },
+  {
+    "control_objective_id": "2.3",
+    "requirement_id": "2.3.c",
+    "full_requirement_id": "2.3.2.3.c",
+    "title": "PCI Secure Software 2.3 - 2.3.c",
+    "function_names": [
+      "iam_service_account_no_default_usage"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_user_guidance_on_credentials_change",
+          "gcp_api": "gcp.iam.provideUserGuidanceOnCredentialsChange()",
+          "service": "iam",
+          "rationale": "To ensure user guidance is provided programmatically for changing default credentials."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While existing functions prevent default usage, guidance on changing credentials needs a dedicated function."
+    }
+  },
+  {
+    "control_objective_id": "2.3",
+    "requirement_id": "2.3.d",
+    "full_requirement_id": "2.3.2.3.d",
+    "title": "PCI Secure Software 2.3 - 2.3.d",
+    "function_names": [
+      "iam_service_account_no_default_usage"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_verify_no_default_credentials_post_install",
+          "gcp_api": "gcp.iam.verifyNoDefaultCredentialsPostInstall()",
+          "service": "iam",
+          "rationale": "To verify that no default credentials are used after installation."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Verification post-installation is crucial to ensure no default credentials are active, requiring a specific function."
+    }
+  },
+  {
+    "control_objective_id": "2.3",
+    "requirement_id": "2.3.e",
+    "full_requirement_id": "2.3.2.3.e",
+    "title": "PCI Secure Software 2.3 - 2.3.e",
+    "function_names": [
+      "iam_root_user_access_key_absent",
+      "compute_instance_use_instance_specific_ssh_keys"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_check_default_credentials_absent",
+          "gcp_api": "gcp.iam.credentials.list()",
+          "service": "gcp_iam",
+          "rationale": "To ensure that no default IAM credentials are being used after initialization."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "The existing functions partially cover the requirement by ensuring no root access keys and instance-specific SSH keys are used. However, a specific check for default IAM credentials is needed."
+    }
+  },
+  {
+    "control_objective_id": "2.4",
+    "requirement_id": "2.4.a",
+    "full_requirement_id": "2.4.2.4.a",
+    "title": "PCI Secure Software 2.4 - 2.4.a",
+    "function_names": [
+      "iam_policy_attached_to_trusted_identities",
+      "iam_authentication_mechanisms_integrity"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_check_minimal_privileges",
+          "gcp_api": "gcp.compute.instances.getIamPolicy()",
+          "service": "gcp_compute",
+          "rationale": "To verify that compute instances have the minimal necessary IAM roles assigned."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions ensure IAM policies are attached to trusted identities and authentication mechanisms are intact. Additional checks for minimal privilege assignment are required."
+    }
+  },
+  {
+    "control_objective_id": "2.4",
+    "requirement_id": "2.4.b",
+    "full_requirement_id": "2.4.2.4.b",
+    "title": "PCI Secure Software 2.4 - 2.4.b",
+    "function_names": [
+      "security_assets_identification_critical",
+      "security_command_center_event_categorization"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_mechanisms_implementation_check",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "gcp_security",
+          "rationale": "To ensure mechanisms are in place to prevent unauthorized access to critical assets."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions help identify critical assets and categorize events, but a specific check for implemented security mechanisms is needed."
+    }
+  },
+  {
+    "control_objective_id": "2.4",
+    "requirement_id": "2.4.c",
+    "full_requirement_id": "2.4.2.4.c",
+    "title": "PCI Secure Software 2.4 - 2.4.c",
+    "function_names": [
+      "os_file_permissions_configured",
+      "compute_instance_config_sync_compliance_status"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide good coverage for checking file permissions and instance compliance, aligning well with the requirement."
+    }
+  },
+  {
+    "control_objective_id": "2.4",
+    "requirement_id": "2.4.d",
+    "full_requirement_id": "2.4.2.4.d",
+    "title": "PCI Secure Software 2.4 - 2.4.d",
+    "function_names": [
+      "compute_engine_secure_configuration",
+      "gke_cluster_authorization_mode_not_always_allow"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_check_legacy_feature_absence",
+          "gcp_api": "gcp.compute.instances.list()",
+          "service": "gcp_compute",
+          "rationale": "To ensure that legacy features are not used in compute instances."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While existing functions ensure secure configurations and authorization modes, a specific check for legacy feature usage is necessary."
+    }
+  },
+  {
+    "control_objective_id": "2.5",
+    "requirement_id": "2.5.a",
+    "full_requirement_id": "2.5.2.5.a",
+    "title": "PCI Secure Software 2.5 - 2.5.a",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_policy_no_full_access",
+      "iam_user_no_direct_custom_roles"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help ensure that default accounts do not have excessive privileges, aligning with the principle of least privilege."
+    }
+  },
+  {
+    "control_objective_id": "2.5",
+    "requirement_id": "2.5.b",
+    "full_requirement_id": "2.5.2.5.b",
+    "title": "PCI Secure Software 2.5 - 2.5.b",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_policy_no_full_access",
+      "iam_user_no_direct_custom_roles"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide a way to verify that default accounts are properly managed and do not have unnecessary privileges."
+    }
+  },
+  {
+    "control_objective_id": "2.5",
+    "requirement_id": "2.5.c",
+    "full_requirement_id": "2.5.2.5.c",
+    "title": "PCI Secure Software 2.5 - 2.5.c",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_policy_no_full_access"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_api_protection_check",
+          "gcp_api": "gcp.iam.check_api_protection()",
+          "service": "gcp_iam",
+          "rationale": "This function is needed to verify that APIs are protected from unauthorized access and modifications."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help ensure that account privileges are limited, but additional checks for API protection are necessary."
+    }
+  },
+  {
+    "control_objective_id": "3.1",
+    "requirement_id": "3.1.a",
+    "full_requirement_id": "3.1.3.1.a",
+    "title": "PCI Secure Software 3.1 - 3.1.a",
+    "function_names": [
+      "bigquery_table_data_masking_policy",
+      "bigquery_table_data_classification_verified",
+      "sql_database_user_options_disabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions assist in identifying and managing sensitive data retention policies effectively."
+    }
+  },
+  {
+    "control_objective_id": "3.1",
+    "requirement_id": "3.1.b",
+    "full_requirement_id": "3.1.3.1.b",
+    "title": "PCI Secure Software 3.1 - 3.1.b",
+    "function_names": [
+      "bigquery_table_data_masking_policy",
+      "bigquery_table_data_classification_verified",
+      "sql_database_user_options_disabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide a means to verify that sensitive data retention functions are properly supported."
+    }
+  },
+  {
+    "control_objective_id": "3.3",
+    "requirement_id": "3.3.e",
+    "full_requirement_id": "3.3.3.3.e",
+    "title": "PCI Secure Software 3.3 - 3.3.e",
+    "function_names": [
+      "storage_objects_access_restricted",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_secure_memory_location",
+          "gcp_api": "gcp.storage.objects.setIamPolicy()",
+          "service": "gcp_storage",
+          "rationale": "To ensure sensitive data is stored in secure memory locations with appropriate IAM policies."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide partial coverage by restricting access and ensuring encryption. Additional function needed to ensure secure memory location configuration."
+    }
+  },
+  {
+    "control_objective_id": "3.4",
+    "requirement_id": "3.4.a",
+    "full_requirement_id": "3.4.3.4.a",
+    "title": "PCI Secure Software 3.4 - 3.4.a",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_secure_delete",
+          "gcp_api": "gcp.storage.objects.delete()",
+          "service": "gcp_storage",
+          "rationale": "To programmatically ensure that persistent sensitive data is securely deleted and rendered irretrievable."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly address secure deletion of persistent sensitive data. A new function is required to automate secure deletion."
+    }
+  },
+  {
+    "control_objective_id": "3.4",
+    "requirement_id": "3.4.b",
+    "full_requirement_id": "3.4.3.4.b",
+    "title": "PCI Secure Software 3.4 - 3.4.b",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_platform_specific_secure_delete",
+          "gcp_api": "gcp.storage.objects.delete()",
+          "service": "gcp_storage",
+          "rationale": "To handle platform-specific secure deletion challenges such as SSD over-provisioning."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Secure deletion must consider platform-specific issues. A new function is needed to address these challenges."
+    }
+  },
+  {
+    "control_objective_id": "3.4",
+    "requirement_id": "3.4.c",
+    "full_requirement_id": "3.4.3.4.c",
+    "title": "PCI Secure Software 3.4 - 3.4.c",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_forensic_analysis_support",
+          "gcp_api": "gcp.storage.objects.getMetadata()",
+          "service": "gcp_storage",
+          "rationale": "To support forensic analysis by providing metadata and ensuring secure deletion methods are verifiable."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Forensic analysis requires additional support to verify secure deletion. New function needed to assist in this verification."
+    }
+  },
+  {
+    "control_objective_id": "3.5",
+    "requirement_id": "3.5.a",
+    "full_requirement_id": "3.5.3.5.a",
+    "title": "PCI Secure Software 3.5 - 3.5.a",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_transient_data_secure_delete",
+          "gcp_api": "gcp.compute.instances.delete()",
+          "service": "gcp_compute",
+          "rationale": "To ensure transient sensitive data is securely deleted from temporary storage automatically."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Transient data requires secure deletion from temporary storage. A new function is needed to automate this process."
+    }
+  },
+  {
+    "control_objective_id": "3.5",
+    "requirement_id": "3.5.b",
+    "full_requirement_id": "3.5.3.5.b",
+    "title": "PCI Secure Software 3.5 - 3.5.b",
+    "function_names": [
+      "compute_instance_fault_prevention",
+      "storage_objects_access_restricted"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_secure_delete_transient_data",
+          "gcp_api": "gcp.compute.instances.delete()",
+          "service": "compute",
+          "rationale": "To ensure transient sensitive data is securely deleted from temporary storage facilities."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide partial coverage by ensuring access restrictions and fault prevention, but do not directly address secure deletion of transient data."
+    }
+  },
+  {
+    "control_objective_id": "3.5",
+    "requirement_id": "3.5.c",
+    "full_requirement_id": "3.5.3.5.c",
+    "title": "PCI Secure Software 3.5 - 3.5.c",
+    "function_names": [
+      "compute_instance_fault_prevention",
+      "storage_objects_access_restricted"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_check_sensitive_data_residue",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To identify any sensitive data residue in the execution environment."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help in restricting access but do not cover the identification of sensitive data residue."
+    }
+  },
+  {
+    "control_objective_id": "3.6",
+    "requirement_id": "3.6.a",
+    "full_requirement_id": "3.6.3.6.a",
+    "title": "PCI Secure Software 3.6 - 3.6.a",
+    "function_names": [
+      "logging_project_audit_logging_enabled",
+      "logging_cloud_logging_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_analyze_sensitive_data_leakage",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "security_command_center",
+          "rationale": "To analyze and account for all sensitive data disclosure attack vectors."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Logging functions provide partial coverage by enabling audit logs, but do not directly analyze sensitive data leakage."
+    }
+  },
+  {
+    "control_objective_id": "3.6",
+    "requirement_id": "3.6.b",
+    "full_requirement_id": "3.6.3.6.b",
+    "title": "PCI Secure Software 3.6 - 3.6.b",
+    "function_names": [
+      "bigquery_table_data_masking_policy",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_protect_sensitive_data",
+          "gcp_api": "gcp.kms.cryptoKeys.encrypt()",
+          "service": "kms",
+          "rationale": "To protect against unintended disclosure of sensitive data using cryptography."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide data masking and encryption, but additional cryptographic protection is needed."
+    }
+  },
+  {
+    "control_objective_id": "3.6",
+    "requirement_id": "3.6.c",
+    "full_requirement_id": "3.6.3.6.c",
+    "title": "PCI Secure Software 3.6 - 3.6.c",
+    "function_names": [
+      "iam_application_security_requirements_specified"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_user_guidance_provided",
+          "gcp_api": "gcp.iam.policies.get()",
+          "service": "iam",
+          "rationale": "To ensure guidance on the proper configuration and use of protection methods is provided."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing IAM functions specify security requirements but do not ensure user guidance is provided."
+    }
+  },
+  {
+    "control_objective_id": "4.2",
+    "requirement_id": "4.2.b",
+    "full_requirement_id": "4.2.4.2.b",
+    "title": "PCI Secure Software 4.2 - 4.2.b",
+    "function_names": [
+      "compute_instance_applications_installed_version_platform",
+      "gke_cluster_pod_security_baseline_enforced"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_instance_security_settings_verified",
+          "gcp_api": "compute.instances.get()",
+          "service": "gcp_compute",
+          "rationale": "To verify that security settings are applied by default upon installation."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help verify installed applications and pod security, but a specific function to check security settings is needed."
+    }
+  },
+  {
+    "control_objective_id": "4.2",
+    "requirement_id": "4.2.c",
+    "full_requirement_id": "4.2.4.2.c",
+    "title": "PCI Secure Software 4.2 - 4.2.c",
+    "function_names": [
+      "iam_account_mfa_enforcement",
+      "iam_service_accounts_enforce_access_policies"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_user_input_authentication_required",
+          "gcp_api": "iam.users.get()",
+          "service": "gcp_iam",
+          "rationale": "To ensure that user input requiring authentication is enforced."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions enforce MFA and access policies, but a function to check user input authentication is necessary."
+    }
+  },
+  {
+    "control_objective_id": "4.2",
+    "requirement_id": "4.2.d",
+    "full_requirement_id": "4.2.4.2.d",
+    "title": "PCI Secure Software 4.2 - 4.2.d",
+    "function_names": [
+      "gke_cluster_pod_security_baseline_enforced",
+      "compute_instance_applications_installed_version_platform"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_instance_execution_environment_settings_enabled",
+          "gcp_api": "compute.instances.get()",
+          "service": "gcp_compute",
+          "rationale": "To confirm guidance is provided on enabling execution environment settings."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions verify pod security and application versions, but a function for execution environment settings is lacking."
+    }
+  },
+  {
+    "control_objective_id": "4.2",
+    "requirement_id": "4.2.e",
+    "full_requirement_id": "4.2.4.2.e",
+    "title": "PCI Secure Software 4.2 - 4.2.e",
+    "function_names": [
+      "compute_instance_fault_prevention",
+      "compute_vm_os_inventory_reporting_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_instance_mitigation_controls_status_checked",
+          "gcp_api": "compute.instances.get()",
+          "service": "gcp_compute",
+          "rationale": "To check if software verifies mitigation controls before launch."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions assist with fault prevention and inventory reporting, but a function for checking mitigation controls is required."
+    }
+  },
+  {
+    "control_objective_id": "5.1",
+    "requirement_id": "5.1.a",
+    "full_requirement_id": "5.1.5.1.a",
+    "title": "PCI Secure Software 5.1 - 5.1.a",
+    "function_names": [
+      "iam_account_mfa_enforcement",
+      "iam_service_account_no_default_usage"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover MFA and service account usage, but a function to define authentication requirements is not present."
+    }
+  },
+  {
+    "control_objective_id": "5.1",
+    "requirement_id": "5.1.b",
+    "full_requirement_id": "5.1.5.1.b",
+    "title": "PCI Secure Software 5.1 - 5.1.b",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_service_account_keys_rotation",
+      "iam_account_mfa_enforcement"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover aspects of authentication mechanisms and service account usage, but may not fully address all aspects of the requirement."
+    }
+  },
+  {
+    "control_objective_id": "5.1",
+    "requirement_id": "5.1.c",
+    "full_requirement_id": "5.1.5.1.c",
+    "title": "PCI Secure Software 5.1 - 5.1.c",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_service_accounts_enforce_access_policies"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_vpn_configuration_guidance",
+          "gcp_api": "gcp.networks.vpnConfigurations.get()",
+          "service": "gcp_network",
+          "rationale": "This function is needed to provide guidance on configuring VPN authentication mechanisms."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help enforce access policies but lack specific guidance on third-party VPN configurations."
+    }
+  },
+  {
+    "control_objective_id": "5.1",
+    "requirement_id": "5.1.d",
+    "full_requirement_id": "5.1.5.1.d",
+    "title": "PCI Secure Software 5.1 - 5.1.d",
+    "function_names": [
+      "iam_service_account_keys_rotation"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_identify_sensitive_data",
+          "gcp_api": "gcp.iam.identifySensitiveData()",
+          "service": "gcp_iam",
+          "rationale": "This function is needed to identify and manage sensitive data associated with authentication credentials."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions focus on key rotation but do not specifically identify sensitive data related to authentication."
+    }
+  },
+  {
+    "control_objective_id": "5.2",
+    "requirement_id": "5.2.a",
+    "full_requirement_id": "5.2.5.2.a",
+    "title": "PCI Secure Software 5.2 - 5.2.a",
+    "function_names": [
+      "iam_user_no_direct_custom_roles",
+      "iam_user_inactive_password_lock"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help enforce user role policies but may not fully ensure unique identification for all authentication methods."
+    }
+  },
+  {
+    "control_objective_id": "5.2",
+    "requirement_id": "5.2.b",
+    "full_requirement_id": "5.2.5.2.b",
+    "title": "PCI Secure Software 5.2 - 5.2.b",
+    "function_names": [
+      "iam_service_accounts_supply_chain_protection"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_api_unique_identification_required",
+          "gcp_api": "gcp.iam.api.requireUniqueIdentification()",
+          "service": "gcp_iam",
+          "rationale": "This function is needed to enforce unique identification for automated access to critical assets."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some supply chain protection but do not ensure unique identification for automated access."
+    }
+  },
+  {
+    "control_objective_id": "5.2",
+    "requirement_id": "5.2.c",
+    "full_requirement_id": "5.2.5.2.c",
+    "title": "PCI Secure Software 5.2 - 5.2.c",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_user_no_direct_custom_roles",
+      "iam_user_root_access_key_absent"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help ensure unique identification and restrict shared accounts, but additional controls may be needed for comprehensive coverage."
+    }
+  },
+  {
+    "control_objective_id": "5.2",
+    "requirement_id": "5.2.d",
+    "full_requirement_id": "5.2.5.2.d",
+    "title": "PCI Secure Software 5.2 - 5.2.d",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_user_no_direct_custom_roles",
+      "iam_user_root_access_key_absent"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions ensure that shared accounts are not used, but further verification mechanisms may be necessary."
+    }
+  },
+  {
+    "control_objective_id": "5.3",
+    "requirement_id": "5.3.a",
+    "full_requirement_id": "5.3.5.3.a",
+    "title": "PCI Secure Software 5.3 - 5.3.a",
+    "function_names": [
+      "iam_service_account_keys_rotation",
+      "iam_account_mfa_enforcement"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help ensure strong authentication methods, but additional testing and evaluation functions may be required."
+    }
+  },
+  {
+    "control_objective_id": "5.3",
+    "requirement_id": "5.3.b",
+    "full_requirement_id": "5.3.5.3.b",
+    "title": "PCI Secure Software 5.3 - 5.3.b",
+    "function_names": [
+      "iam_service_account_keys_rotation",
+      "iam_account_mfa_enforcement"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some assurance of robust methods, but further evaluation capabilities are needed."
+    }
+  },
+  {
+    "control_objective_id": "5.3",
+    "requirement_id": "5.3.c",
+    "full_requirement_id": "5.3.5.3.c",
+    "title": "PCI Secure Software 5.3 - 5.3.c",
+    "function_names": [
+      "iam_service_account_keys_rotation",
+      "iam_account_mfa_enforcement"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions ensure some level of security for authentication methods, but comprehensive testing functions are needed."
+    }
+  },
+  {
+    "control_objective_id": "5.4",
+    "requirement_id": "5.4.a",
+    "full_requirement_id": "5.4.5.4.a",
+    "title": "PCI Secure Software 5.4 - 5.4.a",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_policy_no_full_access",
+      "iam_service_accounts_enforce_access_policies"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help ensure that service accounts and IAM policies are configured to restrict access to critical assets based on least privilege."
+    }
+  },
+  {
+    "control_objective_id": "5.4",
+    "requirement_id": "5.4.b",
+    "full_requirement_id": "5.4.5.4.b",
+    "title": "PCI Secure Software 5.4 - 5.4.b",
+    "function_names": [
+      "iam_service_account_no_default_usage",
+      "iam_policy_no_full_access",
+      "iam_service_accounts_enforce_access_policies"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions can verify that access to critical assets is restricted and correlate access levels with defined policies."
+    }
+  },
+  {
+    "control_objective_id": "6.1",
+    "requirement_id": "6.1.a",
+    "full_requirement_id": "6.1.6.1.a",
+    "title": "PCI Secure Software 6.1 - 6.1.a",
+    "function_names": [
+      "bigquery_table_data_masking_policy",
+      "storage_objects_access_restricted",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions ensure that sensitive data is stored securely and that access is restricted, with encryption options available."
+    }
+  },
+  {
+    "control_objective_id": "6.1",
+    "requirement_id": "6.1.b",
+    "full_requirement_id": "6.1.6.1.b",
+    "title": "PCI Secure Software 6.1 - 6.1.b",
+    "function_names": [
+      "bigquery_table_data_masking_policy",
+      "storage_objects_access_restricted",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions can confirm that security controls are in place to protect sensitive data during storage."
+    }
+  },
+  {
+    "control_objective_id": "6.1",
+    "requirement_id": "6.1.c",
+    "full_requirement_id": "6.1.6.1.c",
+    "title": "PCI Secure Software 6.1 - 6.1.c",
+    "function_names": [
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_data_encryption_methods_compliance",
+          "gcp_api": "gcp.storage.check_encryption_methods()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to verify that cryptographic methods used for securing sensitive data comply with defined standards."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "A new function is needed to specifically check compliance of cryptographic methods used for sensitive data."
+    }
+  },
+  {
+    "control_objective_id": "6.1",
+    "requirement_id": "6.1.d",
+    "full_requirement_id": "6.1.6.1.d",
+    "title": "PCI Secure Software 6.1 - 6.1.d",
+    "function_names": [
+      "bigquery_table_data_masking_policy",
+      "storage_objects_access_restricted"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_index_token_generation_validation",
+          "gcp_api": "gcp.storage.validateIndexTokenGeneration()",
+          "service": "gcp_storage",
+          "rationale": "To ensure index tokens are generated without correlation to sensitive data."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover data masking and access restrictions, but a specific function for index token validation is needed."
+    }
+  },
+  {
+    "control_objective_id": "6.1",
+    "requirement_id": "6.1.e",
+    "full_requirement_id": "6.1.6.1.e",
+    "title": "PCI Secure Software 6.1 - 6.1.e",
+    "function_names": [
+      "compute_instance_applications_installed_version_platform",
+      "compute_vm_os_inventory_reporting_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_execution_environment_security_validation",
+          "gcp_api": "gcp.compute.validateExecutionEnvironmentSecurity()",
+          "service": "gcp_compute",
+          "rationale": "To validate security properties of execution environments across all platforms."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide platform information, but additional validation of security properties is required."
+    }
+  },
+  {
+    "control_objective_id": "6.1",
+    "requirement_id": "6.1.f",
+    "full_requirement_id": "6.1.6.1.f",
+    "title": "PCI Secure Software 6.1 - 6.1.f",
+    "function_names": [
+      "compute_images_ensure_no_malicious_code",
+      "security_command_center_access_transparency_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_third_party_software_vulnerability_check",
+          "gcp_api": "gcp.security.checkThirdPartySoftwareVulnerabilities()",
+          "service": "gcp_security",
+          "rationale": "To ensure third-party software has no unmitigated vulnerabilities."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Functions for checking malicious code and transparency exist, but specific third-party vulnerability checks are needed."
+    }
+  },
+  {
+    "control_objective_id": "6.2",
+    "requirement_id": "6.2.a",
+    "full_requirement_id": "6.2.6.2.a",
+    "title": "PCI Secure Software 6.2 - 6.2.a",
+    "function_names": [
+      "network_firewall_block_public_ingress_except_ssh",
+      "endpoints_api_ssl_certificate_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_sensitive_data_transmission_identification",
+          "gcp_api": "gcp.network.identifySensitiveDataTransmission()",
+          "service": "gcp_network",
+          "rationale": "To identify and confirm protection requirements for sensitive data transmission."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover encryption and ingress controls, but identification of sensitive data transmission locations is required."
+    }
+  },
+  {
+    "control_objective_id": "6.2",
+    "requirement_id": "6.2.b",
+    "full_requirement_id": "6.2.6.2.b",
+    "title": "PCI Secure Software 6.2 - 6.2.b",
+    "function_names": [
+      "network_firewall_rules_priority_order",
+      "endpoints_api_ssl_certificate_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_sensitive_data_encryption_verification",
+          "gcp_api": "gcp.network.verifySensitiveDataEncryption()",
+          "service": "gcp_network",
+          "rationale": "To verify encryption of sensitive data during transmission."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Functions for encryption and firewall rules are in place, but verification of encryption for sensitive data is required."
+    }
+  },
+  {
+    "control_objective_id": "6.2",
+    "requirement_id": "6.2.c",
+    "full_requirement_id": "6.2.6.2.c",
+    "title": "PCI Secure Software 6.2 - 6.2.c",
+    "function_names": [
+      "endpoints_api_ssl_certificate_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_encryption_protocols_configured",
+          "gcp_api": "gcp.networks.setEncryptionProtocols()",
+          "service": "gcp_network",
+          "rationale": "This function is needed to ensure that encryption protocols are properly configured for data in transit."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function checks for SSL certificates, but does not verify the configuration of encryption protocols."
+    }
+  },
+  {
+    "control_objective_id": "6.2",
+    "requirement_id": "6.2.d",
+    "full_requirement_id": "6.2.6.2.d",
+    "title": "PCI Secure Software 6.2 - 6.2.d",
+    "function_names": [
+      "endpoints_api_ssl_certificate_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_secure_protocol_enforcement",
+          "gcp_api": "gcp.networks.enforceSecureProtocols()",
+          "service": "gcp_network",
+          "rationale": "This function is needed to enforce secure versions of protocols for all ingress and egress methods."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function checks for SSL certificates but does not ensure enforcement of secure protocols."
+    }
+  },
+  {
+    "control_objective_id": "6.2",
+    "requirement_id": "6.2.e",
+    "full_requirement_id": "6.2.6.2.e",
+    "title": "PCI Secure Software 6.2 - 6.2.e",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_strong_cryptography_enforcement",
+          "gcp_api": "gcp.networks.enforceStrongCryptography()",
+          "service": "gcp_network",
+          "rationale": "This function is needed to ensure that strong cryptography is enforced during data transmission."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly verify the enforcement of strong cryptography during transmission."
+    }
+  },
+  {
+    "control_objective_id": "6.3",
+    "requirement_id": "6.3.a",
+    "full_requirement_id": "6.3.6.3.a",
+    "title": "PCI Secure Software 6.3 - 6.3.a",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_cryptography_compliance_check",
+          "gcp_api": "gcp.security.checkCryptographyCompliance()",
+          "service": "gcp_security",
+          "rationale": "This function is needed to verify that cryptography used is compliant with the specified requirements."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions verify compliance of cryptography used for critical assets."
+    }
+  },
+  {
+    "control_objective_id": "6.3",
+    "requirement_id": "6.3.b",
+    "full_requirement_id": "6.3.6.3.b",
+    "title": "PCI Secure Software 6.3 - 6.3.b",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_third_party_cryptography_guidance_check",
+          "gcp_api": "gcp.security.checkThirdPartyCryptographyGuidance()",
+          "service": "gcp_security",
+          "rationale": "This function is needed to ensure that guidance for third-party cryptography methods is provided."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions verify the provision of guidance for third-party cryptography methods."
+    }
+  },
+  {
+    "control_objective_id": "8.3",
+    "requirement_id": "8.3.a",
+    "full_requirement_id": "8.3.8.3.a",
+    "title": "PCI Secure Software 8.3 - 8.3.a",
+    "function_names": [
+      "logging_cloud_logging_enabled",
+      "pubsub_subscription_logging_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_activity_records_protection",
+          "gcp_api": "gcp.logging.protectActivityRecords()",
+          "service": "gcp_logging",
+          "rationale": "This function is needed to ensure the protection methods for activity records are implemented."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide logging capabilities, but specific protection methods for activity records are not covered."
+    }
+  },
+  {
+    "control_objective_id": "8.3",
+    "requirement_id": "8.3.b",
+    "full_requirement_id": "8.3.8.3.b",
+    "title": "PCI Secure Software 8.3 - 8.3.b",
+    "function_names": [
+      "logging_cloud_logging_enabled",
+      "pubsub_subscription_logging_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_external_system_integration_guidance",
+          "gcp_api": "gcp.logging.provideIntegrationGuidance()",
+          "service": "gcp_logging",
+          "rationale": "This function is needed to provide guidance on integrating with external logging systems."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions enable logging but do not provide guidance for external system integration."
+    }
+  },
+  {
+    "control_objective_id": "8.3",
+    "requirement_id": "8.3.c",
+    "full_requirement_id": "8.3.8.3.c",
+    "title": "PCI Secure Software 8.3 - 8.3.c",
+    "function_names": [
+      "logging_cloud_logging_enabled",
+      "pubsub_topic_logging_delivery_status_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_authenticity_protection",
+          "gcp_api": "gcp.logging.protectAuthenticity()",
+          "service": "gcp_logging",
+          "rationale": "This function is needed to secure the authenticity of tracking data during transmission."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide logging but do not specifically address authenticity during transmission."
+    }
+  },
+  {
+    "control_objective_id": "8.4",
+    "requirement_id": "8.4.a",
+    "full_requirement_id": "8.4.8.4.a",
+    "title": "PCI Secure Software 8.4 - 8.4.a",
+    "function_names": [
+      "logging_cloud_logging_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_activity_tracking_integrity",
+          "gcp_api": "gcp.logging.ensureTrackingIntegrity()",
+          "service": "gcp_logging",
+          "rationale": "This function is needed to ensure integrity of existing records during activity tracking failures."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide logging but do not ensure integrity during failures of tracking mechanisms."
+    }
+  },
+  {
+    "control_objective_id": "8.4",
+    "requirement_id": "8.4.b",
+    "full_requirement_id": "8.4.8.4.b",
+    "title": "PCI Secure Software 8.4 - 8.4.b",
+    "function_names": [
+      "logging_cloud_logging_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_logging_activity_tracking_failure_handling",
+          "gcp_api": "gcp.logging.handleTrackingFailures()",
+          "service": "gcp_logging",
+          "rationale": "This function is needed to handle failures in activity tracking securely."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide logging but do not address secure handling of failures in tracking mechanisms."
+    }
+  },
+  {
+    "control_objective_id": "9.1",
+    "requirement_id": "9.1.a",
+    "full_requirement_id": "9.1.9.1.a",
+    "title": "PCI Secure Software 9.1 - 9.1.a",
+    "function_names": [
+      "compute_instance_fault_prevention",
+      "compute_images_ensure_no_malicious_code",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_anomaly_detection_enabled",
+          "gcp_api": "gcp.security.detect_anomalies()",
+          "service": "gcp_security",
+          "rationale": "This function is needed to detect and alert upon anomalous behavior in software execution."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some coverage for detecting integrity issues but lack specific anomaly detection capabilities."
+    }
+  },
+  {
+    "control_objective_id": "9.1",
+    "requirement_id": "9.1.b",
+    "full_requirement_id": "9.1.9.1.b",
+    "title": "PCI Secure Software 9.1 - 9.1.b",
+    "function_names": [
+      "compute_instance_fault_prevention",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_integrity_check_interval",
+          "gcp_api": "gcp.security.check_integrity(interval='36h')",
+          "service": "gcp_security",
+          "rationale": "This function is needed to ensure integrity values are checked at specified intervals."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not specifically address the requirement for periodic integrity checks."
+    }
+  },
+  {
+    "control_objective_id": "9.1",
+    "requirement_id": "9.1.c",
+    "full_requirement_id": "9.1.9.1.c",
+    "title": "PCI Secure Software 9.1 - 9.1.c",
+    "function_names": [
+      "compute_instance_fault_prevention",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_protect_cryptographic_primitives",
+          "gcp_api": "gcp.security.protect_cryptography()",
+          "service": "gcp_security",
+          "rationale": "This function is needed to ensure cryptographic primitives used in anomaly detection are adequately protected."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not cover the protection of cryptographic primitives specifically."
+    }
+  },
+  {
+    "control_objective_id": "9.1",
+    "requirement_id": "9.1.d",
+    "full_requirement_id": "9.1.9.1.d",
+    "title": "PCI Secure Software 9.1 - 9.1.d",
+    "function_names": [
+      "storage_objects_access_restricted",
+      "bigquery_table_data_masking_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some coverage for protecting sensitive data but may not fully address the requirement."
+    }
+  },
+  {
+    "control_objective_id": "9.1",
+    "requirement_id": "9.1.e",
+    "full_requirement_id": "9.1.9.1.e",
+    "title": "PCI Secure Software 9.1 - 9.1.e",
+    "function_names": [
+      "compute_instance_fault_prevention",
+      "bigquery_table_data_masking_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_integrity_protection_on_update",
+          "gcp_api": "gcp.security.protect_integrity_on_update()",
+          "service": "gcp_security",
+          "rationale": "This function is needed to ensure integrity protections are in place during updates."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not specifically ensure integrity protections during configuration updates."
+    }
+  },
+  {
+    "control_objective_id": "9.1",
+    "requirement_id": "9.1.f",
+    "full_requirement_id": "9.1.9.1.f",
+    "title": "PCI Secure Software 9.1 - 9.1.f",
+    "function_names": [
+      "network_cloud_armor_security_team_access_configured",
+      "network_firewall_block_public_ingress_except_ssh"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_anomalous_behavior_detection",
+          "gcp_api": "gcp.securitycenter.detectAnomalousBehavior()",
+          "service": "security_command_center",
+          "rationale": "To detect and alert on anomalous behavior such as brute-force attacks."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide partial coverage for network-level protections. A new function is needed to specifically address detection of anomalous behavior in application-level interactions."
+    }
+  },
+  {
+    "control_objective_id": "9.1",
+    "requirement_id": "9.1.g",
+    "full_requirement_id": "9.1.9.1.g",
+    "title": "PCI Secure Software 9.1 - 9.1.g",
+    "function_names": [
+      "security_command_center_access_transparency_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_third_party_tool_configuration",
+          "gcp_api": "gcp.securitycenter.configureThirdPartyTools()",
+          "service": "security_command_center",
+          "rationale": "To ensure third-party tools are configured to detect anomalous behavior as per the control objective."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions enable transparency but do not ensure third-party tool configuration. A new function is needed to validate third-party tool configurations."
+    }
+  },
+  {
+    "control_objective_id": "10.1",
+    "requirement_id": "10.1.a",
+    "full_requirement_id": "10.1.10.1.a",
+    "title": "PCI Secure Software 10.1 - 10.1.a",
+    "function_names": [
+      "compute_images_ensure_no_malicious_code",
+      "gke_cluster_pod_security_baseline_enforced"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_threat_identification",
+          "gcp_api": "gcp.securitycenter.identifyThreats()",
+          "service": "security_command_center",
+          "rationale": "To identify common attack methods against the software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help ensure security baselines but do not cover threat identification comprehensively. A new function is needed for threat identification."
+    }
+  },
+  {
+    "control_objective_id": "10.1",
+    "requirement_id": "10.1.b",
+    "full_requirement_id": "10.1.10.1.b",
+    "title": "PCI Secure Software 10.1 - 10.1.b",
+    "function_names": [
+      "bigquery_table_data_classification_verified"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_attack_validation",
+          "gcp_api": "gcp.securitycenter.validateAttacks()",
+          "service": "security_command_center",
+          "rationale": "To validate identified attacks against industry-standard references."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Data classification functions exist, but attack validation against standards is not covered. A new function is necessary for comprehensive validation."
+    }
+  },
+  {
+    "control_objective_id": "10.1",
+    "requirement_id": "10.1.c",
+    "full_requirement_id": "10.1.10.1.c",
+    "title": "PCI Secure Software 10.1 - 10.1.c",
+    "function_names": [
+      "cloudbuild_project_privileged_mode_disabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_mitigation_validation",
+          "gcp_api": "gcp.securitycenter.validateMitigations()",
+          "service": "security_command_center",
+          "rationale": "To ensure mitigations against identified attacks are implemented and validated."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions partially cover the mitigation process. A new function is needed to validate the implementation and effectiveness of mitigations."
+    }
+  },
+  {
+    "control_objective_id": "10.2",
+    "requirement_id": "10.2.a",
+    "full_requirement_id": "10.2.10.2.a",
+    "title": "PCI Secure Software 10.2 - 10.2.a",
+    "function_names": [
+      "cloudbuild_project_log_option_enabled",
+      "cloudfunctions_cloudtrace_enabled",
+      "endpoints_trace_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_vulnerability_scanning_integration",
+          "gcp_api": "gcp.securitycenter.vulnerabilityScans.list()",
+          "service": "gcp_security",
+          "rationale": "To ensure integration with security scanning tools that can detect vulnerabilities in software components."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help in logging and tracing which can be part of the testing process but do not directly address vulnerability scanning. A new function is needed for integrating vulnerability scanning."
+    }
+  },
+  {
+    "control_objective_id": "10.2",
+    "requirement_id": "10.2.b",
+    "full_requirement_id": "10.2.10.2.b",
+    "title": "PCI Secure Software 10.2 - 10.2.b",
+    "function_names": [
+      "cloudbuild_project_log_option_enabled",
+      "cloudfunctions_cloudtrace_enabled",
+      "endpoints_trace_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_code_vulnerability_detection",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "gcp_security",
+          "rationale": "To automate detection of vulnerabilities in code and during execution using suitable security testing tools."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide logging and traceability but lack direct vulnerability detection capabilities. A new function is needed for comprehensive vulnerability detection."
+    }
+  },
+  {
+    "control_objective_id": "10.2",
+    "requirement_id": "10.2.c",
+    "full_requirement_id": "10.2.10.2.c",
+    "title": "PCI Secure Software 10.2 - 10.2.c",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_vulnerability_ranking_and_remediation",
+          "gcp_api": "gcp.securitycenter.vulnerabilityManagement()",
+          "service": "gcp_security",
+          "rationale": "To classify vulnerabilities using industry-standard systems and maintain a remediation plan."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly support vulnerability ranking and remediation planning. A new function is necessary to ensure compliance with this requirement."
+    }
+  },
+  {
+    "control_objective_id": "11.1",
+    "requirement_id": "11.1.a",
+    "full_requirement_id": "11.1.11.1.a",
+    "title": "PCI Secure Software 11.1 - 11.1.a",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_update_release_management",
+          "gcp_api": "gcp.deploymentmanager.deployments.insert()",
+          "service": "gcp_deploymentmanager",
+          "rationale": "To manage the release of software updates based on defined security criteria."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions directly manage the release of software updates. A new function is needed to automate this process."
+    }
+  },
+  {
+    "control_objective_id": "11.1",
+    "requirement_id": "11.1.b",
+    "full_requirement_id": "11.1.11.1.b",
+    "title": "PCI Secure Software 11.1 - 11.1.b",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_update_testing_and_release",
+          "gcp_api": "gcp.cloudbuild.builds.create()",
+          "service": "gcp_cloudbuild",
+          "rationale": "To ensure security updates are tested and released according to defined criteria."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions do not address security update testing and release. A new function is required to ensure updates are managed and released appropriately."
+    }
+  },
+  {
+    "control_objective_id": "11.2",
+    "requirement_id": "11.2.a",
+    "full_requirement_id": "11.2.11.2.a",
+    "title": "PCI Secure Software 11.2 - 11.2.a",
+    "function_names": [
+      "compute_images_ensure_no_malicious_code",
+      "gke_cluster_pod_security_baseline_enforced",
+      "network_firewall_block_public_ingress_except_ssh"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_software_update_integrity_check",
+          "gcp_api": "gcp.compute.softwareUpdateIntegrityCheck()",
+          "service": "gcp_compute",
+          "rationale": "To programmatically verify the integrity of software updates using checksums or digital signatures."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some level of security but do not directly verify software update integrity. A new function is needed for direct integrity checks."
+    }
+  },
+  {
+    "control_objective_id": "11.2",
+    "requirement_id": "11.2.b",
+    "full_requirement_id": "11.2.11.2.b",
+    "title": "PCI Secure Software 11.2 - 11.2.b",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_update_guidance_provided",
+          "gcp_api": "gcp.security.updateGuidanceProvided()",
+          "service": "gcp_security",
+          "rationale": "To ensure stakeholders receive guidance on verifying software update integrity."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions provide stakeholder guidance on software update verification. A new function is needed."
+    }
+  },
+  {
+    "control_objective_id": "11.2",
+    "requirement_id": "11.2.c",
+    "full_requirement_id": "11.2.11.2.c",
+    "title": "PCI Secure Software 11.2 - 11.2.c",
+    "function_names": [
+      "endpoints_api_ssl_certificate_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_tls_cipher_suite_compliance",
+          "gcp_api": "gcp.network.tlsCipherSuiteCompliance()",
+          "service": "gcp_network",
+          "rationale": "To ensure TLS connections use compliant cipher suites for secure software distribution."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function checks SSL certificates but does not ensure compliant cipher suites. A new function is needed for full compliance."
+    }
+  },
+  {
+    "control_objective_id": "11.2",
+    "requirement_id": "11.2.d",
+    "full_requirement_id": "11.2.11.2.d",
+    "title": "PCI Secure Software 11.2 - 11.2.d",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_update_notification",
+          "gcp_api": "gcp.security.updateNotification()",
+          "service": "gcp_security",
+          "rationale": "To notify stakeholders of software updates and provide installation guidance."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions address stakeholder notifications for software updates. A new function is needed."
+    }
+  },
+  {
+    "control_objective_id": "11.2",
+    "requirement_id": "11.2.e",
+    "full_requirement_id": "11.2.11.2.e",
+    "title": "PCI Secure Software 11.2 - 11.2.e",
+    "function_names": [
+      "security_command_center_access_transparency_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_vulnerability_notification",
+          "gcp_api": "gcp.security.vulnerabilityNotification()",
+          "service": "gcp_security",
+          "rationale": "To notify stakeholders of known vulnerabilities and provide mitigation suggestions."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function provides transparency but does not notify stakeholders of vulnerabilities. A new function is needed."
+    }
+  },
+  {
+    "control_objective_id": "11.2",
+    "requirement_id": "11.2.f",
+    "full_requirement_id": "11.2.11.2.f",
+    "title": "PCI Secure Software 11.2 - 11.2.f",
+    "function_names": [
+      "cloudsql_postgresql_enable_pgaudit_flag",
+      "compute_instance_use_instance_specific_ssh_keys",
+      "logging_sink_export_all_logs"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_verify_update_integrity",
+          "gcp_api": "gcp.compute.instances.verifyUpdateIntegrity()",
+          "service": "gcp_compute",
+          "rationale": "This function is needed to verify the integrity of software updates through checksums or digital signatures."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide partial coverage for logging and auditing but do not fully address the integrity verification of updates."
+    }
+  },
+  {
+    "control_objective_id": "12.1",
+    "requirement_id": "12.1.a",
+    "full_requirement_id": "12.1.12.1.a",
+    "title": "PCI Secure Software 12.1 - 12.1.a",
+    "function_names": [
+      "iam_policy_attached_to_trusted_identities",
+      "iam_user_min_password_change_days",
+      "compute_instance_physical_protection_zones_designated"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_provide_secure_implementation_guidance",
+          "gcp_api": "gcp.iam.guidance.provideSecureImplementation()",
+          "service": "gcp_iam",
+          "rationale": "This function is needed to ensure that stakeholders receive clear guidance on secure implementation and configuration."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions focus on identity and access management but do not provide direct guidance on secure implementation."
+    }
+  },
+  {
+    "control_objective_id": "12.1",
+    "requirement_id": "12.1.b",
+    "full_requirement_id": "12.1.12.1.b",
+    "title": "PCI Secure Software 12.1 - 12.1.b",
+    "function_names": [
+      "iam_service_accounts_risk_management",
+      "compute_instance_secure_configuration",
+      "functions_environment_secrets_use_secret_manager"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_provide_third_party_software_guidance",
+          "gcp_api": "gcp.iam.guidance.provideThirdPartySoftwareGuidance()",
+          "service": "gcp_iam",
+          "rationale": "This function is needed to provide instructions on the secure installation and configuration of third-party software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions address some security aspects but do not cover comprehensive guidance on third-party software installation and configuration."
+    }
+  },
+  {
+    "control_objective_id": "A.1",
+    "requirement_id": "A.1.1",
+    "full_requirement_id": "A.1.A.1.1",
+    "title": "PCI Secure Software A.1 - A.1.1",
+    "function_names": [
+      "storage_objects_access_restriction",
+      "iam_user_suspicious_programmatic_login_alert_configured"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_restrict_sensitive_auth_data_storage",
+          "gcp_api": "gcp.storage.restrictSensitiveAuthDataStorage()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to ensure sensitive authentication data is not retained after authorization."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some access control but do not specifically address the retention of sensitive authentication data."
+    }
+  },
+  {
+    "control_objective_id": "A.2",
+    "requirement_id": "A.2.1",
+    "full_requirement_id": "A.2.A.2.1",
+    "title": "PCI Secure Software A.2 - A.2.1",
+    "function_names": [
+      "storage_objects_automated_data_collection_prevention",
+      "compute_disk_attachment_and_auto_delete"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_provide_secure_deletion_guidance",
+          "gcp_api": "gcp.storage.provideSecureDeletionGuidance()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to provide guidance on securely deleting cardholder data after retention periods."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions address data collection prevention but lack specific guidance on secure deletion of cardholder data."
+    }
+  },
+  {
+    "control_objective_id": "A.2",
+    "requirement_id": "A.2.2.a",
+    "full_requirement_id": "A.2.A.2.2.a",
+    "title": "PCI Secure Software A.2 - A.2.2.a",
+    "function_names": [
+      "bigquery_table_data_masking_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_pan_masking_configuration",
+          "gcp_api": "gcp.storage.masking_config()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to ensure that PAN is masked according to business needs."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function for data masking in BigQuery can help, but additional functionality for storage services is needed."
+    }
+  },
+  {
+    "control_objective_id": "A.2",
+    "requirement_id": "A.2.2.b",
+    "full_requirement_id": "A.2.A.2.2.b",
+    "title": "PCI Secure Software A.2 - A.2.2.b",
+    "function_names": [
+      "bigquery_table_data_masking_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_pan_masking_configuration",
+          "gcp_api": "gcp.storage.masking_config()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to ensure that PAN is masked according to business needs."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function for data masking in BigQuery can help, but additional functionality for storage services is needed."
+    }
+  },
+  {
+    "control_objective_id": "A.2",
+    "requirement_id": "A.2.2.c",
+    "full_requirement_id": "A.2.A.2.2.c",
+    "title": "PCI Secure Software A.2 - A.2.2.c",
+    "function_names": [
+      "bigquery_table_data_masking_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_pan_masking_configuration",
+          "gcp_api": "gcp.storage.masking_config()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to ensure that guidance for configuring PAN masking features is programmatically available."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function for data masking in BigQuery can help, but additional functionality for storage services is needed."
+    }
+  },
+  {
+    "control_objective_id": "A.2",
+    "requirement_id": "A.2.2.d",
+    "full_requirement_id": "A.2.A.2.2.d",
+    "title": "PCI Secure Software A.2 - A.2.2.d",
+    "function_names": [
+      "bigquery_table_data_masking_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_pan_masking_configuration",
+          "gcp_api": "gcp.storage.masking_config()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to ensure that all displays of PAN are masked by default."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function for data masking in BigQuery can help, but additional functionality for storage services is needed."
+    }
+  },
+  {
+    "control_objective_id": "A.2",
+    "requirement_id": "A.2.3.a",
+    "full_requirement_id": "A.2.A.2.3.a",
+    "title": "PCI Secure Software A.2 - A.2.3.a",
+    "function_names": [
+      "bigquery_table_data_masking_policy"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_pan_encryption_configuration",
+          "gcp_api": "gcp.storage.encryption_config()",
+          "service": "gcp_storage",
+          "rationale": "This function is needed to ensure that PAN is rendered unreadable using strong cryptography."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing function for data masking in BigQuery can help, but additional functionality for encryption in storage services is needed."
+    }
+  },
+  {
+    "control_objective_id": "B.2",
+    "requirement_id": "B.2.4",
+    "full_requirement_id": "B.2.B.2.4",
+    "title": "PCI Secure Software B.2 - B.2.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_rng_verification",
+          "gcp_api": "gcp.compute.verifyRng()",
+          "service": "compute",
+          "rationale": "To ensure that only approved RNG functions are used in cryptographic operations, aligned with terminal PTS evaluation."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions directly verify RNG compliance with terminal PTS evaluation."
+    }
+  },
+  {
+    "control_objective_id": "B.2",
+    "requirement_id": "B.2.5",
+    "full_requirement_id": "B.2.B.2.5",
+    "title": "PCI Secure Software B.2 - B.2.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_data_sharing_restrictions",
+          "gcp_api": "gcp.storage.setDataSharingRestrictions()",
+          "service": "storage",
+          "rationale": "To prevent sharing of clear-text account data with unauthorized software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions ensure that clear-text data is not shared with unauthorized software."
+    }
+  },
+  {
+    "control_objective_id": "B.2",
+    "requirement_id": "B.2.6",
+    "full_requirement_id": "B.2.B.2.6",
+    "title": "PCI Secure Software B.2 - B.2.6",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_shared_resource_security",
+          "gcp_api": "gcp.compute.ensureSharedResourceSecurity()",
+          "service": "compute",
+          "rationale": "To ensure secure integration and use of shared resources according to terminal vendor's security policy."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions do not cover secure integration of shared resources as per vendor guidance."
+    }
+  },
+  {
+    "control_objective_id": "B.2",
+    "requirement_id": "B.2.7",
+    "full_requirement_id": "B.2.B.2.7",
+    "title": "PCI Secure Software B.2 - B.2.7",
+    "function_names": [
+      "network_vpc_strict_segregation"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_application_segregation_enforcement",
+          "gcp_api": "gcp.compute.enforceApplicationSegregation()",
+          "service": "compute",
+          "rationale": "To ensure application segregation is enforced and not bypassed."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While network segregation is covered, application-level segregation requires additional controls."
+    }
+  },
+  {
+    "control_objective_id": "B.2",
+    "requirement_id": "B.2.8",
+    "full_requirement_id": "B.2.B.2.8",
+    "title": "PCI Secure Software B.2 - B.2.8",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_software_signature_verification",
+          "gcp_api": "gcp.compute.verifySoftwareSignature()",
+          "service": "compute",
+          "rationale": "To ensure all software files are cryptographically signed and verified by terminal firmware."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing functions ensure cryptographic signing and verification of software files."
+    }
+  },
+  {
+    "control_objective_id": "B.2",
+    "requirement_id": "B.2.9",
+    "full_requirement_id": "B.2.B.2.9",
+    "title": "PCI Secure Software B.2 - B.2.9",
+    "function_names": [
+      "root_path_integrity_check",
+      "compute_images_ensure_no_malicious_code"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_software_integrity_verification",
+          "gcp_api": "gcp.compute.images.get()",
+          "service": "compute",
+          "rationale": "To ensure software integrity by verifying images and binaries against known good states."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions partially cover the requirement by ensuring no malicious code and checking root path integrity. Additional function needed for comprehensive software integrity verification."
+    }
+  },
+  {
+    "control_objective_id": "B.3",
+    "requirement_id": "B.3.1",
+    "full_requirement_id": "B.3.B.3.1",
+    "title": "PCI Secure Software B.3 - B.3.1",
+    "function_names": [
+      "functions_environment_variables_confidentiality",
+      "container_registry_trusted_images_only"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_input_validation_enforcement",
+          "gcp_api": "gcp.securitycenter.findings.list()",
+          "service": "securitycenter",
+          "rationale": "To programmatically validate all user and external inputs against security policies."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help ensure environment confidentiality and trusted images, but additional input validation enforcement is needed to fully mitigate attack vectors."
+    }
+  },
+  {
+    "control_objective_id": "B.3",
+    "requirement_id": "B.3.2",
+    "full_requirement_id": "B.3.B.3.2",
+    "title": "PCI Secure Software B.3 - B.3.2",
+    "function_names": [
+      "compute_instance_fault_prevention"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 4,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_error_handling_verification",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To ensure return values are checked and error conditions are handled securely."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Fault prevention partially addresses error handling, but a specific function for verifying secure error handling is needed."
+    }
+  },
+  {
+    "control_objective_id": "B.3",
+    "requirement_id": "B.3.3",
+    "full_requirement_id": "B.3.B.3.3",
+    "title": "PCI Secure Software B.3 - B.3.3",
+    "function_names": [
+      "compute_ssh_max_sessions_limited"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 3,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_race_condition_prevention",
+          "gcp_api": "gcp.compute.instances.list()",
+          "service": "compute",
+          "rationale": "To detect and prevent race conditions in software execution."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Limiting SSH sessions helps reduce race conditions, but a dedicated function for race condition prevention is needed."
+    }
+  },
+  {
+    "control_objective_id": "B.4",
+    "requirement_id": "B.4.1",
+    "full_requirement_id": "B.4.B.4.1",
+    "title": "PCI Secure Software B.4 - B.4.1",
+    "function_names": [
+      "cloudbuild_project_privileged_mode_disabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_cloudbuild_vulnerability_testing",
+          "gcp_api": "gcp.cloudbuild.builds.list()",
+          "service": "cloudbuild",
+          "rationale": "To ensure that software is tested for vulnerabilities before updates or releases."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Disabling privileged mode in Cloud Build helps, but a specific function for automated vulnerability testing is required."
+    }
+  },
+  {
+    "control_objective_id": "B.5",
+    "requirement_id": "B.5.1",
+    "full_requirement_id": "B.5.B.5.1",
+    "title": "PCI Secure Software B.5 - B.5.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_terminal_software_guidance_check",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To programmatically verify that terminal software implementation guidance is followed on GCP-hosted payment terminals."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement is primarily documentation and guidance-based, which is not directly implementable via GCP API calls. A new function is suggested to check for compliance with guidance on GCP-hosted terminals."
+    }
+  },
+  {
+    "control_objective_id": "B.5",
+    "requirement_id": "B.5.2",
+    "full_requirement_id": "B.5.B.5.2",
+    "title": "PCI Secure Software B.5 - B.5.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_terminal_vendor_guidance_check",
+          "gcp_api": "gcp.compute.instances.get()",
+          "service": "compute",
+          "rationale": "To ensure that implementation guidance adheres to vendor guidance for secure configuration on GCP-hosted payment terminals."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "This requirement involves adherence to vendor-specific guidance, which is not directly verifiable via GCP APIs. A new function is suggested to verify compliance with vendor guidance on GCP-hosted terminals."
+    }
+  },
+  {
+    "control_objective_id": "C.1",
+    "requirement_id": "C.1.1",
+    "full_requirement_id": "C.1.C.1.1",
+    "title": "PCI Secure Software C.1 - C.1.1",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_sbom_component_catalog",
+          "gcp_api": "gcp.securitycenter.assets.list()",
+          "service": "securitycenter",
+          "rationale": "To programmatically catalog software components and services in a software bill of materials (SBOM) using GCP Security Center."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While GCP does not directly provide an SBOM cataloging function, Security Center can be used to list assets, which can be part of an SBOM process."
+    }
+  },
+  {
+    "control_objective_id": "C.1",
+    "requirement_id": "C.1.2",
+    "full_requirement_id": "C.1.C.1.2",
+    "title": "PCI Secure Software C.1 - C.1.2",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_sbom_dependency_mapping",
+          "gcp_api": "gcp.securitycenter.assets.list()",
+          "service": "securitycenter",
+          "rationale": "To document primary components and their transitive dependencies in an SBOM using GCP Security Center."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "GCP Security Center can be leveraged to identify asset relationships, aiding in the documentation of dependencies for SBOM."
+    }
+  },
+  {
+    "control_objective_id": "C.1",
+    "requirement_id": "C.1.3",
+    "full_requirement_id": "C.1.C.1.3",
+    "title": "PCI Secure Software C.1 - C.1.3",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 2,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_sbom_service_dependency_info",
+          "gcp_api": "gcp.securitycenter.assets.list()",
+          "service": "securitycenter",
+          "rationale": "To include software dependencies in the production environment in an SBOM for services provided 'as a service'."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Using GCP Security Center to list assets and their dependencies can help document the production environment dependencies for SBOM."
+    }
+  },
+  {
+    "control_objective_id": "C.1",
+    "requirement_id": "C.1.4",
+    "full_requirement_id": "C.1.C.1.4",
+    "title": "PCI Secure Software C.1 - C.1.4",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_cloudbuild_sbom_tracking_enabled",
+          "gcp_api": "cloudbuild.projects.locations.builds.create()",
+          "service": "cloudbuild",
+          "rationale": "To programmatically generate and track SBOMs for each build, ensuring traceability across the software supply chain."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No existing GCP functions directly support SBOM tracking. A new function is needed to integrate SBOM generation and tracking into the build process."
+    }
+  },
+  {
+    "control_objective_id": "C.1",
+    "requirement_id": "C.1.5",
+    "full_requirement_id": "C.1.C.1.5",
+    "title": "PCI Secure Software C.1 - C.1.5",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_cloudbuild_sbom_generation_on_update",
+          "gcp_api": "cloudbuild.projects.locations.builds.create()",
+          "service": "cloudbuild",
+          "rationale": "To ensure a new SBOM is generated each time the software is updated, automating the process within the CI/CD pipeline."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Automated SBOM generation on updates is not covered by existing GCP functions. A new function is required to automate this within Cloud Build."
+    }
+  },
+  {
+    "control_objective_id": "C.1",
+    "requirement_id": "C.1.6",
+    "full_requirement_id": "C.1.C.1.6",
+    "title": "PCI Secure Software C.1 - C.1.6",
+    "function_names": [
+      "security_command_center_risk_identification_process_considers_environmental_changes"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_security_vulnerability_monitoring_third_party_components",
+          "gcp_api": "securitycenter.projects.sources.findings.list()",
+          "service": "securitycenter",
+          "rationale": "To specifically monitor vulnerabilities in third-party components and services, enhancing existing risk identification processes."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "While Security Command Center can identify risks, a specific function for third-party component vulnerability monitoring is needed."
+    }
+  },
+  {
+    "control_objective_id": "C.1",
+    "requirement_id": "C.1.7",
+    "full_requirement_id": "C.1.C.1.7",
+    "title": "PCI Secure Software C.1 - C.1.7",
+    "function_names": [],
+    "mapping_result": {
+      "coverage_assessment": 1,
+      "new_functions_needed": [
+        {
+          "name": "gcp_storage_component_authenticity_verification",
+          "gcp_api": "storage.objects.get()",
+          "service": "storage",
+          "rationale": "To verify the authenticity of components hosted on third-party systems each time they are fetched, ensuring integrity."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "No current GCP function verifies the authenticity of fetched components. A new function is needed for this verification process."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.1",
+    "full_requirement_id": "C.2.C.2.1",
+    "title": "PCI Secure Software C.2 - C.2.1",
+    "function_names": [
+      "gke_cluster_authorization_mode_not_always_allow",
+      "iam_application_security_requirements_specified"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_sensitive_function_access_control",
+          "gcp_api": "iam.projects.roles.get()",
+          "service": "iam",
+          "rationale": "To ensure user access to sensitive functions is authenticated, particularly for Internet-accessible interfaces."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing IAM and GKE functions provide partial coverage for access control, but a specific function for sensitive function access control is needed."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.1.1",
+    "full_requirement_id": "C.2.C.2.1.1",
+    "title": "PCI Secure Software C.2 - C.2.1.1",
+    "function_names": [
+      "iam_service_accounts_enforce_access_policies",
+      "endpoints_api_ssl_certificate_enabled",
+      "gke_control_plane_authorized_networks_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_strong_authentication_mechanisms_enforced",
+          "gcp_api": "iam.policies.get()",
+          "service": "iam",
+          "rationale": "To ensure that industry-standard authentication mechanisms are enforced for user access to sensitive functions."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions cover enforcing access policies and securing endpoints, but a specific function to verify strong authentication mechanisms is needed."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.1.2",
+    "full_requirement_id": "C.2.C.2.1.2",
+    "title": "PCI Secure Software C.2 - C.2.1.2",
+    "function_names": [
+      "iam_account_mfa_enforcement",
+      "iam_service_account_keys_rotation"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_credential_protection_strength_verification",
+          "gcp_api": "iam.credentials.get()",
+          "service": "iam",
+          "rationale": "To verify that the methods used to protect authentication credentials are sufficiently strong and robust."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "MFA enforcement and key rotation provide strong credential protection, but additional verification of protection strength is needed."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.1.3",
+    "full_requirement_id": "C.2.C.2.1.3",
+    "title": "PCI Secure Software C.2 - C.2.1.3",
+    "function_names": [
+      "security_command_center_access_transparency_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_iam_secure_authentication_decision_enforcement",
+          "gcp_api": "iam.policies.testIamPermissions()",
+          "service": "iam",
+          "rationale": "To ensure that authentication decisions are enforced within a secure area of the software."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Access transparency helps ensure secure enforcement, but a specific function for authentication decision enforcement is needed."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.2",
+    "full_requirement_id": "C.2.C.2.2",
+    "title": "PCI Secure Software C.2 - C.2.2",
+    "function_names": [
+      "network_firewall_block_public_ingress_except_ssh",
+      "gke_control_plane_authorized_networks_enabled"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 9,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide strong coverage for restricting access to authorized users only through network and firewall configurations."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.3",
+    "full_requirement_id": "C.2.C.2.3",
+    "title": "PCI Secure Software C.2 - C.2.3",
+    "function_names": [
+      "network_firewall_rules_associated_with_stateful_or_stateless",
+      "iam_service_accounts_enforce_access_policies"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_interface_access_restriction",
+          "gcp_api": "compute.instances.get()",
+          "service": "compute",
+          "rationale": "To ensure that access to software functions and resources through Internet-accessible interfaces is restricted to authorized users."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Firewall rules and access policies provide significant coverage, but a specific function to verify interface access restrictions is needed."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.3.1",
+    "full_requirement_id": "C.2.C.2.3.1",
+    "title": "PCI Secure Software C.2 - C.2.3.1",
+    "function_names": [
+      "iam_service_accounts_enforce_access_policies",
+      "iam_policy_no_full_access"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help enforce access policies and restrict full access, contributing to fine-grained access control."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.3.2",
+    "full_requirement_id": "C.2.C.2.3.2",
+    "title": "PCI Secure Software C.2 - C.2.3.2",
+    "function_names": [
+      "iam_service_accounts_enforce_access_policies",
+      "iam_policy_no_full_access"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions enforce access policies, but additional functions may be needed for real-time authorization checks."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.3.3",
+    "full_requirement_id": "C.2.C.2.3.3",
+    "title": "PCI Secure Software C.2 - C.2.3.3",
+    "function_names": [
+      "iam_service_accounts_enforce_access_policies"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help enforce access policies, but may not fully cover secure area enforcement."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.1",
+    "full_requirement_id": "C.2.C.2.1",
+    "title": "PCI Secure Software C.2 - C.2.1",
+    "function_names": [
+      "iam_account_mfa_enforcement",
+      "network_firewall_block_public_ingress_except_ssh"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide authentication and restrict access to sensitive functions, aligning with the requirement."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.2",
+    "full_requirement_id": "C.2.C.2.2",
+    "title": "PCI Secure Software C.2 - C.2.2",
+    "function_names": [
+      "iam_service_accounts_enforce_access_policies",
+      "network_firewall_block_public_ingress_except_ssh"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions restrict access to Internet-accessible interfaces, ensuring only authorized users can access."
+    }
+  },
+  {
+    "control_objective_id": "C.2",
+    "requirement_id": "C.2.3",
+    "full_requirement_id": "C.2.C.2.3",
+    "title": "PCI Secure Software C.2 - C.2.3",
+    "function_names": [
+      "network_firewall_block_public_ingress_except_ssh",
+      "iam_service_account_no_default_usage",
+      "iam_policy_no_full_access"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_firewall_rules_restrict_access",
+          "gcp_api": "gcp.network.firewallRules.create()",
+          "service": "gcp_network",
+          "rationale": "This function is needed to programmatically enforce access restrictions on firewall rules for Internet-accessible interfaces."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help restrict access but may not fully cover all aspects of explicitly authorized users for all software functions."
+    }
+  },
+  {
+    "control_objective_id": "C.3",
+    "requirement_id": "C.3.2.2",
+    "full_requirement_id": "C.3.C.3.2.2",
+    "title": "PCI Secure Software C.3 - C.3.2.2",
+    "function_names": [
+      "network_firewall_fragmented_packets_user_defined_action",
+      "container_registry_trusted_images_only"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_instance_parsers_configuration",
+          "gcp_api": "gcp.compute.instances.setMetadata()",
+          "service": "gcp_compute",
+          "rationale": "This function is needed to configure instances with restrictive settings for parsers and interpreters."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide some level of protection but do not specifically address parser configurations."
+    }
+  },
+  {
+    "control_objective_id": "C.3",
+    "requirement_id": "C.3.3",
+    "full_requirement_id": "C.3.C.3.3",
+    "title": "PCI Secure Software C.3 - C.3.3",
+    "function_names": [
+      "network_firewall_rules_priority_order",
+      "network_firewall_rules_associated_with_stateful_or_stateless"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 6,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_firewall_resource_starvation_protection",
+          "gcp_api": "gcp.network.firewallRules.create()",
+          "service": "gcp_network",
+          "rationale": "This function is needed to implement specific firewall rules that mitigate resource starvation attacks."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions help manage firewall rules but do not specifically address resource starvation attacks."
+    }
+  },
+  {
+    "control_objective_id": "C.3",
+    "requirement_id": "C.3.4",
+    "full_requirement_id": "C.3.C.3.4",
+    "title": "PCI Secure Software C.3 - C.3.4",
+    "function_names": [
+      "network_firewall_fragmented_packets_user_defined_action",
+      "container_registry_trusted_images_only"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_compute_instance_file_content_validation",
+          "gcp_api": "gcp.compute.instances.setMetadata()",
+          "service": "gcp_compute",
+          "rationale": "This function is needed to validate file content before allowing uploads to prevent malicious files."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Current functions provide some level of protection but do not specifically address validation of file content."
+    }
+  },
+  {
+    "control_objective_id": "C.3",
+    "requirement_id": "C.3.5",
+    "full_requirement_id": "C.3.C.3.5",
+    "title": "PCI Secure Software C.3 - C.3.5",
+    "function_names": [
+      "network_firewall_block_public_ingress_except_ssh",
+      "container_registry_trusted_images_only"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 5,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_firewall_hostile_object_protection",
+          "gcp_api": "gcp.network.firewallRules.create()",
+          "service": "gcp_network",
+          "rationale": "This function is needed to create firewall rules that protect against hostile object creation and data tampering."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some protection but do not specifically address hostile object creation and data tampering."
+    }
+  },
+  {
+    "control_objective_id": "C.3",
+    "requirement_id": "C.3.6",
+    "full_requirement_id": "C.3.C.3.6",
+    "title": "PCI Secure Software C.3 - C.3.6",
+    "function_names": [
+      "network_cloud_armor_security_team_access_configured",
+      "network_firewall_block_public_ingress_except_ssh",
+      "network_firewall_fragmented_packets_user_defined_action"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 7,
+      "new_functions_needed": [
+        {
+          "name": "gcp_network_web_application_firewall_enabled",
+          "gcp_api": "gcp.network.firewalls.create()",
+          "service": "gcp_network",
+          "rationale": "To ensure web application firewalls are configured to protect against attacks on web interfaces."
+        }
+      ],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions provide some coverage for protecting web interfaces, but a dedicated function for web application firewall configuration is needed for complete compliance."
+    }
+  },
+  {
+    "control_objective_id": "C.4",
+    "requirement_id": "C.4.1",
+    "full_requirement_id": "C.4.C.4.1",
+    "title": "PCI Secure Software C.4 - C.4.1",
+    "function_names": [
+      "endpoints_api_ssl_certificate_enabled",
+      "logging_audit_logs_encryption_with_kms"
+    ],
+    "mapping_result": {
+      "coverage_assessment": 8,
+      "new_functions_needed": [],
+      "functions_to_rename": [],
+      "functions_to_consolidate": [],
+      "mapping_notes": "Existing functions address encryption of sensitive data transmissions, but additional functions for mutual authentication and certificate management may be required for comprehensive coverage."
+    }
+  }
+]

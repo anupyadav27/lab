@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""
+Clean up the CIS benchmark output file by removing old function_names fields
+and other redundant data.
+"""
+
+import json
+from datetime import datetime
+
+def cleanup_control(control):
+    """Clean up a single control by removing redundant fields"""
+    # Remove old function_names field if it exists
+    if "function_names" in control:
+        del control["function_names"]
+    
+    return control
+
+def main():
+    """Main function to clean up the CIS benchmark file"""
+    input_file = "/Users/apple/Desktop/compliance_Database/final_complaince_database_with_fn_name/aws_function_complaince_mapping/CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0/CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0_updated_20250825_183711_updated_20250829_222543.json"
+    
+    # Load the CIS benchmark file
+    with open(input_file, 'r') as f:
+        controls = json.load(f)
+    
+    print(f"🧹 Cleaning up {len(controls)} controls in CIS AWS COMPUTE SERVICES BENCHMARK...")
+    
+    # Clean up each control
+    cleaned_controls = []
+    for i, control in enumerate(controls, 1):
+        print(f"Cleaning control {i}/{len(controls)}: {control.get('id', 'Unknown')}")
+        cleaned_control = cleanup_control(control)
+        cleaned_controls.append(cleaned_control)
+    
+    # Generate output filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = input_file.replace('.json', f'_cleaned_{timestamp}.json')
+    
+    # Save cleaned controls
+    with open(output_file, 'w') as f:
+        json.dump(cleaned_controls, f, indent=2)
+    
+    print(f"✅ Successfully cleaned {len(controls)} controls!")
+    print(f"📁 Output saved to: {output_file}")
+    
+    # Show sample of cleaned controls
+    print("\n📋 Sample Cleaned Controls:")
+    for i, control in enumerate(cleaned_controls[:3], 1):
+        print(f"\n{i}. ID: {control['id']}")
+        print(f"   Title: {control['title']}")
+        print(f"   Function: {control['function_name']}")
+        print(f"   Coverage: {control['coverage']}%")
+        if 'manual_effort' in control:
+            print(f"   Manual Effort: {control['manual_effort']}")
+        if 'new_function_suggestion' in control:
+            print(f"   New Function Suggestion: {control['new_function_suggestion']}")
+        print(f"   Data Status: {control['data_status']}")
+
+if __name__ == "__main__":
+    main()

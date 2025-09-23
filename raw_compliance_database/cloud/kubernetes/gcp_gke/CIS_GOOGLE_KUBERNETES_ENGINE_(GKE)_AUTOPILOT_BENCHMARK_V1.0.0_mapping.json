@@ -1,0 +1,777 @@
+[
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.1",
+    "control_title": "Ensure that the cluster-admin role is only used where required",
+    "assertion_id": "rbac_entitlements.least_privilege.access_reviews_conducted",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control requires restricting cluster-admin role usage to minimum necessary, matching access review assertion for least privilege enforcement.",
+    "rule_ids": [
+      "gcp.iam.least_privilege_configuration.access_reviews_conducted"
+    ],
+    "coverage": "partial",
+    "why": "Found 3 GCP rules for access reviews assertion - covers IAM, Resource Manager, and Organization Policy services",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED",
+    "manual_review": {
+      "required": true,
+      "who": "SRE | Platform Security",
+      "why": "No automated rules available for cluster-admin role usage validation - requires manual RBAC analysis",
+      "procedure": [
+        "Execute: kubectl get clusterrolebindings -o=custom-columns=NAME:.metadata.name,ROLE:.roleRef.name,SUBJECT:.subjects[*].name",
+        "Review each principal listed and verify cluster-admin privilege is required",
+        "Check for unnecessary cluster-admin bindings",
+        "Validate system:masters group usage",
+        "Document justification for each cluster-admin binding"
+      ],
+      "acceptance_criteria": "All cluster-admin role bindings are documented and justified with no unnecessary assignments",
+      "artifacts_to_attach": ["clusterrolebindings_output", "rbac_analysis_report", "justification_documentation"],
+      "timebox_minutes": 30
+    }
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.2",
+    "control_title": "Minimize access to secrets",
+    "assertion_id": "secrets_key_mgmt.secret_storage.access_controlled",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control restricts access to Kubernetes secrets to minimum necessary users, matching secret storage access control assertion.",
+    "rule_ids": [
+      "gcp.secretmanager.secret_access_control.access_controlled"
+    ],
+    "coverage": "partial",
+    "why": "Found 4 GCP rules for secret storage access control assertion - covers Secret Manager and KMS services",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED",
+    "manual_review": {
+      "required": true,
+      "who": "SRE | Platform Security",
+      "why": "No automated rules available for secrets access validation - requires manual RBAC analysis",
+      "procedure": [
+        "Execute: kubectl auth can-i get secrets --all-namespaces",
+        "Execute: kubectl auth can-i list secrets --all-namespaces",
+        "Execute: kubectl auth can-i watch secrets --all-namespaces",
+        "Review users with get, list, or watch access to secrets",
+        "Validate that access is limited to necessary users only",
+        "Check for excessive secret permissions"
+      ],
+      "acceptance_criteria": "Only authorized users have access to secrets with minimal necessary permissions",
+      "artifacts_to_attach": ["secrets_access_audit", "rbac_permissions_report", "access_justification"],
+      "timebox_minutes": 25
+    }
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.3",
+    "control_title": "Minimize wildcard use in Roles and ClusterRoles",
+    "assertion_id": "rbac_entitlements.role_definition.least_privilege_roles",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control prevents wildcard permissions in roles, enforcing least privilege principle through specific role definitions.",
+    "rule_ids": [
+      "gcp.iam.role_definition_configuration.least_privilege_roles",
+      "gcp.resourcemanager.role_definition_configuration.least_privilege_roles",
+      "gcp.organizationpolicy.role_definition_configuration.least_privilege_roles"
+    ],
+    "coverage": "partial",
+    "why": "Found 3 GCP rules for least privilege roles assertion - covers IAM, Resource Manager, and Organization Policy services",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED",
+    "manual_review": {
+      "required": true,
+      "who": "SRE | Platform Security",
+      "why": "No automated rules available for wildcard validation - requires manual role analysis",
+      "procedure": [
+        "Execute: kubectl get roles --all-namespaces -o yaml",
+        "Execute: kubectl get clusterroles -o yaml",
+        "Search for wildcard '*' usage in rules",
+        "Review each wildcard usage for necessity",
+        "Document wildcard usage justification",
+        "Plan wildcard replacement with specific resources/actions"
+      ],
+      "acceptance_criteria": "No unnecessary wildcards found in roles and clusterroles, all wildcards are justified",
+      "artifacts_to_attach": ["roles_analysis", "clusterroles_analysis", "wildcard_justification", "replacement_plan"],
+      "timebox_minutes": 40
+    }
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.4",
+    "control_title": "Ensure that default service accounts are not actively used",
+    "assertion_id": "containers_kubernetes.rbac_policies.service_account_restrictions",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "service_account",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control disables default service account usage and token mounting, matching service account restrictions assertion.",
+    "rule_ids": [
+      "k8s.pod.service_account_restrictions"
+    ],
+    "coverage": "full",
+    "why": "Found 5 K8s rules for service account restrictions assertion - covers all workload types (pods, containers, deployments, daemonsets, statefulsets)",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.5",
+    "control_title": "Ensure that Service Account Tokens are only mounted where necessary",
+    "assertion_id": "containers_kubernetes.rbac_policies.service_account_restrictions",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "service_account",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control restricts service account token mounting to only necessary pods, matching service account restrictions assertion.",
+    "rule_ids": [
+      "k8s.pod.service_account_restrictions"
+    ],
+    "coverage": "full",
+    "why": "Found 5 K8s rules for service account restrictions assertion - covers all workload types (pods, containers, deployments, daemonsets, statefulsets)",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.6",
+    "control_title": "Avoid use of system:masters group",
+    "assertion_id": "rbac_entitlements.role_assignment.principals_limited",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control prevents use of system:masters group which has excessive privileges, matching principals limited assertion.",
+    "rule_ids": [
+      "gcp.iam.role_assignment_configuration.principals_limited"
+    ],
+    "coverage": "partial",
+    "why": "Found GCP IAM rule for principals limited assertion - covers role assignment restrictions",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.7",
+    "control_title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+    "assertion_id": "rbac_entitlements.role_definition.least_privilege_roles",
+    "facets": {
+      "actor_type":"human",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control restricts dangerous permissions (bind, impersonate, escalate) to enforce least privilege principle through role definitions.",
+    "rule_ids": [
+      "gcp.iam.role_definition_configuration.least_privilege_roles"
+    ],
+    "coverage": "partial",
+    "why": "Found GCP IAM rule for least privilege roles assertion - covers dangerous permission restrictions",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.8",
+    "control_title": "Avoid bindings to system:anonymous",
+    "assertion_id": "identity_access.authentication.legacy_authn_disabled",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control prevents anonymous access by avoiding bindings to system:anonymous, matching legacy authentication disable assertion.",
+    "rule_ids": ["k8s.rbac.role.legacy_authn_disabled", "k8s.core.serviceaccount.legacy_authn_disabled"],
+    "coverage": "full",
+    "why": "Selected essential K8s rules for legacy authentication disable - k8s.rbac.role.legacy_authn_disabled for RBAC role bindings and k8s.core.serviceaccount.legacy_authn_disabled for service account restrictions",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.9",
+    "control_title": "Avoid non-default bindings to system:unauthenticated",
+    "assertion_id": "identity_access.authentication.legacy_authn_disabled",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control prevents unauthenticated access by avoiding bindings to system:unauthenticated, matching legacy authentication disable assertion.",
+    "rule_ids": ["k8s.rbac.role.legacy_authn_disabled", "k8s.core.serviceaccount.legacy_authn_disabled"],
+    "coverage": "full",
+    "why": "Selected essential K8s rules for legacy authentication disable - k8s.rbac.role.legacy_authn_disabled for RBAC role bindings and k8s.core.serviceaccount.legacy_authn_disabled for service account restrictions",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.1.10",
+    "control_title": "Avoid non-default bindings to system:authenticated",
+    "assertion_id": "rbac_entitlements.role_assignment.principals_limited",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control prevents excessive access to system:authenticated group, matching principals limited assertion.",
+    "rule_ids": [
+      "gcp.iam.role_assignment_configuration.principals_limited"
+    ],
+    "coverage": "partial",
+    "why": "Found GCP IAM rule for principals limited assertion - covers role assignment restrictions",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.2.1",
+    "control_title": "Ensure that the cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces",
+    "assertion_id": "containers_kubernetes.admission_control.security_policies_enforced",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces Pod Security Standards baseline profile, matching security policies enforcement assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Pod Security Standards can be automated through new K8s rule development - checking namespace pod-security.kubernetes.io/enforce labels",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.3.1",
+    "control_title": "Ensure that all Namespaces have Network Policies defined",
+    "assertion_id": "containers_kubernetes.network_policies.network_segmentation_enforced",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control requires network policies for all namespaces, matching network segmentation enforcement assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Network policies can be automated through new K8s rule development - checking for networkpolicy resources in all namespaces",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.4.1",
+    "control_title": "Consider external secret storage",
+    "assertion_id": "secrets_key_mgmt.secret_retrieval.workload_identity_used",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control recommends external secret storage, matching workload identity usage assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "External secret storage is an architectural decision that requires manual review - no automated validation possible",
+    "confidence": "high",
+    "rule_status": "RULE_UNMATCHED",
+    "manual_review": {
+      "required": true,
+      "who": "Platform Security | Cluster Admin",
+      "why": "External secret storage requires architectural decision and implementation planning - cannot be automated",
+      "procedure": [
+        "Review current secret storage approach and identify gaps",
+        "Evaluate external secret storage solutions (Google Secret Manager, HashiCorp Vault, etc.)",
+        "Check workload identity integration capabilities",
+        "Assess migration complexity and timeline",
+        "Document recommended external secret storage solution"
+      ],
+      "acceptance_criteria": "External secret storage solution selected and migration plan documented",
+      "artifacts_to_attach": ["secret_storage_analysis", "solution_recommendation", "migration_plan"],
+      "timebox_minutes": 60
+    }
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.5.1",
+    "control_title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+    "assertion_id": "containers_kubernetes.image_security.image_signing_enabled",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces image provenance through admission controller, matching image signing assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Image provenance can be automated through new K8s rule development - checking ImagePolicyWebhook admission controller configuration",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.6.1",
+    "control_title": "Create administrative boundaries between resources using namespaces",
+    "assertion_id": "containers_kubernetes.rbac_policies.least_privilege_enforced",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces namespace isolation for administrative boundaries, matching least privilege enforcement assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Namespace isolation can be automated through new K8s rule development - checking resource quotas and namespace configuration",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.6.2",
+    "control_title": "Ensure that the seccomp profile is set to RuntimeDefault in the pod definitions",
+    "assertion_id": "containers_kubernetes.runtime_security.privileged_containers_restricted",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces seccomp profile RuntimeDefault, matching privileged containers restriction assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Seccomp profile configuration can be automated through new K8s rule development - checking pod securityContext.seccompProfile",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.6.3",
+    "control_title": "Apply Security Context to Pods and Containers",
+    "assertion_id": "containers_kubernetes.runtime_security.privileged_containers_restricted",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces security context for pods and containers, matching privileged containers restriction assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Security context can be automated through new K8s rule development - checking pod securityContext configurations",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "4.6.4",
+    "control_title": "The default namespace should not be used",
+    "assertion_id": "containers_kubernetes.rbac_policies.least_privilege_enforced",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control prevents use of default namespace, matching least privilege enforcement assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Default namespace usage can be automated through new K8s rule development - checking resource placement in default namespace",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.1.1",
+    "control_title": "Ensure Image Vulnerability Scanning is enabled",
+    "assertion_id": "containers_kubernetes.image_security.vulnerability_scanning_enabled",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enables image vulnerability scanning, matching vulnerability scanning assertion.",
+    "rule_ids": ["k8s.pod.vulnerability_scanning_enabled", "k8s.container.vulnerability_scanning_enabled"],
+    "coverage": "full",
+    "why": "Selected essential K8s rules for vulnerability scanning - k8s.pod.vulnerability_scanning_enabled for pod-level scanning and k8s.container.vulnerability_scanning_enabled for container-level scanning",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.1.2",
+    "control_title": "Minimize user access to Container Image repositories",
+    "assertion_id": "rbac_entitlements.role_assignment.principals_limited",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control restricts user access to container registries, matching principals limited assertion.",
+    "rule_ids": [
+      "gcp.iam.role_assignment_configuration.principals_limited"
+    ],
+    "coverage": "partial",
+    "why": "Found GCP IAM rule for principals limited assertion - covers container registry access control through IAM roles",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.1.3",
+    "control_title": "Minimize cluster access to read-only for Container Image repositories",
+    "assertion_id": "rbac_entitlements.role_definition.least_privilege_roles",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "role",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control restricts cluster access to read-only for image repositories, matching least privilege roles assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Container registry access can be automated through new GCP rule development - checking IAM permissions for container registry resources",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.1.4",
+    "control_title": "Ensure only trusted container images are used",
+    "assertion_id": "containers_kubernetes.image_security.base_images_approved",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces use of only trusted container images, matching base images approved assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Trusted images can be automated through new K8s rule development - checking image sources and admission controller policies",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.2.1",
+    "control_title": "Ensure GKE clusters are not running using the Compute Engine default service account",
+    "assertion_id": "identity_access.authentication.service_authn_configured",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "service_account",
+      "auth_surface": "gcp_api",
+      "resource_family": "gcp",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control prevents use of default Compute Engine service account for GKE nodes, ensuring custom service accounts are used instead of default GCP service account.",
+    "rule_ids": [
+      "gcp.iam.serviceAccount.service_authn_configured"
+    ],
+    "coverage": "partial",
+    "why": "Found GCP IAM service account rule for service authentication configured assertion",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.3.1",
+    "control_title": "Ensure Kubernetes Secrets are encrypted using keys managed in Cloud KMS",
+    "assertion_id": "crypto_data_protection.encryption_at_rest.customer_managed_keys_used_disks",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces KMS encryption for Kubernetes secrets, matching customer managed keys assertion.",
+    "rule_ids": ["gcp.kms.customer_managed_encryption.customer_managed_keys_used_disks", "gcp.compute.disk_encryption_key.customer_managed_keys_used_disks"],
+    "coverage": "full",
+    "why": "Selected essential GCP rules for customer managed keys - gcp.kms.customer_managed_encryption for KMS encryption and gcp.compute.disk_encryption_key for disk encryption",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.4.1",
+    "control_title": "Enable VPC Flow Logs and Intranode Visibility",
+    "assertion_id": "network_perimeter.network_segmentation.vpc_isolation_enforced",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "network",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enables VPC flow logs for network monitoring, matching VPC isolation enforcement assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "VPC flow logs can be automated through new GCP rule development - checking VPC network configuration and flow logs settings",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.4.2",
+    "control_title": "Ensure Control Plane Authorized Networks is Enabled",
+    "assertion_id": "network_perimeter.firewall_rules.deny_all_default",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "network",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enables authorized networks for control plane access, matching deny all default firewall assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Authorized networks can be automated through new GCP rule development - checking GKE cluster authorized networks configuration",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.4.3",
+    "control_title": "Ensure clusters are created with Private Endpoint Enabled and Public Access Disabled",
+    "assertion_id": "crypto_data_protection.encryption_in_transit.private_endpoints_used",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "network",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enables private endpoints and disables public access, matching private endpoints usage assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Private endpoints can be automated through new GCP rule development - checking GKE cluster private endpoint configuration",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.4.4",
+    "control_title": "Ensure clusters are created with Private Nodes",
+    "assertion_id": "network_perimeter.network_segmentation.vpc_isolation_enforced",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "network",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control ensures private nodes for cluster security, matching VPC isolation enforcement assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Private nodes can be automated through new GCP rule development - checking GKE node pool private node configuration",
+    "confidence": "high",
+    "rule_status": "RULE_NEEDED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.4.5",
+    "control_title": "Ensure use of Google-managed SSL Certificates",
+    "assertion_id": "crypto_data_protection.encryption_in_transit.tls_enforced",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "network",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enforces Google-managed SSL certificates for TLS encryption, matching TLS enforcement assertion.",
+    "rule_ids": ["gcp.kms.encryption_in_transit_configuration.tls_enforced", "gcp.storage.encryption_in_transit_configuration.tls_enforced"],
+    "coverage": "full",
+    "why": "Selected essential GCP rules for TLS enforcement - gcp.kms.encryption_in_transit_configuration for KMS TLS and gcp.storage.encryption_in_transit_configuration for storage TLS",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.5.1",
+    "control_title": "Manage Kubernetes RBAC users with Google Groups for GKE",
+    "assertion_id": "identity_access.federation.external_idp_configured",
+    "facets": {
+      "actor_type": "human",
+      "subject_type": "federated_user",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control manages RBAC through Google Groups federation, matching external IDP configured assertion.",
+    "rule_ids": [],
+    "coverage": "na",
+    "why": "Google Groups RBAC federation requires complex setup and configuration - cannot be fully automated",
+    "confidence": "high",
+    "rule_status": "RULE_UNMATCHED",
+    "manual_review": {
+      "required": true,
+      "who": "Platform Security | Cluster Admin",
+      "why": "Google Groups RBAC integration requires complex federation setup and cannot be automated",
+      "procedure": [
+        "Review current GKE RBAC integration with Google Groups",
+        "Check cluster RBAC configuration and Google Groups mapping",
+        "Validate Google Groups federation setup",
+        "Test RBAC permissions and group membership synchronization",
+        "Document Google Groups integration status and any gaps"
+      ],
+      "acceptance_criteria": "Google Groups RBAC integration verified and documented with working group-to-role mappings",
+      "artifacts_to_attach": ["google_groups_rbac_analysis", "integration_status", "group_mapping_documentation"],
+      "timebox_minutes": 30
+    }
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.6.1",
+    "control_title": "Enable Customer-Managed Encryption Keys (CMEK) for GKE Persistent Disks (PD)",
+    "assertion_id": "crypto_data_protection.encryption_at_rest.customer_managed_keys_used_disks",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "storage",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enables CMEK for persistent disks, matching customer managed keys for disks assertion.",
+    "rule_ids": ["gcp.kms.customer_managed_encryption.customer_managed_keys_used_disks", "gcp.compute.disk_encryption_key.customer_managed_keys_used_disks"],
+    "coverage": "full",
+    "why": "Selected essential GCP rules for customer managed keys - gcp.kms.customer_managed_encryption for KMS encryption and gcp.compute.disk_encryption_key for disk encryption",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  },
+  {
+    "framework": "CIS_GOOGLE_KUBERNETES_ENGINE_GKE_AUTOPILOT_BENCHMARK",
+    "version": "V1.0.0",
+    "control_id": "5.7.1",
+    "control_title": "Enable Security Posture",
+    "assertion_id": "containers_kubernetes.admission_control.policy_validation_enabled",
+    "facets": {
+      "actor_type": "machine",
+      "subject_type": "resource",
+      "auth_surface": "both",
+      "resource_family": "k8s",
+      "evidence_type": "config_read"
+    },
+    "status": "ASSERTION_MATCHED",
+    "rationale_short": "Control enables GKE security posture monitoring, matching policy validation enabled assertion.",
+    "rule_ids": [
+      "gcp.gke.admission_control_configuration.policy_validation_enabled",
+      "gcp.artifactregistry.admission_control_configuration.policy_validation_enabled",
+      "gcp.binaryauthorization.admission_control_configuration.policy_validation_enabled"
+    ],
+    "coverage": "full",
+    "why": "Found 3 GCP rules for policy validation enabled assertion - covers GKE admission control, Artifact Registry, and Binary Authorization services",
+    "confidence": "high",
+    "rule_status": "RULE_MATCHED"
+  }
+]
