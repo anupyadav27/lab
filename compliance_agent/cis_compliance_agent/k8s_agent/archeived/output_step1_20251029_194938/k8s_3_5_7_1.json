@@ -1,0 +1,22 @@
+{
+    "control_id": "5.7.1",
+    "unique_id": "k8s_3_5_7_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Create administrative boundaries between resources using namespaces",
+    "input_row": {
+        "id": "5.7.1",
+        "unique_id": "k8s_3_5_7_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Create administrative boundaries between resources using namespaces",
+        "description": "Use namespaces to isolate your Kubernetes objects.",
+        "rationale": "Limiting the scope of user permissions can reduce the impact of mistakes or malicious activities. A Kubernetes namespace allows you to partition created resources into logically named groups. Resources created in one namespace can be hidden from other namespaces. By default, each resource created by a user in Kubernetes cluster runs in a default namespace, called default. You can create additional namespaces and attach resources and users to them. You can use Kubernetes Authorization plugins to create policies that segregate access to namespace resources between different users. Impact: You need to switch between namespaces for administration.",
+        "audit": "Run the below command and review the namespaces created in the cluster. kubectl get namespaces Ensure that these namespaces are the ones you need and are adequately administered as per your requirements.",
+        "remediation": "Follow the documentation and create namespaces for objects in your deployment as you need them. Default Value: By default, Kubernetes starts with 4 initial namespaces: 1. default - The default namespace for objects with no other namespace 2. kube-system - The namespace for objects created by the Kubernetes system 3. kube-node-lease - Namespace used for node heartbeats 4. kube-public - Namespace used for public information in a cluster References: 1. https://kubernetes.io/docs/concepts/overview/working-with- objects/namespaces/#viewing-namespaces 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html 3. https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/589- efficient-node-heartbeats",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "You need to switch between namespaces for administration.",
+        "references": "1. https://kubernetes.io/docs/concepts/overview/working-with- objects/namespaces/#viewing-namespaces 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html 3. https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/589- efficient-node-heartbeats"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_namespace_administrative_boundaries_configured\n\n**AUTOMATION DETAILS:**\n- Use the Kubernetes API or kubectl to enumerate all namespaces in the cluster.\n  - Command: kubectl get namespaces\n  - API: GET /api/v1/namespaces\n- Enumerate all resources (Pods, Deployments, Services, etc.) and verify they are distributed across multiple namespaces, not just the default namespace.\n  - Command: kubectl get all --all-namespaces\n- Check that only the expected system namespaces exist by default (default, kube-system, kube-public, kube-node-lease) and that additional namespaces are present for logical separation of workloads.\n- Pass Criteria:\n  - At least one non-system, non-default namespace exists.\n  - Workloads (Pods, Deployments, etc.) are present in at least one non-default namespace.\n- Fail Criteria:\n  - Only system namespaces and the default namespace exist, or all workloads are deployed only in the default namespace.\n- Optional: For enhanced checks, enumerate RoleBindings and ClusterRoleBindings to ensure RBAC policies are scoped to specific namespaces, further enforcing administrative boundaries.\n- Example commands:\n  - kubectl get namespaces\n  - kubectl get pods --all-namespaces\n  - kubectl get rolebindings --all-namespaces\n  - kubectl get clusterrolebindings\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T21:09:06.005759",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,25 @@
+{
+    "control_id": "5.3",
+    "unique_id": "aws_3_5_3",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure maximum session duration is no longer than 10 hours",
+    "input_row": {
+        "id": "5.3",
+        "unique_id": "aws_3_5_3",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure maximum session duration is no longer than 10 hours",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** aws_iam_role_session_duration_configured\n\n**AUTOMATION DETAILS:**\n\nTo ensure that the maximum session duration for IAM roles is no longer than 10 hours, the following automated checks can be performed:\n\n1. **AWS API Calls:**\n   - Use the AWS IAM API `list_roles()` to retrieve a list of all IAM roles in the account.\n   - For each IAM role retrieved, use `get_role()` to fetch the role's details, including the `MaxSessionDuration` attribute.\n\n2. **Configuration Check:**\n   - Examine the `MaxSessionDuration` property for each role.\n   - Verify that the `MaxSessionDuration` is not set beyond 36,000 seconds (10 hours).\n\n3. **AWS CLI Command:**\n   - Use `aws iam list-roles` to enumerate all IAM roles.\n   - For each role, use `aws iam get-role --role-name <ROLE_NAME>` to check the `MaxSessionDuration` attribute.\n\n4. **Pass/Fail Criteria:**\n   - **Pass**: The role's `MaxSessionDuration` is 36,000 seconds or less.\n   - **Fail**: The role's `MaxSessionDuration` exceeds 36,000 seconds.\n\n5. **Resource Scope:**\n   - Enumerate IAM roles across all relevant regions and accounts if needed, though IAM resources are generally global.\n\nAutomating this check ensures that roles adhere to the security best practice of limiting session duration, reducing the potential impact of compromised session credentials.",
+    "timestamp": "2025-10-28T15:20:30.808309",
+    "model": "gpt-4o",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. This control can be effectively checked using AWS APIs, boto3, and AWS CLI, as IAM roles and their attributes can be programmatically accessed and evaluated.\n- AWS IAM is a global service, and the use of APIs like `list_roles()` and `get_role()` is appropriate for this purpose.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details are technically correct. The use of `list_roles()` and `get_role()` in boto3, as well as the corresponding AWS CLI commands, are valid for retrieving and checking the `MaxSessionDuration` attribute of IAM roles.\n- The pass/fail criteria are clearly defined and aligned with the control requirement.\n- The program name `aws_iam_role_session_duration_configured` is descriptive but could be more specific regarding the check being performed.\n\n**IMPROVEMENTS:**\n- **Program Name:** Consider renaming to `aws_iam_role_max_session_duration_check` to be more descriptive and specific about the exact check being performed.\n- **Missing Considerations:** While IAM is a global service, it might be beneficial to explicitly mention that the check should be performed across all accounts in an organization if applicable, as IAM roles can exist in multiple accounts.\n- **Alternative AWS API Methods:** The current methods are appropriate; however, integrating AWS Config rules for continuous monitoring could enhance the automation by providing real-time compliance checks.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-structured and technically sound, with appropriate use of AWS services and commands. The automation approach is feasible and aligns with AWS capabilities.\n\n**FINAL RECOMMENDATION:**\n- **Modify:** Update the program name to `aws_iam_role_max_session_duration_check` for clarity and specificity.\n- The rest of the assessment is accurate and should be kept as-is. The automated approach is suitable for this compliance control.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-28T17:34:51.213864"
+}

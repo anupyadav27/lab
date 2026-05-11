@@ -1,0 +1,31 @@
+{
+    "unique_id": "1.4.5__ensure-permissions-on-_etc_issue.net-are-configured",
+    "control_id": "1.4.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect to the Azure Kubernetes Service (AKS) cluster:**\n   - Use an SSH client to connect to one of the nodes in your AKS cluster. \n   - You can use the Azure CLI to get the credentials: \n     ```\n     az aks get-credentials --resource-group <your_resource_group> --name <your_aks_cluster_name>\n     ```\n\n2. **Access the shell on the AKS node:**\n   - Once connected, enter the following command to access the bash shell (if you're using a VM `ssh <user>@<node_ip>`).\n\n3. **Check permissions on /etc/issue.net:**\n   - Run the command: \n     ```\n     stat /etc/issue.net\n     ```\n\n4. **What to verify/validate:**\n   - Ensure Uid and Gid are both 0/root.\n   - Check the Access permissions to confirm they are set to `644` (i.e., `-rw-r--r--`).\n\n5. **Expected secure configuration:**\n   - Ownership should be `root:root`.\n   - The permission should be `644` as indicated: \n     ```\n     Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)\n     ```\n\n6. **How to confirm compliance:**\n   - If the ownership is not `root` or permissions are not `644`, then the configuration is non-compliant. If both conditions are met, the configuration is compliant."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** DISAGREE\n\n- **Manual vs Automated Classification:** The classification as a manual approach is not entirely correct. While the current steps involve manual SSH access to the AKS nodes, this can be automated using Azure CLI or PowerShell scripts. Azure provides capabilities to automate the checking of file permissions through custom scripts executed via Azure Automation or Azure Functions.\n- **Azure APIs/CLI Capabilities:** Azure CLI and PowerShell can be used to automate the retrieval of node credentials and execution of scripts on AKS nodes. For example, using Azure CLI, you can automate the connection to the AKS cluster and execute a script to check file permissions.\n\n**TECHNICAL ACCURACY:** 6\n\n- **Automation Details:** The manual steps are technically correct but lack automation potential. The use of Azure CLI to get credentials is accurate, but the process stops short of leveraging automation tools to complete the task.\n- **Manual Steps Accuracy:** The steps provided are accurate for a manual check but could be enhanced by detailing how to script these checks.\n- **Program Naming Convention:** The program name is not specified in the assessment. If automation were to be implemented, a naming convention such as `azure_aks_node_permission_check` would be appropriate.\n\n**IMPROVEMENTS:**\n\n- **Automation Potential:** Implement a script using Azure CLI or PowerShell to automate the checking of permissions. This script can be executed via Azure Automation or as a Kubernetes job within the AKS cluster.\n- **Missing Considerations:** Consider the security implications of SSH access to AKS nodes. It is generally recommended to minimize direct SSH access to nodes in a managed Kubernetes service.\n- **Alternative Approach:** Use Azure Policy to enforce and audit compliance of node configurations. Azure Policy can be used to ensure that nodes are configured correctly without manual intervention.\n\n**CONFIDENCE:** MEDIUM\n\n- **Reasoning:** While the manual steps are technically correct, the potential for automation using Azure's capabilities is not fully explored. The assessment lacks consideration of Azure's automation and policy enforcement features.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Explanation:** Reclassify the approach to automated by leveraging Azure CLI or PowerShell scripts to check file permissions on AKS nodes. Implement these scripts as part of an Azure Automation runbook or a Kubernetes job. Additionally, consider using Azure Policy for compliance checks to reduce the need for direct node access.",
+        "reviewed_at": "2025-10-26T14:36:57.322024"
+    },
+    "input_row": {
+        "id": "1.4.5",
+        "unique_id": "1.4.5__ensure-permissions-on-/etc/issue.net-are-configured",
+        "title": "Ensure permissions on /etc/issue.net are configured",
+        "description": "The contents of the /etc/issue.net file are displayed to users prior to login for remote connections from configured services.",
+        "rationale": "If the /etc/issue.net file does not have the correct ownership it could be modified by unauthorized users with incorrect or misleading information.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/issue.net Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set permissions on /etc/issue.net : # chown root:root /etc/issue.net # chmod u-x,go-wx /etc/issue.net References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "1.4.5.json",
+        "review_version": "1.0"
+    }
+}

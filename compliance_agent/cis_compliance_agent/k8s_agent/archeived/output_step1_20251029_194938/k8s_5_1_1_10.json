@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.10",
+    "unique_id": "k8s_5_1_1_10",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --repair-malformed-updates argument is set to false",
+    "input_row": {
+        "id": "1.1.10",
+        "unique_id": "k8s_5_1_1_10",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --repair-malformed-updates argument is set to false",
+        "description": "Disable fixing of malformed updates.",
+        "rationale": "The apiserver will potentially attempt to fix the update requests to pass the validation even if the requests are malformed. Malformed requests are one of the potential ways to interact with a service without legitimate information. Such requests could potentially be used to sabotage apiserver responses.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --repair-malformed-updates argument is set to false.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_API_ARGS parameter to \"--repair-malformed-updates=false\": KUBE_API_ARGS=\"--repair-malformed-updates=false\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: Malformed requests from clients would be rejected. Default Value: By default, malformed updates are allowed.   31 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/15580",
+        "profile_applicability": "•  Level 1",
+        "impact": "Malformed requests from clients would be rejected. Default Value: By default, malformed updates are allowed.   31 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/15580"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the kube-apiserver process startup arguments, specifically the presence and value of the --repair-malformed-updates flag. This flag is set via command-line arguments or static pod manifests on the host OS, and is not exposed via the Kubernetes API or retrievable via kubectl or any Kubernetes-native API call. The audit instructions explicitly require running ps -ef | grep kube-apiserver on the master node, which necessitates host-level access.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane (master) node.\n2. Run the following command to list the kube-apiserver process and its arguments:\n   ```\n   ps -ef | grep kube-apiserver\n   ```\n3. Review the command-line arguments for the kube-apiserver process.\n4. Confirm that the --repair-malformed-updates flag is present and explicitly set to false:\n   ```\n   --repair-malformed-updates=false\n   ```\n5. If the flag is missing or set to true, this is a finding (non-compliant).\n6. If using a static pod manifest (commonly at /etc/kubernetes/manifests/kube-apiserver.yaml), inspect the manifest file for the argument under the containers' command or args section.\n7. Document the result for each control plane node.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:39:37.223610",
+    "model": "gpt-4.1"
+}

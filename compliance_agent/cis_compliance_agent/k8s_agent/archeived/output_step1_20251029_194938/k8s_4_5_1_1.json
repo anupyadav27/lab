@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.1",
+    "unique_id": "k8s_4_5_1_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the cluster-admin role is only used where required",
+    "input_row": {
+        "id": "5.1.1",
+        "unique_id": "k8s_4_5_1_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the cluster-admin role is only used where required",
+        "description": "The RBAC role cluster-admin provides wide-ranging powers over the environment and should be used only where and when needed.",
+        "rationale": "Kubernetes provides a set of default roles where RBAC is used. Some of these roles such as cluster-admin provide wide-ranging privileges which should only be applied where absolutely necessary. Roles such as cluster-admin allow super-user access to perform any action on any resource. When used in a ClusterRoleBinding, it gives full control over every resource in the cluster and in all namespaces. When used in a RoleBinding, it gives full control over every resource in the rolebinding's namespace, including the namespace itself. Impact: Care should be taken before removing any clusterrolebindings from the environment to ensure they were not required for operation of the cluster. Specifically, modifications should not be made to clusterrolebindings with the system: prefix as they are required for the operation of system components.",
+        "audit": "Obtain a list of the principals who have access to the cluster-admin role by reviewing the clusterrolebinding output for each role binding that has access to the cluster- admin role. kubectl get clusterrolebindings -o=custom- columns=NAME:.metadata.name,ROLE:.roleRef.name,SUBJECT:.subjects[*].name Review each principal listed and ensure that cluster-admin privilege is required for it.",
+        "remediation": "Identify all clusterrolebindings to the cluster-admin role. Check if they are used and if they need this role or if they could use a role with fewer privileges. Where possible, first bind users to a lower privileged role and then remove the clusterrolebinding to the cluster-admin role : kubectl delete clusterrolebinding [name] Default Value: By default a single clusterrolebinding called cluster-admin is provided with the system:masters group as its principal. References: 1. https://kubernetes.io/docs/admin/authorization/rbac/#user-facing-roles",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Care should be taken before removing any clusterrolebindings from the environment to ensure they were not required for operation of the cluster. Specifically, modifications should not be made to clusterrolebindings with the system: prefix as they are required for the operation of system components.",
+        "references": "1. https://kubernetes.io/docs/admin/authorization/rbac/#user-facing-roles"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_cluster_admin_bindings_restricted\n\n**AUTOMATION DETAILS:**\n- Query the Kubernetes API for all ClusterRoleBindings using:\n  ```\n  kubectl get clusterrolebindings -o json\n  ```\n- Filter the results to identify all ClusterRoleBindings where `.roleRef.name == \"cluster-admin\"`.\n- For each such ClusterRoleBinding, enumerate the `.subjects[]` array to list all users, groups, or service accounts granted cluster-admin privileges.\n- Exclude ClusterRoleBindings with names starting with the `system:` prefix, as these are required for system operation.\n- Pass Criteria: Only the default `cluster-admin` ClusterRoleBinding exists, and its subject is the `system:masters` group. No additional ClusterRoleBindings grant cluster-admin privileges to non-system users, groups, or service accounts.\n- Fail Criteria: Any ClusterRoleBinding (excluding those with the `system:` prefix) grants the `cluster-admin` role to users, groups, or service accounts beyond the default `system:masters` group.\n- Output a list of all non-system ClusterRoleBindings granting cluster-admin privileges, including their names and subjects, for further review.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:29:40.565966",
+    "model": "gpt-4.1"
+}

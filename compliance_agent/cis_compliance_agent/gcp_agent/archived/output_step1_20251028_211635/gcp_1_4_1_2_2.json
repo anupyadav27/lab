@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.2.2",
+    "unique_id": "gcp_1_4_1_2_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure journald is configured to write logfiles to persistent disk",
+    "input_row": {
+        "id": "4.1.2.2",
+        "unique_id": "gcp_1_4_1_2_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure journald is configured to write logfiles to persistent disk",
+        "description": "Data from journald may be stored in volatile memory or persisted locally on the server. Logs in memory will be lost upon a system reboot. By persisting logs to local disk on the server they are protected from loss.",
+        "rationale": "Writing log data to disk will provide the ability to forensically reconstruct events which may have impacted the operations or security of a system even after a system crash or reboot.",
+        "audit": "Review /etc/systemd/journald.conf and verify that logs are persisted to disk: # grep -e Storage /etc/systemd/journald.conf # Storage=persistent",
+        "remediation": "Edit the /etc/systemd/journald.conf file and add the following line: Storage=persistent /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot. References: 1. https://github.com/konstruktoid/hardening/blob/master/systemd.adoc#etcsystemd journaldconf Additional Information: The main configuration file /etc/systemd/journald.conf is read before any of the custom *.conf files. If there are custom configs present, they override the main configuration parameters",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control requires verifying the configuration of the `/etc/systemd/journald.conf` file on Container-Optimized OS instances. The audit process necessitates reviewing the specific configuration file on the OS level to ensure that logs are set to be persisted to disk. This involves checking the content of the file to see if the `Storage=persistent` directive is correctly set, which cannot be done via GCP APIs or Google Cloud SDK/CLI directly. The configuration requires SSH access to the instance to perform these checks, making this process reliant on OS-level inspection rather than functionalities exposed through GCP APIs.\n\n**MANUAL STEPS:**\n\n1. **Access Instance:**\n   - SSH into the Container-Optimized OS instance you wish to audit.\n\n2. **Verify Journald Configuration:**\n   - Run the command: `grep -e Storage /etc/systemd/journald.conf`\n   - Check the output for the line: `Storage=persistent`.\n\n3. **Expected Secure Configuration:**\n   - Ensure that the line `Storage=persistent` is present and uncommented, indicating that journald is configured to persist logs to disk.\n\n4. **Confirm Compliance:**\n   - If the `Storage=persistent` directive is set, the configuration is compliant.\n   - If not, the system is non-compliant and requires remediation.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:30:52.289272",
+    "model": "gpt-4o"
+}

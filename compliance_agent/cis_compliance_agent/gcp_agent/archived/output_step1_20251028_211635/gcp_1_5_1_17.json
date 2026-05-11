@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.17",
+    "unique_id": "gcp_1_5_1_17",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH LoginGraceTime is set to one minute or less",
+    "input_row": {
+        "id": "5.1.17",
+        "unique_id": "gcp_1_5_1_17",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH LoginGraceTime is set to one minute or less",
+        "description": "The LoginGraceTime parameter specifies the time allowed for successful authentication to the SSH server. The longer the Grace period is the more open unauthenticated connections can exist. Like other session controls in this session the Grace Period should be limited to appropriate organizational limits to ensure the service is available for needed access.",
+        "rationale": "Setting the LoginGraceTime parameter to a low number will minimize the risk of successful brute force attacks to the SSH server. It will also limit the number of concurrent unauthenticated connections While the recommended setting is 60 seconds (1 Minute), set the number based on site policy.",
+        "audit": "Run the following command and verify that output LoginGraceTime is between 1 and 60: # sshd -T | grep logingracetime LoginGraceTime 60",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: LoginGraceTime 60 Default Value: LoginGraceTime 120",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control \"Ensure SSH LoginGraceTime is set to one minute or less\" specifically requires checking the SSH configuration of instances running the Container Optimized OS in Google Cloud, which involves OS-level configuration checks. This type of check typically requires accessing the configuration files directly on the instance, usually through SSH, to ensure the parameter `LoginGraceTime` is correctly set in the `/etc/ssh/sshd_config` file. \n\nAs this control involves verifying an operating system setting rather than a property accessible via GCP APIs or Google Cloud SDK, it requires direct interaction with the instances. Therefore, it cannot be checked using GCP APIs, CLI, or SDK tools, and falls under a manual audit approach requiring human intervention.\n\n**MANUAL STEPS:**\n\n1. **Connect to the Instance:**\n   - Use an SSH client to connect to the target instance running Container Optimized OS within your GCP environment. This typically requires IAM permissions to access the instance and an appropriate SSH key if access is restricted.\n\n2. **Verify SSH Configuration:**\n   - Once connected, open the SSH configuration file located at `/etc/ssh/sshd_config`. Use a text editor (such as `nano` or `vi`) to review the file's content.\n\n3. **Check LoginGraceTime Setting:**\n   - Search for the `LoginGraceTime` parameter within the configuration file. Ensure that it is set to `60` or a lower value, consistent with organization policy for limiting the grace period for SSH login attempts.\n\n4. **Confirm Configuration:**\n   - To confirm the configuration is active, optionally restart the SSH service on the instance using `sudo systemctl restart sshd` or consult with site policy for other approved methods of validation.\n\n5. **Ensure Compliance:**\n   - Verify compliance by ensuring no unauthorized modifications to this critical security parameter, which limits exposure during login attempts and reduces susceptibility to brute force attacks.\n\nNote: Editing configuration files and managing service restarts require appropriate permissions and should respect instance security policies and procedures dictated by the organization.",
+    "timestamp": "2025-10-28T21:35:53.333089",
+    "model": "gpt-4o"
+}

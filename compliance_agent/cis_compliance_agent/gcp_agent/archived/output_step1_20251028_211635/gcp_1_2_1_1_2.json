@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.1.2",
+    "unique_id": "gcp_1_2_1_1_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure chrony is configured",
+    "input_row": {
+        "id": "2.1.1.2",
+        "unique_id": "gcp_1_2_1_1_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure chrony is configured",
+        "description": "chrony is a daemon which implements the Network Time Protocol (NTP) is designed to synchronize system clocks across a variety of systems and use a source that is highly accurate. More information on chrony can be found at http://chrony.tuxfamily.org/. chrony can be configured to be a client and/or a server.",
+        "rationale": "If chrony is in use on the system proper configuration is vital to ensuring time synchronization is working properly. This recommendation only applies if chrony is in use on the system.",
+        "audit": "Run the following command and verify remote server is configured properly: # grep -E \"^(server|pool)\" /etc/chrony/chrony.conf server <remote-server> Multiple servers may be configured. Run the following command and verify the first field for the chronyd process is ntp or chrony: # ps -ef | grep chronyd ntp     491     1  0 20:32 ?        00:00:00 /usr/sbin/chronyd Or # ps -ef | grep chronyd chrony     491     1  0 20:32 ?        00:00:00 /usr/sbin/chronyd",
+        "remediation": "Update to an OS image that has the correct chrony configuration.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**DECISION CRITERIA:**\n\n- The audit requires checking the configuration of the chrony daemon on an operating system level, specifically within the `/etc/chrony/chrony.conf` file and the running processes. \n- This requires SSH access to the instances to view and verify the file contents and running processes, which is not accessible through GCP APIs or Google Cloud SDK (gcloud)/CLI.\n- The described command for verification involves shell commands executed on the underlying OS, not commands or configurations exposed by GCP APIs.\n  \n**MANUAL STEPS:**\n\n1. **SSH into the Instance:**\n   - Access the Google Cloud Console.\n   - Navigate to \"Compute Engine\" and select the specific instance running Container-Optimized OS.\n   - Open an SSH terminal session to this instance.\n\n2. **Verify chrony Configuration:**\n   - Run the command: `grep -E \"^(server|pool)\" /etc/chrony/chrony.conf`.\n   - Verify that the output lists a configured remote server with the expected NTP server entries.\n\n3. **Check Running Process:**\n   - Execute: `ps -ef | grep chronyd`.\n   - Confirm that the chronyd process is running under either the 'ntp' or 'chrony' user. The output should resemble:\n     ```\n     ntp     491     1  0 20:32 ?        00:00:00 /usr/sbin/chronyd\n     ```\n     or\n     ```\n     chrony  491     1  0 20:32 ?        00:00:00 /usr/sbin/chronyd\n     ```\n\n4. **Expected Secure Configuration:**\n   - Ensure that the chrony is correctly configured with appropriate NTP server names and that the process is running under the correct user.\n\n5. **Compliance Confirmation:**\n   - If the configuration file and process verification match the expected secure state, the instance is compliant with CIS recommendations for chrony configuration.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nNote that these steps involve a manual review due to the need to access the instance directly, which is not feasible via GCP APIs or automation tools.",
+    "timestamp": "2025-10-28T21:24:17.062918",
+    "model": "gpt-4o"
+}

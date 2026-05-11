@@ -1,0 +1,17 @@
+{
+    "id": "5.4.5",
+    "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json",
+    "input_row": {
+        "id": "5.4.5",
+        "unique_id": "5.4.5__encrypt-traffic-to-https-load-balancers-with-tls-certificates",
+        "title": "Encrypt traffic to HTTPS load balancers with TLS certificates",
+        "description": "Encrypt traffic to HTTPS load balancers using TLS certificates.",
+        "rationale": "Encrypting traffic between users and your Kubernetes workload is fundamental to protecting data sent over the web.",
+        "audit": "",
+        "remediation": "References: 1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-4-encrypt-sensitive-information-in-transit",
+        "impact": "",
+        "reference": "1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-4-encrypt-sensitive-information-in-transit",
+        "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:** \n- The control pertains to ensuring that traffic to HTTPS load balancers is encrypted using TLS certificates, which is fundamentally a property that can be verified through Azure APIs. The configuration settings for network traffic encryption, including TLS configurations, are standard resources exposed through Azure's API. Hence, it can be checked automatically.\n\n**PROGRAM NAME:** azure_aks_https_load_balancer_tls_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n- **Azure Resource Manager APIs** to use:\n  - Azure Kubernetes Service (AKS) API\n  - Load Balancer API\n\n- **Specific resources to enumerate**:\n  - AKS clusters within specified subscriptions and resource groups.\n  - Load balancers associated with AKS services.\n\n- **Exact configuration properties/settings to validate**:\n  - Check if the load balancer associated with the AKS service is configured to use HTTPS.\n  - Validate that TLS certificates are configured for the load balancer.\n\n- **Clear Pass/Fail criteria with expected values**:\n  - Pass: Load balancer is configured to use HTTPS with valid TLS certificates.\n  - Fail: Load balancer is not configured to use HTTPS or lacks a valid TLS certificate.\n\n- **Example API endpoint or CLI command**:\n  - **API Endpoint:** \n    - GET `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}?api-version=2021-02-01`\n  - **CLI Command:**\n    - `az network lb show --resource-group {resourceGroupName} --name {loadBalancerName}`"
+}

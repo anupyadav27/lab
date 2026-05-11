@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.13",
+    "unique_id": "k8s_7_1_1_13",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the admin.conf file permissions are set to 600",
+    "input_row": {
+        "id": "1.1.13",
+        "unique_id": "k8s_7_1_1_13",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the admin.conf file permissions are set to 600",
+        "description": "Ensure that the admin.conf file has permissions of 600.",
+        "rationale": "The admin.conf is the administrator kubeconfig file defining various settings for the administration of the cluster. This file contains private key and respective certificate allowed to fully manage the cluster. You should restrict its file permissions to maintain the integrity and confidentiality of the file. The file should be readable and writable by only the administrators on the system. Impact: None.",
+        "audit": "Run the following command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/admin.conf Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/admin.conf Default Value: By default, admin.conf has permissions of 600. References: 1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None.",
+        "references": "1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file permissions of /etc/kubernetes/admin.conf on the control plane node.\n- The permissions of files on the host OS are not exposed via the Kubernetes API, kubectl, or any Kubernetes controller or resource.\n- The audit procedure explicitly requires running a Linux command (stat or ls) on the node itself, which is not possible via Kubernetes APIs or kubectl.\n- Therefore, this check requires direct OS-level access and cannot be automated via Kubernetes-native mechanisms.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where /etc/kubernetes/admin.conf is located.\n2. Run the following command to check the file permissions:\n   ```\n   stat -c %a /etc/kubernetes/admin.conf\n   ```\n   or\n   ```\n   ls -l /etc/kubernetes/admin.conf\n   ```\n3. Verify that the permissions are set to 600 (i.e., only the owner has read and write permissions).\n4. If the permissions are more permissive than 600, remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/admin.conf\n   ```\n5. Confirm compliance by re-running the stat or ls command and ensuring the permissions are now 600.",
+    "timestamp": "2025-10-29T22:23:57.352907",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this audit approach as Manual is correct. The permissions of files on the host operating system, such as `/etc/kubernetes/admin.conf`, are not accessible via Kubernetes APIs, kubectl, or any Kubernetes-native mechanisms. Thus, direct OS-level access is necessary to perform this check.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and complete for verifying and remediating the file permissions of `/etc/kubernetes/admin.conf`. The use of `stat` and `ls` commands is appropriate for checking file permissions.\n- The program name is not explicitly provided in the assessment, but the description is clear and descriptive of the task at hand.\n\n**IMPROVEMENTS:**\n- The assessment could include a brief explanation of why file permissions are critical for security, emphasizing the importance of restricting access to sensitive configuration files.\n- Consider mentioning the potential use of configuration management tools (e.g., Ansible, Puppet) to automate the remediation step across multiple nodes, even though the initial check is manual.\n- A program name suggestion could be: `k8s_node_admin_conf_file_permissions_check`.\n\n**CONFIDENCE:** HIGH\n- The assessment is straightforward and aligns with best practices for verifying file permissions on a Kubernetes control plane node. The manual approach is justified due to the nature of the task.\n\n**FINAL RECOMMENDATION:** Keep as-is\n- The assessment is accurate and does not require modification. The manual approach is appropriate given the limitations of Kubernetes-native tools in accessing host OS file permissions.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:50:54.273327"
+}

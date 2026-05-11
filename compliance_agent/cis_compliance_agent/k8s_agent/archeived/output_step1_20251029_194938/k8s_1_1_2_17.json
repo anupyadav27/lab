@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.17",
+    "unique_id": "k8s_1_1_2_17",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+    "input_row": {
+        "id": "1.2.17",
+        "unique_id": "k8s_1_1_2_17",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+        "description": "Retain the logs for at least 30 days or as appropriate.",
+        "rationale": "Retaining logs for at least 30 days ensures that you can go back in time and investigate or correlate any events. Set your audit log retention period to 30 days or as per your business requirements. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --audit-log-maxage argument is set to 30 or as appropriate.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --audit-log-maxage parameter to 30 or as an appropriate number of days: --audit-log-maxage=30 Default Value: By default, auditing is not enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_maxage_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the static Pod manifest at `/etc/kubernetes/manifests/kube-apiserver.yaml` (on self-hosted control planes) or via the Kubernetes API if the control plane is managed as a Pod.\n- Use `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml` to retrieve the running kube-apiserver Pod spec (namespace and label may vary by distribution).\n- Inspect the `command` or `args` field of the kube-apiserver container for the presence of the `--audit-log-maxage` flag.\n- Validate that the value for `--audit-log-maxage` is set to `30` or higher (or as per organizational policy).\n- **Pass Criteria:** The `--audit-log-maxage` flag is present and set to `30` or greater.\n- **Fail Criteria:** The flag is missing, or set to a value less than `30`.\n- This check can be fully automated by parsing the Pod spec or manifest file for the relevant argument.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T19:56:13.765447",
+    "model": "gpt-4.1"
+}

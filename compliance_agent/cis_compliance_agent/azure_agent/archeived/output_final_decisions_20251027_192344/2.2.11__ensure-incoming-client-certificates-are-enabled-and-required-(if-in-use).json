@@ -1,0 +1,40 @@
+{
+    "unique_id": "2.2.11__ensure-incoming-client-certificates-are-enabled-and-required-(if-in-use)",
+    "control_id": "2.2.11",
+    "source": null,
+    "input_row": {
+        "id": "2.2.11",
+        "unique_id": "2.2.11__ensure-incoming-client-certificates-are-enabled-and-required-(if-in-use)",
+        "title": "Ensure incoming client certificates are enabled and required (if in use)",
+        "description": "...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Configuration. 6. In the General settings pane, under Incoming client certificates, set Client certificate mode to Required. 7. Click Save. 8. Click Continue. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to enable and require incoming client certificates: az resource update --resource-group <resource-group-name> --name <app- name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" -- set properties.clientCertEnabled=true --set properties.clientCertMode=Required Default Value: By default, incoming client certificates are disabled. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- identity-management#im-4-authenticate-server-and-services 2. https://learn.microsoft.com/en-gb/azure/app-service/app-service-web-configure- tls-mutual-auth 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_app_service_client_certificates_enabled_required\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n\n- **Azure Resource Manager APIs or Azure CLI commands to use:** \n   - Azure CLI command to check the current settings for incoming client certificates:\n     ```bash\n     az webapp show --resource-group <resource-group-name> --name <app-name>\n     ```\n   - To check the deployment slot:\n     ```bash\n     az webapp deployment slot show --resource-group <resource-group-name> --name <app-name> --slot <deployment-slot-name>\n     ```\n\n- **Specific resources to enumerate:** \n   - App Services and their respective deployment slots within specified resource groups.\n\n- **Exact configuration properties/settings to validate:** \n   - The following properties need to be checked in the output:\n     - `clientCertEnabled` should be `true`\n     - `clientCertMode` should be `Required`\n\n- **Clear Pass/Fail criteria with expected values:**\n   - Pass: \n     - `clientCertEnabled` is `true`\n     - `clientCertMode` is equal to `Required`\n   - Fail: \n     - Any other value for `clientCertEnabled` or `clientCertMode`.\n\n- **Example API endpoint or CLI command:** \n   - The above CLI commands serve as the method for querying the resource properties; the expected output will show the settings, which can then be evaluated against the compliance requirements."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Automated is correct. The use of Azure CLI commands to check the settings of App Services for incoming client certificates can be effectively automated. This aligns with Azure's capabilities to programmatically access and verify configuration settings through its APIs and CLI tools.\n\n**TECHNICAL ACCURACY:** 8\n\n- The automation details are mostly technically correct. The Azure CLI command `az webapp show` is appropriate for retrieving the configuration of an App Service, including the `clientCertEnabled` property.\n- However, there is a minor inaccuracy: the `clientCertMode` property is not a standard property returned by the `az webapp show` command. The correct property to check is `clientCertEnabled`, and if further granularity is required, custom configurations or additional service configurations might need to be checked.\n- The program name follows a logical convention, though it could be more concise or aligned with existing naming standards if any exist.\n\n**IMPROVEMENTS:**\n\n- **Clarification on `clientCertMode`:** The audit should clarify whether `clientCertMode` is a custom property or if it requires additional context, as it is not a standard property in Azure App Services.\n- **Documentation Reference:** Include references to the official Azure documentation for App Service configurations regarding client certificates to ensure the latest properties and methods are used.\n- **Error Handling:** Consider adding error handling in the automation script to manage scenarios where the App Service or deployment slot does not exist or the command fails.\n\n**CONFIDENCE:** MEDIUM\n\n- While the approach is generally sound, the discrepancy regarding `clientCertMode` reduces confidence slightly. Ensuring the use of accurate properties and commands is crucial for reliable automation.\n\n**FINAL RECOMMENDATION:**\n\n- **Modify:** Update the assessment to remove or clarify the `clientCertMode` property. Ensure that the automation script checks only valid and supported properties, such as `clientCertEnabled`.\n- Consider adding a manual verification step if there are custom configurations or additional settings that need to be checked beyond what is available through standard Azure CLI commands.\n\nBy addressing these points, the audit can be more robust and aligned with Azure's capabilities and best practices.",
+        "reviewed_at": "2025-10-26T16:19:07.307883"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** Both AI opinions agree that the audit can be automated using Azure CLI commands, which are capable of retrieving the necessary configuration settings for App Services. The properties `clientCertEnabled` can be checked programmatically, confirming the feasibility of automation. Although there was a minor discrepancy regarding the `clientCertMode` property, the primary property `clientCertEnabled` is sufficient for compliance verification.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** azure_app_service_client_certificates_enabled\n\n**AUTOMATION DETAILS:**\n- Azure Resource/Service: App Services\n- API/CLI Method: `az webapp show`\n- Properties to Check: `clientCertEnabled`\n- Pass Criteria: `clientCertEnabled` is `true`\n- Fail Criteria: `clientCertEnabled` is `false` or not present\n\n**DISAGREEMENTS RESOLVED:** The second AI opinion noted a minor inaccuracy regarding the `clientCertMode` property, which is not standard. The decision focuses on the `clientCertEnabled` property, which is the primary indicator of compliance, resolving the discrepancy.",
+        "decided_at": "2025-10-27T14:29:28.127669"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.11__ensure-incoming-client-certificates-are-enabled-and-required-(if-in-use).json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

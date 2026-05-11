@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.9",
+    "unique_id": "k8s_2_5_2_9",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Minimize the admission of containers with added capabilities",
+    "input_row": {
+        "id": "5.2.9",
+        "unique_id": "k8s_2_5_2_9",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Minimize the admission of containers with added capabilities",
+        "description": "Do not generally permit containers with capabilities assigned beyond the default set.",
+        "rationale": "Containers run with a default set of capabilities as assigned by the Container Runtime. Capabilities outside this set can be added to containers which could expose them to risks of container breakout attacks. There should be at least one policy defined which prevents containers with capabilities beyond the default set from launching. If you need to run containers with additional capabilities, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods with containers which require capabilities outwith the default set will not be permitted.",
+        "audit": "Ensure that allowedCapabilities is not present in policies for the cluster unless it is set to an empty array. get pods -A -o=jsonpath=$'{range .items[*]}{@.metadata.name}: {@..securityContext}\\n{end}'",
+        "remediation": "Ensure that allowedCapabilities is not present in policies for the cluster unless it is set to an empty array. Default Value: By default, there are no restrictions on adding capabilities to containers. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods with containers which require capabilities outwith the default set will not be permitted.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_added_capabilities_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all Pod Security Policies (PSPs) if present, or Pod Security Admission (PSA) policies if using Kubernetes v1.21+ (where PSP is deprecated).\n- For each policy, check the `allowedCapabilities` field:\n  - If `allowedCapabilities` is present, it must be set to an empty array (`[]`).\n  - If `allowedCapabilities` is absent, this is also compliant (default: no additional capabilities allowed).\n- For clusters using PSA, check for the `restricted` policy level, which by default does not allow added capabilities.\n- Use the following Kubernetes API/kubectl commands:\n  - For PSPs:  \n    ```\n    kubectl get psp -o json\n    ```\n    For each PSP, inspect `.spec.allowedCapabilities`.\n  - For PSA (if enabled):  \n    ```\n    kubectl get podsecuritypolicies --all-namespaces -o json\n    ```\n    Or, check namespace labels:\n    ```\n    kubectl get ns --show-labels\n    ```\n    Look for `pod-security.kubernetes.io/enforce=restricted` or equivalent.\n- Pass Criteria:\n  - No PodSecurityPolicy or Pod Security Admission configuration allows non-default (extra) capabilities via `allowedCapabilities` (must be absent or `[]`).\n- Fail Criteria:\n  - Any policy allows additional capabilities (i.e., `allowedCapabilities` contains any value other than an empty array).\n- This check is fully automatable via Kubernetes API and does not require subjective review or in-guest OS access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:39:03.153852",
+    "model": "gpt-4.1"
+}

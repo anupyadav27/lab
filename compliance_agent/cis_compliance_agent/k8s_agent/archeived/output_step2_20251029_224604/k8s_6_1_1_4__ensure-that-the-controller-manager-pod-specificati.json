@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.4",
+    "unique_id": "k8s_6_1_1_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the controller manager pod specification file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.4",
+        "unique_id": "k8s_6_1_1_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the controller manager pod specification file ownership is set to root:root",
+        "description": "Ensure that the controller manager pod specification file ownership is set to root:root.",
+        "rationale": "The controller manager pod specification file controls various parameters that set the behavior of various components of the master node. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G /etc/kubernetes/manifests/kube-controller-manager.yaml Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root /etc/kubernetes/manifests/kube-controller-manager.yaml Default Value: By default, kube-controller-manager.yaml file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) of the kube-controller-manager pod specification file on the host filesystem (e.g., /etc/kubernetes/manifests/kube-controller-manager.yaml). Kubernetes APIs and kubectl do not expose file system ownership or permissions of manifest files on the host. This property can only be checked by accessing the underlying node OS, as the audit procedure requires running stat or similar commands directly on the node. Therefore, this check cannot be automated via Kubernetes APIs or kubectl.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where the kube-controller-manager runs.\n2. Locate the kube-controller-manager pod specification file (commonly at /etc/kubernetes/manifests/kube-controller-manager.yaml).\n3. Run the following command to check the file ownership:\n   ```\n   stat -c %U:%G /etc/kubernetes/manifests/kube-controller-manager.yaml\n   ```\n4. Verify that the output is:\n   ```\n   root:root\n   ```\n5. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/manifests/kube-controller-manager.yaml\n   ```\n6. Confirm compliance by re-running the stat command and ensuring the output is root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T21:57:55.288362",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Manual is correct. Kubernetes APIs and `kubectl` do not provide capabilities to check file system ownership or permissions directly on the host where the Kubernetes components are running. This requires direct access to the node's operating system to execute commands like `stat`, which are not within the scope of Kubernetes API functionalities.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps outlined are technically accurate and complete. They correctly describe the process of SSHing into the node, locating the file, checking its ownership, and remediating if necessary. The use of `stat` to verify ownership is appropriate. The program name is not explicitly mentioned, but the description is clear and descriptive about what is being checked.\n\n**IMPROVEMENTS:**\n- The assessment could include a brief note on ensuring that SSH access to the nodes is secured and audited, as this is a critical part of the manual process.\n- The program name could be more descriptive, such as `k8s_controller_manager_manifest_ownership_check`, to clearly indicate the specific resource and security check being performed.\n- While the manual approach is necessary, consider documenting any scripts or tools that could assist in automating the SSH and verification process, even if partially, to reduce human error and improve efficiency.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded and aligns with current Kubernetes capabilities and limitations. The manual approach is justified given the nature of the check.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is, with a suggestion to enhance documentation around securing SSH access and potentially developing scripts to assist with the manual verification process. The current classification and steps are appropriate given the limitations of Kubernetes APIs in this context.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:32:46.867891"
+}

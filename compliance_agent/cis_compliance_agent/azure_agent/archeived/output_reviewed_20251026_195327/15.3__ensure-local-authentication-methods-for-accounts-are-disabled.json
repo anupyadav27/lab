@@ -1,0 +1,31 @@
+{
+    "unique_id": "15.3__ensure-local-authentication-methods-for-accounts-are-disabled",
+    "control_id": "15.3",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe absence of specific audit instructions in the JSON is mitigated by the presence of a detailed remediation guide which outlines steps that can be translated into API calls for checking authentication settings. According to industry standards, specifically in Azure, the authentication mode for Batch Accounts is accessible through APIs that can validate local authentication methods.\n\n**PROGRAM NAME:** azure_batch_account_local_authentication_disabled\n\n**AUTOMATION DETAILS:**\n- Use Azure Resource Manager APIs or Azure CLI commands to check the authentication settings of Batch Accounts. The specific API to query Batch Accounts is:\n  - **API Endpoint:** `GET https://Management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}?api-version=2021-06-01`\n- The relevant configuration properties/settings to validate would include:\n  - `authenticationMode` - Check to ensure that `SharedKey` and `TaskAuthenticationToken` are not enabled.\n- **Pass/Fail criteria:**\n  - Pass: `authenticationMode` should only have `Microsoft Entra ID` (or another centralized IdP) checked.\n  - Fail: If `SharedKey` or `TaskAuthenticationToken` are enabled.\n- The Azure CLI command to check the authentication mode could be:\n  ```bash\n  az batch account show --name {accountName} --resource-group {resourceGroupName} --query 'authenticationMode'\n  ```\n  - Replace `{accountName}` and `{resourceGroupName}` with the appropriate values.\n  \nBy implementing this approach, organizations can automate the verification of compliance with the control regarding local authentication methods for Azure Batch Accounts."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Automated is correct. Azure provides APIs and CLI commands that allow for the automated checking of authentication settings for Batch Accounts. The use of Azure Resource Manager APIs and Azure CLI is appropriate for this task.\n\n**TECHNICAL ACCURACY:** 8\n\n- The automation details are mostly accurate. The API endpoint and CLI command provided are correct for retrieving the authentication settings of Batch Accounts.\n- The program name `azure_batch_account_local_authentication_disabled` follows a logical naming convention, aligning with Azure best practices.\n- However, the `authenticationMode` property is not directly available in the API response. Instead, the settings related to authentication need to be checked under the `properties` section of the Batch Account resource. The specific properties to check are `keyVaultReference` and `autoStorage` configurations to ensure they are set to use centralized identity providers.\n- The CLI command provided needs to be adjusted to correctly parse the authentication settings, as the `--query` parameter should target the correct JSON path.\n\n**IMPROVEMENTS:**\n\n- The assessment should specify the exact JSON path in the API response where the authentication settings can be found. This would improve clarity and ensure the automation script targets the correct properties.\n- Consider including a PowerShell example for completeness, as some organizations may prefer using PowerShell for automation.\n- Clarify the exact properties or settings that indicate the use of `Microsoft Entra ID` or another centralized IdP to avoid confusion.\n- Ensure that the API version used is the latest stable version to maintain compatibility and access to the latest features.\n\n**CONFIDENCE:** HIGH\n\n- The assessment demonstrates a solid understanding of Azure's capabilities and the use of APIs and CLI for compliance checks. The technical details, while slightly needing refinement, are fundamentally sound.\n\n**FINAL RECOMMENDATION:** Modify\n\n- Modify the assessment to include the correct JSON path for the authentication settings in the API response.\n- Update the CLI command to accurately reflect the path to the authentication settings.\n- Consider adding a PowerShell example for broader applicability and to cater to different user preferences.",
+        "reviewed_at": "2025-10-26T16:20:12.752688"
+    },
+    "input_row": {
+        "id": "15.3",
+        "unique_id": "15.3__ensure-local-authentication-methods-for-accounts-are-disabled",
+        "title": "Ensure local authentication methods for accounts are disabled",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Login to Azure portal https://portal.azure.com 2. Navigate to Batch Accounts For each Batch Account shown: 1. Click to open the Batch Account name 2. Under the Settings section, click on Authentication modes 3. In the main window, click the Authentication Mode drop-down list 4. Check the box for Microsoft Entra ID (or other centralized IdP) 5. (If checked) Uncheck the box for Shared Key 6. (If checked) Uncheck the box for Task Authentication Token 7. Click Save Default Value: Local authentication methods are enabled by default. References: 1. https://learn.microsoft.com/en-us/azure/batch/security-best-practices#batch- account-authentication CIS Controls:",
+        "impact": "",
+        "reference": "1. https://learn.microsoft.com/en-us/azure/batch/security-best-practices#batch- account-authentication CIS Controls: Controls Version Control IG 1 IG 2 IG 3 v8 5.6 Centralize Account Management Centralize account management through a directory or identity service.  ● ● v7 16.2 Configure Centralized Point of Authentication Configure access for all accounts through as few centralized points of authentication as possible, including network, security, and cloud systems. ● ●",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "metadata": {
+        "original_file": "15.3.json",
+        "review_version": "1.0"
+    }
+}

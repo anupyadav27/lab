@@ -1,0 +1,22 @@
+{
+    "control_id": "2.4",
+    "unique_id": "k8s_3_2_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate",
+    "input_row": {
+        "id": "2.4",
+        "unique_id": "k8s_3_2_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the --peer-cert-file and --peer-key-file arguments are set as appropriate",
+        "description": "etcd should be configured to make use of TLS encryption for peer connections.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should be encrypted in transit and also amongst peers in the etcd clusters. Impact: etcd cluster peers would need to set up TLS for their communication.",
+        "audit": "Run the following command on the etcd server node: ps -ef | grep etcd Verify that the --peer-cert-file and --peer-key-file arguments are set as appropriate. Note: This recommendation is applicable only for etcd clusters. If you are using only one etcd server in your environment then this recommendation is not applicable.",
+        "remediation": "Follow the etcd service documentation and configure peer TLS encryption as appropriate for your etcd cluster. Then, edit the etcd pod specification file /etc/kubernetes/manifests/etcd.yaml on the master node and set the below parameters. --peer-client-file=</path/to/peer-cert-file> --peer-key-file=</path/to/peer-key-file> Default Value: Note: This recommendation is applicable only for etcd clusters. If you are using only one etcd server in your environment then this recommendation is not applicable. By default, peer communication over TLS is not configured. References: 1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "etcd cluster peers would need to set up TLS for their communication.",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_etcd_peer_tls_encryption_configured\n\n**AUTOMATION DETAILS:**\n- Enumerate all etcd pods running on master nodes by querying the static Pod manifest at /etc/kubernetes/manifests/etcd.yaml or using kubectl to list pods in the kube-system namespace with the label component=etcd.\n- Parse the etcd pod specification to extract the command and arguments.\n- Verify that the following flags are present and set to non-empty file paths:\n  - --peer-cert-file\n  - --peer-key-file\n- Confirm that both flags reference valid file paths (not empty or missing).\n- If either flag is missing or empty, the check fails.\n- If the cluster is single-node (no etcd peers), this control is not applicable.\n- Example kubectl command (if etcd is managed as a static pod):\n  ```\n  kubectl -n kube-system get pod -l component=etcd -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n- Alternatively, read and parse /etc/kubernetes/manifests/etcd.yaml directly for the presence and values of --peer-cert-file and --peer-key-file.\n- Pass Criteria: Both --peer-cert-file and --peer-key-file are set to valid file paths in the etcd pod spec.\n- Fail Criteria: Either flag is missing or empty in the etcd pod spec.",
+    "timestamp": "2025-10-29T20:53:10.949256",
+    "model": "gpt-4.1"
+}

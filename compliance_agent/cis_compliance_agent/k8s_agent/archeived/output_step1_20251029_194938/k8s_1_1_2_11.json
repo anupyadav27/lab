@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.11",
+    "unique_id": "k8s_1_1_2_11",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the admission control plugin AlwaysPullImages is set",
+    "input_row": {
+        "id": "1.2.11",
+        "unique_id": "k8s_1_1_2_11",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the admission control plugin AlwaysPullImages is set",
+        "description": "Always pull images.",
+        "rationale": "Setting admission control policy to AlwaysPullImages forces every new pod to pull the required images every time. In a multi-tenant cluster users can be assured that their private images can only be used by those who have the credentials to pull them. Without this admission control policy, once an image has been pulled to a node, any pod from any user can use it simply by knowing the image’s name, without any authorization check against the image ownership. When this plug-in is enabled, images are always pulled prior to starting containers, which means valid credentials are required. Impact: Credentials would be required to pull the private images every time. Also, in trusted environments, this might increases load on network, registry, and decreases speed. This setting could impact offline or isolated clusters, which have images pre-loaded and do not have access to a registry to pull in-use images. This setting is not appropriate for clusters which use this configuration.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --enable-admission-plugins argument is set to a value that includes AlwaysPullImages.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --enable-admission-plugins parameter to include AlwaysPullImages. --enable-admission-plugins=...,AlwaysPullImages,... Default Value: By default, AlwaysPullImages is not set. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#alwayspullimages",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Credentials would be required to pull the private images every time. Also, in trusted environments, this might increases load on network, registry, and decreases speed. This setting could impact offline or isolated clusters, which have images pre-loaded and do not have access to a registry to pull in-use images. This setting is not appropriate for clusters which use this configuration.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#alwayspullimages"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_always_pull_images_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify that the admission control plugin AlwaysPullImages is enabled.\n- For clusters using static pods (most kubeadm and managed clusters), inspect the kube-apiserver manifest file, typically located at `/etc/kubernetes/manifests/kube-apiserver.yaml`.\n- Use the Kubernetes API or kubectl to retrieve the current configuration of the kube-apiserver pod:\n  - Command: `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml`\n  - Inspect the `spec.containers[].command` or `spec.containers[].args` fields for the presence of the `--enable-admission-plugins` flag.\n- Validate that the value of `--enable-admission-plugins` includes `AlwaysPullImages`.\n- Pass Criteria: The `--enable-admission-plugins` flag is present and the comma-separated list of plugins includes `AlwaysPullImages`.\n- Fail Criteria: The flag is missing, or `AlwaysPullImages` is not listed.\n- For clusters where the API server is not managed as a pod (rare), this check may require host-level access and would fall back to Manual.\n- Example check (using kubectl and jq for clarity):\n\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o json | \\\n    jq -r '.items[].spec.containers[].command[]' | \\\n    grep -- '--enable-admission-plugins' | \\\n    grep 'AlwaysPullImages'\n  ```\n\n- If the above returns a line containing `AlwaysPullImages`, the control is compliant. Otherwise, it is not.",
+    "timestamp": "2025-10-29T19:55:12.190695",
+    "model": "gpt-4.1"
+}

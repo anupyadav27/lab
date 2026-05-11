@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.11",
+    "unique_id": "gcp_1_5_1_11",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH PermitEmptyPasswords is disabled",
+    "input_row": {
+        "id": "5.1.11",
+        "unique_id": "gcp_1_5_1_11",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH PermitEmptyPasswords is disabled",
+        "description": "The PermitEmptyPasswords parameter specifies if the SSH server allows login to accounts with empty password strings.",
+        "rationale": "Disallowing remote shell access to accounts that have an empty password reduces the probability of unauthorized access to the system",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep permitemptypasswords PermitEmptyPasswords no",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: PermitEmptyPasswords no Default Value: PermitEmptyPasswords no",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control requires manual verification for the following reasons:\n\n- The audit step provided involves executing an SSH command (`sshd -T | grep permitemptypasswords`) directly on the server to check the SSH configuration for empty passwords, which is an OS-level check.\n- There is no mention of a GCP API, Google Cloud SDK (gcloud), or GCP CLI command that can query the SSH configuration directly from instances. This particularly applies to configurations managed inside the VM (OS-level), which typically requires secure shell access for verification.\n- This type of SSH server configuration is not exposed via GCP APIs or SDKs for remote querying as it resides within the server's operating system configuration files.\n- It involves verifying security settings at the configuration file level, which is typically not accessible via automated cloud-based audit tools.\n\n**MANUAL STEPS:**\n\n1. **Access the Server:**\n   - Securely connect to the server instance using SSH. Ensure you have the necessary permissions and access rights to perform this audit.\n\n2. **Check SSH Configuration:**\n   - Run the command: `sshd -T | grep permitemptypasswords`.\n   - This command queries the SSH daemon's configuration for whether empty passwords are permitted.\n\n3. **Verify Configuration:**\n   - Confirm that the output of the command shows: `PermitEmptyPasswords no`.\n   - This indicates that the SSH server does not allow authentication with empty password strings, which is the secure configuration.\n\n4. **Remediation (if necessary):**\n   - If the configuration is not set to `no`, edit the `/etc/ssh/sshd_config` file.\n   - Change or add the line: `PermitEmptyPasswords no`.\n   - Restart the SSH service to apply the changes.\n\nBy following these manual verification steps, you ensure that your GCP instances comply with the security requirements for SSH configurations related to empty passwords.",
+    "timestamp": "2025-10-28T21:34:18.429492",
+    "model": "gpt-4o"
+}

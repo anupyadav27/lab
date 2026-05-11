@@ -1,0 +1,22 @@
+{
+    "control_id": "6.1.5",
+    "unique_id": "gcp_1_6_1_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/passwd- are configured",
+    "input_row": {
+        "id": "6.1.5",
+        "unique_id": "gcp_1_6_1_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/passwd- are configured",
+        "description": "The /etc/passwd- file contains backup user account information.",
+        "rationale": "It is critical to ensure that the /etc/passwd- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 or more restrictive: # stat /etc/passwd- Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following command to set permissions on /etc/passwd- : # chown root:root /etc/passwd- # chmod u-x,go-wx /etc/passwd-",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "Based on the provided information and following the decision criteria:\n\nThe control \"Ensure permissions on /etc/passwd- are configured\" pertains to verifying the permissions and ownership of a specific file on a compute instance running Container-Optimized OS. This check involves assessing permissions of a file that resides directly in the operating system. It requires SSH access to the instance to run the necessary command (e.g., `stat /etc/passwd-`) and verify the permissions and ownership, which is typically outside the scope of GCP API checks or orchestration via the Google Cloud SDK.\n\n**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This is a manual check because it requires SSH access to the compute instance to inspect the file system directly.\n- It involves verifying file permissions and ownership, which isn't feasible via GCP APIs or the Google Cloud SDK as these do not provide file system-level access.\n- The control does not mention the use of any API calls or Google Cloud SDK commands for auditing, further indicating that this is likely a manual check.\n\n**MANUAL STEPS:** \n1. **Access the Instance:**\n   - Use SSH to connect to the GCP Compute Instance running Container-Optimized OS.\n   - Command: `gcloud compute ssh <INSTANCE_NAME> --zone <ZONE>`\n\n2. **Verify Permissions and Ownership:**\n   - Run the command `stat /etc/passwd-` on the instance.\n   - Verify that the Uid and Gid are both `0/root`.\n   - Ensure that the Access permissions are `644` or more restrictive (`-rw-r--r--`).\n\n3. **Confirm Expected Secure Configuration:**\n   - The output should display ownership as root:root and permissions as `-rw-r--r--` (644).\n   - Example output:\n     ```\n     File: /etc/passwd-\n     Size: 2048          Blocks: 8          IO Block: 4096   regular file\n     Device: ca00h/51712d    Inode: 1024        Links: 1\n     Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)\n     ```\n\n4. **Confirm Compliance:**\n   - If the permissions and ownership match the expected configuration, the instance is compliant with the control.\n   - If not, adjustments must be made using the remediation commands provided in the control description.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nNote: The manual approach is chosen primarily due to the level of access required to verify the file permissions and ownership directly on the OS level, which can't be automated using GCP's remote management tools or APIs alone.",
+    "timestamp": "2025-10-28T21:42:03.372276",
+    "model": "gpt-4o"
+}

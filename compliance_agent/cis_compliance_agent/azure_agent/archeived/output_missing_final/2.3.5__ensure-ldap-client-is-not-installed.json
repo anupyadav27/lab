@@ -1,0 +1,17 @@
+{
+    "id": "2.3.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.3.5",
+        "unique_id": "2.3.5__ensure-ldap-client-is-not-installed",
+        "title": "Ensure LDAP client is not installed",
+        "description": "The Lightweight Directory Access Protocol (LDAP) was introduced as a replacement for NIS/YP. It is a service that provides a method for looking up information from a central database.",
+        "rationale": "If the system will not need to act as an LDAP client, it is recommended that the software be removed to reduce the potential attack surface. Impact: Removing the LDAP client will prevent or inhibit using LDAP for authentication in your environment.",
+        "audit": "Run the following command to verify that the openldap-clients package is not installed: # rpm -q openldap-clients package openldap-clients is not installed",
+        "remediation": "Run the following command to remove the openldap-clients package: # dnf remove openldap-clients References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Removing the LDAP client will prevent or inhibit using LDAP for authentication in your environment.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Login to the Azure Portal**: Navigate to the Azure Portal and sign in with your administrator credentials.\n2. **Locate Kubernetes Cluster**: In the Azure Portal, go to \"Kubernetes services\" and select the Kubernetes cluster you wish to inspect.\n3. **Access the Nodes**: Access the node pool of the Kubernetes cluster. You may need to use the Azure CLI or an SSH client to connect to the nodes. \n4. **SSH into the Node**: Use SSH to connect to one of the nodes. You will need the VM’s public IP address and your SSH credentials (e.g., SSH key, if configured).\n5. **Check for LDAP Client Installation**: Run the following command on the node:\n   ```bash\n   rpm -q openldap-clients\n   ```\n6. **Verify the Output**: Check the output of the command. \n   - If the output indicates that \"openldap-clients is not installed\", the node is compliant.\n   - If it shows that the package is installed, the node is non-compliant.\n7. **Document the Findings**: Note whether the LDAP client is installed on each node and any necessary follow-up actions based on the compliance status. \n\n**Expected Secure Configuration**: The openldap-clients package should not be installed on the nodes.\n\n**How to Confirm Compliance**: If the command output confirms \"openldap-clients is not installed\", the nodes are compliant with the control. If the package is present, remediation actions should be taken to remove it."
+}

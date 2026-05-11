@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.7",
+    "unique_id": "k8s_6_1_2_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --authorization-mode argument includes Node",
+    "input_row": {
+        "id": "1.2.7",
+        "unique_id": "k8s_6_1_2_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --authorization-mode argument includes Node",
+        "description": "Restrict kubelet nodes to reading only objects associated with them.",
+        "rationale": "The Node authorization mode only allows kubelets to read Secret, ConfigMap, PersistentVolume, and PersistentVolumeClaim objects associated with their nodes. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --authorization-mode argument exists and is set to a value to include Node.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --authorization-mode parameter to a value that includes Node. --authorization-mode=Node,RBAC Default Value: By default, Node authorization is not enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/node/ 3. https://github.com/kubernetes/kubernetes/pull/46076 4. https://acotten.com/post/kube17-security",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/node/ 3. https://github.com/kubernetes/kubernetes/pull/46076 4. https://acotten.com/post/kube17-security"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_authorization_mode_node_included\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the kube-system namespace as a static Pod manifest (e.g., /etc/kubernetes/manifests/kube-apiserver.yaml), or via the Kubernetes API if the cluster exposes static Pod specs.\n- Use the following command to retrieve the kube-apiserver Pod spec:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o json\n  ```\n- Parse the `spec.containers[].command` or `spec.containers[].args` array for the kube-apiserver container.\n- Locate the `--authorization-mode` flag and extract its value.\n- Validate that the value includes `Node` (case-sensitive, comma-separated list, e.g., `--authorization-mode=Node,RBAC`).\n- **Pass Criteria:** The `--authorization-mode` flag exists and its value contains `Node` (either alone or in combination, e.g., `Node,RBAC`).\n- **Fail Criteria:** The `--authorization-mode` flag is missing, or its value does not include `Node`.\n- This check can be fully automated via Kubernetes API/kubectl without requiring host-level access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:01:44.840647",
+    "model": "gpt-4.1"
+}

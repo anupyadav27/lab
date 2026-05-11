@@ -1,0 +1,17 @@
+{
+    "id": "2.2.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.1",
+        "unique_id": "aks_2.2.1__ensure-xinetd-is-not-installed",
+        "title": "Ensure xinetd is not installed",
+        "description": "The eXtended InterNET Daemon ( xinetd ) is an open source super daemon that replaced the original inetd daemon. The xinetd daemon listens for well known services and dispatches the appropriate daemon to properly respond to service requests.",
+        "rationale": "If there are no xinetd services required, it is recommended that the package be removed to reduce the attack surface are of the system. Note: If an xinetd service or services are required, ensure that any xinetd service not required is stopped and disabled",
+        "audit": "Run the following command to verify xinetd is not installed: # rpm -q xinetd package xinetd is not installed",
+        "remediation": "Run the following command to remove xinetd: # dnf remove xinetd References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure portal** and navigate to the Azure Kubernetes Service (AKS) cluster dashboard.\n2. **Open a terminal session** to one of the AKS nodes. Use SSH to connect to the node. The command might look like: \n   ```bash\n   ssh azureuser@<node_ip_address>\n   ```\n3. **Run the command to check if xinetd is installed:** \n   ```bash\n   rpm -q xinetd\n   ```\n4. **Verify the output:** \n   - If the output returns `package xinetd is not installed`, then xinetd is not present and the system is compliant.\n   - If it shows that xinetd is installed, it must be removed to comply with security best practices.\n5. **Confirm compliance:** If xinetd is not installed, the configuration is secure. If it is installed, proceed with remediation steps outlined in the next instruction.\n6. **If xinetd is installed, remove it using the command:**\n   ```bash\n   dnf remove xinetd\n   ```\n7. **Re-run the check** to ensure that xinetd has been successfully uninstalled by repeating step 3.\n\nExpected secure configuration: xinetd should not be installed on any AKS node. Confirm the configuration status based on the output of the `rpm -q xinetd` command."
+}

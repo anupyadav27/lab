@@ -1,0 +1,22 @@
+{
+    "control_id": "3.3.1.1",
+    "unique_id": "gcp_1_3_3_1_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure IPv6 default deny firewall policy",
+    "input_row": {
+        "id": "3.3.1.1",
+        "unique_id": "gcp_1_3_3_1_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure IPv6 default deny firewall policy",
+        "description": "A default deny all policy on connections ensures that any unconfigured network usage will be rejected.",
+        "rationale": "With a default accept policy the firewall will accept any packet that is not configured to be denied. It is easier to white list acceptable usage than to black list unacceptable usage.",
+        "audit": "Run the following command and verify that the policy for the INPUT, OUTPUT, and FORWARD chains is DROP or REJECT: # ip6tables -L Chain INPUT (policy DROP) Chain FORWARD (policy DROP) Chain OUTPUT (policy DROP)",
+        "remediation": "Run the following commands to implement a default DROP policy: # ip6tables -P INPUT DROP # ip6tables -P OUTPUT DROP # ip6tables -P FORWARD DROP Additional Information: Changing firewall settings while connected over network can result in being locked out of the system. Remediation will only affect the active system firewall, be sure to configure the default policy in your firewall management to apply on boot as well.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- **Manual:** This compliance control requires checking the configuration of IPv6 firewall policies on the actual system running Container Optimized OS. The audit field suggests using the `ip6tables` command, which needs to be executed in the operating system environment. This typically involves SSH access to the instance in question, which is not exposed via GCP APIs directly.\n\n- The use of `ip6tables` to verify policies on chains such as INPUT, OUTPUT, and FORWARD indicates that these checks are applied at the OS level, requiring inspection of system-level firewall settings on the instances.\n\n- Google Cloud SDK or GCP CLI does not provide command-line utilities or APIs that can directly audit the `ip6tables` configuration on a Container Optimized OS instance, thus making the audit process manual.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to securely connect to the instance running Container Optimized OS: `gcloud compute ssh [INSTANCE_NAME]`\n\n2. **Verify Default IPv6 Policy:**\n   - Run the following command to list the current `ip6tables` policies: `sudo ip6tables -L`\n\n3. **Review Chain Policies:**\n   - Inspect the default policies for INPUT, OUTPUT, and FORWARD chains. These should be set to either `DROP` or `REJECT`.\n   - Example output to ensure compliance:\n     ```\n     Chain INPUT (policy DROP)\n     Chain FORWARD (policy DROP)\n     Chain OUTPUT (policy DROP)\n     ```\n\n4. **Confirm Compliance:**\n   - Ensure that all unconfigured traffic is denied by default by verifying the policies for the specified chains as mentioned in the control.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nNote: The verification process requires careful handling to avoid being locked out of the system by inadvertently changing firewall rules during an SSH session.",
+    "timestamp": "2025-10-28T21:27:46.453153",
+    "model": "gpt-4o"
+}

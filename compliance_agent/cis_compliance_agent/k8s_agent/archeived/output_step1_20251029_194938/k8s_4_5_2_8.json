@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.8",
+    "unique_id": "k8s_4_5_2_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Minimize the admission of containers with the NET_RAW capability",
+    "input_row": {
+        "id": "5.2.8",
+        "unique_id": "k8s_4_5_2_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Minimize the admission of containers with the NET_RAW capability",
+        "description": "Do not generally permit containers with the potentially dangerous NET_RAW capability.",
+        "rationale": "Containers run with a default set of capabilities as assigned by the Container Runtime. By default this can include potentially dangerous capabilities. With Docker as the container runtime the NET_RAW capability is enabled which may be misused by malicious containers. Ideally, all containers should drop this capability. There should be at least one admission control policy defined which does not permit containers with the NET_RAW capability. If you need to run containers with this capability, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods with containers which run with the NET_RAW capability will not be permitted.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that at least one policy disallows the admission of containers with the NET_RAW capability.",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers with the NET_RAW capability. Default Value: By default, there are no restrictions on the creation of containers with the NET_RAW capability. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods with containers which run with the NET_RAW capability will not be permitted.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_net_raw_capability_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API (`/api/v1/namespaces`).\n- For each namespace, check for the presence and enforcement of Pod Security Admission (PSA) labels or PodSecurityPolicies (if still in use), or third-party admission controllers (e.g., OPA Gatekeeper, Kyverno) that restrict the NET_RAW capability.\n- For PSA: Validate that the namespace is labeled with at least `pod-security.kubernetes.io/enforce=restricted` or higher, as the \"restricted\" profile disallows NET_RAW by default.\n    - Use: `kubectl get ns --show-labels` and check for `pod-security.kubernetes.io/enforce=restricted`\n- For PodSecurityPolicies (if present): List all PSPs (`kubectl get psp -o yaml`) and check for policies that have:\n    - `spec.requiredDropCapabilities` includes `NET_RAW`\n    - Or, `spec.allowedCapabilities` does NOT include `NET_RAW`\n- For OPA Gatekeeper/Kyverno: List all constraint templates and constraints, and check for policies that deny pods with NET_RAW in `securityContext.capabilities.add`.\n- Pass Criteria: Every namespace with user workloads must have at least one enforced policy (PSA, PSP, or admission controller policy) that prevents pods from running with the NET_RAW capability.\n- Fail Criteria: Any namespace lacking such a policy, or where policies allow NET_RAW by default.\n- Example commands:\n    - `kubectl get ns --show-labels`\n    - `kubectl get psp -o yaml | grep -B5 -A10 NET_RAW`\n    - `kubectl get constraints` (for OPA/Kyverno)\n    - `kubectl get podsecuritypolicies.policy -o yaml | grep NET_RAW`\n- The program should flag any namespace where NET_RAW is not restricted by policy.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:34:07.059871",
+    "model": "gpt-4.1"
+}

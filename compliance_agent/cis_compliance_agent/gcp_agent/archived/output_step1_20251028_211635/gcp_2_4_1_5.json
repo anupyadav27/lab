@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.5",
+    "unique_id": "gcp_2_4_1_5",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Ensure that Service Account Tokens are only mounted where necessary",
+    "input_row": {
+        "id": "4.1.5",
+        "unique_id": "gcp_2_4_1_5",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Ensure that Service Account Tokens are only mounted where necessary",
+        "description": "Service accounts tokens should not be mounted in pods except where the workload running in the pod explicitly needs to communicate with the API server",
+        "rationale": "Mounting service account tokens inside pods can provide an avenue for privilege escalation attacks where an attacker is able to compromise a single pod in the cluster. Avoiding mounting these tokens removes this attack avenue. Impact: Pods mounted without service account tokens will not be able to communicate with the API server, except where the resource is available to unauthenticated principals.",
+        "audit": "Review pod and service account objects in the cluster and ensure that the option below is set, unless the resource explicitly requires this access. automountServiceAccountToken: false",
+        "remediation": "Modify the definition of pods and service accounts which do not need to mount service account tokens to disable it. Default Value: By default, all pods get a service account token mounted in them. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Pods mounted without service account tokens will not be able to communicate with the API server, except where the resource is available to unauthenticated principals.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThis control can be effectively audited using GCP APIs or Google Cloud SDK (gcloud) tools. The control involves verifying configurations of service account tokens in Kubernetes, which is achievable via programmatic access to the Kubernetes API server. Specifically, you can utilize Kubernetes API calls to list pods and check the configuration of the `automountServiceAccountToken` setting.\n\n**PROGRAM NAME:** gcp_kubernetes_pod_service_account_token_mount_disabled\n\n**AUTOMATION DETAILS:**\n- **Kubernetes API Calls:** Use the Kubernetes API to list all pods across all namespaces and inspect the pod specifications for the `automountServiceAccountToken` setting.\n- **Google Cloud SDK (gcloud) Commands:** \n  - Use `gcloud container clusters list` to get the list of clusters.\n  - For each cluster, use `gcloud container clusters get-credentials <cluster-name>` to access the Kubernetes API.\n  - Execute `kubectl get pods --all-namespaces -o json` to retrieve all pod configurations.\n- **Configuration Property to Validate:** \n  - For each pod, check the specification of the `automountServiceAccountToken` field. The field should be explicitly set to `false` unless there is a documented requirement for the pod to communicate with the API server.\n- **Pass/Fail Criteria:**\n  - **Pass:** `automountServiceAccountToken` is set to `false` for all pods where API server communication is not required.\n  - **Fail:** `automountServiceAccountToken` is set to `true`, or not set (defaulting to `true`), in pods unnecessarily allowing service account token mounts.\n- **Expected Values:** The expected secure configuration is `automountServiceAccountToken: false` for pods not needing API server access.\n- **References:** Use the Kubernetes documentation link provided in the control to understand the configuration and impact further.\n\nBy automating this process, you can ensure efficient and consistent compliance verification across multiple clusters and their respective pods.",
+    "timestamp": "2025-10-28T21:53:25.200262",
+    "model": "gpt-4o"
+}

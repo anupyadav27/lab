@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.20",
+    "unique_id": "k8s_5_1_1_20",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+    "input_row": {
+        "id": "1.1.20",
+        "unique_id": "k8s_5_1_1_20",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+        "description": "Do not always authorize all requests.",
+        "rationale": "The apiserver, by default, allows all requests. You should restrict this behavior to only allow the authorization modes that you explicitly use in your environment. For example, if you don't use REST APIs in your environment, it is a good security best practice to switch off that capability.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --authorization-mode argument exists and is not set to AlwaysAllow.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_API_ARGS parameter to values other than --authorization-mode=AlwaysAllow. One such example could be as below: KUBE_API_ARGS=\"--authorization-mode=RBAC\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: Only authorized requests will be served. Default Value: By default, AlwaysAllow is enabled.   51 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Only authorized requests will be served. Default Value: By default, AlwaysAllow is enabled.   51 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_authorization_mode_always_allow_disabled\n\n**AUTOMATION DETAILS:**\n- Query the running configuration of the kube-apiserver to verify the value of the --authorization-mode flag.\n- Use the Kubernetes API (if kube-apiserver is managed as a Pod/Deployment/Static Pod) to retrieve the Pod spec for kube-apiserver in the kube-system namespace:\n  - Command: kubectl -n kube-system get pods -l component=kube-apiserver -o json\n  - Inspect the command/args fields of the kube-apiserver container(s) for the presence and value of the --authorization-mode flag.\n- Alternatively, for clusters where kube-apiserver is not managed as a Pod, retrieve the process arguments from the node running the kube-apiserver (requires node access, but in managed clusters, this is exposed via Pod spec).\n- Pass Criteria: The --authorization-mode flag is present and does NOT include AlwaysAllow as a value (e.g., it should be set to RBAC, Node, Webhook, ABAC, etc., but not AlwaysAllow).\n- Fail Criteria: The --authorization-mode flag is set to AlwaysAllow, or AlwaysAllow is included among its values.\n- Example check logic:\n  - For each kube-apiserver Pod/container, parse the command/args for --authorization-mode.\n  - Split the value by commas and ensure \"AlwaysAllow\" is NOT present.\n- This check can be fully automated via Kubernetes API and does not require host-level access or subjective review.",
+    "timestamp": "2025-10-29T21:41:45.416983",
+    "model": "gpt-4.1"
+}

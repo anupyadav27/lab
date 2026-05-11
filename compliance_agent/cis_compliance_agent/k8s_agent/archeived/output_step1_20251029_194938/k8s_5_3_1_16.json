@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.16",
+    "unique_id": "k8s_5_3_1_16",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --service-account-lookup argument is set to true",
+    "input_row": {
+        "id": "3.1.16",
+        "unique_id": "k8s_5_3_1_16",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --service-account-lookup argument is set to true",
+        "description": "Validate service account before validating token.",
+        "rationale": "By default, the apiserver only verifies that the authentication token is valid. However, it does not validate that the service account token mentioned in the request is actually present in etcd. This allows using a service account token even after the corresponding service account is deleted. This is an example of time of check to time of use security issue.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --service-account-lookup argument exists and is set to true.",
+        "remediation": "Edit the deployment specs and set \"--service-account-lookup=true\". kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: None Default Value: By default, --service-account-lookup argument is set to false. References: 1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/24167 3. https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use  215 | P a g e 4. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 5. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, --service-account-lookup argument is set to false.",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/24167 3. https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use  215 | P a g e 4. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 5. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_service_account_lookup_enabled\n\n**AUTOMATION DETAILS:**\n- Query the deployment or pod spec for the federation-apiserver in the federation-system namespace using the Kubernetes API or kubectl.\n- Use the following command to retrieve the current configuration:\n  ```\n  kubectl -n federation-system get deployment federation-apiserver-deployment -o json\n  ```\n- Inspect the container spec(s) for the federation-apiserver and check the command or args array for the presence of the flag:\n  ```\n  --service-account-lookup=true\n  ```\n- Pass Criteria: The federation-apiserver container(s) must include the argument `--service-account-lookup=true`.\n- Fail Criteria: The argument is missing, or set to `false`, or not explicitly set (since the default is `false`).\n- This check can be performed programmatically by parsing the deployment spec and validating the presence and value of the flag in the container's command or args fields.",
+    "timestamp": "2025-10-29T21:56:37.399443",
+    "model": "gpt-4.1"
+}

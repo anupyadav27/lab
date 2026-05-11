@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2",
+    "unique_id": "aws_3_2_2",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure MFA is enabled for WorkSpaces users",
+    "input_row": {
+        "id": "2.2",
+        "unique_id": "aws_3_2_2",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure MFA is enabled for WorkSpaces users",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nGiven the focus on ensuring Multi-Factor Authentication (MFA) is enabled for AWS WorkSpaces users, this can be checked through the AWS Directory Service, which supports MFA configuration. AWS APIs or CLI commands can be employed to verify MFA settings for users associated with AWS WorkSpaces. \n\n- **Can AWS APIs query this property?** Yes, AWS APIs, particularly through AWS Directory Service, can be utilized.\n- **Is this a standard AWS service property?** Yes, MFA settings for directory service users are a typical security measure.\n- **Does boto3 SDK have methods to check this?** Yes, the boto3 `ds` client can be used to check the MFA status for users.\n- **Does AWS CLI have commands to retrieve this?** Yes, using the AWS CLI, you can query directory service configurations and specifics about user MFA settings.\n\nSince the title suggests a technical verification of the MFA status, it does not require human judgment beyond interpreting API or CLI output. Thus, the control can be effectively audited using automated methods.\n\n**PROGRAM NAME:** aws_directory_service_user_mfa_enabled\n\n**AUTOMATION DETAILS:**\n\n1. **Use boto3 SDK:**\n   - Utilize the `boto3.client('ds')` to interact with the AWS Directory Service.\n   - Employ methods like `describe_trusts()` and potentially `describe_mfa_device()` to check if MFA is associated with specific users in the directory.\n\n2. **AWS CLI Command:**\n   - You can use the `aws ds describe-directories` to list directories and then query MFA settings for associated users.\n\n3. **Resources to Enumerate:**\n   - All directories configured for AWS WorkSpaces.\n   - Users within these directories to check their MFA configurations.\n\n4. **Configuration Properties/Settings to Validate:**\n   - Ensure that each user associated with AWS WorkSpaces has an MFA device configured and activated.\n\n5. **Pass/Fail Criteria:**\n   - Pass: Every AWS WorkSpaces user has an MFA device configured.\n   - Fail: Any AWS WorkSpaces user lacks MFA configuration.\n\nBy automating this check, organizations can efficiently ensure compliance with MFA requirements for enhanced security in line with CIS benchmarks.",
+    "timestamp": "2025-10-28T15:14:09.409480",
+    "model": "gpt-4o"
+}

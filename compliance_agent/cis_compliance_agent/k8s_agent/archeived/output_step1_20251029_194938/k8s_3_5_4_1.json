@@ -1,0 +1,22 @@
+{
+    "control_id": "5.4.1",
+    "unique_id": "k8s_3_5_4_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Prefer using secrets as files over secrets as environment variables",
+    "input_row": {
+        "id": "5.4.1",
+        "unique_id": "k8s_3_5_4_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Prefer using secrets as files over secrets as environment variables",
+        "description": "Kubernetes supports mounting secrets as data volumes or as environment variables. Minimize the use of environment variable secrets.",
+        "rationale": "It is reasonably common for application code to log out its environment (particularly in the event of an error). This will include any secret values passed in as environment variables, so secrets can easily be exposed to any user or entity who has access to the logs. Impact: Application code which expects to read secrets in the form of environment variables would need modification",
+        "audit": "Run the following command to find references to objects which use environment variables defined from secrets. kubectl get all -o jsonpath='{range .items[?(@..secretKeyRef)]} {.kind} {.metadata.name} {\"\\n\"}{end}' -A",
+        "remediation": "If possible, rewrite application code to read secrets from mounted secret files, rather than from environment variables. Default Value: By default, secrets are not defined References: 1. https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets Additional Information: Mounting secrets as volumes has the additional benefit that secret values can be updated without restarting the pod",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "Application code which expects to read secrets in the form of environment variables would need modification",
+        "references": "1. https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets Additional Information: Mounting secrets as volumes has the additional benefit that secret values can be updated without restarting the pod"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_env_secrets_as_files_preferred\n\n**AUTOMATION DETAILS:**\n- Enumerate all Pod-spec-based resources in all namespaces (Pod, Deployment, ReplicaSet, StatefulSet, DaemonSet, Job, CronJob).\n- For each resource, inspect the PodSpec for containers and initContainers.\n- For each container, check the env and envFrom fields:\n  - Identify any environment variables defined using secretKeyRef (i.e., secrets injected as environment variables).\n- Output a list of all resources and containers where secrets are used as environment variables.\n- Pass Criteria: No containers in any Pod-spec-based resource use secretKeyRef in env or envFrom. All secrets are mounted as files (volumes) instead.\n- Fail Criteria: Any container in any resource uses secretKeyRef in env or envFrom.\n- Example kubectl command:\n  ```\n  kubectl get all --all-namespaces -o json | \\\n    jq -r '\n      .items[] |\n      select(.spec.template.spec.containers[]?.env[]?.valueFrom.secretKeyRef or\n             .spec.template.spec.initContainers[]?.env[]?.valueFrom.secretKeyRef) |\n      \"\\(.kind) \\(.metadata.namespace)/\\(.metadata.name)\"\n    '\n  ```\n- The program should provide a report listing all offending resources, with kind, namespace, name, and the specific environment variable(s) using secretKeyRef.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T21:08:30.529998",
+    "model": "gpt-4.1"
+}

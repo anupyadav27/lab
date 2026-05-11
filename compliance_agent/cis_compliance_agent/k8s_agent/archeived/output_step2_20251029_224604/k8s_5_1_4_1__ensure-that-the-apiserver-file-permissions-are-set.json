@@ -1,0 +1,25 @@
+{
+    "control_id": "1.4.1",
+    "unique_id": "k8s_5_1_4_1",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the apiserver file permissions are set to 644 or more restrictive",
+    "input_row": {
+        "id": "1.4.1",
+        "unique_id": "k8s_5_1_4_1",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the apiserver file permissions are set to 644 or more restrictive",
+        "description": "Ensure that the apiserver file has permissions of 644 or more restrictive.",
+        "rationale": "The apiserver file controls various parameters that set the behavior of the API server. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system.",
+        "audit": "Run the below command (based on the file location on your system) on the master node. For example, stat -c %a /etc/kubernetes/apiserver Verify that the permissions are 644 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the master node. For example, chmod 644 /etc/kubernetes/apiserver Impact: None Default Value: By default, apiserver file has permissions of 644.   89 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, apiserver file has permissions of 644.   89 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file permissions on the apiserver configuration file (e.g., /etc/kubernetes/apiserver) at the OS level. Kubernetes APIs and kubectl do not expose host file system permissions for static configuration files. The audit instructions explicitly require running OS-level commands (e.g., stat -c %a /etc/kubernetes/apiserver) on the master node, which necessitates direct host access (SSH or equivalent). Therefore, this check cannot be automated via Kubernetes APIs or kubectl and requires manual verification.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes master node where the API server is running.\n2. Locate the apiserver configuration file (commonly /etc/kubernetes/apiserver, but the path may vary by installation).\n3. Run the following command to check the file permissions:\n   ```\n   stat -c %a /etc/kubernetes/apiserver\n   ```\n   (Replace the path with the actual location if different.)\n4. Verify that the output is 644 or a more restrictive value (e.g., 640, 600).\n5. Confirm that only the file owner (typically root or the Kubernetes administrator) has write permissions, and that group/others do not have write access.\n6. If the permissions are more permissive than 644, remediate by running:\n   ```\n   chmod 644 /etc/kubernetes/apiserver\n   ```\n7. Repeat for all master nodes in the cluster.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:45:43.580726",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification as Manual is correct. Kubernetes APIs and kubectl do not provide a mechanism to directly access or manipulate file system permissions on the host where the Kubernetes components are running. This task inherently requires OS-level access to verify file permissions using system commands like `stat` and `chmod`.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps are technically accurate and provide a clear procedure for verifying and remediating file permissions. The use of `stat -c %a` to check permissions and `chmod 644` for remediation are appropriate and standard practices.\n- The program name convention is not applicable here as this is a manual check, but the description is clear and descriptive about what is being checked.\n\n**IMPROVEMENTS:**\n- The assessment could include a note on ensuring that the SSH access to the nodes is secured and audited, as this is a potential security risk.\n- It might be beneficial to mention that the configuration file path can vary based on the Kubernetes distribution (e.g., kubeadm, kops, etc.), and administrators should verify the correct path for their environment.\n- Consider adding a step to document the findings for compliance records.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded and aligns with the limitations of current Kubernetes capabilities regarding host-level file system checks.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is. The manual approach is justified given the current capabilities of Kubernetes APIs and tools. The instructions are clear, technically accurate, and provide a comprehensive guide for compliance verification.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T01:46:59.306093"
+}

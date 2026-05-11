@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.6",
+    "unique_id": "gcp_1_1_1_6",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure nosuid option set on /var partition",
+    "input_row": {
+        "id": "1.1.6",
+        "unique_id": "gcp_1_1_1_6",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure nosuid option set on /var partition",
+        "description": "The nosuid mount option specifies that the filesystem cannot contain setuid files.",
+        "rationale": "Since the /var filesystem is only intended for temporary dynamic data, set this option to ensure that users cannot create setuid files in /var.",
+        "audit": "Verify that the nosuid option is set if a /var partition exists. Run the following command and verify that nothing is returned: # mount | grep -E '\\s/var\\s' | grep -v nosuid",
+        "remediation": "Run the following command to remount /var : # mount -o remount,nosuid /var /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The control in question pertains to the operating system-level configuration, specifically a mount option for the `/var` partition on Container Optimized OS instances.\n- The audit requirement is to verify the `nosuid` option on the `/var` partition mount point using a command that checks the currently mounted filesystems. This operation involves executing a command in the runtime environment of the OS, something that is not exposed or manipulatable through GCP APIs or the Google Cloud SDK (gcloud).\n- The process requires SSH access to the instance to check configuration using the `mount` command, which determines the necessity for a manual approach.\n- This control does not involve API-accessible GCP services like IAM, storage, networking settings, or similar, which could be verified automatically.\n- No Google Cloud SDK methods or GCP CLI commands are mentioned or applicable for this auditing action.\n- Verifying OS-level configurations and ensuring compliance based on mount options typically requires human intervention and access to the operating system, affirming the need for a manual approach.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Connect to the Container Optimized OS instance via SSH to access the terminal.\n\n2. **Verify the Mount Option:**\n   - Execute the following command in the terminal to check the current mount options for `/var`:\n     ```bash\n     mount | grep -E '\\s/var\\s' | grep -v nosuid\n     ```\n   - Review the output to confirm that it returns no entries, meaning the `nosuid` option is correctly set for the `/var` partition.\n\n3. **Expected Secure Configuration:**\n   - The `nosuid` option should appear in the list of mount options for the `/var` partition. If no output is returned, it implies compliance.\n\n4. **Documentation for Future Reference:**\n   - Record the observed configuration and any remedial action taken to maintain compliance documentation for audit purposes.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:18:13.096920",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "2.4.12",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.4.12",
+        "unique_id": "2.4.12__ensure-public-network-access-is-disabled",
+        "title": "Ensure public network access is disabled",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Go to App Services or Function App. 2. Click the name of a function app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Networking. 6. Under Inbound traffic configuration, click the text next to Public network access. 7. Select the radio button next to Disabled. 8. Click Save. 9. Check the box to confirm the change. 10. Click Continue. 11. Repeat steps 1-10 for each function app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to disable public network access: az resource update --resource-group <resource-group-name> --name <function- app-name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" --set properties.publicNetworkAccess=Disabled Default Value: By default, public network access is enabled. References: 1. https://learn.microsoft.com/en-us/azure/app-service/networking-features 2. https://learn.microsoft.com/en-us/azure/azure-functions/functions-deployment- slots 3. https://learn.microsoft.com/en-us/cli/azure/functionapp 4. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control can be verified using Azure Resource Manager APIs, specifically through the Azure CLI commands provided in the remediation steps.\n- The audit mentions API/CLI commands directly, which supports automated verification.\n- The control relates to a standard Azure resource property (public network access), which is commonly exposed via APIs.\n\n**PROGRAM NAME:** azure_app_service_function_app_public_network_access_disabled\n\n**AUTOMATION DETAILS:**\n- The automated program will use the following Azure CLI command to check each deployment slot's public network access configuration:\n  ```bash\n  az resource show --resource-group <resource-group-name> --name <function-app-name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" --query \"properties.publicNetworkAccess\"\n  ```\n- The program will need to iterate over all function apps and their respective deployment slots within the specified resource groups.\n- It will validate whether the property `publicNetworkAccess` is set to \"Disabled\".\n  \n**Pass/Fail Criteria:**\n- **Pass:** If the output value of the query equals `Disabled`.\n- **Fail:** If the output value of the query equals `Enabled` or if the deployment slot does not exist.\n\n- The automation will enumerate:\n  - All the function apps within the specified resource group.\n  - All deployment slots for each function app.\n\n- This check will help ensure that each function app does not allow public network access, thereby adhering to compliance standards outlined in the CIS benchmark."
+}

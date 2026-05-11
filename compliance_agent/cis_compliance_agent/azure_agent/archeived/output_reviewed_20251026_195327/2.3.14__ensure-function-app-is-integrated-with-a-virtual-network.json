@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.3.14__ensure-function-app-is-integrated-with-a-virtual-network",
+    "control_id": "2.3.14",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_functionapp_virtualnetwork_integration_enabled\n\n**AUTOMATION DETAILS:**\nThe automated program would check the following:\n\n1. **Azure Resource Manager APIs or Azure CLI commands to use:**\n   - Use Azure Resource Manager (ARM) APIs to verify the configuration of Function Apps and their integration with Virtual Networks.\n   - Specifically, the API endpoint `GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{functionAppName}?api-version=2021-01-15` will fetch the properties of a Function App, which includes networking settings.\n\n2. **Specific resources to enumerate:**\n   - The program will enumerate Function Apps under all relevant subscriptions and resource groups using the above API.\n\n3. **Exact configuration properties/settings to validate:**\n   - Check for the property `virtualNetworkSubnetId`. If this property is set and not null, it indicates that the Function App is integrated with a Virtual Network.\n  \n4. **Clear Pass/Fail criteria with expected values:**\n   - **Pass:** The `virtualNetworkSubnetId` property should contain a valid subnet resource ID indicating integration with a Virtual Network.\n   - **Fail:** The `virtualNetworkSubnetId` property should be either null or not set, indicating no integration with a Virtual Network.\n\n5. **Example API endpoint or CLI command:**\n   - Example API command:\n     ```http\n     GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{functionAppName}?api-version=2021-01-15\n     ```\n   - This command retrieves the Function App configuration to assess whether it's integrated with a Virtual Network."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Automated is appropriate. The integration of a Function App with a Virtual Network can be effectively verified using Azure Resource Manager (ARM) APIs or Azure CLI, which supports automation. This approach leverages Azure's capabilities to programmatically access and evaluate the configuration of resources.\n\n**TECHNICAL ACCURACY:** 9\n\n- The automation details are technically accurate. The use of the ARM API endpoint to retrieve the Function App's configuration is correct, and checking the `virtualNetworkSubnetId` property is a valid method to determine VNet integration.\n- The program name `azure_functionapp_virtualnetwork_integration_enabled` follows a logical naming convention, aligning with the service, resource, and security intent.\n- The details provided are comprehensive, covering the necessary steps for automation.\n\n**IMPROVEMENTS:**\n\n- **Consideration of API Version:** Ensure that the API version used (`2021-01-15`) is the most current and supports all necessary features. Regular updates to the API version might be required to maintain compatibility and feature support.\n- **Error Handling and Logging:** While not explicitly mentioned, implementing robust error handling and logging mechanisms within the automation script would enhance reliability and facilitate troubleshooting.\n- **Scalability Considerations:** For large environments, consider implementing pagination or batching when enumerating resources to handle API rate limits and improve performance.\n- **Security Best Practices:** Ensure that the automation script adheres to security best practices, such as secure handling of credentials and tokens, to prevent unauthorized access.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded with a solid understanding of Azure capabilities and security best practices. The use of ARM APIs is appropriate for this compliance check, and the technical details are accurate.\n\n**FINAL RECOMMENDATION:** Keep as-is\n\n- The current assessment is technically sound and aligns well with Azure's capabilities for automated compliance checking. The approach is efficient and leverages the appropriate Azure APIs to achieve the audit objective. No reclassification is necessary.",
+        "reviewed_at": "2025-10-26T15:19:32.301170"
+    },
+    "input_row": {
+        "id": "2.3.14",
+        "unique_id": "2.3.14__ensure-function-app-is-integrated-with-a-virtual-network",
+        "title": "Ensure function app is integrated with a virtual network",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "metadata": {
+        "original_file": "2.3.14.json",
+        "review_version": "1.0"
+    }
+}

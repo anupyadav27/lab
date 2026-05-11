@@ -1,0 +1,22 @@
+{
+    "control_id": "6.1.8",
+    "unique_id": "gcp_1_6_1_8",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/gshadow- are configured",
+    "input_row": {
+        "id": "6.1.8",
+        "unique_id": "gcp_1_6_1_8",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/gshadow- are configured",
+        "description": "The /etc/gshadow- file is used to store backup information about groups that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "rationale": "It is critical to ensure that the /etc/gshadow- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "audit": "Run the following command and verify verify Uid is 0/root, Gid is 0/root or <gid>/shadow, and Access is 640 or more restrictive: # stat /etc/gshadow- Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the one of the following chown commands as appropriate and the chmod to set permissions on /etc/gshadow- : # chown root:root /etc/gshadow- # chown root:shadow /etc/gshadow- # chmod o-rwx,g-rw /etc/gshadow-",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control is about verifying file permissions on the operating system level, specifically for the `/etc/gshadow-` file. The audit step provided involves running a system command `stat` on an instance running the Container-Optimized OS, which can only be performed through direct access to the machine via SSH. \n\n**DECISION CRITERIA:**\n\n- ✓ Requires SSH access to instances → Manual\n- ✓ Involves OS-level file permission checks → Manual\n- ⚠️ No GCP API or Google Cloud SDK (gcloud) commands are available to check OS-level file permissions directly\n- ⚠️ The audit mentions using a shell command (`stat`), which indicates manual execution and verification\n- ✓ Not related to a GCP service that is directly managed via APIs (such as IAM, storage, networking configurations)\n\nGiven these considerations, this security control requires a manual approach.\n\n**MANUAL STEPS:**\n\n1. **SSH into the Instance**: Use the SSH access provided for the instance running the Container-Optimized OS.\n   - Example command: `gcloud compute ssh <instance-name> --zone <zone>`\n\n2. **Verify File Permissions**: On the instance, execute the command to check the permissions of the `/etc/gshadow-` file.\n   - Command: `stat /etc/gshadow-`\n\n3. **Expected Secure Configuration**:\n   - The Access mode should be `(0640/-rw-r-----)`\n   - User ID (Uid) should be `0/root`\n   - Group ID (Gid) should be `0/root` or the group `<gid>/shadow`\n\n4. **Validate Compliance**: \n   - Ensure that the file permissions are set correctly as per the expected configuration.\n   - If permissions differ, remediate using the commands provided in the remediation section:\n     - `chown root:root /etc/gshadow-`\n     - `chown root:shadow /etc/gshadow-`\n     - `chmod o-rwx,g-rw /etc/gshadow-`\n\nBy following these steps, you can ensure that the `/etc/gshadow-` file permissions on the Container-Optimized OS adhere to the CIS benchmark recommendations.",
+    "timestamp": "2025-10-28T21:42:46.611694",
+    "model": "gpt-4o"
+}

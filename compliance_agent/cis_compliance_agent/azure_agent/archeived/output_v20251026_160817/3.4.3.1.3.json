@@ -1,0 +1,17 @@
+{
+    "id": "3.4.3.1.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "3.4.3.1.3",
+        "unique_id": "3.4.3.1.3__ensure-firewalld-is-either-not-installed-or-masked-with-iptables",
+        "title": "Ensure firewalld is either not installed or masked with iptables",
+        "description": "firewalld (Dynamic Firewall Manager) provides a dynamically managed firewall with support for network/firewall “zones” to assign a level of trust to a network and its associated connections, interfaces or sources. It has support for IPv4, IPv6, Ethernet bridges and also for IPSet firewall settings. There is a separation of the runtime and permanent configuration options.",
+        "rationale": "Running iptables.service and\\or ip6tables.service with firewalld.service may lead to conflict and unexpected results.",
+        "audit": "Run the following command to verify that firewalld is not installed: # rpm -q firewalld package firewalld is not installed OR Run the following commands to verify that firewalld is stopped and masked # systemctl status firewalld | grep \"Active: \" | grep -v  \"active (running) \" No output should be returned # systemctl is-enabled firewalld masked",
+        "remediation": "Run the following command to remove firewalld # yum remove firewalld OR Run the following command to stop and mask firewalld # systemctl --now mask firewalld References: 1. NIST SP 800-53 Rev. 5: CM-7, CA-9",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7, CA-9",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Check the Azure Portal or Use Azure CLI:**\n   - **For Azure Portal:** \n     - Navigate to your Azure Kubernetes Service (AKS) cluster.\n     - Go to your Linux nodes and select any node for SSH access (ensure you have the necessary permissions).\n   - **For Azure CLI:** \n     - Run `az aks get-credentials --resource-group <ResourceGroupName> --name <AKSName>` to configure your local environment with your AKS credentials.\n     - Use `ssh <User>@<Node_Public_IP>` to connect to a Linux node.\n\n2. **Verify the `firewalld` Service Status:**\n   - After SSH access to the node, run the command: `systemctl status firewalld`.\n   - Check that there is no output indicating it is active. Look specifically for lines indicating `Active: inactive (dead)` which means it is not running.\n\n3. **Check if `firewalld` is Masked:**\n   - Still in the SSH session, run the command: `systemctl is-enabled firewalld`.\n   - Ensure the output is `masked`. This indicates that the service cannot be started.\n\n4. **Expected Secure Configuration:**\n   - Confirm that `firewalld` is not installed or is masked. If it should not be installed, the command `rpm -q firewalld` should indicate it is not installed.\n   - If installed but not needed, it should be stopped and masked.\n\n5. **How to Confirm Compliance:**\n   - If `firewalld` is not running and either not installed or is masked, then compliance with this control is confirmed. If `firewalld` is active or enabled, you will need to take remediation steps as per the provided remediation guidance."
+}

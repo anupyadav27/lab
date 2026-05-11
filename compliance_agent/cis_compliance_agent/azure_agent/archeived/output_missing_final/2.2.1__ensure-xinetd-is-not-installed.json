@@ -1,0 +1,17 @@
+{
+    "id": "2.2.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.1",
+        "unique_id": "2.2.1__ensure-xinetd-is-not-installed",
+        "title": "Ensure xinetd is not installed",
+        "description": "The eXtended InterNET Daemon ( xinetd ) is an open source super daemon that replaced the original inetd daemon. The xinetd daemon listens for well known services and dispatches the appropriate daemon to properly respond to service requests.",
+        "rationale": "If there are no xinetd services required, it is recommended that the package be removed to reduce the attack surface are of the system. Note: If an xinetd service or services are required, ensure that any xinetd service not required is stopped and disabled",
+        "audit": "Run the following command to verify xinetd is not installed: # rpm -q xinetd package xinetd is not installed",
+        "remediation": "Run the following command to remove xinetd: # dnf remove xinetd References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Step 1:** Access the Azure Kubernetes Service (AKS) node using SSH.\n   - Navigate to the Azure portal and select your AKS cluster, then obtain the credentials to SSH into one of the nodes.\n   \n2. **Step 2:** Verify if xinetd is installed.\n   - Once logged into the node, run the following command:\n     ```\n     rpm -q xinetd\n     ```\n   - This command checks whether the xinetd package is installed on the node.\n\n3. **Step 3:** Check for the presence of xinetd services.\n   - If xinetd is installed, review the services it manages by checking the configuration in `/etc/xinetd.d/` and running:\n     ```\n     systemctl list-unit-files | grep xinetd\n     ```\n   - Look for any services that may be managed by xinetd.\n\n4. **Expected secure configuration:** xinetd should not be installed on any AKS node unless explicitly required for specific services.\n\n5. **Step 5:** Confirm compliance.\n   - If the command in Step 2 returns \"package xinetd is not installed,\" this means the control is compliant.\n   - If xinetd is installed and there are no required xinetd services, follow the remediation steps to remove it:\n     ```\n     dnf remove xinetd\n     ``` \n   - After the removal, rerun the audit command to ensure compliance."
+}

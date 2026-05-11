@@ -1,0 +1,22 @@
+{
+    "control_id": "1.6.4",
+    "unique_id": "k8s_5_1_6_4",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Create network segmentation using Network Policies",
+    "input_row": {
+        "id": "1.6.4",
+        "unique_id": "k8s_5_1_6_4",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Create network segmentation using Network Policies",
+        "description": "Use network policies to isolate your cluster network.",
+        "rationale": "Running different applications on the same Kubernetes cluster creates a risk of one compromised application attacking a neighboring application. Network segmentation is important to ensure that containers can communicate only with those they are supposed to. A network policy is a specification of how selections of pods are allowed to communicate with each other and other network endpoints. NetworkPolicy resources use labels to select pods and define whitelist rules which allow traffic to the selected pods in addition to what is allowed by the isolation policy for a given namespace.",
+        "audit": "Run the below command and review the NetworkPolicy objects created in the cluster. kubectl get pods --namespace=kube-system Ensure that these NetworkPolicy objects are the ones you need and are adequately administered as per your requirements.",
+        "remediation": "Follow the documentation and create NetworkPolicy objects as you need them. Impact: You need a networking solution which supports NetworkPolicy - simply creating the resource without a controller to implement it will have no effect. Default Value: By default, network policies are not created. References: 1. https://kubernetes.io/docs/concepts/services-networking/networkpolicies/  137 | P a g e 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html 3. https://kubernetes.io/docs/tasks/configure-pod-container/declare-network- policy/",
+        "profile_applicability": "•  Level 2",
+        "impact": "You need a networking solution which supports NetworkPolicy - simply creating the resource without a controller to implement it will have no effect. Default Value: By default, network policies are not created.",
+        "references": "1. https://kubernetes.io/docs/concepts/services-networking/networkpolicies/  137 | P a g e 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html 3. https://kubernetes.io/docs/tasks/configure-pod-container/declare-network- policy/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_network_policy_default_deny_ingress_configured\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API (`kubectl get namespaces` or via the `v1/namespaces` API).\n- For each namespace, list all NetworkPolicy objects (`kubectl get networkpolicy -n <namespace>` or via the `apis/networking.k8s.io/v1/namespaces/<namespace>/networkpolicies` API).\n- For each namespace, check if at least one NetworkPolicy exists that implements a \"default deny\" for ingress (i.e., a policy with `podSelector: {}` and no or empty `ingress` rules).\n- Pass Criteria: Every namespace must have at least one NetworkPolicy that enforces default deny ingress (no ingress allowed unless explicitly permitted).\n- Fail Criteria: Any namespace missing a NetworkPolicy that enforces default deny ingress is non-compliant.\n- (Optional) Also check for default deny egress if required by policy.\n- Example kubectl command to check for default deny ingress in a namespace:\n  ```\n  kubectl get networkpolicy -n <namespace> -o yaml\n  ```\n  Look for a policy with:\n  ```yaml\n  spec:\n    podSelector: {}\n    policyTypes:\n      - Ingress\n    ingress: []\n  ```\n- The program should report all namespaces and flag those without a default deny ingress NetworkPolicy.",
+    "timestamp": "2025-10-29T21:50:10.194851",
+    "model": "gpt-4.1"
+}

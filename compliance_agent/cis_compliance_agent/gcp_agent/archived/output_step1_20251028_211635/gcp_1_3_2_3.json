@@ -1,0 +1,22 @@
+{
+    "control_id": "3.2.3",
+    "unique_id": "gcp_1_3_2_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure secure ICMP redirects are not accepted",
+    "input_row": {
+        "id": "3.2.3",
+        "unique_id": "gcp_1_3_2_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure secure ICMP redirects are not accepted",
+        "description": "Secure ICMP redirects are the same as ICMP redirects, except they come from gateways listed on the default gateway list. It is assumed that these gateways are known to your system, and that they are likely to be secure.",
+        "rationale": "It is still possible for even known gateways to be compromised. Setting net.ipv4.conf.all.secure_redirects to 0 protects the system from routing table updates by possibly compromised known gateways.",
+        "audit": "Run the following commands and verify output matches: # sysctl net.ipv4.conf.all.secure_redirects net.ipv4.conf.all.secure_redirects = 0 # sysctl net.ipv4.conf.default.secure_redirects net.ipv4.conf.default.secure_redirects = 0",
+        "remediation": "Run the following commands to set the active kernel parameters: # sysctl -w net.ipv4.conf.all.secure_redirects=0 # sysctl -w net.ipv4.conf.default.secure_redirects=0 # sysctl -w net.ipv4.route.flush=1 /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control \"Ensure secure ICMP redirects are not accepted\" requires checking OS-level kernel parameters on instances running Container-Optimized OS. This involves running specific `sysctl` commands locally on the instance to verify the configuration. Since indirect or direct GCP APIs, Google Cloud SDK (gcloud), or CLI methods don't provide means to check or modify kernel parameters of running instances remotely, this is considered a manual audit.\n\n**MANUAL STEPS:**\n1. **Access the GCP Console:**\n   - Navigate to the Compute Engine section on the Google Cloud Platform Console.\n\n2. **Identify Relevant Instances:**\n   - Identify instances running Container-Optimized OS where this control needs to be validated.\n\n3. **Connect to the Instance:**\n   - Use SSH to connect to each identified instance. This can be done via the GCP Console, `gcloud` command-line tool, or other SSH clients.\n\n4. **Verify Kernel Parameters:**\n   - Run the command `sysctl net.ipv4.conf.all.secure_redirects` and verify that the output is `net.ipv4.conf.all.secure_redirects = 0`.\n   - Execute `sysctl net.ipv4.conf.default.secure_redirects` and confirm that the output matches `net.ipv4.conf.default.secure_redirects = 0`.\n\n5. **Expected Secure Configuration:**\n   - Both commands should output `0` as the value indicating that secure ICMP redirects are not accepted, ensuring compliance.\n\n6. **Reapply Configuration (if necessary):**\n   - If the settings are not compliant, manually apply the required settings using the commands provided in the remediation section: \n     - `sysctl -w net.ipv4.conf.all.secure_redirects=0`\n     - `sysctl -w net.ipv4.conf.default.secure_redirects=0`\n     - `sysctl -w net.ipv4.route.flush=1`\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:25:59.759922",
+    "model": "gpt-4o"
+}

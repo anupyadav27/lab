@@ -1,0 +1,660 @@
+check_name,matched_rule_ids,method,confidence,reasoning
+azure_aad_user_authentication_reconfirmation_period_check,azure.aad.user.authentication.reconfirmation.period.check,token_match_high,1.00,Jaccard=1.00
+azure_active_directory_aws_attached_policy_no_administrative_privileges,,weak_match,0.23,weak token overlap — likely no matching rule
+azure_active_directory_customer_attached_policy_no_administrative_privileges,,weak_match,0.23,weak token overlap — likely no matching rule
+azure_active_directory_inline_policy_no_administrative_privileges,,ai_rejected,none,"The check name refers to Azure Active Directory inline policies with administrative privileges, but none of the candidate rules address AAD inline policy privilege management."
+azure_active_directory_no_root_access_key,azure.aad.directory_tenant.access_tenant_api_access_keys_root_or_owner_disallowed,ai_verified,high,"This rule directly addresses root or owner access keys in Azure Active Directory, matching the service and security violation of preventing root-level access keys."
+azure_active_directory_password_policy_minimum_length_14,azure.aad.directory_tenant.access_password_policy_min_length_14,ai_verified,high,"This rule directly matches the service (Azure AD), action (password policy), and specific requirement (minimum length of 14) as the check name."
+azure_active_directory_password_policy_reuse_24,azure.aad.directory_tenant.access_password_policy_prevent_reuse_last_24,ai_verified,high,"The check name and rule both target Azure AD password policy reuse prevention for the last 24 passwords, indicating an exact match in service, action, and resource."
+azure_active_directory_password_policy_strong,azure.aad.directory_tenant.access_tenant_password_policy_compliant,ai_verified,high,"This rule broadly checks overall password policy compliance, which aligns with the general 'strong password policy' intent of the given check name."
+azure_active_directory_policy_attached_only_to_group_or_roles,azure.aad.group.access_group_attached_policies_not_admin_star,ai_verified,medium,"The check name focuses on policies attached only to groups or roles in Azure AD, which aligns with the candidate rule that checks for policies attached to groups without overly permissive admin scopes"
+azure_active_directory_policy_no_administrative_privileges,azure.aad.directory_tenant.access_tenant_password_policy_compliant,ai_verified,medium,"This rule is the only candidate directly related to Azure Active Directory (AAD) policy compliance, aligning with the service and general policy focus of the check."
+azure_active_directory_policy_overly_permissive,azure.aad.directory_tenant.access_tenant_password_policy_compliant,ai_verified,medium,"This rule is the only candidate directly related to Azure Active Directory (AAD) policy compliance, which aligns with the service and security focus of the check name."
+azure_active_directory_role_least_privilege,azure.ad.role.least_privilege,ai_verified,high,"The check name directly matches the service (Azure Active Directory) and the security control (role least privilege), making it the only exact match."
+azure_active_directory_root_hardware_mfa_enabled,azure.entra.user.with_vm_access_has_mfa:az.active_directory_user.identity_access_security_user_mfa_required,ai_verified,medium,"The check name focuses on root hardware MFA for Azure Active Directory, which aligns with enforcing MFA for privileged users with VM access, though not a perfect match for 'root hardware' specificity."
+azure_active_directory_root_mfa_enabled,azure.aad.directory_tenant.access_tenant_break_glass_accounts_mfa_enforced,ai_verified,medium,"The check name targets root/break-glass accounts in Azure AD requiring MFA, which aligns with this rule's focus on enforcing MFA for emergency access accounts."
+azure_active_directory_rotate_access_key_90_days,azure.aad.directory_tenant.access_password_policy_max_age_90_days_or_less,ai_verified,medium,"This rule matches the service (Azure AD), security action (password/key rotation), and timeframe (90 days) for directory-level access policies."
+azure_active_directory_user_accesskey_unused,,ai_rejected,none,"The check name targets unused user access keys in Azure Active Directory, but none of the candidate rules address access key usage or inactivity."
+azure_active_directory_user_console_access_unused,azure.aad.user.access_user_in90_days_disabled,deep_review_high,high,Both the compliance check and the candidate rule focus on disabling or managing unused user accounts to prevent stale access.
+azure_active_directory_user_mfa_enabled,azure.aad.user.access_user_mfa_required,ai_verified,high,"This rule directly targets Azure Active Directory (AAD) users and explicitly checks for MFA requirement, matching the service, action, and resource focus of the given check."
+azure_active_directory_user_mfa_enabled_console_access,azure.entra.user.with_vm_access_has_mfa:az.active_directory_user.identity_access_security_user_mfa_required,ai_verified,medium,"This rule specifically targets users with VM/console access requiring MFA, which aligns with the check's focus on console access MFA enforcement for Azure AD users."
+azure_ad_authentication_methods_policy_check,azure.ad.authentication.methods.policy.check,token_match_high,1.00,Jaccard=1.00
+azure_ad_conditionalaccess_token_protection_check,azure.ad.conditionalaccess.token.protection.check,token_match_high,1.00,Jaccard=1.00
+azure_ad_group_creation_restriction_check,azure.ad.group.creation.restriction.check,token_match_high,1.00,Jaccard=1.00
+azure_ad_guest_user_access_restriction_check,azure.ad.guest.user.access.restriction.check,token_match_high,1.00,Jaccard=1.00
+azure_ad_password_reset_notification_check,azure.ad.password.reset.notification.check,token_match_high,1.00,Jaccard=1.00
+azure_ad_security_lockout_duration_check,azure.ad.security.lockout.duration.check,token_match_high,1.00,Jaccard=1.00
+azure_ad_tenant_creator_role_review,azure.ad.tenant.creator.role.review,token_match_high,1.00,Jaccard=1.00
+azure_ad_user_role_check_disabled,azure.ad.user.role.check.disabled,token_match_high,1.00,Jaccard=1.00
+azure_aisearch_service_not_publicly_accessible,azure.aisearch.service.not_publicly_accessible,token_match_high,1.00,Jaccard=1.00
+azure_aks_authorization_mode_check,azure.aks.authorization.mode.check,token_match_high,1.00,Jaccard=1.00
+azure_aks_cluster_kms_cmk_encryption_in_secrets_enabled,azure.kubernetes.managed_cluster.containers_cluster_secrets_encryption_kms_enabled,ai_verified,high,Both the check name and the rule specifically target Azure Kubernetes Service (AKS) clusters and enforce the use of customer-managed keys (CMK) for encrypting secrets.
+azure_aks_cluster_private_cluster_enabled,azure.aks.cluster.private.cluster.enabled,token_match_high,1.00,Jaccard=1.00
+azure_aks_cluster_private_endpoint_and_public_access_check,azure.aks.cluster.private.endpoint.and.public.access.check,token_match_high,1.00,Jaccard=1.00
+azure_aks_cluster_uses_a_supported_version,azure.kubernetes.addon.containers_version_pinned_and_supported,deep_review_medium,medium,"Both controls focus on ensuring that Kubernetes-related components (AKS cluster version and container addon versions) are supported, though they target different specific resources."
+azure_aks_clusters_created_with_private_nodes,azure.aks.cluster.private_nodes_enabled;azure.aks.cluster.private.cluster.enabled,ai_verified,high,"Both rules directly check for private nodes or private cluster configuration in AKS, matching the service, action, and target resource of the given check."
+azure_aks_clusters_public_access_disabled,azure.aks.cluster.public_access_disabled,token_match_high,0.71,Jaccard=0.71
+azure_aks_endpoints_not_publicly_accessible,azure.aks.cluster.private.cluster.enabled,deep_review_medium,medium,"Both controls aim to restrict public access to AKS clusters, but the check name focuses on endpoints while the rule enforces private cluster configuration."
+azure_aks_kubelet_certificate_rotation_check,azure.aks.kubelet.certificate.rotation.check,token_match_high,1.00,Jaccard=1.00
+azure_aks_kubelet_rotate_certificates_check,azure.aks.kubelet.rotate.certificates.check,token_match_high,1.00,Jaccard=1.00
+azure_aks_kubelet_streaming_connection_idle_timeout_check,azure.aks.kubelet.streaming.connection.idle.timeout.check,token_match_high,1.00,Jaccard=1.00
+azure_aks_namespace_network_policy_compliance_check,azure.aks.namespace.network.policy.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_aks_network_cni_version_check,azure.aks.network.cni.version.check,token_match_high,1.00,Jaccard=1.00
+azure_aks_network_policy_enabled,azure.aks.network.policy_enabled,token_match_high,1.00,Jaccard=1.00
+azure_aks_pod_service_account_tokens_automount_disabled,azure.aks.pod.service.account.tokens.automount.disabled,token_match_high,1.00,Jaccard=1.00
+azure_aks_rbac_check_cluster_admin_usage,azure.aks.rbac.check.cluster.admin.usage,token_match_high,1.00,Jaccard=1.00
+azure_aks_service_account_default_usage_check,azure.aks.service.account.default.usage.check,token_match_high,1.00,Jaccard=1.00
+azure_api_management_api_gateway_https_required,azure.cdn.endpoint.https_required,deep_review_medium,medium,"Both controls enforce HTTPS usage for secure communication, but one is for API Management and the other for CDN endpoints, making them conceptually similar but not identical."
+azure_api_management_authorization_enabled,,ai_rejected,none,"The check name refers to enabling authorization in Azure API Management, but none of the candidate rules specifically address authorization being enabled; they focus on logging, validation, caching, T"
+azure_api_management_client_certificate_enabled,,ai_rejected,none,"None of the candidate rules address client certificate authentication for API Management, which is a distinct security control for API access."
+azure_api_management_restapi_client_certificate_enabled,,ai_rejected,none,No rule matches the specific check for enabling client certificates on Azure API Management REST APIs.
+azure_api_management_restapi_logging_enabled,azure.api.management_monitoring.monitoring_api_access_logging_enabled,ai_verified,high,"This rule directly matches the service (Azure API Management), action (logging enabled), and target (API access) for REST APIs."
+azure_api_management_restapi_tracing_enabled,azure.api.management_monitoring.monitoring_api_access_logging_enabled,deep_review_medium,medium,"Both controls focus on enabling logging/tracing for API access in Azure API Management, though 'tracing' and 'access logging' are slightly different terms for the same monitoring concept."
+azure_api_management_restapi_waf_acl_attached,azure.api.management_restapi_waf_acl_attached:az.api_management_monitoring.api_security_monitoring_api_access_logging_enabled,ai_verified,high,"This rule directly matches the check name's service (Azure API Management), action (WAF ACL attachment), and target resource (REST API)."
+azure_apigatewayv2_api_access_logging_enabled,azure.api.management_monitoring.monitoring_api_access_logging_enabled,ai_verified,high,This rule directly matches the service (API Gateway/Management) and the specific security check for enabling API access logging.
+azure_app_function_access_keys_configured,azure.function.app.function_url_authentication,deep_review_medium,medium,"Both controls focus on securing access to Azure Functions, with the check name emphasizing access keys and the candidate rule emphasizing URL authentication, which are related mechanisms for controlling function access."
+azure_app_function_identity_without_admin_privileges,azure.app.function.identity_without_admin_privileges,token_match_high,1.00,Jaccard=1.00
+azure_app_function_not_publicly_accessible,,ai_rejected,none,"No rule matches the specific check for Azure App Function public accessibility, as the candidates either target different services or different security controls."
+azure_app_http_logs_enabled,azure.app.service.http.logs.enabled,token_match_high,0.80,Jaccard=0.80
+azure_app_minimum_tls_version_12,azure.function.app.minimum.tls.version,token_match_high,0.71,Jaccard=0.71
+azure_app_service_autoscale_enabled,azure.app.service.identity.check,token_match_high,0.60,Jaccard=0.60
+azure_app_service_certificate_certificate_expiration,azure.keyvault.certificate.expiration_check,ai_verified,medium,"The check name focuses on certificate expiration for Azure App Service certificates, which is most closely aligned with a certificate expiration monitoring rule, though the service scope differs sligh"
+azure_app_service_cors_check_allowed_origins,azure.app.service.cors.check.allowed.origins,token_match_high,1.00,Jaccard=1.00
+azure_app_service_cors_wildcard_restriction,azure.app.service.cors.wildcard.restriction,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_ftps_state_check,azure.app.service.deployment.slot.ftps.state.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_http_version_check,azure.app.service.deployment.slot.http.version.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_https_only_enabled,azure.app.service.deployment.slot.https.only.enabled,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_java_version_check,azure.app.service.deployment.slot.java.version.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_managed_identity_configured,azure.app.service.deployment.slot.managed.identity.configured,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_remote_debugging_disabled,azure.app.service.deployment.slot.remote.debugging.disabled,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_tls_encryption_check,azure.app.service.deployment.slot.tls.encryption.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slot_vnet_route_all_enabled_check,azure.app.service.deployment.slot.vnet.route.all.enabled.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_deployment_slots_basic_auth_disabled,azure.app.service.deployment.slots.basic.auth.disabled,token_match_high,1.00,Jaccard=1.00
+azure_app_service_environment_minimum_tls_version,azure.app.service.environment.minimum.tls.version,token_match_high,1.00,Jaccard=1.00
+azure_app_service_environment_minimum_version_check,azure.app.service.environment.minimum.version.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_function_slot_https_only_check,azure.app.service.function.slot.https.only.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_http_logs_enabled,azure.app.service.http.logs.enabled,token_match_high,1.00,Jaccard=1.00
+azure_app_service_identity_check,azure.app.service.identity.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_managed_updates_enabled,azure.app.service.managed_updates_enabled,ai_verified,high,"The rule name directly matches the check name, indicating it implements the same security check for Azure App Service managed updates."
+azure_app_service_plan_private_endpoint_sku_compliance_check,azure.app.service.plan.private.endpoint.sku.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_private_endpoint_approved_check,azure.app.service.private.endpoint.approved.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_private_endpoint_dns_zone_check,azure.app.service.private.endpoint.dns.zone.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_slot_check_minimum_tls_version,azure.app.service.slot.check.minimum.tls.version,token_match_high,1.00,Jaccard=1.00
+azure_app_service_slot_client_cert_check,azure.app.service.slot.client.cert.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_slot_public_network_access_check,azure.app.service.slot.public.network.access.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_virtual_network_integration_check,azure.app.service.virtual.network.integration.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_vnet_integration_check,azure.app.service.vnet.integration.check,token_match_high,1.00,Jaccard=1.00
+azure_app_service_vnet_route_all_enabled_check,azure.app.service.vnet.route.all.enabled.check,token_match_high,1.00,Jaccard=1.00
+azure_application_gateway_http2_enabled,azure.application.gateway.http2.enabled,token_match_high,1.00,Jaccard=1.00
+azure_application_gateway_ssl_policy_minimum_tls_version,azure.application.gateway.ssl.policy.minimum.tls.version,token_match_high,1.00,Jaccard=1.00
+azure_application_gateway_waf_bot_protection_check,azure.application.gateway.waf.bot.protection.check,token_match_high,1.00,Jaccard=1.00
+azure_application_gateway_waf_enabled,azure.application.gateway.waf.enabled,token_match_high,1.00,Jaccard=1.00
+azure_application_gateway_waf_policy_request_body_inspection_enabled,azure.application.gateway.waf.policy.request.body.inspection.enabled,token_match_high,1.00,Jaccard=1.00
+azure_application_insights_enabled,azure.monitor.application.insights.configuration.check,token_match_high,0.75,Jaccard=0.75
+azure_appservice_app_ip_security_restrictions_disabled,azure.appservice.app.ip.security.restrictions.disabled,token_match_high,1.00,Jaccard=1.00
+azure_appservice_ase_internal_encryption_check,azure.appservice.ase.internal.encryption.check,token_match_high,1.00,Jaccard=1.00
+azure_appservice_ase_tls_cipher_suite_order_configured,azure.appservice.ase.tls.cipher.suite.order.configured,token_match_high,1.00,Jaccard=1.00
+azure_appservice_authentication_enabled_check,azure.appservice.authentication.enabled.check,token_match_high,1.00,Jaccard=1.00
+azure_appservice_deployment_slot_php_version_check,azure.appservice.deployment.slot.php.version.check,token_match_high,1.00,Jaccard=1.00
+azure_appservice_deployment_slot_vnet_integration_check,azure.appservice.deployment.slot.vnet.integration.check,token_match_high,1.00,Jaccard=1.00
+azure_appsync_field_level_logging_enabled,azure.api.management_monitoring.monitoring_api_execution_logging_level_minimum_error,deep_review_medium,medium,"Both controls focus on enabling detailed API-level logging (field-level for AppSync vs. API execution logging for API Management), which are conceptually similar but for different Azure services."
+azure_automation_managed_compliant_patching,azure.automation.account.compliant_patching_enabled,token_match_high,0.67,Jaccard=0.67
+azure_awslambda_function_inside_vpc,azure.function.serverless_function.vpc_private_networking_enabled,ai_verified,high,"Both the check name and the rule focus on ensuring serverless functions are deployed within a VPC for network isolation, matching service (Azure Functions), action (VPC/private networking), and target"
+azure_awslambda_function_not_publicly_accessible,,ai_rejected,none,"The check name targets Azure AWS Lambda function public accessibility, but all candidate rules are for different Azure services (AI Search, Container Registry, Key Vault, Compute Image, Function App T"
+azure_backup_backup_encryption_enabled,azure.backup.vault.encryption_enabled,token_match_high,0.75,Jaccard=0.75
+azure_backup_enabled_for_vms,azure.backup.vault.enabled_for_vms,token_match_high,0.75,Jaccard=0.75
+azure_backup_plan_min_retention,azure.backup.policy.min_retention_configured,token_match_high,0.67,Jaccard=0.67
+azure_backup_policy_configured,azure.backup.policy.configured,token_match_high,1.00,Jaccard=1.00
+azure_backup_recovery_point_encrypted,azure.backup.recovery.point_encrypted,token_match_high,1.00,Jaccard=1.00
+azure_backup_recovery_point_retention,azure.backup.recovery.point_retention_configured,token_match_high,1.00,Jaccard=1.00
+azure_backup_recovery_services_vault_infrastructure_encryption_enabled_check,azure.backup.recovery.services.vault.infrastructure.encryption.enabled.check,token_match_high,1.00,Jaccard=1.00
+azure_backup_recovery_services_vault_public_network_access_disabled,azure.backup.recovery.services.vault.public.network.access.disabled,token_match_high,1.00,Jaccard=1.00
+azure_backup_recovery_services_vault_soft_delete_settings,azure.backup.recovery.services.vault.soft.delete.settings,token_match_high,1.00,Jaccard=1.00
+azure_backup_vault_cross_region_restore_check,azure.backup.vault.cross.region.restore.check,token_match_high,1.00,Jaccard=1.00
+azure_backup_vault_cross_subscription_restore_check,azure.backup.vault.cross.subscription.restore.check,token_match_high,1.00,Jaccard=1.00
+azure_backup_vault_immutability_locked,azure.backup.vault.immutability.locked,token_match_high,1.00,Jaccard=1.00
+azure_backup_vault_soft_delete_enabled,azure.backup.vault.soft_delete_enabled,token_match_high,1.00,Jaccard=1.00
+azure_batch_account_authentication_modes_check,azure.batch.account.authentication.modes.check,token_match_high,1.00,Jaccard=1.00
+azure_batch_account_diagnostics_settings_logs_enabled,azure.batch.account.diagnostics.settings.logs.enabled,token_match_high,1.00,Jaccard=1.00
+azure_batch_account_private_endpoint_approved,azure.batch.account.private.endpoint.approved,token_match_high,1.00,Jaccard=1.00
+azure_batch_account_public_network_access_check_disabled,azure.batch.account.public.network.access.check.disabled,token_match_high,1.00,Jaccard=1.00
+azure_batch_private_endpoint_dns_zone_validation,azure.batch.private.endpoint.dns.zone.validation,token_match_high,1.00,Jaccard=1.00
+azure_blob_storage_container_soft_delete_check,azure.storage.account.blob.soft.delete.enabled,token_match_high,0.71,Jaccard=0.71
+azure_blob_storage_soft_delete_enabled,azure.storage.account.blob.soft.delete.enabled,token_match_high,0.83,Jaccard=0.83
+azure_cache_redis_cluster_backup_enabled,azure.backup.policy.configured,ai_verified,low,"Only this rule relates to backup configuration, but it is generic and not specific to Azure Cache for Redis clusters."
+azure_cache_redis_microsoft_entra_authentication_enabled,azure.cache.redis.microsoft.entra.authentication.enabled,token_match_high,1.00,Jaccard=1.00
+azure_cache_redis_public_network_access_disabled,azure.cache.redis.public.network.access.disabled,token_match_high,1.00,Jaccard=1.00
+azure_cache_redis_ssl_only_access,azure.cache.redis.ssl.only.access,token_match_high,1.00,Jaccard=1.00
+azure_cdn_cloudfront_https_required,azure.cdn.endpoint.https_required,token_match_high,0.67,Jaccard=0.67
+azure_cdn_distributions_custom_ssl_certificate,azure.cdn.profile.edge_valid_trusted_certificate_attached,deep_review_medium,medium,"Both the check name and the candidate focus on ensuring valid SSL certificates are used in Azure CDN, though the check name specifies 'custom SSL certificate' while the candidate refers to 'valid trusted certificate attached'."
+azure_cdn_distributions_logging_enabled,azure.cdn.endpoint.logging_enabled,token_match_high,0.60,Jaccard=0.60
+azure_cdn_distributions_origin_traffic_encrypted,,ai_rejected,none,"No catalog rule matches the specific check for encrypting origin traffic in Azure CDN distributions, as the candidates either target different services, different actions (logging, access restriction)"
+azure_cdn_distributions_using_deprecated_ssl_protocols,azure.cdn.endpoint.deprecated_ssl_protocols,token_match_high,0.71,Jaccard=0.71
+azure_certificates_certificates_expiration_check,azure.keyvault.certificate.expiration_check,ai_verified,high,"This rule specifically checks certificate expiration in Azure Key Vault, which directly matches the service (Azure), action (expiration check), and target resource (certificates) specified in the chec"
+azure_compute_disk_encryption_cmk_check,azure.compute.disk.encryption.cmk.check,token_match_high,1.00,Jaccard=1.00
+azure_compute_ebs_default_encryption,azure.compute.disk.encryption_at_rest_enabled,ai_verified,high,"Both the check name and this rule specifically target encryption at rest for Azure compute disks, which is the core security control for default encryption."
+azure_compute_ebs_public_snapshot,azure.compute.disk.snapshots_not_public,ai_verified,high,"The check name directly matches the rule's service (azure compute), target resource (disk snapshots), and security violation (public exposure)."
+azure_compute_ebs_volume_encryption,azure.compute.disk.encryption_at_rest_enabled;azure.compute.disk.encryption_enabled:az.compute_disk.compute_security_disk_encryption_at_rest_enabled,ai_verified,high,"Both rules check for encryption at rest on Azure compute disks, which matches the EBS volume encryption check for Azure compute resources."
+azure_compute_ebs_volume_encryption_enabled,azure.compute.disk.encryption_at_rest_enabled;azure.compute.disk.encryption_enabled:az.compute_disk.compute_security_disk_encryption_at_rest_enabled,ai_verified,high,"Both rules directly check for encryption at rest on Azure compute disks, matching the service, action, and target resource of the given check."
+azure_compute_ebs_volume_protected_by_backup_plan,azure.compute.vm.backup_enabled,ai_verified,medium,"The check name focuses on EBS volume backup protection in Azure Compute, which aligns most closely with ensuring VM backup is enabled, though the match is not exact due to terminology differences."
+azure_compute_instance_imdsv2_enabled,,ai_rejected,none,"The check name refers to enabling IMDSv2 for Azure compute instances, but none of the candidate rules address Instance Metadata Service (IMDS) configuration or version enforcement."
+azure_compute_instance_managed_by_ssm,azure.vm.instance.managed.by.ssm,token_match_high,0.67,Jaccard=0.67
+azure_compute_instance_older_than_specific_days,azure.compute.instance.older_than_specific_days,token_match_high,1.00,Jaccard=1.00
+azure_compute_instance_profile_attached,azure.compute.instance.profile_attached,token_match_high,1.00,Jaccard=1.00
+azure_compute_instance_public_ip,azure.compute.virtual_machine.vm_no_public_ip_assigned,ai_verified,high,"This rule directly checks for public IP assignment on Azure compute instances, matching the service (compute), action (detecting public IP), and target resource (virtual machine instances)."
+azure_compute_networkacl_allow_ingress_any_port,azure.compute.vm.unrestricted_ingress;azure.compute.vm.unrestricted_network_ingress,ai_verified,high,"Both rules target unrestricted ingress traffic to Azure compute VMs, which matches the check name's focus on network ACLs allowing ingress on any port."
+azure_compute_networkacl_allow_ingress_tcp_port_22,azure.compute.vm.unrestricted_ingress;azure.compute.vm.unrestricted_network_ingress,ai_verified,high,"Both rules detect unrestricted network ingress to Azure compute resources, specifically targeting SSH port 22 violations."
+azure_compute_networkacl_allow_ingress_tcp_port_3389,azure.compute.vm.unrestricted_ingress,ai_verified,high,"The check name specifically targets unrestricted ingress on TCP port 3389 (RDP) for Azure compute, which directly aligns with the rule detecting unrestricted ingress on virtual machines."
+azure_compute_securitygroup_allow_ingress_from_internet_to_all_ports,azure.compute.vm.unrestricted_ingress;azure.compute.vm.unrestricted_network_ingress,ai_verified,high,"Both rules target unrestricted ingress to Azure compute VMs, matching the service (compute/VM), action (allow ingress), and resource (security group/network) of the given check."
+azure_compute_securitygroup_allow_ingress_from_internet_to_tcp_port_22,azure.compute.vm.unrestricted_ingress,ai_verified,high,"The check name specifically targets unrestricted ingress to TCP port 22 from the internet on Azure compute security groups, which directly matches the rule's purpose of detecting unrestricted ingress "
+azure_compute_securitygroup_default_restrict_traffic,azure.networksecuritygroup.default.restrict.traffic,ai_verified,high,"The check name and rule ID both target the restriction of default traffic in Azure Network Security Groups, indicating a direct service, action, and resource match."
+azure_container_instance_managed_identity_least_privilege_check,azure.container.instance.managed.identity.least.privilege.check,token_match_high,1.00,Jaccard=1.00
+azure_container_instances_task_definition_logging_enabled,azure.container.instance.logging_enabled,ai_verified,high,"The check name specifically targets Azure Container Instances logging, which directly matches the service, resource type, and security control of the top candidate rule."
+azure_container_registry_image_scan_on_push_enabled,azure.container.registry.image_scan_enabled,token_match_high,0.83,Jaccard=0.83
+azure_container_registry_repository_encryption_enabled,azure.container.registry.encryption_enabled,token_match_high,0.80,Jaccard=0.80
+azure_containerregistry_not_publicly_accessible,azure.container.registry.not_publicly_accessible,ai_verified,high,The rule directly matches the service (Azure Container Registry) and the security check (preventing public accessibility).
+azure_containerregistry_uses_private_link,azure.container.registry.private_link_enabled,ai_verified,high,Both the check name and rule directly address Azure Container Registry private link configuration for network isolation.
+azure_cosmos_db_accelerator_cluster_encryption_enabled,azure.cosmos.database.encryption_enabled,ai_verified,medium,"The check name focuses on Cosmos DB cluster encryption, and while the top candidate matches the service and encryption requirement, it lacks explicit mention of 'accelerator cluster' or 'CMK/KMS' spec"
+azure_cosmos_db_table_encryption_enabled,azure.cosmos.table.kms_cmk_encryption_enabled,ai_verified,high,"This rule directly matches the service (Azure Cosmos DB Table), action (encryption enabled), and target resource (KMS/CMK encryption), aligning with the check's focus on table-level encryption."
+azure_cosmos_db_table_protected_by_backup_plan,azure.cosmos.table.pitr_enabled,ai_verified,medium,"The check name specifically targets Azure Cosmos DB Table protection via backup plans, which aligns with the point-in-time recovery (PITR) backup functionality for Cosmos DB Tables."
+azure_cosmos_db_tables_kms_cmk_encryption_enabled,azure.cosmos.table.kms_cmk_encryption_enabled,token_match_high,0.62,Jaccard=0.62
+azure_cosmos_db_tables_pitr_enabled,azure.cosmos.table.pitr_enabled,ai_verified,high,"The check name specifically targets Azure Cosmos DB Tables with PITR (Point-in-Time Recovery) enabled, which matches exactly with the service (azure.cosmos.table), action (pitr_enabled), and target re"
+azure_cosmosdb_account_firewall_use_selected_networks,azure.cosmosdb.account.firewall_use_selected_networks,token_match_high,1.00,Jaccard=1.00
+azure_cosmosdb_account_private_endpoint_approved,azure.cosmosdb.account.private.endpoint.approved,token_match_high,1.00,Jaccard=1.00
+azure_cosmosdb_account_use_private_endpoints,azure.cosmosdb.account.use_private_endpoints,token_match_high,1.00,Jaccard=1.00
+azure_cosmosdb_autoscale_enabled,azure.cosmos.database.autoscale_enabled,ai_verified,high,"The check name and rule both target Azure Cosmos DB and specifically verify if autoscaling is enabled, ensuring the same security violation detection."
+azure_cosmosdb_backup_enabled,azure.cosmos.database.backup_enabled,ai_verified,high,"The check name and rule ID both specifically target backup enablement for Azure Cosmos DB, ensuring a direct service and resource match."
+azure_cosmosdb_defender_status_check,azure.cosmosdb.defender.status.check,token_match_high,1.00,Jaccard=1.00
+azure_cosmosdb_encryption_enabled,azure.cosmos.database.encryption_enabled,ai_verified,high,This rule directly matches the service (Azure Cosmos DB) and the security check for encryption being enabled.
+azure_cosmosdb_geo_redundant,azure.cosmos.database.geo_redundant,ai_verified,high,"The check name specifically targets Azure CosmosDB geo-redundancy, which matches exactly with the service, action, and resource type of the first candidate rule."
+azure_cosmosdb_global_tables_enabled,azure.cosmos.database.global_tables_enabled,ai_verified,high,"The rule directly matches the service (Azure Cosmos DB), action (checking global tables), and target resource (database/tables), indicating it implements the same security check."
+azure_cosmosdb_network_restriction_enabled,azure.cosmosdb.network.restriction.enabled,token_match_high,1.00,Jaccard=1.00
+azure_cosmosdb_pitr_enabled,azure.cosmos.database.pitr_enabled;azure.cosmos.table.pitr_enabled,ai_verified,high,"Both rules directly check for point-in-time recovery (PITR) enablement on Azure Cosmos DB resources, matching the service and security intent of the given check name."
+azure_database_migration_instance_no_public_access,azure.sql.server.db_instance_public_access_disabled,ai_verified,medium,"The check name targets Azure Database Migration Service instances for public access, which is most closely aligned with SQL Server database instance public access controls, though not a perfect servic"
+azure_databricks_pat_compliance_check,azure.databricks.scim.sync.verification,deep_review_medium,medium,"The check name 'azure_databricks_pat_compliance_check' likely refers to Personal Access Token (PAT) management in Azure Databricks, which is related to identity and access control, similar to SCIM synchronization for user provisioning."
+azure_databricks_scim_sync_verification,azure.databricks.scim.sync.verification,token_match_high,1.00,Jaccard=1.00
+azure_databricks_workspace_check_no_public_ip_enabled,azure.databricks.workspace.check.no.public.ip.enabled,token_match_high,1.00,Jaccard=1.00
+azure_databricks_workspace_diagnostic_logging_configured,azure.databricks.workspace.diagnostic.logging.configured,token_match_high,1.00,Jaccard=1.00
+azure_databricks_workspace_encryption_cmk_enabled,azure.databricks.workspace.encryption.cmk.enabled,token_match_high,1.00,Jaccard=1.00
+azure_databricks_workspace_private_endpoint_status_check,azure.databricks.workspace.private.endpoint.status.check,token_match_high,1.00,Jaccard=1.00
+azure_databricks_workspace_public_network_access_check,azure.databricks.workspace.public.network.access.check,token_match_high,1.00,Jaccard=1.00
+azure_databricks_workspace_vnet_configuration_check,azure.databricks.workspace.vnet.configuration.check,token_match_high,1.00,Jaccard=1.00
+azure_dataprotection_backup_vault_cross_region_restore_enabled,azure.dataprotection.backup.vault.cross.region.restore.enabled,token_match_high,1.00,Jaccard=1.00
+azure_dataprotection_backup_vault_encryption_cmk_enabled,azure.dataprotection.backup.vault.encryption.cmk.enabled,token_match_high,1.00,Jaccard=1.00
+azure_dataprotection_backup_vault_immutability_check,azure.dataprotection.backup.vault.immutability.check,token_match_high,1.00,Jaccard=1.00
+azure_dataprotection_backup_vault_soft_delete_compliance_check,azure.dataprotection.backup.vault.soft.delete.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_dataprotection_backupvault_infrastructure_encryption_enabled,azure.dataprotection.backupvault.infrastructure.encryption.enabled,token_match_high,1.00,Jaccard=1.00
+azure_defender_additional_email_configured_with_a_security_contact,azure.security.defender.additional_email_configured,token_match_high,0.83,Jaccard=0.83
+azure_defender_agentless_scanning_status_check,azure.defender.agentless.scanning.status.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_app_services_status_check,azure.defender.app.services.status.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_assessments_vm_endpoint_protection_installed,azure.defender.vm.endpoint_protection_installed,token_match_high,0.86,Jaccard=0.86
+azure_defender_auto_provisioning_log_analytics_agent_vms_on,azure.security.defender.log_analytics_agent_auto_provisioning,token_match_high,0.78,Jaccard=0.78
+azure_defender_auto_provisioning_vulnerabilty_assessments_machines_on,azure.security.defender.vulnerability_assessment_auto_provisioning,ai_verified,high,"The check name directly matches the rule for auto-provisioning vulnerability assessments on machines, covering the same service, action, and target resource."
+azure_defender_container_images_resolved_vulnerabilities,azure.security.defender.container_vulnerabilities_resolved,token_match_high,0.71,Jaccard=0.71
+azure_defender_container_images_scan_enabled,azure.security.defender.container_scan_enabled,token_match_high,0.67,Jaccard=0.67
+azure_defender_cspm_pricing_tier_standard_check,azure.defender.cspm.pricing.tier.standard.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_email_notifications_attack_paths_enabled,azure.defender.email.notifications.attack.paths.enabled,token_match_high,1.00,Jaccard=1.00
+azure_defender_email_notifications_owner_check,azure.defender.email.notifications.owner.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_email_notifications_severity_check,azure.defender.email.notifications.severity.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_enabled,azure.security.defender.enabled,token_match_high,0.67,Jaccard=0.67
+azure_defender_ensure_defender_for_app_services_is_on,azure.defender.app.services_is_on,token_match_high,0.80,Jaccard=0.80
+azure_defender_ensure_defender_for_arm_is_on,azure.security.defender.arm_protection_enabled,ai_verified,high,"This rule specifically targets Defender for ARM, matching the service and resource focus of the check name."
+azure_defender_ensure_defender_for_azure_sql_databases_is_on,azure.security.defender.sql_databases_protection_enabled;azure.sql.server.defender_enabled,ai_verified,high,"Both rules specifically check for Defender protection on Azure SQL databases, matching the service (Azure SQL), action (Defender enabled), and target resource (databases) of the compliance check."
+azure_defender_ensure_defender_for_containers_is_on,azure.security.defender.containers_protection_enabled,ai_verified,high,"The check name specifically targets Defender for Containers, and the top candidate rule directly matches the service, action (protection enabled), and resource (containers)."
+azure_defender_ensure_defender_for_cosmosdb_is_on,azure.cosmosdb.defender.status.check,token_match_high,0.60,Jaccard=0.60
+azure_defender_ensure_defender_for_databases_is_on,azure.security.defender.databases_protection_enabled,ai_verified,high,"This rule directly matches the service (Azure Defender), action (ensure protection is on), and target resource (databases) specified in the check name."
+azure_defender_ensure_defender_for_dns_is_on,azure.security.defender.dns_protection_enabled,ai_verified,high,"This rule directly matches the service (Azure Defender), action (ensuring protection is on), and target resource (DNS)."
+azure_defender_ensure_defender_for_keyvault_is_on,azure.security.defender.keyvault_protection_enabled,ai_verified,high,"This rule directly matches the service (Key Vault), action (defender protection), and target resource (Key Vault) specified in the check name."
+azure_defender_ensure_defender_for_os_relational_databases_is_on,azure.defender.open.source.relational.databases.enabled;azure.security.defender.relational_db_protection_enabled,ai_verified,high,"Both rules specifically target Defender protection for OS-based relational databases, matching the service, action, and resource type of the check name."
+azure_defender_ensure_defender_for_server_is_on,azure.sql.server.defender_enabled,token_match_high,0.60,Jaccard=0.60
+azure_defender_ensure_defender_for_sql_servers_is_on,azure.security.defender.sql_servers_protection_enabled;azure.sql.server.defender_enabled,ai_verified,high,"Both rules specifically target enabling Defender for SQL Servers, matching the service, action, and resource focus of the check name."
+azure_defender_ensure_defender_for_storage_is_on,azure.security.storage.defender.pricing.check,ai_verified,high,"This rule directly checks the pricing tier (enabled/on) for Defender for Storage, matching the service, action, and target resource of the given check."
+azure_defender_ensure_iot_hub_defender_is_on,azure.iot.hub.defender.for.iot.status.check,token_match_high,0.67,Jaccard=0.67
+azure_defender_ensure_mcas_is_enabled,azure.security.defender.mcas_enabled,token_match_high,0.60,Jaccard=0.60
+azure_defender_ensure_notify_alerts_severity_is_high,azure.security.defender.high_severity_alerts_enabled,token_match_high,0.62,Jaccard=0.62
+azure_defender_ensure_notify_emails_to_owners,azure.security.defender.notify_owners_enabled,ai_verified,high,The check name directly matches the rule's focus on notifying owners via email for Azure Defender alerts.
+azure_defender_ensure_system_updates_are_applied,azure.security.defender.system_updates_applied,token_match_high,0.71,Jaccard=0.71
+azure_defender_ensure_wdatp_is_enabled,azure.security.defender.wdatp_enabled,token_match_high,0.60,Jaccard=0.60
+azure_defender_fim_status_check,azure.defender.fim.status.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_for_cloud_endpoint_protection_status_check,azure.defender.for.cloud.endpoint.protection.status.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_for_cloud_security_contact_email_check,azure.defender.for.cloud.security.contact.email.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_for_containers_pricing_tier_and_extensions_enabled,azure.defender.for.containers.pricing.tier.and.extensions.enabled,token_match_high,1.00,Jaccard=1.00
+azure_defender_for_servers_enabled,azure.security.defender.servers_protection_enabled,token_match_high,0.60,Jaccard=0.60
+azure_defender_for_servers_pricing_tier_standard_check,azure.defender.for.servers.pricing.tier.standard.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_no_high_severity_findings,azure.security.defender.no_high_severity_findings,token_match_high,0.83,Jaccard=0.83
+azure_defender_open_source_relational_databases_enabled,azure.defender.open.source.relational.databases.enabled,token_match_high,1.00,Jaccard=1.00
+azure_defender_resource_manager_pricing_standard_check,azure.defender.resource.manager.pricing.standard.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_sql_server_pricing_tier_check,azure.defender.sql.server.pricing.tier.check,token_match_high,1.00,Jaccard=1.00
+azure_defender_storage_alerts_export_enabled,azure.defender.storage.alerts.export.enabled,token_match_high,1.00,Jaccard=1.00
+azure_defender_vm_os_updates_configured,azure.defender.vm.os.updates.configured,token_match_high,1.00,Jaccard=1.00
+azure_defender_vulnerability_assessment_status_check,azure.defender.vulnerability.assessment.status.check,token_match_high,1.00,Jaccard=1.00
+azure_devops_project_no_secrets_in_variables,,ai_rejected,none,"The check name targets Azure DevOps project variables for secrets, while all candidate rules are for Azure Key Vault or Function services, with no overlap in service, action, or target resource."
+azure_devops_project_source_repo_url_no_sensitive_credentials,azure.dns.health_probe.health_check_no_plaintext_credentials_in_url,deep_review_medium,medium,"Both controls focus on preventing sensitive credentials from being exposed in URLs, though they apply to different Azure services (DevOps project source repos vs DNS health probes)."
+azure_disk_backup_enabled,azure.backup.policy.configured,ai_verified,medium,"The check name focuses on Azure disk backup, which aligns with the service and action of configuring backup policies for disks, though the candidate rule is more general about backup policies rather t"
+azure_disk_unattached_cmk_encryption_check,azure.disk.unattached.cmk.encryption.check,token_match_high,1.00,Jaccard=1.00
+azure_dynamodb_backup_enabled,azure.cosmos.database.backup_enabled,ai_verified,medium,"The check name targets Azure Cosmos DB (formerly DocumentDB, related to DynamoDB in AWS context) backup, and the candidate rule specifically addresses backup for Cosmos DB databases."
+azure_eip_attached,,ai_rejected,none,"The check name 'azure_eip_attached' refers to Elastic IP (public IP) attachment in Azure, but none of the candidate rules address public IP attachment to resources like VMs or load balancers."
+azure_elastic_san_public_network_access_disabled,azure.keyvault.public.network.access.disabled,token_match_high,0.62,Jaccard=0.62
+azure_elastic_san_volume_group_encryption_at_rest_with_cmk,azure.storage.disk.data_protection_volume_encryption_at_rest_enabled,deep_review_medium,medium,"Both controls enforce encryption at rest for storage volumes, though one specifies Elastic SAN volume groups and the other general storage disks."
+azure_entra_authentication_passwordless_policy_check,azure.entra.authentication.passwordless.policy.check,token_match_high,1.00,Jaccard=1.00
+azure_entra_conditional_access_policy_require_mfa_for_management_api,azure.entra.policy.require_mfa_for_management_api:az.active_directory_tenant.identity_access_security_password_policy_require_upper_lower_number_special,ai_verified,high,"The rule directly matches the service (Entra ID), action (require MFA), and target (management API) specified in the check name."
+azure_entra_conditional_access_policy_require_mfa_for_management_app,azure.entra.policy.require_mfa_for_management_api:az.active_directory_tenant.identity_access_security_password_policy_require_upper_lower_number_special,ai_verified,medium,"The rule directly addresses MFA for management APIs in Azure Entra, aligning closely with the check's focus on requiring MFA for management applications."
+azure_entra_console_mfa_enabled,azure.entra.id.mfa.enabled.for.privileged.vm.access,ai_verified,medium,"This rule specifically targets Entra ID (formerly Azure AD) MFA for privileged access scenarios, which aligns with the console MFA requirement for administrative access."
+azure_entra_diagnostic_microsoft_graph_logs_destination_check,azure.entra.diagnostic.microsoft.graph.logs.destination.check,token_match_high,1.00,Jaccard=1.00
+azure_entra_global_admin_in_less_than_five_users,azure.entrad.global.admin.role.check,ai_verified,medium,"The check name focuses on ensuring there are fewer than five users with global admin roles, which aligns with a compliance rule auditing global admin role assignments rather than a threat detection ru"
+azure_entra_group_has_users,azure.aad.group.access_group_no_inline_policies,deep_review_medium,medium,"The check name 'azure_entra_group_has_users' suggests verifying groups have members, which aligns with ensuring groups are not empty or misconfigured, similar to enforcing proper group structure as in the candidate about access groups without inline "
+azure_entra_id_authentication_lockout_threshold_check,azure.entra.id.authentication.lockout.threshold.check,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_custom_role_admin_privileges_check,azure.entra.id.custom.role.admin.privileges.check,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_diagnostic_setting_activity_logs_configured,azure.entra.id.diagnostic.setting.activity.logs.configured,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_guest_invite_restrictions_check,azure.entra.id.guest.invite.restrictions.check,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_mfa_enabled_for_privileged_vm_access,azure.entra.id.mfa.enabled.for.privileged.vm.access,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_policy_restrict_non_admin_tenant_creation,azure.entra.id.policy.restrict.non.admin.tenant.creation,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_user_app_registration_disabled,azure.entra.id.user.app.registration.disabled,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_user_consent_disabled_check,azure.entra.id.user.consent.disabled.check,token_match_high,1.00,Jaccard=1.00
+azure_entra_id_user_consent_settings_verified_publishers,azure.entra.id.user.consent.settings.verified.publishers,token_match_high,1.00,Jaccard=1.00
+azure_entra_no_admin_policy,azure.entra.id.policy.restrict.non.admin.tenant.creation,ai_verified,medium,"The check name 'azure_entra_no_admin_policy' suggests a policy restricting administrative actions, which aligns with the candidate rule that restricts non-admin tenant creation in Azure Entra ID."
+azure_entra_no_guest_accounts_with_permissions,azure.entra.user.no_guest_accounts_with_permissions,token_match_high,0.83,Jaccard=0.83
+azure_entra_no_root_access_key,azure.storage.account.disable.shared.key.access.check;azure.storage.account.shared.key.access.disabled.check,deep_review_medium,medium,"The check name refers to preventing root access keys, which aligns with disabling shared key access for storage accounts, though the phrasing differs slightly."
+azure_entra_non_privileged_user_has_mfa,azure.entra.user.with_vm_access_has_mfa:az.active_directory_user.identity_access_security_user_mfa_required,ai_verified,medium,"This rule focuses on MFA for users with VM access, which aligns with the check's intent of ensuring non-privileged users have MFA, though it may be more specific to VM access scenarios."
+azure_entra_non_privileged_user_has_mfa entra_privileged_user_has_mfa,azure.entra.user.with_vm_access_has_mfa:az.active_directory_user.identity_access_security_user_mfa_required,ai_verified,medium,"This rule specifically targets MFA for users with VM access, aligning with the check's focus on non-privileged and privileged user MFA requirements in Azure Entra."
+azure_entra_password_policy_compliance,azure.aad.directory_tenant.access_tenant_password_policy_compliant,deep_review_high,high,"This rule directly addresses password policy compliance for the Azure AD tenant, which matches the control described in the compliance check name."
+azure_entra_policy_default_users_cannot_create_security_groups,azure.iam.entra_audit.group_create,ai_verified,medium,"This rule specifically audits group creation in Azure Entra ID, which aligns with the check's focus on preventing default users from creating security groups."
+azure_entra_policy_ensure_default_user_cannot_create_apps,azure.entra.id.user.app.registration.disabled,deep_review_medium,medium,"The check name is about preventing default users from creating apps, and the candidate rule is about disabling user app registration, which is the same concept of restricting app creation by users."
+azure_entra_policy_ensure_default_user_cannot_create_tenants,,ai_rejected,none,"The check name targets preventing default users from creating tenants, but all candidate rules focus on user/group creation, authentication policies, or guest accounts, not tenant creation control."
+azure_entra_policy_guest_invite_only_for_admin_roles,azure.entra.id.guest.invite.restrictions.check,ai_verified,high,Both the check name and the rule focus on restricting guest invitations to administrative roles in Azure Entra ID.
+azure_entra_policy_guest_users_access_restrictions,azure.entra.id.guest.invite.restrictions.check;azure.ad.guest.user.access.restriction.check,ai_verified,high,"Both rules directly address guest user access restrictions in Azure Entra ID (formerly Azure AD), matching the service, action, and target resource of the compliance check."
+azure_entra_policy_restricts_user_consent_for_apps,azure.entra.id.user.consent.disabled.check,ai_verified,high,Both the check name and the rule focus on restricting user consent for applications in Azure Entra ID.
+azure_entra_policy_user_consent_for_verified_apps,azure.entra.id.user.consent.settings.verified.publishers,ai_verified,high,Both the check name and the rule focus on user consent settings for verified apps/publishers in Azure Entra ID.
+azure_entra_policy_user_consent_for_verified_apps storage_blob_public_access_level_is_disabled storage_ensure_azure_services_are_trusted_to_access_is_enabled,azure.entra.id.user.consent.disabled.check;azure.storage.account.blob.anonymous.access.disabled,ai_verified,medium,"The check name includes three distinct security checks, and only two candidate rules clearly match the service and action for user consent and blob public access, while the third check lacks a direct "
+azure_entra_privileged_user_has_mfa,azure.entra.id.mfa.enabled.for.privileged.vm.access,ai_verified,medium,"This rule specifically targets MFA for privileged VM access, aligning closely with the check's focus on privileged users and MFA, though it narrows to VM access rather than all privileged users."
+azure_entra_root_hardware_mfa_enabled,azure.entra.id.mfa.enabled.for.privileged.vm.access,ai_verified,medium,"The check name focuses on root hardware MFA for privileged access in Azure Entra, which aligns closely with the candidate rule targeting MFA for privileged VM access in the same service."
+azure_entra_root_mfa_enabled,azure.entra.id.mfa.enabled.for.privileged.vm.access,ai_verified,medium,"The check name focuses on Entra (Azure AD) root MFA, which aligns with this rule's service (Entra ID) and its focus on MFA for privileged access, though the target specificity differs slightly."
+azure_entra_security_defaults_enabled,,ai_rejected,none,"The check name refers to Azure Entra (formerly Azure AD) security defaults, while all candidate rules are for Azure Security Center or Microsoft Defender for Cloud services, targeting different securi"
+azure_entra_trusted_named_locations_exists,azure.entra.policy.trusted_named_locations_exists,token_match_high,0.86,Jaccard=0.86
+azure_entra_user_group_membership,azure.iam.entra_audit.group_member_add,deep_review_high,high,"The check name 'azure_entra_user_group_membership' directly relates to monitoring changes in group memberships, which is exactly what the candidate rule 'azure.iam.entra_audit.group_member_add' does by auditing user additions to groups."
+azure_entra_user_in_group,azure.iam.entra_audit.group_member_add,deep_review_high,high,"The check name 'azure_entra_user_in_group' directly corresponds to monitoring user additions to groups, which is exactly what the candidate rule 'azure.iam.entra_audit.group_member_add' audits."
+azure_entra_user_mfa_enabled,azure.aad.user.access_user_mfa_required,ai_verified,medium,"This rule directly checks if user MFA is required, which aligns with the check name's focus on MFA being enabled for Azure Entra users."
+azure_entra_user_no_inline_policies,azure.aad.user.access_user_no_inline_policies_attached,ai_verified,high,"Both the check name and rule target inline policies attached directly to Azure AD/Entra ID users, which is the same security violation."
+azure_entra_user_unused_credentials,,ai_rejected,none,"The check name targets unused credentials, but none of the candidate rules address credential usage or inactivity."
+azure_entra_user_with_vm_access_has_mfa,azure.entra.user.with_vm_access_has_mfa:az.active_directory_user.identity_access_security_user_mfa_required,ai_verified,high,This rule ID directly matches the check name in both service (Azure Entra) and requirement (MFA for VM access).
+azure_entra_users_cannot_create_microsoft_365_groups,azure.iam.entra_audit.group_create,ai_verified,medium,"The check name targets user restrictions on creating Microsoft 365 groups, which aligns with the rule's focus on auditing group creation events in Microsoft Entra ID."
+azure_entrad_device_mfa_check,azure.entrad.device.mfa.check,token_match_high,1.00,Jaccard=1.00
+azure_entrad_global_admin_role_check,azure.entrad.global.admin.role.check,token_match_high,1.00,Jaccard=1.00
+azure_entrad_group_membership_management_check,azure.aad.group.access_group_membership_review_enabled_where_supported,ai_verified,medium,"The check name refers to Azure AD group membership management, which aligns with the candidate rule focusing on group membership reviews in Azure AD."
+azure_entrad_password_policy_custom_banned_list_enforced,azure.entrad.password.policy.custom.banned.list.enforced,token_match_high,1.00,Jaccard=1.00
+azure_files_encryption_at_rest_enabled,azure.storage.account.encryption.at.rest.with.cmk,deep_review_high,high,"Azure Files is a service within Azure Storage, and this rule directly addresses encryption at rest for storage accounts, which includes Azure Files."
+azure_files_have_backup_enabled,azure.backup.policy.configured,ai_verified,medium,"The check name specifically targets Azure Files backup configuration, which aligns with the general backup policy configuration rule, though it's not explicitly limited to Files."
+azure_fsx_backup_enabled,azure.backup.policy.configured,ai_verified,medium,"The check name 'azure_fsx_backup_enabled' appears to target Azure File Sync (FSx) backup configuration, which aligns with the service and backup action of 'azure.backup.policy.configured', though the "
+azure_function_app_cors_no_wildcard_origins,azure.function.app.cors.no.wildcard.origins,token_match_high,1.00,Jaccard=1.00
+azure_function_app_deployment_slot_access_restrictions_disabled,azure.function.app.deployment.slot.access.restrictions.disabled,token_match_high,1.00,Jaccard=1.00
+azure_function_app_deployment_slot_cors_restriction,azure.function.app.deployment.slot.cors.restriction,token_match_high,1.00,Jaccard=1.00
+azure_function_app_deployment_slot_http_version_check,azure.function.app.deployment.slot.http.version.check,token_match_high,1.00,Jaccard=1.00
+azure_function_app_deployment_slot_python_version_check,azure.function.app.deployment.slot.python.version.check,token_match_high,1.00,Jaccard=1.00
+azure_function_app_deployment_slot_remote_debugging_disabled,azure.function.app.deployment.slot.remote.debugging.disabled,token_match_high,1.00,Jaccard=1.00
+azure_function_app_deployment_slot_vnet_route_all_enabled,azure.function.app.deployment.slot.vnet.route.all.enabled,token_match_high,1.00,Jaccard=1.00
+azure_function_app_deployment_slot_vnet_routing_config_check,azure.function.app.deployment.slot.vnet.routing.config.check,token_match_high,1.00,Jaccard=1.00
+azure_function_app_e2e_tls_enabled,azure.function.app.e2e.tls.enabled,token_match_high,1.00,Jaccard=1.00
+azure_function_app_function_restrict_public_access,azure.function.app.function_restrict_public_access,token_match_high,1.00,Jaccard=1.00
+azure_function_app_function_url_authentication,azure.function.app.function_url_authentication,token_match_high,1.00,Jaccard=1.00
+azure_function_app_http_version_2_0_check,azure.function.app.http.version.2.0.check,token_match_high,1.00,Jaccard=1.00
+azure_function_app_managed_identity_configured,azure.function.app.managed.identity.configured,token_match_high,1.00,Jaccard=1.00
+azure_function_app_minimum_tls_version,azure.function.app.minimum.tls.version,token_match_high,1.00,Jaccard=1.00
+azure_function_app_remote_debugging_check,azure.function.app.remote.debugging.check,token_match_high,1.00,Jaccard=1.00
+azure_function_app_vnet_integration_check,azure.function.app.vnet.integration.check,token_match_high,1.00,Jaccard=1.00
+azure_function_app_vnet_integration_routing_enabled,azure.function.app.vnet.integration.routing.enabled,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_authentication_enabled,azure.functionapp.authentication.enabled,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_basic_auth_publishing_disabled,azure.functionapp.basic.auth.publishing.disabled,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_client_cert_required_check,azure.functionapp.client.cert.required.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_deployment_slot_identity_check,azure.functionapp.deployment.slot.identity.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_deployment_slot_java_version_check,azure.functionapp.deployment.slot.java.version.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_deployment_slot_minimum_tls_version_check,azure.functionapp.deployment.slot.minimum.tls.version.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_deployment_slot_vnet_integration_check,azure.functionapp.deployment.slot.vnet.integration.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_deployment_slots_basic_auth_disabled,azure.functionapp.deployment.slots.basic.auth.disabled,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_ftps_state_compliance_check,azure.functionapp.ftps.state.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_https_only_check,azure.functionapp.https.only.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_incoming_client_certificates_required,azure.functionapp.incoming.client.certificates.required,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_java_supported_version_check,azure.functionapp.java.supported.version.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_python_version_check,azure.functionapp.python.version.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_tls_encryption_in_transit_check,azure.functionapp.tls.encryption.in.transit.check,token_match_high,1.00,Jaccard=1.00
+azure_functionapp_vnet_routing_enabled_check,azure.functionapp.vnet.routing.enabled.check,token_match_high,1.00,Jaccard=1.00
+azure_functions_function_not_publicly_accessible,azure.function.app.function_url_authentication,deep_review_medium,medium,"The check name focuses on preventing public access to Azure Functions, which aligns with enforcing authentication on function URLs to restrict unauthorized access."
+azure_functions_function_url_public,azure.functions.app.url_public,token_match_high,0.67,Jaccard=0.67
+azure_graph_api_365_group_creation_restriction_check,azure.graph.api.365.group.creation.restriction.check,token_match_high,1.00,Jaccard=1.00
+azure_hdinsight_cluster_master_nodes_no_public_ip,azure.hdinsight.cluster.master_nodes_no_public_ip,token_match_high,1.00,Jaccard=1.00
+azure_iam_custom_role_has_permissions_to_administer_resource_locks,azure.iam.role.has_permissions_to_administer_resource_locks,token_match_high,0.88,Jaccard=0.88
+azure_iam_role_assignment_privileged_review,azure.iam.role.assignment.privileged.review,token_match_high,1.00,Jaccard=1.00
+azure_iam_user_access_admin_check,azure.iam.user.access.admin.check,token_match_high,1.00,Jaccard=1.00
+azure_intune_diagnostic_settings_log_analytics_check,azure.intune.diagnostic.settings.log.analytics.check,token_match_high,1.00,Jaccard=1.00
+azure_iot_hub_defender_for_iot_status_check,azure.iot.hub.defender.for.iot.status.check,token_match_high,1.00,Jaccard=1.00
+azure_key_vault_cmk_rotation_enabled,azure.keyvault.key.cmk_rotation_enabled,token_match_high,0.67,Jaccard=0.67
+azure_key_vault_key_lifecycle_policy,azure.key.key.lifecycle_policy,token_match_high,0.80,Jaccard=0.80
+azure_key_vault_kms_key_expiration_set,azure.key.key.expiration_set,token_match_high,0.67,Jaccard=0.67
+azure_key_vault_kms_key_rotation_enabled,azure.key.vault.secrets_kms_rotation_enabled,token_match_high,0.83,Jaccard=0.83
+azure_keyvault_certificate_max_12_months_validity_check,azure.keyvault.certificate.max.12.months.validity.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_defender_pricing_tier_check,azure.keyvault.defender.pricing.tier.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_diagnostic_logging_check,azure.keyvault.diagnostic.logging.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_key_expiration_check,azure.keyvault.key.expiration.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_key_not_scheduled_for_deletion,azure.keyvault.key.not_scheduled_for_deletion,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_key_rotation_enabled,azure.keyvault.key.rotation_enabled,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_key_rotation_policy_enabled,azure.keyvault.key.rotation.policy.enabled,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_keys_check_expiration,azure.keyvault.keys.check.expiration,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_logging_enabled,azure.keyvault.diagnostic.logging.check,token_match_high,0.75,Jaccard=0.75
+azure_keyvault_managedhsm_compliance_check,azure.keyvault.managedhsm.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_non_rbac_secret_expiration_check,azure.keyvault.non.rbac.secret.expiration.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_private_endpoint_association_check,azure.keyvault.private.endpoint.association.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_private_endpoints,azure.keyvault.vault.private_endpoints_enabled,token_match_high,0.80,Jaccard=0.80
+azure_keyvault_public_network_access_disabled,azure.keyvault.public.network.access.disabled,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_rbac_authorization_enabled,azure.keyvault.rbac.authorization.enabled,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_rbac_secrets_expiration_check,azure.keyvault.rbac.secrets.expiration.check,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_secret_rotation_enabled,azure.keyvault.secret.rotation_enabled,token_match_high,1.00,Jaccard=1.00
+azure_keyvault_vaults_purge_protection_status,azure.keyvault.vaults.purge.protection.status,token_match_high,1.00,Jaccard=1.00
+azure_load_balancer_alb_https_redirect,,ai_rejected,none,"The check name specifies HTTPS redirect for an Azure Load Balancer, but none of the candidate rules address redirect configuration or enforce HTTP to HTTPS redirection."
+azure_load_balancer_deletion_protection,azure.loadbalancer.deletion.protection,ai_verified,high,"The rule ID directly matches the service (Azure Load Balancer), action (deletion protection), and target resource, ensuring it detects the same security violation."
+azure_load_balancer_desync_mitigation_mode,,ai_rejected,none,"None of the candidate rules address desync mitigation mode for Azure load balancers, which is a specific network security configuration."
+azure_load_balancer_health_probe_configured,azure.load.balancer_health_probe_configured:az.azure_network_load_balancer.network_security_lb_listener_tls_min_1_2,ai_verified,high,"This rule directly matches the service (Azure Load Balancer), action (health probe configuration), and target resource, ensuring it detects the same security violation."
+azure_load_balancer_insecure_ssl_ciphers,azure.network.load_balancer.lb_listener_tls_min_1_2,ai_verified,medium,"Both checks focus on enforcing secure TLS/SSL configurations for Azure Load Balancer listeners, though the catalog rule specifies a minimum TLS version while the check name targets insecure ciphers."
+azure_load_balancer_logging_enabled,azure.network.load_balancer.lb_access_logs_enabled,ai_verified,high,"This rule directly targets Azure Load Balancer access logging, matching the service, action, and resource type of the check name."
+azure_load_balancer_ssl_listeners,azure.network.load_balancer.lb_listener_tls_min_1_2,ai_verified,medium,"The check name focuses on SSL/TLS listeners for Azure Load Balancer, which directly aligns with the rule enforcing a minimum TLS version of 1.2 for load balancer listeners."
+azure_load_balancer_waf_acl_attached,azure.loadbalancer.v2.waf.acl.attached,ai_verified,high,"This rule directly matches the service (Azure Load Balancer), action (WAF ACL attachment), and target resource (load balancer) specified in the check name."
+azure_log_cloudwatch_logs_enabled,azure.monitor.log.enabled,ai_verified,medium,"The check name focuses on enabling logs in Azure (likely for CloudWatch-like centralized logging), which aligns with the service and action of 'azure.monitor.log.enabled' for monitoring and logging en"
+azure_log_enabled,azure.monitor.log.enabled,token_match_high,0.67,Jaccard=0.67
+azure_log_log_file_validation_enabled,azure.monitor.log.file_validation_enabled,token_match_high,0.80,Jaccard=0.80
+azure_log_multi_region_enabled,azure.monitor.log.multi_region_enabled,token_match_high,0.80,Jaccard=0.80
+azure_machine_learning_notebook_instance_encryption_enabled,azure.machine.learning_compute_instance.learning_notebook_encrypted,token_match_high,0.62,Jaccard=0.62
+azure_machine_learning_notebook_instance_without_direct_internet_access_configured,azure.machine.learning_compute_instance.learning_notebook_no_public_access,ai_verified,high,Both the check name and the rule focus on preventing public internet access to Azure Machine Learning notebook instances.
+azure_managed_lustre_filesystem_customer_managed_key_enabled,azure.aad.lustre.filesystem_customer_managed_key_enabled,token_match_high,0.86,Jaccard=0.86
+azure_mariadb_geo_redundant_backup,azure.mariadb.server.geo_redundant_backup,token_match_high,0.83,Jaccard=0.83
+azure_monitor_activity_log_alert_create_or_update_public_ip_address,azure.monitor.activity.log.alert.create.or.update.public.ip.address,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_delete_nsg_exists,azure.monitor.activity.log.alert.delete.nsg.exists,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_delete_policy_assignment_exists,azure.monitor.activity.log.alert.delete.policy.assignment.exists,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_exists_delete_security_solution,azure.monitor.activity.log.alert.exists.delete.security.solution,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_nsg_operation_condition_check,azure.monitor.activity.log.alert.nsg.operation.condition.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_policy_assignment_check,azure.monitor.activity.log.alert.policy.assignment.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_public_ip_delete_check,azure.monitor.activity.log.alert.public.ip.delete.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_security_solution_update_check,azure.monitor.activity.log.alert.security.solution.update.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_service_health_exists,azure.monitor.activity.log.alert.service.health.exists,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_sql_server_firewall_rule_deletion_check,azure.monitor.activity.log.alert.sql.server.firewall.rule.deletion.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_activity_log_alert_sql_server_firewall_rule_exists,azure.monitor.activity.log.alert.sql.server.firewall.rule.exists,token_match_high,1.00,Jaccard=1.00
+azure_monitor_admin_account_usage_check,azure.monitor.admin.account.usage.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_alarm_configured,azure.monitor.alert.alarm_configured,token_match_high,0.75,Jaccard=0.75
+azure_monitor_alert_create_policy_assignment,azure.monitor.policy.assignment,token_match_high,0.67,Jaccard=0.67
+azure_monitor_alert_create_update_nsg,azure.monitor.alert.create_update_nsg,token_match_high,1.00,Jaccard=1.00
+azure_monitor_alert_create_update_public_ip_address_rule,azure.monitor.alert.create_update_public_ip,token_match_high,0.78,Jaccard=0.78
+azure_monitor_alert_create_update_security_solution,azure.monitor.alert.create_update_security_solution,token_match_high,1.00,Jaccard=1.00
+azure_monitor_alert_create_update_sqlserver_fr,azure.monitor.alert.create_update_sqlserver_fr,token_match_high,1.00,Jaccard=1.00
+azure_monitor_alert_delete_nsg,azure.monitor.alert.delete_nsg,token_match_high,1.00,Jaccard=1.00
+azure_monitor_alert_delete_policy_assignment,azure.monitor.activity.log.alert.delete.policy.assignment.exists,token_match_high,0.67,Jaccard=0.67
+azure_monitor_alert_delete_public_ip_address_rule,azure.monitor.alert.delete_public_ip,token_match_high,0.75,Jaccard=0.75
+azure_monitor_alert_delete_security_solution,azure.monitor.alert.delete_security_solution,token_match_high,1.00,Jaccard=1.00
+azure_monitor_alert_delete_sqlserver_fr,azure.monitor.alert.delete_sqlserver_fr,token_match_high,1.00,Jaccard=1.00
+azure_monitor_application_insights_configuration_check,azure.monitor.application.insights.configuration.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_capacity_alerts_configured,azure.monitor.alert.capacity_alerts_configured,token_match_high,0.80,Jaccard=0.80
+azure_monitor_changes_to_network_acls_alarm_configured,azure.monitor.network.acls_alarm_configured,token_match_high,0.83,Jaccard=0.83
+azure_monitor_changes_to_network_gateways_alarm_configured,azure.monitor.network.gateways_alarm_configured,token_match_high,0.83,Jaccard=0.83
+azure_monitor_changes_to_network_route_tables_alarm_configured,azure.monitor.network.route_tables_alarm_configured,token_match_high,0.86,Jaccard=0.86
+azure_monitor_changes_to_vpcs_alarm_configured,azure.monitor.alert.vnet_changes_configured,ai_verified,high,"This rule specifically monitors Virtual Network (VNet) changes with alert configuration, directly matching the check name's focus on VPC changes and alarm configuration in Azure Monitor."
+azure_monitor_cloudwatch_logging_enabled,azure.monitor.resource.logging.enabled.check,token_match_high,0.75,Jaccard=0.75
+azure_monitor_diagnostic_setting_categories_compliance_check,azure.monitor.diagnostic.settings.compliance.check,ai_verified,high,"The rule ID directly matches the check name in service, action, and target resource, indicating it implements the same diagnostic settings categories compliance check."
+azure_monitor_diagnostic_setting_with_appropriate_categories,azure.monitor.diagnostic.settings.compliance.check,ai_verified,medium,"The check name focuses on diagnostic settings having appropriate categories, which aligns with a compliance check for diagnostic settings rather than just monitoring write/delete events or Entra ID lo"
+azure_monitor_diagnostic_settings_compliance_check,azure.monitor.diagnostic.settings.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_diagnostic_settings_exists,azure.monitor.diagnostic.settings_exists,token_match_high,1.00,Jaccard=1.00
+azure_monitor_kms_encryption_enabled,azure.monitor.group.kms_encryption_enabled,token_match_high,0.80,Jaccard=0.80
+azure_monitor_log_analysis_enabled,azure.monitor.log.analysis_enabled,token_match_high,1.00,Jaccard=1.00
+azure_monitor_log_file_validation_enabled,azure.monitor.log.file_validation_enabled,token_match_high,1.00,Jaccard=1.00
+azure_monitor_log_group_kms_encryption_enabled,azure.monitor.group.kms_encryption_enabled,token_match_high,0.83,Jaccard=0.83
+azure_monitor_log_group_retention,azure.monitor.log.retention_configured,token_match_high,0.80,Jaccard=0.80
+azure_monitor_log_group_retention_policy_specific_days_enabled,azure.monitor.policy.specific_days_enabled,token_match_high,0.62,Jaccard=0.62
+azure_monitor_log_metric_filter_alarm_configured,azure.monitor.log.metric_filter_alarm_configured,token_match_high,1.00,Jaccard=1.00
+azure_monitor_log_metric_filter_policy_changes,azure.monitor.log.metric_filter_alarm_configured,token_match_high,0.62,Jaccard=0.62
+azure_monitor_log_metric_filter_root_usage,azure.monitor.metric.filter.root.usage,token_match_high,0.86,Jaccard=0.86
+azure_monitor_multi_region_enabled,azure.monitor.log.multi_region_enabled,token_match_high,0.80,Jaccard=0.80
+azure_monitor_resource_logging_enabled_check,azure.monitor.resource.logging.enabled.check,token_match_high,1.00,Jaccard=1.00
+azure_monitor_s3_dataevents_read_enabled,azure.storage.s3.dataevents.read.enabled,token_match_high,0.67,Jaccard=0.67
+azure_monitor_s3_dataevents_write_enabled,azure.storage.s3.dataevents.write.enabled,token_match_high,0.67,Jaccard=0.67
+azure_monitor_storage_account_with_activity_logs_cmk_encrypted,azure.monitor.storage.account_with_activity_logs_cmk_encrypted,token_match_high,1.00,Jaccard=1.00
+azure_monitor_storage_account_with_activity_logs_is_private,azure.monitor.storage.account_with_activity_logs_is_private,token_match_high,1.00,Jaccard=1.00
+azure_monitor_vm_cpu_alerts,azure.monitor.vm.cpu_alerts,token_match_high,1.00,Jaccard=1.00
+azure_monitor_vm_memory_alerts,azure.monitor.vm.memory_alerts,token_match_high,1.00,Jaccard=1.00
+azure_mysql_flexible_server_audit_log_connection_activated,azure.mysql.server.audit.log.connection.check,token_match_high,0.75,Jaccard=0.75
+azure_mysql_flexible_server_audit_log_enabled,azure.mysql.server.audit.log.enabled,token_match_high,0.83,Jaccard=0.83
+azure_mysql_flexible_server_minimum_tls_version_12,azure.mysql.flexibleserver.minimum_tls_version_12,token_match_high,0.67,Jaccard=0.67
+azure_mysql_flexible_server_ssl_connection_enabled,azure.mysql.flexibleserver.ssl_connection_enabled,ai_verified,high,"The rule ID directly matches the check name in service, resource type, and security control for enforcing SSL connections on Azure MySQL Flexible Server."
+azure_mysql_geo_redundant_backup,azure.mysql.server.geo_redundant_backup,token_match_high,0.83,Jaccard=0.83
+azure_mysql_server_audit_log_connection_check,azure.mysql.server.audit.log.connection.check,token_match_high,1.00,Jaccard=1.00
+azure_mysql_server_audit_log_enabled,azure.mysql.server.audit.log.enabled,token_match_high,1.00,Jaccard=1.00
+azure_mysql_standard_database_ssl_enforcement_check,azure.mysql.standard.database.ssl.enforcement.check,token_match_high,1.00,Jaccard=1.00
+azure_netappfiles_encryption_key_source_cmk_check,,ai_rejected,none,"The check name targets Azure NetApp Files encryption key source using CMK, but all candidate rules are for different Azure services (Backup, Compute/Disks, Databricks, Key Vault)."
+azure_network_bastion_host_existence_check,azure.network.bastion.host.existence.check,token_match_high,1.00,Jaccard=1.00
+azure_network_bastion_host_exists,azure.network.bastion.host.existence.check,token_match_high,0.67,Jaccard=0.67
+azure_network_flow_log_captured_sent,azure.network.monitoring.flow_logs_enabled;azure.network.virtual_network.flow_logs_enabled,ai_verified,medium,"These rules directly check if flow logs are enabled, which matches the core intent of ensuring flow logs are captured and sent, though they may not specify the destination."
+azure_network_flow_log_more_than_90_days,azure.network.flow.log.retention.period.check,ai_verified,high,"This rule directly matches the check's focus on flow log retention period, specifically targeting the 90-day requirement."
+azure_network_flow_log_retention_period_check,azure.network.flow.log.retention.period.check,token_match_high,1.00,Jaccard=1.00
+azure_network_flow_logs_enabled,azure.network.monitoring.flow_logs_enabled,token_match_high,0.80,Jaccard=0.80
+azure_network_http_internet_access_restricted,azure.network.nsg.inbound.http.access.check,ai_verified,high,Both checks specifically target HTTP internet access restrictions in Azure network security groups.
+azure_network_network_acl_unused,azure.network.network_acl.nacl_no_allow_all_rules,deep_review_medium,medium,"Both focus on restricting overly permissive network ACLs, though 'unused' implies detecting idle ACLs while 'no_allow_all_rules' targets permissive configurations, representing the same security concept of minimizing unnecessary or risky network acce"
+azure_network_nsg_databricks_subnet_explicit_rules,azure.network.vnet.subnet.nsg.association.check,ai_verified,medium,"This rule specifically checks NSG association with subnets including Databricks, matching the service and target resource focus."
+azure_network_nsg_flow_log_retention_days_check,azure.network.flow.log.retention.period.check,token_match_high,0.62,Jaccard=0.62
+azure_network_nsg_flow_logs_to_log_analytics,azure.network.vnet.flow.logs.to.log.analytics.enabled,token_match_high,0.75,Jaccard=0.75
+azure_network_nsg_inbound_http_access_check,azure.network.nsg.inbound.http.access.check,token_match_high,1.00,Jaccard=1.00
+azure_network_nsg_rdp_internet_access_check,azure.network.nsg.rdp.internet.access.check,token_match_high,1.00,Jaccard=1.00
+azure_network_nsg_ssh_access_evaluation,azure.network.nsg.ssh.access.evaluation,token_match_high,1.00,Jaccard=1.00
+azure_network_nsg_udp_internet_access_check,azure.network.nsg.udp.internet.access.check,token_match_high,1.00,Jaccard=1.00
+azure_network_public_ip_list_and_review,azure.network.public.ip.list.and.review,token_match_high,1.00,Jaccard=1.00
+azure_network_public_ip_shodan,azure.network.public.ip.list.and.review,ai_verified,medium,"The check name 'azure_network_public_ip_shodan' suggests detecting public IPs exposed to the internet for security scanning risks, which aligns with the candidate rule's focus on listing and reviewing"
+azure_network_rdp_internet_access_restricted,azure.network.nsg.rdp.internet.access.check,token_match_high,0.71,Jaccard=0.71
+azure_network_ssh_internet_access_restricted,azure.network.nsg.ssh.access.evaluation,ai_verified,high,"This rule directly matches the service (network/NSG), action (SSH access evaluation), and target (restricting SSH from the internet) as specified in the check name."
+azure_network_udp_internet_access_restricted,azure.network.nsg.udp.internet.access.check,token_match_high,0.71,Jaccard=0.71
+azure_network_virtual_network_ddos_protection_status,azure.network.virtual.network.ddos.protection.status,token_match_high,1.00,Jaccard=1.00
+azure_network_vnet_flow_logs_to_log_analytics_enabled,azure.network.vnet.flow.logs.to.log.analytics.enabled,token_match_high,1.00,Jaccard=1.00
+azure_network_vnet_subnet_nsg_association_check,azure.network.vnet.subnet.nsg.association.check,token_match_high,1.00,Jaccard=1.00
+azure_network_watcher_enabled,azure.network.watcher.region.compliance.check,token_match_high,0.60,Jaccard=0.60
+azure_network_watcher_region_compliance_check,azure.network.watcher.region.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_notification_hub_topic_subscription_configured,azure.notification.hub.topic_subscription_configured,token_match_high,1.00,Jaccard=1.00
+azure_notification_hubs_topics_kms_encryption_at_rest_enabled,azure.event.event_hub.encryption_at_rest_enabled,deep_review_medium,medium,"Both controls enforce encryption at rest for messaging services, with the check name specifying Notification Hubs/Topics and the candidate covering Event Hubs, representing the same concept under Azure messaging."
+azure_organizations_account_part_of_organizations,,ai_rejected,none,"The check name refers to Azure organizations and account membership, which does not match any of the provided candidate rules focused on specific services like automation, batch, cosmosdb, monitor, or"
+azure_policy_assignment_check_disabled_effect,azure.policy.assignment.check.disabled.effect,token_match_high,1.00,Jaccard=1.00
+azure_policy_enabled,azure.backup.policy.configured,token_match_high,0.67,Jaccard=0.67
+azure_policy_ensure_asc_enforcement_enabled,azure.policy.assignment.asc_enforcement_enabled,token_match_high,0.67,Jaccard=0.67
+azure_policy_recorder_all_regions_enabled,azure.policy.assignment.recorder_all_regions_enabled,token_match_high,0.80,Jaccard=0.80
+azure_postgresql_flexible_server_allow_access_services_disabled,azure.postgresql.flexibleserver.access_services_disabled,ai_verified,high,"This rule directly matches the service (Azure PostgreSQL Flexible Server), action (disabling access), and target resource (access services) specified in the check name."
+azure_postgresql_flexible_server_enforce_ssl_enabled,azure.postgresql.flexibleserver.ssl_enabled,ai_verified,high,"The rule directly matches the service (Azure PostgreSQL Flexible Server), action (enforcing SSL), and target resource (SSL enabled), making it the exact implementation of the given check."
+azure_postgresql_flexible_server_log_checkpoints_on,azure.postgresql.flexibleserver.log_checkpoints_enabled,ai_verified,high,The rule ID directly matches the check name for Azure PostgreSQL Flexible Server log checkpoints configuration.
+azure_postgresql_flexible_server_log_connections_on,azure.postgresql.flexibleserver.log_connections_enabled,ai_verified,high,The check name and rule ID both target Azure PostgreSQL Flexible Server with the specific requirement to enable connection logging.
+azure_postgresql_flexible_server_log_disconnections_on,azure.postgresql.flexibleserver.log_disconnections_enabled,ai_verified,high,"This rule directly matches the service (Azure PostgreSQL Flexible Server), action (log disconnections), and target resource configuration check."
+azure_postgresql_flexible_server_log_retention_days_greater_3,azure.postgresql.flexibleserver.log_retention_days_greater_3,token_match_high,0.67,Jaccard=0.67
+azure_postgresql_geo_redundant_backup,azure.postgresql.server.geo_redundant_backup,token_match_high,0.83,Jaccard=0.83
+azure_public_ip_attached,azure.network.public.ip.list.and.review,deep_review_medium,medium,"The check name 'azure_public_ip_attached' suggests monitoring for public IP attachments, which aligns with the candidate's focus on listing and reviewing public IPs, though it's more about inventory than direct enforcement."
+azure_rbac_role_resource_lock_check,azure.rbac.role.resource.lock.check,token_match_high,1.00,Jaccard=1.00
+azure_recoveryservices_vault_cross_subscription_restore_disabled,azure.recoveryservices.vault.cross.subscription.restore.disabled,token_match_high,1.00,Jaccard=1.00
+azure_recoveryservices_vault_encryption_at_rest_cmk_enabled,azure.recoveryservices.vault.encryption.at.rest.cmk.enabled,token_match_high,1.00,Jaccard=1.00
+azure_redis_cache_system_assigned_identity_check,azure.redis.cache.system.assigned.identity.check,token_match_high,1.00,Jaccard=1.00
+azure_redis_minimum_tls_version_check,azure.redis.minimum.tls.version.check,token_match_high,1.00,Jaccard=1.00
+azure_redshift_backup_enabled,azure.cosmos.database.backup_enabled,deep_review_medium,medium,"Both controls enforce backup for a specific database service, but the check name references Redshift (AWS) while the candidate is for Cosmos DB (Azure), indicating the same concept with different service names."
+azure_resource_manager_resource_lock_verification,azure.resource.manager.resource.lock.verification,token_match_high,1.00,Jaccard=1.00
+azure_resource_sku_standard_enforcement,azure.resource.sku.standard.enforcement,token_match_high,1.00,Jaccard=1.00
+azure_search_service_domains_access_control_enabled,azure.search.service.domains_access_control_enabled,token_match_high,1.00,Jaccard=1.00
+azure_search_service_domains_audit_logging_enabled,azure.search.service.domains_logging_enabled,token_match_high,0.83,Jaccard=0.83
+azure_search_service_domains_cloudwatch_logging_enabled,azure.search.service.domains_logging_enabled,token_match_high,0.83,Jaccard=0.83
+azure_search_service_domains_encryption_at_rest_enabled,azure.search.service.domains_encryption_at_rest_enabled,token_match_high,1.00,Jaccard=1.00
+azure_search_service_domains_https_communications_enforced,azure.search.service.domains_node_to_node_encryption_enabled,deep_review_medium,medium,"Both controls enforce secure communication, with the check name focusing on HTTPS and the candidate on node-to-node encryption, which are conceptually similar for securing data in transit."
+azure_search_service_domains_node_to_node_encryption_enabled,azure.search.service.domains_node_to_node_encryption_enabled,token_match_high,1.00,Jaccard=1.00
+azure_search_service_domains_not_publicly_accessible,azure.aisearch.service.not_publicly_accessible,ai_verified,medium,"The check name targets public accessibility of an Azure Search service domain, which aligns closely with the candidate rule that checks for services not being publicly accessible, despite a slight ser"
+azure_security_center_enabled,azure.security.center.enabled,token_match_high,1.00,Jaccard=1.00
+azure_security_center_guardduty_enabled,azure.security.center.guardduty_enabled,token_match_high,1.00,Jaccard=1.00
+azure_security_center_is_enabled,azure.security.center.enabled,token_match_high,1.00,Jaccard=1.00
+azure_security_center_no_high_severity_findings,azure.security.center.no_high_severity_findings,token_match_high,1.00,Jaccard=1.00
+azure_security_center_security_center_enabled,azure.security.center.enabled,token_match_high,1.00,Jaccard=1.00
+azure_security_center_vulnerability_assessment_enabled,azure.security.center.vulnerability_assessment_enabled,token_match_high,1.00,Jaccard=1.00
+azure_security_defender_for_apis_pricing_tier_standard,azure.security.defender.for.apis.pricing.tier.standard,token_match_high,1.00,Jaccard=1.00
+azure_security_storage_defender_pricing_check,azure.security.storage.defender.pricing.check,token_match_high,1.00,Jaccard=1.00
+azure_securitycenter_exploit_guard_enabled,azure.security.center.exploit_guard_enabled,ai_verified,high,"The rule ID directly matches the check name in service, action, and target resource for enabling Exploit Guard in Azure Security Center."
+azure_shield_advanced_protection_in_internet_facing_load_balancers,,weak_match,0.20,weak token overlap — likely no matching rule
+azure_site_recovery_configured,azure.site.recovery.configured,token_match_high,1.00,Jaccard=1.00
+azure_sql_aurora_backup_enabled,azure.sql.database.aurora_backup_enabled,token_match_high,0.80,Jaccard=0.80
+azure_sql_auto_minor_version_upgrade,azure.sql.database.auto_minor_version_upgrade,token_match_high,0.86,Jaccard=0.86
+azure_sql_backup_enabled,azure.sql.database.backup_enabled,token_match_high,0.75,Jaccard=0.75
+azure_sql_cluster_default_admin,azure.sql.server.ad.admin.check,ai_verified,high,"The check name 'azure_sql_cluster_default_admin' directly matches the service (Azure SQL) and the security concern of default admin access, which aligns with the candidate rule focusing on SQL server "
+azure_sql_cluster_minor_version_upgrade_enabled,azure.sql.server.db_cluster_minor_version_auto_upgrade_enabled,token_match_high,0.67,Jaccard=0.67
+azure_sql_database_autoscale_enabled,azure.sql.database.autoscale_enabled,token_match_high,1.00,Jaccard=1.00
+azure_sql_database_defender_pricing_tier_check,azure.sql.database.defender.pricing.tier.check,token_match_high,1.00,Jaccard=1.00
+azure_sql_database_tde_status_check,azure.sql.database.tde.status.check,token_match_high,1.00,Jaccard=1.00
+azure_sql_dynamodb_table_encryption_enabled,azure.sql.database.dynamodb_encryption_enabled,token_match_high,0.67,Jaccard=0.67
+azure_sql_geo_redundant_backup,azure.sql.database.geo_redundant_backup,token_match_high,0.83,Jaccard=0.83
+azure_sql_instance_backup_enabled,azure.sql.database.backup_enabled,token_match_high,0.60,Jaccard=0.60
+azure_sql_instance_backup_encrypted,azure.sql.database.backup_encrypted,token_match_high,0.67,Jaccard=0.67
+azure_sql_instance_default_admin,azure.sql.server.ad.admin.check,ai_verified,high,"This rule directly checks for the use of default or non-Azure AD administrators on SQL instances, matching the security violation targeted by 'azure_sql_instance_default_admin'."
+azure_sql_instance_deletion_protection,azure.sql.server.db_instance_deletion_protection_enabled,token_match_high,0.71,Jaccard=0.71
+azure_sql_instance_enhanced_monitoring_enabled,azure.vm.instance.detailed_monitoring_enabled,deep_review_medium,medium,"Both controls focus on enabling enhanced/detailed monitoring, though one is for SQL instances and the other is for VM instances, representing the same concept with different target resources."
+azure_sql_instance_iam_authentication_enabled,azure.sql.server.db_instance_iam_or_managed_identity_auth_enabled_where_supported,ai_verified,high,"This rule directly matches the service (Azure SQL), action (IAM authentication check), and target resource (SQL instance) as the given check name."
+azure_sql_instance_integration_cloudwatch_logs,,ai_rejected,none,"No rule matches the specific check for Azure SQL instance integration with CloudWatch logs, as all candidates address different security controls like encryption, access, or deletion protection."
+azure_sql_instance_multi_az,azure.sql.database.multi_az,token_match_high,0.60,Jaccard=0.60
+azure_sql_instance_no_public_access,azure.sql.database.no_public_access,token_match_high,0.67,Jaccard=0.67
+azure_sql_instance_protected_by_backup_plan,azure.sql.database.backup_enabled,ai_verified,medium,"The check name focuses on SQL instances being protected by backup plans, which aligns with the rule checking if database backup is enabled, though the check name may imply broader backup plan configur"
+azure_sql_instance_storage_encrypted,azure.sql.storage.encrypted,token_match_high,0.80,Jaccard=0.80
+azure_sql_long_term_retention_enabled,azure.sql.database.long_term_retention_enabled,token_match_high,0.83,Jaccard=0.83
+azure_sql_multi_az_enabled,azure.sql.database.multi_az,token_match_high,0.75,Jaccard=0.75
+azure_sql_rds_instance_encryption_enabled,azure.sql.server.db_instance_encryption_at_rest_enabled,ai_verified,high,"Both the check name and rule focus on encryption at rest for Azure SQL database instances, with matching service (azure.sql) and security objective (encryption enabled)."
+azure_sql_server_ad_admin_check,azure.sql.server.ad.admin.check,token_match_high,1.00,Jaccard=1.00
+azure_sql_server_audit_retention_check,azure.sql.server.audit.retention.check,token_match_high,1.00,Jaccard=1.00
+azure_sql_server_check_public_network_access_disabled,azure.sql.server.check.public.network.access.disabled,token_match_high,1.00,Jaccard=1.00
+azure_sql_server_firewall_no_open_access_check,azure.sql.server.firewall.no.open.access.check,token_match_high,1.00,Jaccard=1.00
+azure_sql_server_tde_protector_customer_key_check,azure.sql.server.tde.protector.customer.key.check,token_match_high,1.00,Jaccard=1.00
+azure_sql_snapshots_encrypted,azure.sql.storage.encrypted,token_match_high,0.60,Jaccard=0.60
+azure_sql_snapshots_public_access,azure.sql.database.snapshots_public_access,token_match_high,0.83,Jaccard=0.83
+azure_sql_storage_encrypted,azure.sql.storage.encrypted,token_match_high,1.00,Jaccard=1.00
+azure_sqlserver_auditing_retention_90_days,azure.sql.server.auditing_retention_90_days,token_match_high,0.62,Jaccard=0.62
+azure_sqlserver_microsoft_defender_enabled,azure.security.defender.enabled,ai_verified,medium,"The check name specifies Azure SQL Server Defender, which aligns with the general Azure Defender service focus of the top candidate, though the rule may not be SQL-specific."
+azure_sqlserver_recommended_minimal_tls_version,azure.sql.server.minimal_tls_version,ai_verified,high,The check name and rule both target Azure SQL Server and validate the minimal TLS version configuration.
+azure_sqlserver_tde_encrypted_with_cmk,azure.sql.server.tde_cmk_encrypted,ai_verified,high,"Both the check name and rule target SQL Server TDE encryption with customer-managed keys, covering identical service, action, and resource."
+azure_sqlserver_tde_encryption_enabled,azure.sql.server.tde_enabled,ai_verified,high,"The rule directly matches the service (Azure SQL Server), action (TDE enabled), and target resource (encryption for SQL databases)."
+azure_sqlserver_unrestricted_inbound_access,azure.sql.server.unrestricted_inbound_access,ai_verified,high,"The rule ID directly matches the check name in service (SQL Server), action (unrestricted inbound access), and target resource."
+azure_storage_account_access_key_rotation_check,azure.storage.account.access.key.rotation.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_access_keys_rotation_check,azure.storage.account.access.keys.rotation.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_allow_blob_anonymous_access_disabled,azure.storage.account.allow.blob.anonymous.access.disabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_blob_anonymous_access_disabled,azure.storage.account.blob.anonymous.access.disabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_blob_logging_read_write_delete_enabled,azure.storage.account.blob.logging.read.write.delete.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_blob_soft_delete_enabled,azure.storage.account.blob.soft.delete.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_blob_versioning_check,azure.storage.account.blob.versioning.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_blob_versioning_enabled,azure.storage.account.blob.versioning.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_cannot_delete_lock_applied,azure.storage.account.cannot.delete.lock.applied,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_cannot_delete_lock_check,azure.storage.account.cannot.delete.lock.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_cross_tenant_replication_disabled,azure.storage.account.cross.tenant.replication.disabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_default_network_access_rule_set_to_deny,azure.storage.account.default.network.access.rule.set.to.deny,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_default_to_microsoft_entra_authorization_enabled,azure.storage.account.default.to.microsoft.entra.authorization.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_disable_shared_key_access_check,azure.storage.account.disable.shared.key.access.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_encryption_at_rest_microsoft_managed_keys_enabled,azure.storage.account.encryption.at.rest.microsoft.managed.keys.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_encryption_at_rest_with_cmk,azure.storage.account.encryption.at.rest.with.cmk,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_encryption_cmk_check,azure.storage.account.encryption.cmk.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_encryption_with_customer_managed_keys,azure.storage.account.encryption.with.customer.managed.keys,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_file_shares_soft_delete_retention_policy,azure.storage.account.file.shares.soft.delete.retention.policy,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_geo_redundancy_check,azure.storage.account.geo.redundancy.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_https_traffic_only_check,azure.storage.account.https.traffic.only.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_infrastructure_encryption_enabled,azure.storage.account.infrastructure.encryption.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_key_rotation_reminder_enabled,azure.storage.account.key.rotation.reminder.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_level_public_access_blocks,azure.storage.account.network.access.public.disabled;azure.storage.account.public.network.access.disabled,ai_verified,high,"Both rules directly target disabling public network access for Azure storage accounts, matching the service, action, and resource focus of the check name."
+azure_storage_account_minimum_tls_version,azure.storage.account.minimum.tls.version,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_network_access_deny_by_default_check,azure.storage.account.network.access.deny.by.default.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_network_access_public_disabled,azure.storage.account.network.access.public.disabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_network_bypass_azure_services_enabled,azure.storage.account.network.bypass.azure.services.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_network_rule_trusted_services_check,azure.storage.account.network.rule.trusted.services.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_private_endpoint_approved,azure.storage.account.private.endpoint.approved,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_public_network_access_disabled,azure.storage.account.network.access.public.disabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_readonly_lock_check,azure.storage.account.readonly.lock.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_readonly_lock_compliance_check,azure.storage.account.readonly.lock.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_redundancy_check_geo_redundant,azure.storage.account.redundancy.check.geo.redundant,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_s3_bucket_encryption_enabled,azure.storage.account.data_protection_bucket_encryption_at_rest_enabled,ai_verified,medium,"This rule directly matches the check's focus on bucket encryption at rest for Azure storage, despite the naming discrepancy with 'S3' (an AWS term)."
+azure_storage_account_sas_https_only,azure.storage.account.sas.https.only,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_secure_transfer_enabled,azure.storage.account.secure.transfer.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_shared_key_access_disabled_check,azure.storage.account.shared.key.access.disabled.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_smb_channel_encryption_in_transit,azure.storage.account.smb.channel.encryption.in.transit,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_smb_channel_encryption_in_transit_aes256gcm,azure.storage.account.smb.channel.encryption.in.transit.aes256gcm,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_smb_minimum_version_enforcement,azure.storage.account.smb.minimum.version.enforcement,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_smb_protocol_version_check,azure.storage.account.smb.protocol.version.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_soft_delete_configuration_check,azure.storage.account.soft.delete.configuration.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_table_service_logging_rw_delete_enabled,azure.storage.account.table.service.logging.rw.delete.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_account_website_https_only,azure.storage.account.https.traffic.only.check,token_match_high,0.67,Jaccard=0.67
+azure_storage_accounts_private_endpoints_verification,azure.storage.accounts.private.endpoints.verification,token_match_high,1.00,Jaccard=1.00
+azure_storage_blob_public_access_level_is_disabled,azure.storage.account.blob.anonymous.access.disabled;azure.storage.account.allow.blob.anonymous.access.disabled,ai_verified,high,"Both rules specifically target disabling anonymous blob access in Azure Storage, which matches the check name's focus on blob public access level."
+azure_storage_bucket_cross_region_replication,azure.storage.table.data_protection_global_cross_region_replication_encrypted,deep_review_high,high,"Both the check name and the rule directly address cross-region replication for Azure storage, with the rule specifically covering global replication and encryption, which aligns with the core control."
+azure_storage_bucket_default_encryption,azure.storage.account.encryption.cmk.check;azure.storage.account.infrastructure.encryption.enabled,ai_verified,medium,"Both rules focus on Azure storage encryption at rest, which aligns with the check name's intent for default bucket encryption, though the exact scope match is uncertain."
+azure_storage_bucket_default_kms_encryption,azure.storage.account.encryption.cmk.check,ai_verified,high,"This rule specifically checks for customer-managed key (CMK) encryption on Azure storage accounts, which directly corresponds to the default KMS encryption requirement for storage buckets."
+azure_storage_bucket_encryption_enabled,azure.storage.account.encryption.cmk.check;azure.storage.account.infrastructure.encryption.enabled;azure.storage.account.data_protection_bucket_encryption_at_rest_enabled,ai_verified,medium,"These three rules all check encryption aspects of Azure storage accounts (which contain buckets), though they focus on different encryption types (CMK, infrastructure encryption, and data protection a"
+azure_storage_bucket_enforces_ssl,azure.storage.sas.https.only.check,deep_review_high,high,"Both the check name and the rule enforce SSL/TLS (HTTPS) for secure access to Azure storage, ensuring data in transit is encrypted."
+azure_storage_bucket_kms_encryption,azure.storage.account.encryption.cmk.check,ai_verified,high,"This rule specifically checks for customer-managed key (CMK) encryption on Azure storage accounts, which directly corresponds to the KMS encryption check for storage buckets."
+azure_storage_bucket_lifecycle_enabled,,ai_rejected,none,"No rule matches the specific requirement for Azure storage bucket lifecycle management, as all candidates address different security controls like versioning, encryption, or key management."
+azure_storage_bucket_logging_enabled,azure.storage.account.data_protection_bucket_access_logging_enabled,ai_verified,high,"This rule directly matches the service (azure.storage), action (logging enabled), and target resource (bucket/account) for access logging specifically."
+azure_storage_bucket_object_versioning,azure.storage.bucket.object.versioning,token_match_high,1.00,Jaccard=1.00
+azure_storage_bucket_policy_public_write_access,azure.storage.account.data_protection_bucket_policy_no_public_principals,ai_verified,high,This rule specifically checks for storage bucket policies that prevent public write access by ensuring no public principals are granted permissions.
+azure_storage_bucket_public_access,azure.storage.account.network.access.public.disabled;azure.storage.account.public.network.access.disabled,ai_verified,high,"Both rules directly target disabling public network access for Azure storage accounts, which aligns with preventing public access to storage buckets."
+azure_storage_bucket_public_read_prohibited,azure.storage.account.data_protection_bucket_policy_no_public_principals,ai_verified,high,"This rule directly addresses preventing public access to storage buckets, which matches the check for prohibiting public read access."
+azure_storage_bucket_public_write_acl,azure.storage.activity_log.storage_container_public_write,ai_verified,high,"This rule directly checks for public write access on Azure storage containers, matching the service, action, and target resource of the given check name."
+azure_storage_bucket_public_write_prohibited,azure.storage.activity_log.storage_container_public_write,ai_verified,high,"This rule directly addresses public write access to Azure storage containers, matching the service, action, and target resource of the check."
+azure_storage_bucket_replication_enabled,azure.storage.account.cross.tenant.replication.disabled,deep_review_medium,medium,"The check name refers to bucket replication, which is conceptually similar to cross-tenant replication in Azure Storage, though the phrasing differs."
+azure_storage_bucket_secure_transport_policy,azure.storage.account.secure_transport_policy,token_match_high,0.71,Jaccard=0.71
+azure_storage_bucket_server_access_logging_enabled,azure.storage.account.data_protection_bucket_access_logging_enabled,ai_verified,high,"This rule directly matches the service (Azure Storage), action (enabling access logging), and target resource (storage bucket/account) for server access logging."
+azure_storage_bucket_versioning_enabled,azure.storage.bucket.object.versioning,token_match_high,0.80,Jaccard=0.80
+azure_storage_container_locked_immutability_policy_enabled,azure.storage.container.locked.immutability.policy.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_ensure_azure_services_are_trusted_to_access_is_enabled,azure.storage.account.network.rule.trusted.services.check,ai_verified,high,Both the check name and rule focus on ensuring Azure services are trusted to access storage accounts via network rules.
+azure_storage_ensure_encryption_with_customer_managed_keys,azure.storage.account.encryption.with.customer.managed.keys,token_match_high,0.75,Jaccard=0.75
+azure_storage_ensure_minimum_tls_version_12,azure.storage.account.minimum.tls.version,token_match_high,0.62,Jaccard=0.62
+azure_storage_ensure_private_endpoints_in_storage_accounts,azure.storage.accounts.private.endpoints.verification,token_match_high,0.71,Jaccard=0.71
+azure_storage_ensure_soft_delete_is_enabled,azure.storage.account.soft.delete.configuration.check,token_match_high,0.67,Jaccard=0.67
+azure_storage_file_share_soft_delete_enabled,azure.storage.file.share.soft.delete.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_geo_redundant,azure.storage.account.geo_redundant,token_match_high,0.80,Jaccard=0.80
+azure_storage_immutable_blob_enabled,,ai_rejected,none,"The check name refers to immutable blob storage (WORM policy), but all candidate rules are about blob versioning, soft delete, anonymous access, or activity logging, which are different security contr"
+azure_storage_infrastructure_encryption_is_enabled,azure.storage.account.infrastructure.encryption.enabled,token_match_high,0.80,Jaccard=0.80
+azure_storage_nfs_root_squash_check,azure.storage.nfs.root.squash.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_private_endpoint_presence_and_configuration_check,azure.storage.private.endpoint.presence.and.configuration.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_queue_logging_read_write_delete_enabled,azure.storage.queue.logging.read.write.delete.enabled,token_match_high,1.00,Jaccard=1.00
+azure_storage_sas_expiration_check,azure.storage.sas.expiration.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_sas_https_only_check,azure.storage.sas.https.only.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_sas_linked_to_stored_access_policy,azure.storage.sas.linked.to.stored.access.policy,token_match_high,1.00,Jaccard=1.00
+azure_storage_sas_policy_compliance_check,azure.storage.sas.policy.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_sas_token_expiration_check,azure.storage.sas.token.expiration.check,token_match_high,1.00,Jaccard=1.00
+azure_storage_secure_transfer_required_is_enabled,azure.storage.account.secure.transfer.enabled,token_match_high,0.67,Jaccard=0.67
+azure_storage_soft_delete_enabled,azure.storage.account.soft.delete.configuration.check,token_match_high,0.80,Jaccard=0.80
+azure_subscription_owner_count_check,azure.subscription.owner.count.check,token_match_high,1.00,Jaccard=1.00
+azure_synapse_cluster_audit_logging,azure.synapse.cluster.audit_logging,token_match_high,1.00,Jaccard=1.00
+azure_synapse_cluster_automated_snapshot,azure.synapse.cluster.automated_snapshot,token_match_high,1.00,Jaccard=1.00
+azure_synapse_cluster_automatic_upgrades,azure.synapse.cluster.automatic_upgrades,token_match_high,1.00,Jaccard=1.00
+azure_synapse_cluster_encrypted,azure.synapse.cluster.encrypted,token_match_high,1.00,Jaccard=1.00
+azure_synapse_cluster_maintenance_settings,azure.synapse.cluster.maintenance_settings,token_match_high,1.00,Jaccard=1.00
+azure_synapse_cluster_public_access,azure.synapse.cluster.public_access,token_match_high,1.00,Jaccard=1.00
+azure_synapse_workgroup_encryption,azure.synapse.workspace.encryption_enabled,token_match_high,0.60,Jaccard=0.60
+azure_virtual_network_endpoint_for_ec2_enabled,,ai_rejected,none,"No catalog rule matches the specific check for enabling a virtual network endpoint for EC2, as the provided candidates focus on flow logs, app service integration, endpoint policies, DDoS protection, "
+azure_virtual_network_flow_logs_enabled,azure.network.virtual_network.flow_logs_enabled,token_match_high,1.00,Jaccard=1.00
+azure_vm_aslr_enabled,azure.compute.vm.aslr_enabled,token_match_high,0.75,Jaccard=0.75
+azure_vm_backup_enabled,azure.compute.vm.backup_enabled,token_match_high,0.75,Jaccard=0.75
+azure_vm_dep_enabled,azure.compute.vm.dep_enabled,token_match_high,0.75,Jaccard=0.75
+azure_vm_disk_data_access_auth_mode_check,azure.vm.disk.data.access.auth.mode.check,token_match_high,1.00,Jaccard=1.00
+azure_vm_disk_network_access_policy_check,azure.vm.disk.network.access.policy.check,token_match_high,1.00,Jaccard=1.00
+azure_vm_ebs_volume_encrypted,azure.compute.virtual_machine.vm_root_volume_encrypted_cmek;azure.vm.disk.encrypted:az.compute_disk.compute_security_disk_snapshots_encrypted,ai_verified,medium,"Both rules check for encryption on Azure VM disks/volumes, though the first focuses on root volumes with CMEK and the second on disk snapshots, while the check name appears to reference EBS-like encry"
+azure_vm_encryption_at_host_enabled,azure.vm.encryption.at.host.enabled,token_match_high,1.00,Jaccard=1.00
+azure_vm_ensure_attached_disks_encrypted_with_cmk,azure.vm.disk.encrypted:az.compute_disk.compute_security_disk_snapshots_encrypted,ai_verified,medium,"This rule directly addresses disk encryption for Azure VMs, matching the service (Azure VM/disk) and security goal (encryption with CMK), though the naming is less precise."
+azure_vm_ensure_unattached_disks_encrypted_with_cmk,azure.disk.unattached.cmk.encryption.check,ai_verified,high,This rule directly matches the check name's focus on encryption of unattached disks with customer-managed keys (CMK) in Azure.
+azure_vm_ensure_using_managed_disks,azure.compute.vm.managed_disks_enabled,token_match_high,0.67,Jaccard=0.67
+azure_vm_extensions_approved_check,azure.vm.extensions.approved.check,token_match_high,1.00,Jaccard=1.00
+azure_vm_instance_detailed_monitoring_enabled,azure.vm.instance.detailed_monitoring_enabled,token_match_high,1.00,Jaccard=1.00
+azure_vm_instance_managed_by_ssm,azure.vm.instance.managed.by.ssm,token_match_high,1.00,Jaccard=1.00
+azure_vm_instance_no_public_ip,azure.compute.virtual_machine.vm_no_public_ip_assigned,ai_verified,high,"Both rules check for Azure virtual machines without public IP addresses, matching service (compute/virtual machine), action (detect no public IP), and target resource (VM instances)."
+azure_vm_instance_ssh_key_authentication,azure.compute.virtual_machine.vm_ssh_key_based_auth_required,ai_verified,high,"This rule specifically checks for SSH key-based authentication on Azure virtual machines, which directly matches the security check for SSH key authentication on VM instances."
+azure_vm_managed_disks_compliance_check,azure.vm.managed.disks.compliance.check,token_match_high,1.00,Jaccard=1.00
+azure_vm_mfa_enabled_check,azure.vm.mfa.enabled.check,token_match_high,1.00,Jaccard=1.00
+azure_vm_networkacl_unrestricted_ingress,azure.compute.vm.unrestricted_ingress,token_match_high,0.67,Jaccard=0.67
+azure_vm_patch_compliance,azure.compute.vm.patch_compliance,token_match_high,0.80,Jaccard=0.80
+azure_vm_scale_set_autoscale_enabled,azure.compute.vmss.autoscale_enabled,ai_verified,high,"The check name directly matches the candidate rule in service (Azure VM Scale Sets), action (autoscale enabled), and target resource."
+azure_vm_scale_set_configured,,ai_rejected,none,"The check name 'azure_vm_scale_set_configured' suggests a configuration compliance check for Azure VM scale sets, but none of the candidate rules target VM scale sets or describe a general configurati"
+azure_vm_security_extensions_check,azure.vm.security.extensions.check,token_match_high,1.00,Jaccard=1.00
+azure_vm_securitygroup_common_ports_restricted,azure.compute.virtual_machine.vm_security_group_inbound_restricted,ai_verified,high,"The check name directly references security group common port restrictions, which matches the candidate rule's focus on inbound security group restrictions for virtual machines."
+azure_vm_securitygroup_default_restricted,azure.compute.virtual_machine.vm_security_group_inbound_restricted,deep_review_high,high,Both the compliance check name and the candidate rule directly address restricting inbound traffic via security groups for Azure VMs.
+azure_vm_securitygroup_rdp_restricted,azure.compute.virtual_machine.vm_security_group_inbound_restricted,deep_review_high,high,"Both the compliance check and the catalog rule directly address restricting inbound network access via security groups, specifically for RDP in the check and generally for inbound traffic in the rule."
+azure_vm_securitygroup_ssh_restricted,azure.compute.virtual_machine.vm_security_group_inbound_restricted,deep_review_high,high,Both the compliance check name and the candidate rule directly address restricting inbound network access (specifically SSH) via security groups on Azure VMs.
+azure_vm_ssm_association_compliance,azure.vm.managed.by.ssm;azure.vm.ssm.managed;azure.vm.instance.managed.by.ssm,ai_verified,high,"All three rules directly check for Azure VM compliance with SSM (Systems Manager) association, matching the service, action, and target resource."
+azure_vm_stopped_instance,,ai_rejected,none,"The check name 'azure_vm_stopped_instance' refers to detecting stopped virtual machines, but none of the candidate rules address VM power state or stopped instances."
+azure_vm_trusted_launch_enabled,azure.compute.vm.trusted_launch_enabled,token_match_high,0.80,Jaccard=0.80
+azure_vm_trusted_launch_secure_boot_vtpm_check,azure.vm.trusted.launch.secure.boot.vtpm.check,token_match_high,1.00,Jaccard=1.00
+azure_vm_volume_in_use,azure.compute.virtual_machine.vm_root_volume_encrypted_cmek,deep_review_medium,medium,"The check name 'azure_vm_volume_in_use' suggests a focus on VM volumes, and the candidate rule specifically addresses root volume encryption, which is a related security control for volumes in use."
+azure_vpn_gateway_point_to_site_authentication_type_set_to_azure_ad,azure.vpn.gateway.point.to.site.authentication.type.set.to.azure.ad,token_match_high,1.00,Jaccard=1.00
+azure_wafv2_web_acl_logging_enabled,azure.monitor.resource.logging.enabled.check,deep_review_medium,medium,"The check name is about enabling logging for WAFv2 web ACLs, which is a specific case of resource logging, matching the general logging enforcement in the candidate."
+azure_webapp_deployment_slot_python_version_supported,azure.webapp.deployment.slot.python.version.supported,token_match_high,1.00,Jaccard=1.00
+azure_webapp_deployment_slot_vnet_configuration_enabled,azure.webapp.deployment.slot.vnet.configuration.enabled,token_match_high,1.00,Jaccard=1.00

@@ -1,0 +1,33 @@
+{
+    "control_id": "1.2.17",
+    "unique_id": "k8s_3_1_2_17",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+    "input_row": {
+        "id": "1.2.17",
+        "unique_id": "k8s_3_1_2_17",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+        "description": "Retain the logs for at least 30 days or as appropriate.",
+        "rationale": "Retaining logs for at least 30 days ensures that you can go back in time and investigate or correlate any events. Set your audit log retention period to 30 days or as per your business requirements. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --audit-log-maxage argument is set to 30 or as appropriate.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --audit-log-maxage parameter to 30 or as an appropriate number of days: --audit-log-maxage=30 Default Value: By default, auditing is not enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_maxage_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the static Pod manifest at `/etc/kubernetes/manifests/kube-apiserver.yaml`. This file is managed by the kubelet and is reflected as a Pod in the `kube-system` namespace.\n- Use the Kubernetes API or `kubectl` to retrieve the running kube-apiserver Pod spec:\n  - Command: `kubectl -n kube-system get pod -l component=kube-apiserver -o json`\n- Parse the `spec.containers[].command` or `spec.containers[].args` array for the presence of the `--audit-log-maxage` flag.\n- Validate that the value for `--audit-log-maxage` is set to `30` or higher (or as per organizational policy).\n- **Pass Criteria:** The kube-apiserver is running with the `--audit-log-maxage` flag set to `30` or greater.\n- **Fail Criteria:** The flag is missing, set to less than `30`, or not configured at all.\n- This check can be fully automated by parsing the Pod spec via the Kubernetes API, requiring no manual host access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:48:29.122739",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this audit as Automated is correct. The check can be performed using Kubernetes APIs or `kubectl` commands without requiring manual intervention. The kube-apiserver Pod specification can be queried programmatically, making this a suitable candidate for automation.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details are technically accurate. The use of `kubectl -n kube-system get pod -l component=kube-apiserver -o json` is a valid method to retrieve the kube-apiserver Pod specification. Parsing the `spec.containers[].command` or `spec.containers[].args` array for the `--audit-log-maxage` flag is an appropriate approach.\n- The program name `k8s_api_server_audit_log_maxage_configured` is descriptive and follows a reasonable naming convention, though it could be slightly more specific.\n- The only minor issue is the assumption that the kube-apiserver is always deployed as a static Pod, which might not be the case in all environments (e.g., managed Kubernetes services).\n\n**IMPROVEMENTS:**\n- Consider adding a fallback mechanism to handle scenarios where the kube-apiserver might not be deployed as a static Pod, such as in managed Kubernetes services where configurations might be abstracted.\n- The program name could be improved for clarity by including the specific aspect being checked, such as `k8s_api_server_audit_log_maxage_retention_check`.\n- Ensure that the check accounts for organizational policies that might require a different retention period than the default 30 days.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded and technically sound, with a high degree of confidence in the approach and execution.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is, with a minor suggestion to enhance the program name for clarity and consider additional handling for non-static Pod deployments of the kube-apiserver.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T22:59:39.233213",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nBoth AI opinions agree that this compliance control can be automated using Kubernetes APIs or `kubectl` commands. The audit log retention configuration can be programmatically checked without manual intervention, making it suitable for automation. The proposed program name is descriptive and aligns with the requirements of the control.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nk8s_api_server_audit_log_maxage_configured\n\n**AUTOMATION DETAILS:**\n- Kubernetes Resource/Service: Pods\n- API/CLI Method: `kubectl -n kube-system get pod -l component=kube-apiserver -o json`\n- Properties to Check: `spec.containers[].args` for the presence of `--audit-log-maxage`\n- Pass Criteria: The value for `--audit-log-maxage` is set to `30` or greater.\n- Fail Criteria: The flag is missing, set to less than `30`, or not configured at all.\n\n---\n\n**DISAGREEMENTS RESOLVED:**\nThere were no significant disagreements between the two AI opinions; both supported the automated approach and provided technically accurate methods for checking compliance. The minor critique regarding the assumption of static Pods does not affect the overall decision, as the automation can still be applied in most Kubernetes environments.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "final_approach": "Automated",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T04:31:35.849771"
+    }
+}

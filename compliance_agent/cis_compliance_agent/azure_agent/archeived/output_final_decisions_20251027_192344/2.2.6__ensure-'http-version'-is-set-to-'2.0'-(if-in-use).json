@@ -1,0 +1,40 @@
+{
+    "unique_id": "2.2.6__ensure-'http-version'-is-set-to-'2.0'-(if-in-use)",
+    "control_id": "2.2.6",
+    "source": null,
+    "input_row": {
+        "id": "2.2.6",
+        "unique_id": "2.2.6__ensure-'http-version'-is-set-to-'2.0'-(if-in-use)",
+        "title": "Ensure 'HTTP version' is set to '2.0' (if in use)",
+        "description": "...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Configuration. 6. In the General settings pane, under Platform settings, set HTTP version to 2.0. 7. Click Save. 8. Click Continue. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to enable http20Enabled: az resource update --name web --resource-group <resource-group-name> -- namespace Microsoft.Web --resource-type config --parent sites/<app- name>/slots/<deployment-slot-name> --set properties.http20Enabled=true Default Value: By default, HTTP version is set to 1.1. References: 1. https://learn.microsoft.com/en-us/azure/app-service/configure-common#general- settings 2. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-posture- vulnerability-management#pv-3-define-and-establish-secure-configurations-for- compute-resources 3. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-posture- vulnerability-management#pv-6-rapidly-and-automatically-remediate- vulnerabilities 4. https://learn.microsoft.com/en-us/cli/azure/webapp 5. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit mentions specific Azure CLI commands to check the HTTP version configuration, indicating that the control can be verified programmatically via Azure APIs.\n- The relevant property (http20Enabled) is a standard setting of Azure App Services, making it queryable through Azure ARM APIs and CLI commands.\n\n**PROGRAM NAME:** azure_app_service_http_version_set\n\n**AUTOMATION DETAILS:**\nThe automated program would check the following:\n\n- **Azure Resource Manager APIs or Azure CLI commands to use:**\n  - Use the Azure CLI command provided in the remediation step:\n    ```\n    az resource show --name <app-name> --resource-group <resource-group-name> --namespace Microsoft.Web --resource-type config --parent sites/<app-name>/slots/<deployment-slot-name>\n    ```\n\n- **Specific resources to enumerate:**\n  - All App Services within specified resource groups.\n  - Each deployment slot associated with an App Service.\n\n- **Exact configuration properties/settings to validate:**\n  - Validate that the property `http20Enabled` is set to `true`.\n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** If `http20Enabled` is set to `true`.\n  - **Fail:** If `http20Enabled` is set to `false` or not set at all.\n\n- **Example API endpoint or CLI command:**\n  - The CLI command to validate HTTP version for a specific deployment slot will be similar to the one used for remediation:\n    ```\n    az resource show --name <app-name> --resource-group <resource-group-name> --namespace Microsoft.Web --resource-type config --parent sites/<app-name>/slots/<deployment-slot-name> --query properties.http20Enabled\n    ```\nThis command will return `true` if HTTP version is set to 2.0, ensuring compliance."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- **Classification:** The classification of the audit approach as Automated is correct. The control can be verified programmatically using Azure APIs and CLI, which supports the automated classification.\n- **Azure APIs/CLI:** The use of Azure CLI and Azure Resource Manager (ARM) APIs to check the `http20Enabled` property is appropriate. Both methods are capable of retrieving the necessary configuration details from Azure App Services.\n\n**TECHNICAL ACCURACY:** 8\n\n- **Automation Details:** The automation details are mostly accurate. The CLI command provided is correct for querying the `http20Enabled` property. However, there is a minor oversight in the command structure. The `--parent` parameter should be used correctly, especially when dealing with deployment slots.\n- **Program Name:** The program name `azure_app_service_http_version_set` follows a logical naming convention, indicating the service, resource, and security intent.\n\n**IMPROVEMENTS:**\n\n- **Command Correction:** The CLI command should be verified for accuracy in handling deployment slots. The correct usage should be:\n  ```\n  az resource show --name <app-name> --resource-group <resource-group-name> --namespace Microsoft.Web --resource-type sites/config --parent <app-name>/slots/<deployment-slot-name> --query properties.http20Enabled\n  ```\n  Ensure the `--parent` parameter is correctly structured to reflect the hierarchy of the resource.\n  \n- **Consideration of Default Settings:** Consider documenting any default settings for `http20Enabled` in Azure App Services, as this might impact the audit results if the property is not explicitly set.\n\n- **Alternative Tools:** Mention the possibility of using Azure PowerShell or Azure SDKs as alternative methods for automation, which might be preferred in some environments.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded with a strong understanding of Azure capabilities and the use of Azure CLI for automation. The minor command adjustment does not significantly impact the overall validity of the approach.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modification Needed:** Update the CLI command structure to ensure the correct use of the `--parent` parameter for deployment slots. This will enhance the accuracy of the automation script.\n- **Documentation:** Include a note on default settings for `http20Enabled` and consider alternative automation tools like PowerShell or SDKs for a comprehensive approach.",
+        "reviewed_at": "2025-10-26T14:34:20.991584"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** Both AI opinions agree that the control can be verified programmatically using Azure APIs and CLI commands. The `http20Enabled` property is a standard setting in Azure App Services, which can be accessed and checked using Azure Resource Manager APIs or Azure CLI. This makes it feasible to automate the compliance check.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nazure_app_service_http_version_check\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Azure App Services\n- **API/CLI Method:** `az resource show`\n- **Properties to Check:** `properties.siteConfig.http20Enabled`\n- **Pass Criteria:** The property `http20Enabled` is set to `true`\n- **Fail Criteria:** The property `http20Enabled` is set to `false` or is not present\n\n**DISAGREEMENTS RESOLVED:** There were no disagreements between the AI opinions; both concurred on the feasibility of automation using Azure APIs. The decision is based on the technical capability of Azure's API to expose the necessary configuration details.",
+        "decided_at": "2025-10-27T14:11:06.572239"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.6__ensure-'http-version'-is-set-to-'2.0'-(if-in-use).json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

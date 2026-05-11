@@ -1,0 +1,27 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_rbac_no_cluster_admin_binding",
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_audit_policy_captures_privileged_actions"
+  ],
+  "changes_made": [
+    "Removed 'k8s_audit_logging_enabled' as it is too generic and replaced with 'k8s_audit_policy_captures_privileged_actions' for specificity"
+  ],
+  "review_notes": "The functions mostly map well to the NIST control by focusing on RBAC and audit logging. However, 'k8s_audit_logging_enabled' was too generic and did not specifically address capturing privileged actions, which is critical for this control. The replacement function name is more descriptive and aligns with the control's requirements.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Ensure audit-related function names specify the capture of privileged actions to align with control requirements."
+  ],
+  "control_id": "3_1_7",
+  "title": "3_1_7: 3.1.7 Prevent non-privileged users from executing privileged functions and capture the execution of such functions in audit logs",
+  "step1_functions": [
+    "k8s_rbac_no_cluster_admin_binding",
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_audit_logging_enabled",
+    "k8s_audit_policy_captures_privileged_actions"
+  ],
+  "step1_reasoning": "The control requires preventing non-privileged users from executing privileged functions and capturing such executions in audit logs. In Kubernetes, this can be achieved by ensuring that no non-privileged users have ClusterAdmin roles through RBAC configurations, enforcing least privilege principles, and enabling audit logging to capture privileged actions."
+}

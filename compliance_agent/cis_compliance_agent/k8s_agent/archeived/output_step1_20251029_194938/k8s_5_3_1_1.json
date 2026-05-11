@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.1",
+    "unique_id": "k8s_5_3_1_1",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --anonymous-auth argument is set to false",
+    "input_row": {
+        "id": "3.1.1",
+        "unique_id": "k8s_5_3_1_1",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --anonymous-auth argument is set to false",
+        "description": "Disable anonymous requests to the federation API server.",
+        "rationale": "When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the federation API server. You should rely on authentication to authorize access and disallow anonymous requests.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --anonymous-auth argument is set to false.",
+        "remediation": "Edit the deployment specs and set --anonymous-auth=false. kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: Anonymous requests will be rejected.   185 | P a g e Default Value: By default, anonymous access is enabled. References: 1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Anonymous requests will be rejected.   185 | P a g e Default Value: By default, anonymous access is enabled.",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_federation_api_server_anonymous_auth_disabled\n\n**AUTOMATION DETAILS:**\n- Query the federation API server deployment configuration in the federation-system namespace.\n- Use the Kubernetes API or kubectl to retrieve the deployment spec:\n  - Command: kubectl -n federation-system get deployment federation-apiserver-deployment -o json\n- Enumerate the container(s) in the deployment spec, specifically the federation-apiserver container.\n- Inspect the container's command and args fields for the presence of the --anonymous-auth flag.\n- Validate that --anonymous-auth is explicitly set to false (i.e., --anonymous-auth=false).\n- Pass Criteria: All federation-apiserver containers in the deployment must have --anonymous-auth=false set in their command or args.\n- Fail Criteria: If --anonymous-auth is missing, set to true, or not explicitly set to false, the check fails.\n- Example check (pseudocode):\n  - For each container in federation-apiserver-deployment:\n    - If \"--anonymous-auth=false\" is present in args or command → PASS\n    - Else → FAIL\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:54:30.991193",
+    "model": "gpt-4.1"
+}

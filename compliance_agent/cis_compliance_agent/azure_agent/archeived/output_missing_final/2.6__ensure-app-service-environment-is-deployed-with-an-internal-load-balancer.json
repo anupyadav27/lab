@@ -1,0 +1,17 @@
+{
+    "id": "2.6",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.6",
+        "unique_id": "2.6__ensure-app-service-environment-is-deployed-with-an-internal-load-balancer",
+        "title": "Ensure App Service Environment is deployed with an internal load balancer",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "It is not possible to change the virtual IP configuration of a deployed App Service Environment. When deploying an App Service Environment, next to Virtual IP, select Internal: The endpoint is an internal load balancer (ILB ASE). Default Value: When deploying an App Service Environment, Internal: The endpoint is an internal load balancer (ILB ASE) is the default selected option for Virtual IP. References: 1. https://learn.microsoft.com/en-us/azure/app-service/environment/creation CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:** The control can be fully verified via Azure Resource Manager APIs.\n\n**PROGRAM NAME:** azure_app_service_environment_internal_load_balancer_verified\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n- Use Azure Resource Manager (ARM) APIs to query the properties of App Service Environments.\n- Enumerate App Service Environments within the specified subscriptions and resource groups.\n- Validate that the `virtualIP` configuration is set to `Internal`.\n- Pass/Fail criteria: \n   - **Pass:** The `virtualIP` property is set to `Internal` for the App Service Environment.\n   - **Fail:** The `virtualIP` property is not set to `Internal`.\n- Example API endpoint: \n   - GET request to `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}?api-version=2021-02-01` \n   - Check the `properties.virtualIP` field in the response for compliance verification."
+}

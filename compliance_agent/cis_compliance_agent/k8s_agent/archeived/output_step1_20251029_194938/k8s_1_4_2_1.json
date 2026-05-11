@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.1",
+    "unique_id": "k8s_1_4_2_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the --anonymous-auth argument is set to false",
+    "input_row": {
+        "id": "4.2.1",
+        "unique_id": "k8s_1_4_2_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the --anonymous-auth argument is set to false",
+        "description": "Disable anonymous requests to the Kubelet server.",
+        "rationale": "When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the Kubelet server. You should rely on authentication to authorize access and disallow anonymous requests. Impact: Anonymous requests will be rejected.",
+        "audit": "If using a Kubelet configuration file, check that there is an entry for authentication: anonymous: enabled set to false. Run the following command on each node: ps -ef | grep kubelet Verify that the --anonymous-auth argument is set to false. This executable argument may be omitted, provided there is a corresponding entry set to false in the Kubelet config file.",
+        "remediation": "If using a Kubelet config file, edit the file to set authentication: anonymous: enabled to false. If using executable arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. --anonymous-auth=false Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, anonymous access is enabled. References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "Anonymous requests will be rejected.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The --anonymous-auth flag and the Kubelet configuration file (authentication.anonymous.enabled) are not exposed via the Kubernetes API or kubectl. These are node-level process arguments or local config files.\n- The audit procedure requires checking the process arguments (ps -ef | grep kubelet) or inspecting files on each node (e.g., /etc/kubernetes/kubelet.conf).\n- There is no Kubernetes API or kubectl command that can directly retrieve the Kubelet's process flags or its local configuration file from the control plane.\n- This check requires host-level access (SSH or equivalent) to each worker node.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes worker node.\n2. Run the following command to inspect the Kubelet process arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Check if the Kubelet is started with the flag:\n   ```\n   --anonymous-auth=false\n   ```\n   - If the flag is present and set to false, this is compliant.\n   - If the flag is absent, proceed to check the Kubelet configuration file.\n4. Locate and open the Kubelet configuration file (commonly /var/lib/kubelet/config.yaml or /etc/kubernetes/kubelet.conf).\n5. In the configuration file, verify that the following is set:\n   ```yaml\n   authentication:\n     anonymous:\n       enabled: false\n   ```\n6. Confirm that either the process flag is set to false or the configuration file disables anonymous authentication.\n7. If either method disables anonymous authentication, the node is compliant. If neither does, the node is non-compliant.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:04:48.801431",
+    "model": "gpt-4.1"
+}

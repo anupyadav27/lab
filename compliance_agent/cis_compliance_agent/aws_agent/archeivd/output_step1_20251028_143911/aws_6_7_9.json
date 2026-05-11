@@ -1,0 +1,22 @@
+{
+    "control_id": "7.9",
+    "unique_id": "aws_6_7_9",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure to Implement Backup and Disaster Recovery",
+    "input_row": {
+        "id": "7.9",
+        "unique_id": "aws_6_7_9",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure to Implement Backup and Disaster Recovery",
+        "description": "Set up automated backups for your DocumentDB instances to ensure data durability and recoverability. Consider implementing a disaster recovery plan that includes data replication across different availability zones or regions.",
+        "rationale": "Having the data backed up ensures that all the crucial information is stored securely it defends against any human errors and system errors that resulted in data loss. An organization that has a disaster recovery plan is prepared for any disruption that would impact business operations. Impact: If a business does not have a backup and recovery plan it would have a negative impact on the business, which would result in less productivity, data loss that cannot be restored, and loss of revenue.",
+        "audit": "1. Sign into the AWS Management Console • Sign into the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the Amazon DocumentDB Console • Navigate to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/docdb/. 3. Select the DocumentDB Cluster • Choose the Amazon DocumentDB cluster for which you want to implement backup and disaster recovery. • Click on the cluster name to access its details page. • In the cluster details page, navigate to the \"Backup\" section. 4. Enable Automated Backups • Under the Automated backups section.  • Click on the Edit button or Modify option to configure automated backup settings. • Enable automated backups by choosing the desired backup retention period. • Specify the number of days for which automated backups should be retained.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "If a business does not have a backup and recovery plan it would have a negative impact on the business, which would result in less productivity, data loss that cannot be restored, and loss of revenue.",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThe control for ensuring automated backups and disaster recovery for Amazon DocumentDB can be achieved using AWS APIs and SDKs, specifically focusing on the configuration properties related to backup settings. The control requires verification of automated backup settings, which is a standard AWS service property that can be configured and queried through the AWS DocumentDB APIs.\n\n**PROGRAM NAME:** aws_docdb_cluster_automated_backups_configured\n\n**AUTOMATION DETAILS:**\n\nTo automate the audit of this control, the program would:\n\n- Use boto3, the AWS SDK for Python, specifically the `docdb` client, to interact with the Amazon DocumentDB service.\n- Call `describe_db_clusters()` to list all DocumentDB clusters within the account and region.\n- For each cluster, check the `BackupRetentionPeriod` attribute, which specifies the number of days to retain backups.\n- Validate that the `BackupRetentionPeriod` is configured with a value greater than 0, indicating that automated backups are enabled.\n- Enumerate through all available regions to ensure comprehensive coverage of all DocumentDB clusters.\n- Pass if `BackupRetentionPeriod` is greater than 0, fail if it is 0 or not configured.\n\nThis process will ensure that each Amazon DocumentDB cluster has automated backups enabled, meeting the compliance control requirements outlined.",
+    "timestamp": "2025-10-28T15:59:27.225940",
+    "model": "gpt-4o"
+}

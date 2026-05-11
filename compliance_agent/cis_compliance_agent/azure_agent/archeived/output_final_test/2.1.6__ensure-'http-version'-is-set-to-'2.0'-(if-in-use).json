@@ -1,0 +1,40 @@
+{
+    "unique_id": "2.1.6__ensure-'http-version'-is-set-to-'2.0'-(if-in-use)",
+    "control_id": "2.1.6",
+    "source": null,
+    "input_row": {
+        "id": "2.1.6",
+        "unique_id": "2.1.6__ensure-'http-version'-is-set-to-'2.0'-(if-in-use)",
+        "title": "Ensure 'HTTP version' is set to '2.0' (if in use)",
+        "description": " c...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Settings, click Configuration. 4. In the General settings pane, under Platform settings, set HTTP version to 2.0. 5. Click Save. 6. Click Continue. 7. Repeat steps 1-6 for each app requiring remediation. Remediate from Azure CLI For each app requiring remediation, run the following command to enable http20Enabled: az webapp config set --resource-group <resource-group-name> --name <app-name> --http20-enabled true Default Value: By default, HTTP version is set to 1.1. References: 1. https://learn.microsoft.com/en-us/azure/app-service/configure-common#general- settings 2. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-posture- vulnerability-management#pv-3-define-and-establish-secure-configurations-for- compute-resources 3. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-posture- vulnerability-management#pv-6-rapidly-and-automatically-remediate- vulnerabilities 4. https://learn.microsoft.com/en-us/cli/azure/webapp 5. https://learn.microsoft.com/en-us/powershell/module/az.websites/get-azwebapp CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe audit control regarding ensuring that the HTTP version is set to '2.0' can be evaluated through Azure interfaces such as the Azure CLI or Azure REST APIs. The existence of commands (`az webapp config set --http20-enabled true`) strongly indicates that this setting is accessible programmatically. Additionally, the overall context does not require manual intervention, as the information about HTTP versions can be queried directly from the Azure resources. Hence, I choose the automated approach.\n\n**PROGRAM NAME:** azure_appservice_http_version_set_to_2_0_enabled\n\n**AUTOMATION DETAILS:** \n- **Azure Resource Manager APIs or Azure CLI commands to use:**\n  The Azure CLI command `az webapp show` can be used to retrieve current configuration settings for web apps, specifically looking for the property related to `http20Enabled`.\n\n- **Specific resources to enumerate:**\n  This will apply to all Web Apps under a specific resource group or within the Azure subscription.\n\n- **Exact configuration properties/settings to validate:**\n  The specific property to check is `http20Enabled`, which should have the value set to `true` for compliance.\n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** If the `http20Enabled` property is set to `true`.\n  - **Fail:** If the `http20Enabled` property is either not set or is set to `false`.\n\n- **Example API endpoint or CLI command:**\n  To check the property, you can use:\n  ```bash\n  az webapp show --resource-group <resource-group-name> --name <app-name> --query http20Enabled\n  ```\n  This command will return `true` if HTTP version 2.0 is enabled, facilitating an automated compliance check."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n- The classification of this compliance control as Automated is correct. The HTTP version setting for Azure Web Apps can be verified using Azure CLI or Azure REST APIs, which supports an automated approach. The use of `az webapp show` to query the `http20Enabled` property is appropriate and aligns with Azure's capabilities for programmatic access.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details provided are technically accurate. The use of the Azure CLI command `az webapp show` to check the `http20Enabled` property is correct. The pass/fail criteria are clearly defined, and the example command is accurate. The program name follows a logical convention, although it could be slightly refined for clarity, such as `azure_webapp_http_version_2_0_compliance`.\n\n**IMPROVEMENTS:**\n- The program name could be made more descriptive to better align with naming conventions, such as `azure_webapp_http_version_2_0_compliance`.\n- Consider adding a note about potential exceptions or limitations, such as specific configurations where HTTP/2.0 might not be applicable or supported.\n- It might be beneficial to include a step to ensure that the Azure CLI is authenticated and configured correctly before running the command, to prevent errors during execution.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded and aligns with Azure's capabilities for automated compliance checks. The technical details are accurate, and the approach is appropriate for the control in question.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the program name to `azure_webapp_http_version_2_0_compliance` for clarity and consistency with naming conventions. Consider adding a preliminary step to ensure Azure CLI authentication and configuration.",
+        "reviewed_at": "2025-10-26T15:23:14.824635"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** Both AI opinions agree that the compliance control can be verified using Azure CLI or Azure REST APIs, specifically through the `az webapp show` command to check the `http20Enabled` property. This indicates that the setting is programmatically accessible, making an automated approach feasible and efficient. The technical accuracy of using Azure CLI for this task is validated by both AI opinions.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nazure_webapp_http_version_2_0_compliance\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Web Apps\n- **API/CLI Method:** az webapp show\n- **Properties to Check:** `http20Enabled`\n- **Pass Criteria:** `http20Enabled` is set to `true`\n- **Fail Criteria:** `http20Enabled` is set to `false` or not present\n\n---\n\n**DISAGREEMENTS RESOLVED:** There were no disagreements between the AI opinions; both supported the automated approach and provided consistent technical details. The decision aligns with the capabilities of Azure APIs to programmatically verify the HTTP version setting.",
+        "decided_at": "2025-10-27T13:53:16.105055"
+    },
+    "metadata": {
+        "reviewed_file": "2.1.6__ensure-'http-version'-is-set-to-'2.0'-(if-in-use).json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

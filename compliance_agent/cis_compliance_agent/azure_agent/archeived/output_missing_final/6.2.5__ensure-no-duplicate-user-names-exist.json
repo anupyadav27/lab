@@ -1,0 +1,17 @@
+{
+    "id": "6.2.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.5",
+        "unique_id": "6.2.5__ensure-no-duplicate-user-names-exist",
+        "title": "Ensure no duplicate user names exist",
+        "description": "Although the useradd program will not let you create a duplicate user name, it is possible for an administrator to manually edit the /etc/passwd file and change the user name.",
+        "rationale": "If a user is assigned a duplicate user name, it will create and have access to files with the first UID for that username in /etc/passwd . For example, if \"test4\" has a UID of 1000 and a subsequent \"test4\" entry has a UID of 2000, logging in as \"test4\" will use UID 1000. Effectively, the UID is shared, which is a security problem.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash cut -d: -f1 /etc/passwd | sort | uniq -d | while read x; do echo \"Duplicate login name ${x} in /etc/passwd\" done",
+        "remediation": "Based on the results of the audit script, establish unique user names for the users. File ownerships will automatically reflect the change as long as the users have unique UIDs. References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access Azure Portal:**\n   - Navigate to the Azure Portal (https://portal.azure.com).\n\n2. **Access Your AKS Cluster:**\n   - In the left-hand menu, select \"Kubernetes services.\"\n   - Choose the relevant AKS cluster you want to audit.\n\n3. **Connect to Your AKS Cluster:**\n   - Click on \"Connect\" to get the command to connect to your AKS cluster using command line.\n\n4. **SSH into Your AKS Nodes:**\n   - Once you are connected to the cluster, SSH into one of the nodes. Utilize the command provided to access the terminal of a node.\n\n5. **Check /etc/passwd for Duplicate Usernames:**\n   - Run the following command in the SSH terminal:\n     ```bash\n     cut -d: -f1 /etc/passwd | sort | uniq -d\n     ```\n   - This command retrieves the usernames from /etc/passwd, sorts them, and lists any duplicates.\n\n6. **Verification of Results:**\n   - If the command output shows any duplicated usernames, then there is a compliance issue.\n   \n7. **Expected Secure Configuration:**\n   - A secure configuration is one where the output of the previous command returns no results (i.e., no duplicate usernames).\n\n8. **Confirming Compliance:**\n   - Document the output of the command. If duplicates are found, they must be remediated by renaming or removing the affected users to reinforce compliance.\n\nYou need to ensure all usernames in the /etc/passwd file are unique to maintain security and compliance."
+}

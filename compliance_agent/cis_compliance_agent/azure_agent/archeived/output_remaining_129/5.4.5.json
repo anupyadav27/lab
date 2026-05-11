@@ -1,0 +1,17 @@
+{
+    "id": "5.4.5",
+    "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json",
+    "input_row": {
+        "id": "5.4.5",
+        "unique_id": "aks_5.4.5__encrypt-traffic-to-https-load-balancers-with-tls-certificates",
+        "title": "Encrypt traffic to HTTPS load balancers with TLS certificates",
+        "description": "Encrypt traffic to HTTPS load balancers using TLS certificates.",
+        "rationale": "Encrypting traffic between users and your Kubernetes workload is fundamental to protecting data sent over the web.",
+        "audit": "",
+        "remediation": "References: 1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-4-encrypt-sensitive-information-in-transit",
+        "impact": "",
+        "reference": "1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-4-encrypt-sensitive-information-in-transit",
+        "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control focuses on ensuring that traffic to HTTPS load balancers is encrypted using TLS certificates, which constitutes an encryption setting that Azure APIs can validate.\n- Given that the audit field is empty but the rationale states a clear requirement that aligns with API-accessible properties regarding encryption, we deduce that this can be monitored programmatically.\n- Azure has specific APIs for checking load balancer settings, including SSL configurations.\n\n**PROGRAM NAME:** azure_aks_https_load_balancers_tls_encryption_enabled\n\n**AUTOMATION DETAILS:** \n- The automated program would use the Azure Resource Manager APIs or Azure CLI commands to validate the TLS settings on the load balancer associated with the AKS cluster.\n- It will enumerate resources such as load balancers within the specified AKS cluster under the relevant subscriptions and resource groups.\n- The program will check for the presence of HTTPS listeners and associated TLS settings (e.g., frontend IP configurations, listeners using the appropriate SSL certificates).\n- Pass/Fail criteria would be based on whether the load balancer's HTTPS listener is correctly configured to use TLS certificates.\n\n**Example API endpoint or CLI command:**\n- CLI Command: \n  ```bash\n  az network lb show --resource-group <ResourceGroupName> --name <LoadBalancerName> --query \"frontendIpConfigurations[].loadBalancerFrontendIpConfigurationProperties.loadBalancerFrontendIpConfigurationId\"\n  ```\n- Verify that the output includes the necessary configurations related to HTTPS and SSL settings. Check that there are active listeners configured to utilize the TLS protocol with valid certificate references."
+}

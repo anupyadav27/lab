@@ -1,0 +1,20 @@
+{
+    "id": "2.3.8",
+    "source": null,
+    "input_row": {
+        "id": "2.3.8",
+        "unique_id": "2.3.8__ensure-end-to-end-tls-encryption-is-enabled",
+        "title": "Ensure end-to-end TLS encryption is enabled",
+        "description": " run the following command to e...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure CLI For each function app requiring remediation, run the following command to enable end- to-end TLS encryption: az resource update --resource-group <resource-group-name> --name <function- app-name> --resource-type \"Microsoft.Web/sites\" --set properties.endToEndEncryptionEnabled=true Default Value: By default, end-to-end TLS encryption is disabled. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-tls#end-to-end-tls- encryption 2. https://learn.microsoft.com/en-us/cli/azure/functionapp 3. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "Enabling end-to-end TLS encryption may introduce minimal latency and require additional configuration of certificates and HTTPS settings to ensure compatibility. Audit: Audit from Azure CLI Run the following command to list function apps: az functionapp list For each function app, run the following command to get the end-to-end TLS encryption setting: az functionapp show --resource-group <resource-group-name> --name <function- app-name> --query endToEndEncryptionEnabled Ensure that the command returns true. Audit from Azure Policy If referencing a digital copy of this Benchmark, clicking a Policy ID will open a link to the associated Policy definition in Azure. If referencing a printed copy, you can search Policy IDs from this URL: https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Definitions • Policy ID: 387140f1-6da9-4741-bcee-3b5edcdfd9ec - Name: 'Function apps should enable end to end encryption'",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_function_app_end_to_end_tls_encryption_enabled\n\n**AUTOMATION DETAILS:** \nThis automated program will check the end-to-end TLS encryption setting on all Azure Function Apps within a specified subscription and resource group. \n\n1. **Azure CLI Commands:**\n   - List all function apps: \n     ```\n     az functionapp list --query \"[].{name:name, resourceGroup:resourceGroup}\"\n     ```\n   - For each function app, retrieve the end-to-end TLS encryption setting:\n     ```\n     az functionapp show --resource-group <resource-group-name> --name <function-app-name> --query endToEndEncryptionEnabled\n     ```\n\n2. **Resources to Enumerate:**\n   - Function Apps within specified subscriptions or resource groups.\n\n3. **Configuration Properties/Settings to Validate:**\n   - The property to verify is `endToEndEncryptionEnabled`.\n\n4. **Pass/Fail Criteria:**\n   - The test will pass if the commands return `true` for the `endToEndEncryptionEnabled` property for each function app. \n   - It will fail if the value is `false` or if the property is not found.\n\n5. **Example API Endpoint or CLI Command:**\n   - Azure CLI command: \n     ```\n     az functionapp show --resource-group <resource-group-name> --name <function-app-name> --query endToEndEncryptionEnabled\n     ```"
+}

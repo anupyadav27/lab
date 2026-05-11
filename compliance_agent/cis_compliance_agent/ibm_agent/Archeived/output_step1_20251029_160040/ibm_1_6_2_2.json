@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.2",
+    "unique_id": "ibm_1_6_2_2",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure the default security group of every VPC restricts all traffic",
+    "input_row": {
+        "id": "6.2.2",
+        "unique_id": "ibm_1_6_2_2",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure the default security group of every VPC restricts all traffic",
+        "description": "VPC security groups provide stateful filtering of ingress/egress network traffic to Virtual Server. It is recommended that no security group allows unrestricted ingress access to a Virtual Server. Unless modified, the default security group allows inbound traffic from all members of the group that is, all other virtual servers that are attached to this security group.",
+        "rationale": "Removing uncontrolled connectivity to a Virtual Server, reduces a server's exposure to risk. Impact: For updating an existing environment, care should be taken to ensure that Virtual Servers currently relying on ingress have the required access.",
+        "audit": "Perform the following tasks to determine if the account is configured as prescribed: 1. Login to the IBM Cloud Portal at https://cloud.ibm.com. 2. At the Menu icon, select VPC Infrastructure-->VPC Layout and Security Groups . 3. For the default security group, perform the following: a. Ensure no Inbound Rule exists that allows unrequited traffic to the Virtual Servers.",
+        "remediation": "1. Login to the IBM Cloud Portal at https://cloud.ibm.com. 2. At the Menu icon, select VPC Infrastructure-->VPC Layout and Security Groups . 3. For the default security group, perform the following: a. Identify the Inbound rule. b. Update the rule to only allow the required traffic flow. Default Value: Unless modified, the default security group allows inbound traffic from all members of the group that is, all other virtual servers that are attached to this security group. References: 1. https://cloud.ibm.com/docs/vpc?topic=vpc-updating-the-default-security-group",
+        "profile_applicability": "•  Level 1",
+        "impact": "For updating an existing environment, care should be taken to ensure that Virtual Servers currently relying on ingress have the required access.",
+        "references": "1. https://cloud.ibm.com/docs/vpc?topic=vpc-updating-the-default-security-group"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control involves checking the configurations of VPC security groups, which is a standard IBM Cloud service related to network rules. This is something that can be audited via IBM Cloud APIs or IBM Cloud CLI.\n- The description and audit steps indicate processes that can be performed programmatically, such as verifying inbound rules for VPC security groups.\n- References to IBM documentation suggest that the necessary configurations are accessible and manageable via IBM Cloud tools.\n\n**PROGRAM NAME:** ibm_vpc_security_group_default_rules_restricted\n\n**AUTOMATION DETAILS:**\n- Use the IBM Cloud CLI to retrieve VPC security group configurations. The command `ibmcloud is security-groups` can be leveraged to list all security groups.\n- For each security group, specifically check the default security group's inbound rules using `ibmcloud is security-group-rules <security-group-id>`.\n- Validate that inbound rules do not permit unrestricted traffic. Specifically, check for rules that would allow unrestricted ingress (e.g., a rule with a source set to `0.0.0.0/0` or similar).\n- Clear Pass/Fail criteria:\n  - **Pass:** Default security group has no inbound rules that allow unrestricted traffic.\n  - **Fail:** Default security group has one or more inbound rules that allow unrestricted ingress traffic.\n- The API calls and CLI commands should enumerate all security groups within the account and assess all regions where they are deployed.\n\n**SOURCE:** CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "timestamp": "2025-10-29T16:07:20.282408",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.3",
+    "unique_id": "k8s_1_5_1_3",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Minimize wildcard use in Roles and ClusterRoles",
+    "input_row": {
+        "id": "5.1.3",
+        "unique_id": "k8s_1_5_1_3",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Minimize wildcard use in Roles and ClusterRoles",
+        "description": "Kubernetes Roles and ClusterRoles provide access to resources based on sets of objects and actions that can be taken on those objects. It is possible to set either of these to be the wildcard \"*\" which matches all items. Use of wildcards is not optimal from a security perspective as it may allow for inadvertent access to be granted when new resources are added to the Kubernetes API either as CRDs or in later versions of the product.",
+        "rationale": "The principle of least privilege recommends that users are provided only the access required for their role and nothing more. The use of wildcard rights grants is likely to provide excessive rights to the Kubernetes API.",
+        "audit": "Retrieve the roles defined across each namespaces in the cluster and review for wildcards kubectl get roles --all-namespaces -o yaml Retrieve the cluster roles defined in the cluster and review for wildcards kubectl get clusterroles -o yaml",
+        "remediation": "Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions.",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_wildcard_permissions_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all Role and ClusterRole resources in the cluster using the Kubernetes API:\n  - `kubectl get roles --all-namespaces -o yaml`\n  - `kubectl get clusterroles -o yaml`\n- For each Role and ClusterRole, inspect the `rules` array:\n  - Check for any occurrence of the wildcard `\"*\"` in the following fields:\n    - `apiGroups`\n    - `resources`\n    - `verbs`\n    - `resourceNames`\n- Flag any Role or ClusterRole where any of these fields contains `\"*\"` (wildcard), which grants broad or unrestricted permissions.\n- Pass Criteria: No Role or ClusterRole in the cluster has `\"*\"` in any of the above fields.\n- Fail Criteria: At least one Role or ClusterRole contains a wildcard in `apiGroups`, `resources`, `verbs`, or `resourceNames`.\n- The check can be performed using the Kubernetes API directly (e.g., via client-go, kubectl, or similar SDKs) without requiring human judgment or in-guest OS access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:07:53.646670",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.10",
+    "unique_id": "gcp_1_5_1_10",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH root login is disabled",
+    "input_row": {
+        "id": "5.1.10",
+        "unique_id": "gcp_1_5_1_10",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH root login is disabled",
+        "description": "The PermitRootLogin parameter specifies if the root user can log in using ssh. The default is no.",
+        "rationale": "Disallowing root logins over SSH requires system admins to authenticate using their own individual account, then escalating to root via sudo or su. This in turn limits opportunity for non-repudiation and provides a clear audit trail in the event of a security incident",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep permitrootlogin PermitRootLogin no",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: PermitRootLogin no Default Value: PermitRootLogin without-password",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control involves checking the SSH configuration at the operating system level to ensure that SSH root login is disabled by verifying the `sshd_config` file contents. The audit field specifies running a command directly on the system (`sshd -T | grep permitrootlogin`), requiring SSH access to the instance to execute. Such OS-level checks rely on direct access and are not exposed through GCP-specific APIs or the Google Cloud SDK (gcloud), which typically manage cloud resource configurations rather than individual OS configurations. Therefore, this context necessitates a manual approach.\n\n**MANUAL STEPS:** \n\n1. **Access the Instance:**\n   - SSH into the GCP VM instance where the Google Container-Optimized OS is deployed.\n\n2. **Verify SSH Configuration:**\n   - Run the following command: `sshd -T | grep permitrootlogin`\n\n3. **Check Output:**\n   - Ensure that the output of the command is `PermitRootLogin no`.\n\n4. **Confirm Compliance:**\n   - If the setting is `PermitRootLogin no`, the configuration is compliant with the CIS benchmark.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThis control involves security practices not natively supported through GCP's APIs or tools and requires direct access to verify configuration files and settings, typical for operating system-level checks.",
+    "timestamp": "2025-10-28T21:34:04.317391",
+    "model": "gpt-4o"
+}

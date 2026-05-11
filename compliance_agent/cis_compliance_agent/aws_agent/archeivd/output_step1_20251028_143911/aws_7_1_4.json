@@ -1,0 +1,22 @@
+{
+    "control_id": "1.4",
+    "unique_id": "aws_7_1_4",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure to create AWS IAM Policies",
+    "input_row": {
+        "id": "1.4",
+        "unique_id": "aws_7_1_4",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure to create AWS IAM Policies",
+        "description": "AWS IAM policies, specify the desired permissions for accessing AWS resources and define the conditions under which those permissions are granted. Configure the appropriate policies to keep your resources secure.",
+        "rationale": "Managing AWS IAM policies is crucial to safeguard your backups from unauthorized access, ensuring that only approved users can manipulate or view sensitive data.",
+        "audit": "To create a role for AWS Backup, follow these steps: 1. Navigate to the \"IAM Dashboard\" in the AWS Console. 2. Select \"Roles\" from the left-hand menu. 3. Click on the \"Create Role\" button. 4. Choose \"AWS Service\" as the trusted entity. 5. Select \"AWS Backup\" as the service that will use this role. 6. Choose a policy to apply to the role or create a custom policy. 7. Review the role details and provide a meaningful name for the role. 8. Click on \"Create Role\" to finalize the creation of the role for AWS Backup.",
+        "remediation": "AWS IAM policies, restricting access to backup resources, and implementing additional security measures to prevent future incidents. References: 1. https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control involves the creation and management of IAM policies, which relate to standard AWS service properties such as access control.\n- AWS APIs can query, create, and manage IAM policies, making this control fully verifiable via automated means.\n- boto3 SDK and AWS CLI provide methods to interact with IAM roles and policies.\n- The audit instructions provided, although more focused on creating a role, imply operations that can be automated through IAM service calls.\n\n**PROGRAM NAME:** aws_iam_policy_creation_audit\n\n**AUTOMATION DETAILS:**\n- Use the AWS IAM client in boto3 to enumerate IAM policies and verify the configurations:\n  - List and describe all IAM policies using `list_policies()` and `get_policy()`.\n  - Check for the existence of specific IAM policies related to AWS Backup or other defined services by retrieving attached policies of roles using `list_attached_role_policies()` and `get_role_policy()`.\n  - Review the policy document with `get_policy_version()` to ensure correct permissions and conditions are applied as per organizational needs.\n- Ensure that IAM policies restrict access to backup resources securely, adhering to the predefined permissions model.\n- Verification should include checking policy statements for appropriate `Effect`, `Action`, `Resource`, and `Condition` elements.\n- Pass criteria: Policies exist that match intended configurations, and all specified permissions are appropriately granted and restricted.\n- Additionally, validate with AWS CLI command like `aws iam list-policies` and `aws iam get-policy` for policy enumeration and details.\n\n**SOURCE:** CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "timestamp": "2025-10-28T16:07:37.542996",
+    "model": "gpt-4o"
+}

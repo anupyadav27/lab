@@ -1,0 +1,17 @@
+{
+    "id": "2.2.16",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.16",
+        "unique_id": "aks_2.2.16__ensure-telnet-server-is-not-installed",
+        "title": "Ensure telnet-server is not installed",
+        "description": "The telnet-server package contains the telnet daemon, which accepts connections from users from other systems via the telnet protocol.",
+        "rationale": "The telnet protocol is insecure and unencrypted. The use of an unencrypted transmission medium could allow a user with access to sniff network traffic the ability to steal credentials. The ssh package provides an encrypted session and stronger security.",
+        "audit": "Run the following command to verify the telnet-server package is not installed: rpm -q telnet-server package telnet-server is not installed",
+        "remediation": "Run the following command to remove the telnet-server package: # dnf remove telnet-server References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH into the AKS cluster** to access the nodes.\n   - Use the Azure CLI command: `az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>`\n2. **Run the following command** on each node to check if the telnet-server package is installed:\n   - Command: `rpm -q telnet-server`\n3. **Verify the output**:\n   - If the output states `package telnet-server is not installed`, then the control is compliant.\n   - If it returns a package name, then telnet-server is installed, and the control is non-compliant.\n4. **Document the findings**:\n   - Note down whether the telnet-server package was found or not for compliance reporting."
+}

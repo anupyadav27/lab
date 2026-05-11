@@ -1,0 +1,22 @@
+{
+    "control_id": "3.3",
+    "unique_id": "gcp_3_3_3",
+    "source": "CIS GOOGLE CLOUD PLATFORM FOUNDATION BENCHMARK V4.0.0",
+    "title": "Ensure That DNSSEC Is Enabled for Cloud DNS",
+    "input_row": {
+        "id": "3.3",
+        "unique_id": "gcp_3_3_3",
+        "source": "CIS GOOGLE CLOUD PLATFORM FOUNDATION BENCHMARK V4.0.0",
+        "title": "Ensure That DNSSEC Is Enabled for Cloud DNS",
+        "description": "Cloud Domain Name System (DNS) is a fast, reliable and cost-effective domain name system that powers millions of domains on the internet. Domain Name System Security Extensions (DNSSEC) in Cloud DNS enables domain owners to take easy steps to protect their domains against DNS hijacking and man-in-the-middle and other attacks.",
+        "rationale": "Domain Name System Security Extensions (DNSSEC) adds security to the DNS protocol by enabling DNS responses to be validated. Having a trustworthy DNS that translates a domain name like www.example.com into its associated IP address is an increasingly important building block of today’s web-based applications. Attackers can hijack this process of domain/IP lookup and redirect users to a malicious site through DNS hijacking and man-in-the-middle attacks. DNSSEC helps mitigate the risk of such attacks by cryptographically signing DNS records. As a result, it prevents attackers from issuing fake DNS responses that may misdirect browsers to nefarious websites.",
+        "audit": "From Google Cloud Console 1. Go to Cloud DNS by visiting https://console.cloud.google.com/net- services/dns/zones. 2. For each zone of Type Public, ensure that DNSSEC is set to On. From Google Cloud CLI 1. List all the Managed Zones in a project: gcloud dns managed-zones list 2. For each zone of VISIBILITY public, get its metadata: gcloud dns managed-zones describe ZONE_NAME 3. Ensure that dnssecConfig.state property is on.",
+        "remediation": "From Google Cloud Console 1. Go to Cloud DNS by visiting https://console.cloud.google.com/net- services/dns/zones. 2. For each zone of Type Public, set DNSSEC to On. From Google Cloud CLI Use the below command to enable DNSSEC for Cloud DNS Zone Name. gcloud dns managed-zones update ZONE_NAME --dnssec-state on Default Value: By default DNSSEC is not enabled. References: 1. https://cloudplatform.googleblog.com/2017/11/DNSSEC-now-available-in-Cloud- DNS.html 2. https://cloud.google.com/dns/dnssec-config#enabling 3. https://cloud.google.com/dns/dnssec",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://cloudplatform.googleblog.com/2017/11/DNSSEC-now-available-in-Cloud- DNS.html 2. https://cloud.google.com/dns/dnssec-config#enabling 3. https://cloud.google.com/dns/dnssec"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control to ensure that DNSSEC is enabled for Cloud DNS can be fully verified using the GCP APIs and the Google Cloud SDK (gcloud). The audit field provides specific CLI commands that directly check the DNSSEC configuration state for Cloud DNS Managed Zones. This involves querying metadata for public Managed Zones and checking if the `dnssecConfig.state` property is set to 'on'.\n\n**PROGRAM NAME:** gcp_dns_managed_zones_dnssec_enabled\n\n**AUTOMATION DETAILS:** \n- **GCP CLI Command:** \n  - Use `gcloud dns managed-zones list` to enumerate all Managed DNS Zones for a project.\n  - For each public zone, use `gcloud dns managed-zones describe ZONE_NAME` to retrieve the zone metadata.\n  - Check the `dnssecConfig.state` property to verify if it is set to 'on'.\n- **Resources to Enumerate:**\n  - All DNS Managed Zones within the GCP project. Focus should be on zones with `VISIBILITY: public`.\n- **Configuration Property to Validate:**\n  - `dnssecConfig.state` should be 'on' for public DNS zones.\n- **Pass/Fail Criteria:**\n  - **Pass:** If `dnssecConfig.state` for a public DNS zone is 'on'.\n  - **Fail:** If `dnssecConfig.state` for a public DNS zone is not 'on'.\n\nBy using the Google Cloud CLI, this check can be automated across all DNS managed zones within a project, ensuring DNSSEC is enabled for public zones as per the CIS benchmark requirements.",
+    "timestamp": "2025-10-28T22:16:24.317391",
+    "model": "gpt-4o"
+}

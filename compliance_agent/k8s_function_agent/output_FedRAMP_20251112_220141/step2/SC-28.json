@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_at_rest_enabled",
+    "k8s_etcd_tls_enabled"
+  ],
+  "changes_made": [
+    "Renamed k8s_etcd_encryption_enabled to k8s_etcd_encryption_at_rest_enabled for clarity and consistency"
+  ],
+  "review_notes": "The functions are applicable to Kubernetes and map well to the control SC-28, which focuses on the protection of information at rest. The function names mostly follow the naming conventions, but a slight change was made to ensure clarity and consistency. The original function 'k8s_etcd_encryption_enabled' was renamed to 'k8s_etcd_encryption_at_rest_enabled' to explicitly indicate that it pertains to encryption at rest, aligning with the control's focus.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Ensure that function names explicitly indicate the aspect of security they address, such as 'at_rest' for encryption."
+  ],
+  "control_id": "SC-28",
+  "title": "Protection of Information at Rest",
+  "step1_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_enabled",
+    "k8s_etcd_tls_enabled"
+  ],
+  "step1_reasoning": "The control SC-28 focuses on the protection of information at rest, which in Kubernetes can be addressed by ensuring that Secrets are encrypted at rest and etcd, which stores cluster state including Secrets, is also encrypted. Additionally, enabling TLS for etcd ensures that data in transit to and from etcd is secure, further protecting information at rest."
+}

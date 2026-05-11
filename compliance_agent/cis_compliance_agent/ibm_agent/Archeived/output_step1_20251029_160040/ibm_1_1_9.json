@@ -1,0 +1,22 @@
+{
+    "control_id": "1.9",
+    "unique_id": "ibm_1_1_9",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure multi-factor authentication (MFA) is enabled at the account level",
+    "input_row": {
+        "id": "1.9",
+        "unique_id": "ibm_1_1_9",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure multi-factor authentication (MFA) is enabled at the account level",
+        "description": "Requires users to provide multiple factors of login credentials to authenticate their identity and gain access to IBM Cloud resources.",
+        "rationale": "Multifactor authentication (MFA) adds an additional layer of security to an account by requiring users to provide an additional login credential. This requirement helps protect accounts from stolen, phished, or weak password exploits. Impact: Depending on the administrator’s selection, users might be required to provide an additional authentication factor prior to gaining access to IBM Cloud resources. API keys for users and service IDs continue to work after MFA is enabled.",
+        "audit": "Console: 1. Log in to IBM Cloud at https://cloud.ibm.com. 2. From the Menubar, click Manage > Access (IAM) . 3. Click Settings > Account login . 4. Verify Multifactor authentication does not say None API:N/A",
+        "remediation": "1. Log in to IBM Cloud at https://cloud.ibm.com. 2. From the Menubar, click Manage > Access (IAM) . 3. Click Settings > Account login . 4. Click Edit for the Account login setting. 5. Select None , Non-federated users only , or All users depending on which type of authentication you want to require. 6. Select the checkbox to confirm that you understand the impact of requiring MFA for users in your account, if you select the non-federated users only option. 7. Click Update . Default Value: By default, MFA is disabled. References: 1. https://cloud.ibm.com/docs/iam?topic=iam-enablemfa",
+        "profile_applicability": "•  Level 1",
+        "impact": "Depending on the administrator’s selection, users might be required to provide an additional authentication factor prior to gaining access to IBM Cloud resources. API keys for users and service IDs continue to work after MFA is enabled.",
+        "references": "1. https://cloud.ibm.com/docs/iam?topic=iam-enablemfa"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control to ensure multi-factor authentication (MFA) is enabled at the account level can be automated because:\n\n- IBM Cloud IAM services provide APIs and CLI commands that can query user authentication settings, including MFA configurations.\n- The audit mentions using the IBM Cloud Console to verify MFA settings; this indicates that these settings are likely accessible via IBM Cloud APIs or CLI.\n- MFA settings are a standard security feature within IAM services, making it feasible to check via automated means.\n- The IBM Cloud CLI and SDK can retrieve IAM account settings related to authentication.\n\n**PROGRAM NAME:** ibm_iam_account_mfa_enabled_check\n\n**AUTOMATION DETAILS:**\n- **IBM Cloud API Calls/CLI SDK Methods:**\n  - Use IBM Cloud IAM APIs to query account settings to verify if MFA is enabled.\n  - Specifically, the API call can check the `authenticationPolicy` settings of the account for MFA requirements.\n  \n- **IBM Cloud CLI Command:**\n  - Use the IBM Cloud CLI command `ibmcloud iam account-settings-get` to retrieve current account settings and verify MFA settings.\n  \n- **Specific Resources to Enumerate:**\n  - Account settings at the management level should be checked, focusing on the `authenticationPolicy`.\n\n- **Exact Configuration Properties/Settings to Validate:**\n  - Check if the MFA setting for `authenticationPolicy` is set to either \"Non-federated users only\" or \"All users\". It should not display as \"None\".\n\n- **Clear Pass/Fail Criteria with Expected Values:**\n  - **Pass:** The MFA configuration in `authenticationPolicy` is set to any valid option other than \"None\".\n  - **Fail:** The MFA configuration is set to \"None\", indicating no MFA requirements.\n\nThese criteria ensure the automated program can accurately assess if MFA is properly enabled at the account level in IBM Cloud.",
+    "timestamp": "2025-10-29T16:01:47.692570",
+    "model": "gpt-4o"
+}

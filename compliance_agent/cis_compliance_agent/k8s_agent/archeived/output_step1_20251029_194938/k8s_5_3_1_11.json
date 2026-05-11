@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.11",
+    "unique_id": "k8s_5_3_1_11",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+    "input_row": {
+        "id": "3.1.11",
+        "unique_id": "k8s_5_3_1_11",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+        "description": "Retain the logs for at least 30 days or as appropriate.",
+        "rationale": "Retaining logs for at least 30 days ensures that you can go back in time and investigate or correlate any events. Set your audit log retention period to 30 days or as per your business requirements.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --audit-log-maxage argument is set to 30 or as appropriate.",
+        "remediation": "Edit the deployment specs and set --audit-log-maxage to 30 or as appropriate. kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: None Default Value: By default, auditing is not enabled. References: 1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/  205 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, auditing is not enabled.",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/  205 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_maxage_configured\n\n**AUTOMATION DETAILS:**\n- Enumerate all Deployments (or Pods, if not managed by Deployment) in the federation-system namespace, specifically targeting the federation-apiserver component.\n- Use kubectl or the Kubernetes API to retrieve the spec of the federation-apiserver Deployment:\n  - Command: kubectl -n federation-system get deployment federation-apiserver-deployment -o json\n- Inspect the container spec(s) for the federation-apiserver container.\n- Parse the command and args fields to locate the --audit-log-maxage argument.\n- Validate that the --audit-log-maxage flag is present and set to a value of 30 or greater (or as per organizational policy, but default to 30 as per CIS).\n- Pass Criteria: The --audit-log-maxage argument exists and is set to 30 or higher.\n- Fail Criteria: The --audit-log-maxage argument is missing, or set to a value less than 30.\n- If the federation-apiserver is not deployed via Deployment (e.g., as a Pod or StatefulSet), adjust the resource type accordingly and perform the same check on the relevant resource.\n- Example command for manual verification:\n  - kubectl -n federation-system get deployment federation-apiserver-deployment -o=jsonpath='{.spec.template.spec.containers[*].args}'\n- The check is fully automatable via Kubernetes API without requiring host access or subjective review.",
+    "timestamp": "2025-10-29T21:55:57.792693",
+    "model": "gpt-4.1"
+}

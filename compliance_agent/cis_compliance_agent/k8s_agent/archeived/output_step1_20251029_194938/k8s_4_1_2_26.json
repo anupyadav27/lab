@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.26",
+    "unique_id": "k8s_4_1_2_26",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --etcd-cafile argument is set as appropriate",
+    "input_row": {
+        "id": "1.2.26",
+        "unique_id": "k8s_4_1_2_26",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --etcd-cafile argument is set as appropriate",
+        "description": "etcd should be configured to make use of TLS encryption for client connections.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should be protected by client authentication. This requires the API server to identify itself to the etcd server using a SSL Certificate Authority file. Impact: TLS and client certificate authentication must be configured for etcd.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --etcd-cafile argument exists and it is set as appropriate.",
+        "remediation": "Follow the Kubernetes documentation and set up the TLS connection between the apiserver and etcd. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube-apiserver.yaml on the master node and set the etcd certificate authority file parameter. --etcd-cafile=<path/to/ca-file> Default Value: By default, --etcd-cafile is not set. References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "TLS and client certificate authentication must be configured for etcd.",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_etcd_cafile_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the static Pod manifest at /etc/kubernetes/manifests/kube-apiserver.yaml, using the Kubernetes API (kubectl get pod -n kube-system -o yaml or kubectl get pod <kube-apiserver-pod> -n kube-system -o yaml).\n- Inspect the command or args field of the kube-apiserver container to verify the presence of the --etcd-cafile argument.\n- Validate that --etcd-cafile is set and points to a valid file path (e.g., /etc/kubernetes/pki/etcd/ca.crt).\n- Pass Criteria: The kube-apiserver Pod spec includes the --etcd-cafile argument with a non-empty, valid file path.\n- Fail Criteria: The --etcd-cafile argument is missing or set to an empty value.\n- Example command:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath=\"{.items[*].spec.containers[*].command}\"\n  ```\n  or\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o json | jq -r '.items[].spec.containers[].command[]' | grep -- --etcd-cafile\n  ```\n- If using args instead of command, adjust the query accordingly.\n- This check can be performed cluster-wide by enumerating all kube-apiserver Pods in the kube-system namespace and verifying the flag for each instance.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:18:11.960582",
+    "model": "gpt-4.1"
+}

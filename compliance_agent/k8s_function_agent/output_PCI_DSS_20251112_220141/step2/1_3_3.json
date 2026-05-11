@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_restrict_external_access",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "changes_made": [
+    "Changed k8s_networkpolicy_restrict_external_access to k8s_networkpolicy_restrict_unauthorized_access for clarity"
+  ],
+  "review_notes": "The functions generally map well to Kubernetes security controls related to network policies and service exposure. The naming convention is mostly followed, but one function name was adjusted for clarity and specificity. The control is applicable to Kubernetes as it involves network security controls that can be implemented using NetworkPolicies and service configurations.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider using 'restrict_unauthorized_access' instead of 'restrict_external_access' for better specificity"
+  ],
+  "control_id": "1.3.3",
+  "title": "Examine configuration settings and network diagrams to verify that NSCs are implemented between a...",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_restrict_external_access",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "step1_reasoning": "The control 1.3.3 requires network security controls (NSCs) to be implemented to restrict access between networks, which directly maps to Kubernetes NetworkPolicies. These policies can be used to enforce ingress and egress restrictions, ensuring that pods cannot be accessed from or communicate with unauthorized networks. Additionally, restricting the use of LoadBalancer services can prevent exposing services directly to the internet."
+}

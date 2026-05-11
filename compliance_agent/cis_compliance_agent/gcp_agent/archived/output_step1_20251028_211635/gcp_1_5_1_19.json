@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.19",
+    "unique_id": "gcp_1_5_1_19",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH PAM is enabled",
+    "input_row": {
+        "id": "5.1.19",
+        "unique_id": "gcp_1_5_1_19",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH PAM is enabled",
+        "description": "UsePAM Enables the Pluggable Authentication Module interface. If set to “yes” this will enable PAM authentication using ChallengeResponseAuthentication and PasswordAuthentication in addition to PAM account and session module processing for all authentication types",
+        "rationale": "When usePAM is set to yes, PAM runs through account and session types properly. This is important if you want to restrict access to services based off of IP, time or other factors of the account. Additionally, you can make sure users inherit certain environment variables on login or disallow access to the server Impact: If UsePAM is enabled, you will not be able to run sshd(8) as a non-root user.",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep -i usepam usepam yes",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: UsePAM yes Default Value: usePAM yes",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- This control is about ensuring that SSH PAM is enabled on instances running Google Container-Optimized OS. \n- The control involves verifying the SSH configuration `UsePAM` setting within the `/etc/ssh/sshd_config` file.\n- The audit method provided (`sshd -T | grep -i usepam`) requires direct SSH access to the instances to run the command and inspect the SSH server configuration.\n- This check is not related to standard GCP APIs, which means it cannot be automated using Google Cloud SDK `gcloud` commands or GCP CLI.\n- It involves OS-level checks that require manual inspection or command execution on each instance.\n\n**MANUAL STEPS:**\n\n1. **Establish SSH Access:**\n   - Gain SSH access to the Container-Optimized OS instance.\n\n2. **Verify SSH Configuration:**\n   - Run the command `sshd -T | grep -i usepam` in the terminal.\n   - This command checks the effective configuration of sshd without restarting the service.\n\n3. **Expected Output:**\n   - Ensure the output is `usepam yes`, which confirms that PAM is enabled for SSH authentication.\n\n4. **Documentation:**\n   - Confirm compliance by documenting the SSH configuration and the output of the command as evidence in your audit report.\n\nThis approach ensures that the manual verification process captures the configuration settings directly from each instance's SSH server setup. As SSH server configurations are often critical and vary per instance or environment, this requires human intervention to ensure accuracy.",
+    "timestamp": "2025-10-28T21:36:25.051139",
+    "model": "gpt-4o"
+}

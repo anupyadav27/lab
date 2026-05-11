@@ -1,0 +1,33 @@
+{
+    "control_id": "1.2.14",
+    "unique_id": "k8s_7_1_2_14",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the admission control plugin NamespaceLifecycle is set",
+    "input_row": {
+        "id": "1.2.14",
+        "unique_id": "k8s_7_1_2_14",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the admission control plugin NamespaceLifecycle is set",
+        "description": "Reject creating objects in a namespace that is undergoing termination.",
+        "rationale": "Setting admission control policy to NamespaceLifecycle ensures that objects cannot be created in non-existent namespaces, and that namespaces undergoing termination are not used for creating the new objects. This is recommended to enforce the integrity of the namespace termination process and also for the availability of the newer objects. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --disable-admission-plugins argument is set to a value that does not include NamespaceLifecycle.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --disable-admission-plugins parameter to ensure it does not include NamespaceLifecycle. Default Value: By default, NamespaceLifecycle is set. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#namespacelifecycle",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#namespacelifecycle"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_namespacelifecycle_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to ensure the NamespaceLifecycle admission control plugin is enabled.\n- Specifically, check that the --disable-admission-plugins flag does NOT include NamespaceLifecycle.\n- This can be automated by:\n  1. Retrieving the kube-apiserver Pod specification (typically in the kube-system namespace) using:\n     ```\n     kubectl -n kube-system get pod -l component=kube-apiserver -o json\n     ```\n     or, if running as a static Pod:\n     ```\n     kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n     ```\n  2. Parsing the command/args for the kube-apiserver container to extract the value of --disable-admission-plugins.\n  3. Validating that NamespaceLifecycle is NOT present in the --disable-admission-plugins list.\n- **Pass Criteria:** NamespaceLifecycle is NOT listed in --disable-admission-plugins (or the flag is absent).\n- **Fail Criteria:** NamespaceLifecycle is present in --disable-admission-plugins.\n- This check does not require host/OS access and can be performed entirely via Kubernetes APIs and kubectl.",
+    "timestamp": "2025-10-29T22:27:23.863996",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. The check can be performed using Kubernetes APIs and kubectl, which aligns with the automated nature of the task.\n- The use of `kubectl` to retrieve the kube-apiserver Pod specification and parse the command/args is appropriate and leverages Kubernetes CLI capabilities effectively.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly accurate. The use of `kubectl` commands to fetch the kube-apiserver Pod specification and parse the command arguments is valid.\n- The method of checking the `--disable-admission-plugins` flag is technically sound.\n- However, the program name `k8s_api_server_admission_plugin_namespacelifecycle_enabled` could be more descriptive. It does not clearly convey the specific security check being performed (i.e., ensuring NamespaceLifecycle is not disabled).\n- The description of the pass and fail criteria is clear and aligns with the control requirements.\n\n**IMPROVEMENTS:**\n- The program name could be improved for clarity and descriptiveness. A suggestion might be `k8s_api_server_admission_plugin_check_namespacelifecycle`.\n- Consideration of alternative methods, such as using Kubernetes SDKs for more programmatic access, could be mentioned.\n- The assessment could include a note on ensuring that the kube-apiserver is running as expected and that the Pod specification retrieval is accurate, especially in environments with multiple API servers.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded and leverages appropriate Kubernetes capabilities. The technical details are mostly accurate, and the approach is feasible within Kubernetes environments.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the program name to be more descriptive, such as `k8s_api_server_admission_plugin_check_namespacelifecycle`, to better reflect the specific check being performed.\n- The rest of the assessment can remain as-is, given its technical accuracy and appropriate classification as Automated.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:32:25.428614",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nBoth AI opinions agree that the audit approach can be automated using Kubernetes APIs and `kubectl`. The task of checking the `--disable-admission-plugins` flag for the kube-apiserver can be performed without manual inspection or SSH access, making it suitable for automation. The automation details provided are technically sound and feasible.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nk8s_api_server_admission_plugin_check_namespacelifecycle\n\n**AUTOMATION DETAILS:**\n- Kubernetes Resource/Service: kube-apiserver\n- API/CLI Method: `kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'`\n- Properties to Check: The value of the `--disable-admission-plugins` flag\n- Pass Criteria: NamespaceLifecycle is NOT listed in `--disable-admission-plugins` (or the flag is absent).\n- Fail Criteria: NamespaceLifecycle is present in `--disable-admission-plugins`.",
+        "final_approach": "Automated",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T02:55:46.034428"
+    }
+}

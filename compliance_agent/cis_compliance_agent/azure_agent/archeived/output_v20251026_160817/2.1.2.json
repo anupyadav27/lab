@@ -1,0 +1,17 @@
+{
+    "id": "2.1.2",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.1.2",
+        "unique_id": "2.1.2__ensure-'python-version'-is-currently-supported-(if-in-use)",
+        "title": "Ensure 'Python version' is currently supported (if in use)",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Note: No action is required if Python is not in use. Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Settings, click Configuration. 4. In the General settings pane, for a Stack of Python, set the Major version and Minor version to a currently supported release. 5. Click Save. 6. Click Continue. 7. Repeat steps 1-6 for each app requiring remediation. Remediate from Azure CLI Run the following command to list supported runtimes: az webapp list-runtimes For each app requiring remediation, run the following command with the appropriate parameters to update the Python version: az webapp config set --resource-group <resource-group-name> --name <app-name> [--windows-fx-version \"PYTHON|<version>\"] [--linux-fx-version \"PYTHON|<version>\"] Default Value: The version is selected during creation. References: 1. https://learn.microsoft.com/en-us/azure/app-service/configure- common#configure-language-stack-settings 2. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- posture-vulnerability-management#pv-7-rapidly-and-automatically-remediate- software-vulnerabilities 3. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- posture-vulnerability-management#pv-3-establish-secure-configurations-for- compute-resources 4. https://devguide.python.org/versions/ 5. https://learn.microsoft.com/en-us/cli/azure/webapp 6. https://learn.microsoft.com/en-us/powershell/module/az.websites/get-azwebapp CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control checks whether the Python version for App Services is currently supported, which can be verified via Azure CLI.\n- The remediation steps provided utilize commands to check and set the Python version for Azure App Services.\n- The presence of specific Azure CLI commands further supports the decision that querying this property can be automated.\n\n**PROGRAM NAME:** azure_app_service_python_version_supported\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n- Use the Azure CLI command: `az webapp list-runtimes` to gather the list of currently supported Python runtimes.\n- Enumerate all App Services in the relevant subscriptions or resource groups to verify their configurations.\n- Validate the configuration properties specifically for `windows-fx-version` and `linux-fx-version`, ensuring they match one of the supported Python versions obtained from the first command.\n  \n**Pass/Fail Criteria:**\n- Pass: The `windows-fx-version` or `linux-fx-version` matches a supported Python version listed from `az webapp list-runtimes`.\n- Fail: The `windows-fx-version` or `linux-fx-version` does not match a supported Python version.\n\n**Example API endpoint or CLI command:**\n- Check supported runtimes: `az webapp list-runtimes`\n- Check App Service configuration: `az webapp config show --resource-group <resource-group-name> --name <app-name>`"
+}

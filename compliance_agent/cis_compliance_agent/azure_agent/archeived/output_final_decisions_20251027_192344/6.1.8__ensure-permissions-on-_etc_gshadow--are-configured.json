@@ -1,0 +1,40 @@
+{
+    "unique_id": "6.1.8__ensure-permissions-on-_etc_gshadow--are-configured",
+    "control_id": "6.1.8",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "input_row": {
+        "id": "6.1.8",
+        "unique_id": "6.1.8__ensure-permissions-on-/etc/gshadow--are-configured",
+        "title": "Ensure permissions on /etc/gshadow- are configured",
+        "description": " Gid is 0/root and Access is 0400 or more ...\"",
+        "rationale": "The /etc/gshadow- file is used to store backup information about groups that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "audit": "It is critical to ensure that the /etc/gshadow- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command and verify verify Uid is 0/root, Gid is 0/root and Access is 0400 or more restrictive: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/gshadow- /etc/gshadow- 400 0/root 0/root",
+        "impact": "Run the following commands to set owner, group, and permissions on /etc/gshadow- : # chown root:root /etc/gshadow- # chmod u-wx,go-rwx /etc/gshadow- Default Value: /etc/gshadow- 400 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "null": [
+            "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+        ]
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Access the Azure portal and navigate to your virtual machine or Linux-based resource where the `/etc/gshadow-` file exists.\n2. SSH into the virtual machine using an administrative account that has permission to view file permissions.\n3. Execute the command: `stat -Lc \"%n %a %u/%U %g/%G\" /etc/gshadow-`.\n4. Verify the output to ensure that:\n   - Uid is `0/root`\n   - Gid is `0/root`\n   - Access is `0400` or more restrictive.\n5. If the file permissions are not configured as above, run the commands:\n   - `chown root:root /etc/gshadow-`\n   - `chmod u-wx,go-rwx /etc/gshadow-`\n6. After applying changes, re-run the `stat` command to confirm that the owner, group, and permissions are correctly set as specified.\n7. Document your findings for compliance verification.\n\nIf the permissions on the `/etc/gshadow-` file are not compliant, appropriate remediation steps should be taken as outlined above."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The classification as a manual approach is partially correct. While the manual steps are valid, this task can be automated using Azure capabilities. Azure CLI and Azure PowerShell can be used to automate the SSH process and execute commands on a VM.\n- **Azure APIs/CLI:** Azure Automation or Azure Runbooks can be leveraged to automate the checking of file permissions on VMs. Additionally, Azure CLI or Azure PowerShell scripts can be used to execute SSH commands remotely, which can be scheduled or triggered as needed.\n\n**TECHNICAL ACCURACY:** 7\n\n- **Automation Details:** The assessment does not include automation details, which could enhance the efficiency of the audit process.\n- **Manual Steps Accuracy:** The manual steps provided are accurate for checking and setting file permissions. However, the description of \"Access is 0400 or more restrictive\" is slightly misleading, as 0400 is the most restrictive setting for read-only access by the owner.\n- **Program Naming Convention:** There is no mention of a program name following the convention `azure_<service>_<resource>_<security_intent>`. This could be improved by suggesting a naming convention for any scripts or automation processes developed.\n\n**IMPROVEMENTS:**\n\n- **Automation Suggestion:** Consider using Azure Runbooks or Azure Automation to script the SSH connection and permission checks. This would allow for scheduled compliance checks and reduce manual effort.\n- **Clarification on Permissions:** Clarify that \"0400 or more restrictive\" should be interpreted as exactly 0400 for the intended security posture.\n- **Documentation:** Include a section on how to document findings using Azure Monitor or Log Analytics for centralized logging and compliance tracking.\n\n**CONFIDENCE:** MEDIUM\n\n- While the manual steps are technically correct, the lack of automation consideration limits the efficiency and scalability of the compliance check. The potential for automation using Azure capabilities is significant and should be explored.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modify:** Incorporate automation options using Azure CLI, PowerShell, or Azure Automation to enhance the audit approach. Provide clear documentation on how to implement these automated checks and ensure they align with Azure security best practices. Additionally, clarify the permissions requirement to avoid ambiguity.",
+        "reviewed_at": "2025-10-26T15:24:49.740933"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** The task of verifying and setting file permissions on the `/etc/gshadow-` file can be automated using Azure Automation or Azure Runbooks, which can execute scripts on VMs. Azure CLI or Azure PowerShell can be used to remotely execute the necessary commands to check and set permissions, making the process efficient and repeatable. This aligns with the second AI opinion, which highlights the potential for automation using Azure capabilities.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** azure_vm_linux_check_gshadow_permissions\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Virtual Machines (Linux)\n- **API/CLI Method:** Azure Automation Runbook or Azure CLI/PowerShell script\n- **Properties to Check:** Execute `stat -Lc \"%n %a %u/%U %g/%G\" /etc/gshadow-` on the VM\n- **Pass Criteria:** Output shows Uid is `0/root`, Gid is `0/root`, and Access is `0400`\n- **Fail Criteria:** Any deviation from the expected Uid, Gid, or Access permissions\n\n**DISAGREEMENTS RESOLVED:** The first AI opinion suggested a manual approach, but the second AI opinion correctly identified the potential for automation using Azure's capabilities. Given Azure's robust automation tools, the task can be automated, providing a more efficient and scalable solution.\n\n**SOURCE:** 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "decided_at": "2025-10-27T14:19:42.291876"
+    },
+    "metadata": {
+        "reviewed_file": "6.1.8__ensure-permissions-on-_etc_gshadow--are-configured.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

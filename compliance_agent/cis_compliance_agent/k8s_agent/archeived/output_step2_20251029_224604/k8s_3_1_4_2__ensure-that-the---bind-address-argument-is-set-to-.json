@@ -1,0 +1,25 @@
+{
+    "control_id": "1.4.2",
+    "unique_id": "k8s_3_1_4_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the --bind-address argument is set to 127.0.0.1",
+    "input_row": {
+        "id": "1.4.2",
+        "unique_id": "k8s_3_1_4_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the --bind-address argument is set to 127.0.0.1",
+        "description": "Do not bind the scheduler service to non-loopback insecure addresses.",
+        "rationale": "The Scheduler API service which runs on port 10251/TCP by default is used for health and metrics information and is available without authentication or encryption. As such it should only be bound to a localhost interface, to minimize the cluster's attack surface Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-scheduler Verify that the --bind-address argument is set to 127.0.0.1",
+        "remediation": "Edit the Scheduler pod specification file /etc/kubernetes/manifests/kube- scheduler.yaml on the Control Plane node and ensure the correct value for the -- bind-address parameter Default Value: By default, the --bind-address parameter is set to 0.0.0.0 References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- scheduler/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- scheduler/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_scheduler_bind_address_localhost_enforced\n\n**AUTOMATION DETAILS:**\n- Query the kube-scheduler static Pod manifest, typically located at /etc/kubernetes/manifests/kube-scheduler.yaml, using the Kubernetes API (if the kubelet is running in static Pod mode) or by inspecting the running Pod spec in the kube-system namespace.\n- Use kubectl to retrieve the kube-scheduler Pod specification:\n  - Command: kubectl -n kube-system get pod -l component=kube-scheduler -o json\n- Parse the command or args field of the kube-scheduler container to locate the --bind-address argument.\n- Validate that the value of --bind-address is set to 127.0.0.1.\n- Pass Criteria: The --bind-address flag is present and set to 127.0.0.1.\n- Fail Criteria: The --bind-address flag is missing, set to 0.0.0.0, or set to any address other than 127.0.0.1.\n- If the scheduler is not running as a Pod (rare in modern Kubernetes), a privileged DaemonSet or hostPath mount can be used to read the manifest file directly for automated checks.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:52:27.697644",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification as Automated is correct. This control can be effectively checked using Kubernetes APIs and kubectl commands.\n- The use of `kubectl` to retrieve the kube-scheduler Pod specification is appropriate and aligns with Kubernetes CLI capabilities.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly accurate. The use of `kubectl -n kube-system get pod -l component=kube-scheduler -o json` is valid for retrieving the scheduler Pod specification.\n- Parsing the command or args field to locate the `--bind-address` argument is a correct approach.\n- The program name `k8s_scheduler_bind_address_localhost_enforced` is descriptive but could be more specific to indicate it's checking the bind address configuration.\n- The suggestion to use a privileged DaemonSet or hostPath mount for non-Pod schedulers is technically sound but may require additional security considerations.\n\n**IMPROVEMENTS:**\n- The program name could be improved to `k8s_scheduler_bind_address_127.0.0.1_check` for clarity.\n- Consider adding a step to verify if the kube-scheduler is indeed running as a static Pod or a Deployment, as this affects how the configuration is checked.\n- It would be beneficial to include a check for any potential security implications of using a privileged DaemonSet or hostPath mount, as these can introduce security risks if not managed properly.\n- Alternative methods could include using Kubernetes SDKs for more programmatic checks, which could enhance automation and integration with CI/CD pipelines.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-aligned with Kubernetes security best practices and the CIS Benchmark guidelines. The technical approach is sound, and the automation details are mostly accurate.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the program name to `k8s_scheduler_bind_address_127.0.0.1_check` for better clarity and specificity.\n- Consider adding additional context or checks for scenarios where the kube-scheduler might not be running as a Pod, and ensure security implications of alternative methods are addressed.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T02:05:17.683002"
+}

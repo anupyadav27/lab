@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.6",
+    "unique_id": "k8s_5_1_1_6",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --insecure-bind-address argument is not set",
+    "input_row": {
+        "id": "1.1.6",
+        "unique_id": "k8s_5_1_1_6",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --insecure-bind-address argument is not set",
+        "description": "Do not bind to non-loopback insecure addresses.",
+        "rationale": "If you bind the apiserver to an insecure address, basically anyone who could connect to it over the insecure port, would have unauthenticated and unencrypted access to your master node. The apiserver doesn't do any authentication checking for insecure binds and neither the insecure traffic is encrypted. Hence, you should not bind the apiserver to an insecure address.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --insecure-bind-address argument does not exist or is set to 127.0.0.1.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and remove the --insecure- bind-address argument from the KUBE_API_ADDRESS parameter. Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: None Default Value: By default, insecure bind address is set to 127.0.0.1.   23 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, insecure bind address is set to 127.0.0.1.   23 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_insecure_bind_address_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver process configuration to verify the absence or secure setting of the --insecure-bind-address flag.\n- Use Kubernetes API or kubectl to inspect the kube-apiserver Pod spec (in managed environments) or the static Pod manifest (typically at /etc/kubernetes/manifests/kube-apiserver.yaml) for the presence and value of the --insecure-bind-address argument.\n- If running as a static Pod:\n  - Use: kubectl -n kube-system get pod -l component=kube-apiserver -o yaml\n  - Inspect the command or args field for --insecure-bind-address.\n- If running as a systemd service or non-Pod process (rare in modern clusters), automation would require access to the process arguments, which may not be exposed via the Kubernetes API. In managed clusters, this is typically not user-configurable.\n- Pass Criteria: --insecure-bind-address is either not set, or if present, is set to 127.0.0.1.\n- Fail Criteria: --insecure-bind-address is set to any value other than 127.0.0.1, or is set to a non-loopback address.\n- Example check (for static Pod manifest): Parse the kube-apiserver.yaml file and ensure that --insecure-bind-address is either absent or set to 127.0.0.1.\n- Example check (for Pod spec): Use kubectl to retrieve the kube-apiserver Pod spec and check the args/command fields for the flag and its value.",
+    "timestamp": "2025-10-29T21:38:58.926689",
+    "model": "gpt-4.1"
+}

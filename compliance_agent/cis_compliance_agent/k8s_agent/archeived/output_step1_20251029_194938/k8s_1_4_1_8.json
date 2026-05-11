@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.8",
+    "unique_id": "k8s_1_4_1_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the client certificate authorities file ownership is set to root:root",
+    "input_row": {
+        "id": "4.1.8",
+        "unique_id": "k8s_1_4_1_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the client certificate authorities file ownership is set to root:root",
+        "description": "Ensure that the certificate authorities file ownership is set to root:root.",
+        "rationale": "The certificate authorities file controls the authorities used to validate API requests. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the following command: ps -ef | grep kubelet Find the file specified by the --client-ca-file argument. Run the following command: stat -c %U:%G <filename> Verify that the ownership is set to root:root.",
+        "remediation": "Run the following command to modify the ownership of the --client-ca-file. chown root:root <filename> Default Value: By default no --client-ca-file is specified. References: 1. https://kubernetes.io/docs/admin/authentication/#x509-client-certs",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/authentication/#x509-client-certs"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) of the client certificate authorities file specified by the kubelet's --client-ca-file argument. The ownership of files on the host filesystem is not exposed via the Kubernetes API, kubectl, or any Kubernetes-native resource. This check requires direct access to the node's operating system to inspect file ownership using OS-level commands (e.g., stat, ls -l). Therefore, this control cannot be fully automated via Kubernetes APIs or kubectl and must be performed manually.\n\n**MANUAL STEPS:**\n1. On each worker node, identify the process arguments for the kubelet by running:\n   ```\n   ps -ef | grep kubelet\n   ```\n2. Locate the value of the --client-ca-file argument in the kubelet process command line.\n3. On the node, check the ownership of the specified client CA file by running:\n   ```\n   stat -c %U:%G <path-to-client-ca-file>\n   ```\n   or\n   ```\n   ls -l <path-to-client-ca-file>\n   ```\n4. Verify that the file is owned by root:root.\n5. If the file is not owned by root:root, remediate by running:\n   ```\n   chown root:root <path-to-client-ca-file>\n   ```\n6. Repeat this process on all worker nodes where kubelet is running.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:04:21.154239",
+    "model": "gpt-4.1"
+}

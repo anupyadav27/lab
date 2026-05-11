@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.20",
+    "unique_id": "k8s_2_1_2_20",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --request-timeout argument is set as appropriate",
+    "input_row": {
+        "id": "1.2.20",
+        "unique_id": "k8s_2_1_2_20",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --request-timeout argument is set as appropriate",
+        "description": "Set global request timeout for API server requests as appropriate.",
+        "rationale": "Setting global request timeout allows extending the API server request timeout limit to a duration appropriate to the user's connection speed. By default, it is set to 60 seconds which might be problematic on slower connections making cluster resources inaccessible once the data volume for requests exceeds what can be transmitted in 60 seconds. But, setting this timeout limit to be too large can exhaust the API server resources making it prone to Denial-of-Service attack. Hence, it is recommended to set this limit as appropriate and change the default limit of 60 seconds only if needed. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --request-timeout argument is either not set or set to an appropriate value.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml and set the below parameter as appropriate and if needed. For example, --request-timeout=300s Default Value: By default, --request-timeout is set to 60 seconds. References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kubernetes/kubernetes/pull/51415",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kubernetes/kubernetes/pull/51415"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_request_timeout_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the kube-system namespace as a static Pod manifest (commonly at /etc/kubernetes/manifests/kube-apiserver.yaml on control plane nodes).\n- Use the Kubernetes API or kubectl to retrieve the current configuration:\n  - If running as a static Pod:  \n    `kubectl get pod -n kube-system -l component=kube-apiserver -o json`\n  - If managed by another mechanism, identify the deployment or process accordingly.\n- Parse the `spec.containers[].command` or `spec.containers[].args` array to locate the `--request-timeout` flag.\n- Validate:\n  - If `--request-timeout` is present, ensure its value is set to an appropriate duration (default is 60s; \"appropriate\" may be organization-specific, but the control expects it to be reviewed and not arbitrarily large).\n  - If `--request-timeout` is absent, the default of 60s applies (acceptable per the control unless a different value is required for your environment).\n- Pass Criteria:\n  - The `--request-timeout` flag is either not set (default 60s) or set to a value that is documented as appropriate for the environment (typically not excessively high, e.g., not >300s unless justified).\n- Fail Criteria:\n  - The `--request-timeout` flag is set to an excessively high value without justification, or the value is missing and the environment requires a different timeout due to known connection issues.\n- Example command to check:\n  ```\n  kubectl get pod -n kube-system -l component=kube-apiserver -o json | jq -r '.items[].spec.containers[].command[]' | grep -- --request-timeout\n  ```\n  or, if using `args`:\n  ```\n  kubectl get pod -n kube-system -l component=kube-apiserver -o json | jq -r '.items[].spec.containers[].args[]' | grep -- --request-timeout\n  ```\n- The check should report the current value and flag if it is not set to an appropriate value according to organizational policy or best practice (typically ≤300s unless justified).",
+    "timestamp": "2025-10-29T20:21:53.109266",
+    "model": "gpt-4.1"
+}

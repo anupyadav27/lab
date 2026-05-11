@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2.1",
+    "unique_id": "aws_5_2_2_1",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Ensure EBS volume encryption is enabled",
+    "input_row": {
+        "id": "2.2.1",
+        "unique_id": "aws_5_2_2_1",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Ensure EBS volume encryption is enabled",
+        "description": "Elastic Compute Cloud (EC2) supports encryption at rest when using the Elastic Block Store (EBS) service. While disabled by default, forcing encryption at EBS volume creation is supported.",
+        "rationale": "Encrypting data at rest reduces the likelihood that it is unintentionally exposed and can nullify the impact of disclosure if the encryption remains unbroken.",
+        "audit": "From Console: 1. Login to the EC2 console using https://console.aws.amazon.com/ec2/ 2. Under Account attributes, click EBS encryption. 3. Verify Always encrypt new EBS volumes displays Enabled. 4. Review every region in-use. Note: EBS volume encryption is configured per region. From Command Line: 1. Run aws --region <region> ec2 get-ebs-encryption-by-default 2. Verify that \"EbsEncryptionByDefault\": true is displayed. 3. Review every region in-use. Note: EBS volume encryption is configured per region. From Console: 1. Login to the EC2 console using https://console.aws.amazon.com/ec2/ 2. Under Account attributes, click EBS encryption. 3. Click Manage. 4. Click the Enable checkbox. 5. Click Update EBS encryption 6. Repeat for every region requiring the change. Note: EBS volume encryption is configured per region. From Command Line: 1. Run aws --region <region> ec2 enable-ebs-encryption-by-default 2. Verify that \"EbsEncryptionByDefault\": true is displayed. 3. Repeat every region requiring the change. Note: EBS volume encryption is configured per region. References: 1. https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html 2. https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs- volumes/ 3. AWS Config rule - ec2_ebs_encryption_by_default",
+        "remediation": "",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html 2. https://aws.amazon.com/blogs/aws/new-opt-in-to-default-encryption-for-new-ebs- volumes/ 3. AWS Config rule - ec2_ebs_encryption_by_default"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control \"Ensure EBS volume encryption is enabled\" can be verified using AWS APIs and CLI commands, making it suitable for automated auditing. The `aws ec2 get-ebs-encryption-by-default` command is explicitly mentioned in the audit section, and there is a corresponding boto3 SDK method available to check the same setting. These indicate that the control is about an AWS service property (encryption) that is fully exposed via APIs.\n\n**PROGRAM NAME:** aws_ec2_ebs_encryption_by_default_enabled\n\n**AUTOMATION DETAILS:**\n\n- **AWS CLI Command:** Use `aws ec2 get-ebs-encryption-by-default` for each region to verify if EBS encryption is enabled by default. The command should confirm that `\"EbsEncryptionByDefault\": true` is returned.\n  \n- **boto3 SDK Method:** Use `boto3.client('ec2').get_ebs_encryption_by_default()` method for each region in the AWS account. Check that the response contains `\"EbsEncryptionByDefault\": True`.\n\n- **Resources to Enumerate:** \n  - Iterate through all AWS regions enabled in the account to ensure consistency across regions.\n\n- **Configuration Property to Validate:** \n  - Check the `EbsEncryptionByDefault` setting for each region.\n  \n- **Pass/Fail Criteria:**\n  - **Pass:** The `EbsEncryptionByDefault` is set to `True` for a given region, indicating that any new EBS volumes created in that region will be encrypted by default.\n  - **Fail:** The `EbsEncryptionByDefault` is set to `False` for a given region.\n\nThe automation should ensure that each region used by the AWS account has this setting correctly configured to avoid any non-encrypted EBS volumes being created inadvertently. This is crucial for maintaining data protection standards across the infrastructure.",
+    "timestamp": "2025-10-28T15:35:39.526987",
+    "model": "gpt-4o"
+}

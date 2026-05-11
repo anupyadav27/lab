@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.20",
+    "unique_id": "k8s_7_1_1_20",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the Kubernetes PKI certificate file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.20",
+        "unique_id": "k8s_7_1_1_20",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the Kubernetes PKI certificate file permissions are set to 600 or more restrictive",
+        "description": "Ensure that Kubernetes PKI certificate files have permissions of 600 or more restrictive.",
+        "rationale": "Kubernetes makes use of a number of certificate files as part of the operation of its components. The permissions on these files should be set to 600 or more restrictive to protect their integrity. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c '%a' /etc/kubernetes/pki/*.crt Verify that the permissions are 600 or more restrictive. or ls -l /etc/kubernetes/pki/*.crt Verify -rw------",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod -R 600 /etc/kubernetes/pki/*.crt Default Value: By default, the certificates used by Kubernetes are set to have permissions of 644 References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of file permissions on the Kubernetes PKI certificate files (e.g., /etc/kubernetes/pki/*.crt) on the control plane node's filesystem.\n- The Kubernetes API and kubectl do not expose host file system permissions or allow querying of file modes for files outside of Kubernetes-managed volumes.\n- The audit instructions specify using OS-level commands (stat, ls -l) directly on the node, which requires host access.\n- There is no Kubernetes API, resource, or kubectl command that can retrieve or validate the file permissions of these certificate files on the host.\n\n**MANUAL STEPS:**\n1. Log in to each Kubernetes control plane node (via SSH or console access).\n2. Run the following command to list the permissions of all Kubernetes PKI certificate files:\n   ```\n   ls -l /etc/kubernetes/pki/*.crt\n   ```\n   Or, for a more concise output:\n   ```\n   stat -c '%a %n' /etc/kubernetes/pki/*.crt\n   ```\n3. Review the output for each certificate file. The permissions should be 600 or more restrictive (i.e., only the owner has read and write permissions; no permissions for group or others).\n4. Confirm compliance: All files must show permissions of 600 (-rw-------) or more restrictive (e.g., 400, 440, 444). If any file has permissions less restrictive than 600 (e.g., 644, 664, 666), this is non-compliant.\n5. If non-compliant, remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/pki/*.crt\n   ```\n   and re-verify as above.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:25:01.628732",
+    "model": "gpt-4.1"
+}

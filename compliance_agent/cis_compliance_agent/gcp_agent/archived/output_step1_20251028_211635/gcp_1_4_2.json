@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2",
+    "unique_id": "gcp_1_4_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure logrotate is configured",
+    "input_row": {
+        "id": "4.2",
+        "unique_id": "gcp_1_4_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure logrotate is configured",
+        "description": "The system includes the capability of rotating log files regularly to avoid filling up the system with logs or making the logs unmanageably large.",
+        "rationale": "By keeping the log files smaller and more manageable, a system administrator can easily archive these files to another system and spend less time looking through inordinately large log files.",
+        "audit": "Review /etc/logrotate.conf and /etc/logrotate.d/* and verify logs are rotated according to site policy.",
+        "remediation": "Edit /etc/logrotate.conf and /etc/logrotate.d/* to ensure logs are rotated according to site policy. /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot. Additional Information: If no maxage setting is set for logrotate a situation can occur where logrotate is interrupted and fails to delete rotated logfiles. It is recommended to set this to a value greater than the longest any log file should exist on your system to ensure that any such logfile is removed but standard rotation settings are not overridden.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control involves checking the configuration of `logrotate`, which is an operating system-level setting.\n- The control requires verifying the contents of configuration files located at `/etc/logrotate.conf` and `/etc/logrotate.d/*`.\n- Since checking file contents on a virtual machine instance requires SSH access, this task cannot be completed using GCP APIs or CLI tools alone.\n- The control is about OS configuration, rather than a property of a GCP service that would be accessible via the GCP API.\n- The audit instruction does not mention any Google Cloud SDK (gcloud) or GCP CLI commands, which indicates the necessity of a manual check.\n\n**MANUAL STEPS:**\n\n1. **SSH into the Instance:**\n   - Access the GCP Console.\n   - Navigate to the VM instances page.\n   - Select the instance running Container-Optimized OS where you need to verify the logrotate configuration.\n   - Click on \"SSH\" to connect to the instance.\n\n2. **Verify logrotate Configuration:**\n   - Once connected to the instance, execute the following commands to view the logrotate configuration:\n     ```bash\n     cat /etc/logrotate.conf\n     cat /etc/logrotate.d/*\n     ```\n   - Review the files to ensure that logrotate is configured according to the organization's site policy. Verify that the logs are set to rotate at appropriate intervals, and check for settings like `maxage` to ensure log files don't persist longer than necessary.\n\n3. **Expected Secure Configuration:**\n   - Logs should be rotated at regular intervals as per your organization's policy.\n   - Ensure there are no incorrect or absent configurations, such as missing `maxage`, which could lead to improper log management.\n\n4. **Confirm Compliance:**\n   - Confirm that the current configuration meets or exceeds organizational policies for log management.\n   - If the configuration does not meet specified policies, updates are required following the remediation instructions to adjust `logrotate` settings accordingly.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:31:26.854140",
+    "model": "gpt-4o"
+}

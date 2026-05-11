@@ -1,0 +1,22 @@
+{
+    "control_id": "6.1.1",
+    "unique_id": "gcp_1_6_1_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/passwd are configured",
+    "input_row": {
+        "id": "6.1.1",
+        "unique_id": "gcp_1_6_1_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/passwd are configured",
+        "description": "The /etc/passwd file contains user account information that is used by many system utilities and therefore must be readable for these utilities to operate.",
+        "rationale": "It is critical to ensure that the /etc/passwd file is protected from unauthorized write access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/passwd Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following command to set permissions on /etc/passwd : # chown root:root /etc/passwd # chmod 644 /etc/passwd",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- **Can GCP APIs query this property?** → Manual\n- **Is this a standard GCP service property?** → Manual\n- **Does Google Cloud SDK (gcloud) SDK have methods to check this?** → Manual\n- **Does GCP CLI have commands to retrieve this?** → Manual\n- **Does it require SSH/RDP to instances?** → Manual\n- **Does audit mention Google Cloud SDK (gcloud)/GCP CLI commands?** → Manual\n- **Is it about IAM, S3, EC2, VPC, CloudTrail, Config, KMS, etc.?** → Manual\n- **Is it about application code, OS configs, or visual review?** → Manual\n\nThe control requires checking the file permissions on the `/etc/passwd` file on an individual instance level to ensure it is correctly configured. This is inherently an OS-level configuration check that is not exposed via Google Cloud APIs or the Google Cloud SDK (gcloud)/GCP CLI. It requires direct inspection of the file permissions on the instances running Container Optimized OS.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - SSH into the GCP instance running Container Optimized OS where you need to verify the permission settings on the `/etc/passwd` file.\n\n2. **Verify File Ownership and Permissions:**\n   - Run the following command to check the file permissions and ownership:\n     ```bash\n     stat /etc/passwd\n     ```\n   \n3. **Expected Secure Configuration:**\n   - Ensure that the output confirms UID and GID are both set to `0/root` and access is set to `644`:\n     ```\n     Access: (0644/-rw-r--r--)  Uid: (0/root)   Gid: (0/root)\n     ```\n\n4. **Confirm Compliance:**\n   - If the file permissions and ownership match the expected configuration, the instance is compliant. Otherwise, adjust using:\n     ```bash\n     chown root:root /etc/passwd\n     chmod 644 /etc/passwd\n     ```\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:40:47.146367",
+    "model": "gpt-4o"
+}

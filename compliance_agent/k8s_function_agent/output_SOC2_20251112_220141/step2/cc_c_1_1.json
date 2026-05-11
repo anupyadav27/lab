@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_enabled",
+    "k8s_secret_not_in_env_variables",
+    "k8s_apiserver_audit_logging_enabled"
+  ],
+  "changes_made": [
+    "Changed k8s_audit_logging_enabled to k8s_apiserver_audit_logging_enabled for specificity"
+  ],
+  "review_notes": "The functions mostly align with the control's focus on confidentiality. The naming convention is followed, but 'k8s_audit_logging_enabled' was too generic and needed to specify the resource as 'apiserver'. All functions map to real Kubernetes security controls that help maintain confidentiality.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Ensure resource specificity in function names, such as specifying 'apiserver' for audit logging"
+  ],
+  "control_id": "cc_c_1_1",
+  "title": "C1.1 The entity identifies and maintains confidential information to meet the entity’s objectives related to confidentiality",
+  "step1_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_enabled",
+    "k8s_secret_not_in_env_variables",
+    "k8s_audit_logging_enabled"
+  ],
+  "step1_reasoning": "The control focuses on maintaining confidentiality of information. In Kubernetes, this can be addressed by ensuring that secrets are encrypted at rest, both in etcd and in Kubernetes Secrets. Additionally, secrets should not be exposed in environment variables. Enabling audit logging helps track access and changes to confidential information, ensuring that any unauthorized access attempts are logged and can be reviewed."
+}

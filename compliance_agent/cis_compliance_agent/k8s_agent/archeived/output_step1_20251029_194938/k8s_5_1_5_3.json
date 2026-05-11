@@ -1,0 +1,22 @@
+{
+    "control_id": "1.5.3",
+    "unique_id": "k8s_5_1_5_3",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --auto-tls argument is not set to true",
+    "input_row": {
+        "id": "1.5.3",
+        "unique_id": "k8s_5_1_5_3",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --auto-tls argument is not set to true",
+        "description": "Do not use self-signed certificates for TLS.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should not be available to unauthenticated clients. You should enable the client authentication via valid certificates to secure the access to the etcd service.",
+        "audit": "Run the following command on the etcd server node: ps -ef | grep etcd Verify that if the --auto-tls argument exists, it is not set to true.",
+        "remediation": "Edit the etcd environment file (for example, /etc/etcd/etcd.conf) on the etcd server node and comment out the ETCD_AUTO_TLS parameter. #ETCD_AUTO_TLS=\"true\" Edit the etcd startup file (for example, /etc/systemd/system/multi- user.target.wants/etcd.service) and remove the startup parameter for --auto-tls. Based on your system, reload the daemon and restart the etcd service. For example, systemctl daemon-reload systemctl restart etcd.service Impact: Clients will not be able to use self-signed certificates for TLS. Default Value: By default, --auto-tls is set to false.   117 | P a g e References: 1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#auto-tls",
+        "profile_applicability": "•  Level 1",
+        "impact": "Clients will not be able to use self-signed certificates for TLS. Default Value: By default, --auto-tls is set to false.   117 | P a g e",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#auto-tls"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the etcd process startup arguments, specifically ensuring that the --auto-tls flag is not set to true. In most Kubernetes deployments, etcd is either managed outside of Kubernetes (as a static pod or systemd service) or, if run as a static pod, its configuration is not exposed via the Kubernetes API. The Kubernetes API does not provide a direct way to query the etcd process arguments or environment variables. Therefore, this check requires access to the underlying host to inspect the etcd process or its configuration files.\n\n**MANUAL STEPS:**\n1. SSH into each etcd server node in the Kubernetes cluster.\n2. Run the following command to list the etcd process and its arguments:\n   ```\n   ps -ef | grep etcd\n   ```\n3. Examine the process arguments for the presence of the --auto-tls flag.\n4. If --auto-tls is present, ensure it is not set to true (i.e., either absent or explicitly set to false).\n5. Alternatively, check the etcd configuration file (commonly /etc/etcd/etcd.conf or the systemd unit file) for the ETCD_AUTO_TLS parameter and ensure it is not set to \"true\".\n6. Confirm compliance: The etcd process must not be running with --auto-tls=true, and ETCD_AUTO_TLS must not be set to \"true\".\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:48:17.944995",
+    "model": "gpt-4.1"
+}

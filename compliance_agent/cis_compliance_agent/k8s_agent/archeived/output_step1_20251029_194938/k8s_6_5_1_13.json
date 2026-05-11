@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.13",
+    "unique_id": "k8s_6_5_1_13",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Minimize access to the service account token creation",
+    "input_row": {
+        "id": "5.1.13",
+        "unique_id": "k8s_6_5_1_13",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Minimize access to the service account token creation",
+        "description": "Users with rights to create new service account tokens at a cluster level, can create long-lived privileged credentials in the cluster. This could allow for privilege escalation and persistent access to the cluster, even if the users account has been revoked.",
+        "rationale": "The ability to create service account tokens should be limited.",
+        "audit": "Review the users who have access to create the token sub-resource of serviceaccount objects in the Kubernetes API.",
+        "remediation": "Where possible, remove access to the token sub-resource of serviceaccount objects. References: 1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#token-request",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "",
+        "references": "1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#token-request"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_serviceaccount_token_creation_permissions_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRole and Role objects in the cluster using the Kubernetes API or kubectl:\n  - `kubectl get clusterrole -o yaml`\n  - `kubectl get role --all-namespaces -o yaml`\n- For each ClusterRole and Role, inspect the `rules` field for any entries with:\n  - `apiGroups: [\"\"]` or `apiGroups: [\"core\"]`\n  - `resources: [\"serviceaccounts/token\"]` or `resources: [\"serviceaccounts\"]` with `resourceNames` or `verbs` that include `create` on the `token` subresource.\n  - `verbs` containing `create`\n- Identify all RoleBindings and ClusterRoleBindings that grant these Roles/ClusterRoles to users, groups, or service accounts:\n  - `kubectl get clusterrolebinding -o yaml`\n  - `kubectl get rolebinding --all-namespaces -o yaml`\n- For each binding, resolve the subjects (users, groups, service accounts) that have been granted the ability to create service account tokens.\n- **Pass Criteria:** No users, groups, or service accounts (except for trusted system components, e.g., controllers that require it) have `create` permissions on the `serviceaccounts/token` subresource.\n- **Fail Criteria:** Any non-system user, group, or service account is found with `create` permissions on the `serviceaccounts/token` subresource.\n- Example command to directly check for such permissions:\n  - `kubectl get clusterrole,role --all-namespaces -o json | jq '.items[] | select(.rules[]? | .resources[]? == \"serviceaccounts/token\" and .verbs[]? == \"create\") | .metadata.name'`\n  - Or use `kubectl auth can-i create serviceaccounts/token --all-namespaces --as=<user>` for specific users.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:16:44.183818",
+    "model": "gpt-4.1"
+}

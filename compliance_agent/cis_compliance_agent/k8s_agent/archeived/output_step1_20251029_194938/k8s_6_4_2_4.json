@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.4",
+    "unique_id": "k8s_6_4_2_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Verify that the --read-only-port argument is set to 0",
+    "input_row": {
+        "id": "4.2.4",
+        "unique_id": "k8s_6_4_2_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Verify that the --read-only-port argument is set to 0",
+        "description": "Disable the read-only port.",
+        "rationale": "The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster. Impact: Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --read-only-port argument exists and is set to 0. If the --read-only-port argument is not present, check that there is a Kubelet config file specified by --config. Check that if there is a readOnlyPort entry in the file, it is set to 0.",
+        "remediation": "If using a Kubelet config file, edit the file to set readOnlyPort to 0. If using command line arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. --read-only-port=0 Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, --read-only-port is set to 10255/TCP. However, if a config file is specified by --config the default value for readOnlyPort is 0. References: 1. https://kubernetes.io/docs/admin/kubelet/",
+        "profile_applicability": "•  Level 1 - Worker Node •  Level 2 - Worker Node",
+        "impact": "Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_read_only_port_disabled\n\n**AUTOMATION DETAILS:**\nTo verify that the Kubelet's read-only port is disabled (set to 0), the automated program would:\n\n1. **Enumerate all nodes** in the Kubernetes cluster using the Kubernetes API (`kubectl get nodes`).\n\n2. **For each node**, retrieve the Kubelet configuration:\n   - Check if the Kubelet is started with a config file by inspecting the node's systemd unit or the `kubelet` process arguments. This typically requires access to the node's `/var/lib/kubelet/config.yaml` or the command line arguments used to start the Kubelet.\n   - If using a config file (specified by `--config`), parse the `readOnlyPort` field in the YAML. The value must be `0`.\n   - If using command-line arguments, ensure the `--read-only-port=0` flag is present, or if absent, that the default is overridden by the config file.\n\n3. **Automated collection methods**:\n   - If the cluster exposes Kubelet configuration via the Kubernetes API (e.g., using the `kubeletconfig` API in clusters that support dynamic Kubelet configuration), query the `KubeletConfiguration` custom resources for each node and check the `readOnlyPort` field.\n   - If not, use DaemonSet-based inspection: deploy a privileged pod on each node to read `/var/lib/kubelet/config.yaml` and/or inspect the running process arguments for `--read-only-port`.\n\n4. **Pass/Fail Criteria**:\n   - **Pass:** For every node, the Kubelet is configured with `readOnlyPort: 0` in the config file, or the `--read-only-port=0` flag is set in the process arguments.\n   - **Fail:** Any node has `readOnlyPort` set to a non-zero value, or the flag is missing and the default (10255) is in effect.\n\n5. **Example kubectl commands** (if dynamic Kubelet config is enabled):\n   - `kubectl get kubeletconfig -A -o yaml | grep -i readOnlyPort`\n   - Or, for DaemonSet-based inspection, collect and parse `/var/lib/kubelet/config.yaml` and process arguments.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:12:36.661404",
+    "model": "gpt-4.1"
+}

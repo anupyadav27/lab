@@ -1,0 +1,17 @@
+{
+    "id": "2.3.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.3.3",
+        "unique_id": "aks_2.3.3__ensure-talk-client-is-not-installed",
+        "title": "Ensure talk client is not installed",
+        "description": "The talk software makes it possible for users to send and receive messages across systems through a terminal session. The talk client, which allows initialization of talk sessions, is installed by default.",
+        "rationale": "The software presents a security risk as it uses unencrypted protocols for communication. Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "audit": "Run the following command to verify that the talk package is not installed: # rpm -q talk package talk is not installed",
+        "remediation": "Run the following command to remove the talk package: # dnf remove talk References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Connect to the Kubernetes cluster via SSH:\n   - Use the command: `az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>`\n   \n2. Verify the installation of the talk client:\n   - Execute the command: `ssh <node-ip> 'rpm -q talk'`\n   - What to verify/validate: Check if the output indicates that the \"talk\" package is installed or not.\n\n3. Expected secure configuration:\n   - The expected output should indicate that the \"talk\" package is not installed. If it shows that \"talk\" is installed, remediation is required.\n\n4. How to confirm compliance:\n   - If the \"talk\" package is not installed as per the output, the control is compliant. If installed, follow the remediation steps to remove it."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "10.2",
+    "unique_id": "aws_5_10_2",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Ensure Persistent logs is setup and configured to S3",
+    "input_row": {
+        "id": "10.2",
+        "unique_id": "aws_5_10_2",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Ensure Persistent logs is setup and configured to S3",
+        "description": "Elastic Beanstalk can be configured to automatically stream logs to the CloudWatch service.",
+        "rationale": "With CloudWatch Logs, you can monitor and archive your Elastic Beanstalk application, system, and custom log files from Amazon EC2 instances of your environments.",
+        "audit": "From the Console: 1. Login to AWS Console using https://console.aws.amazon.com/elasticbeanstalk 2. On the left hand side click Environments 3. Click on the Environment name that you want to review 4. Under the environment_name-env in the left column click Configuration 5. Scroll down under Configurations 6. Under category look for Softwares 7. Confirm Log streaming: enabled 8. If status options reads Log streaming: disabled refer to the remediation below. 9. Repeat steps 3-8 for each environment within the current region. 10. Then repeat the Audit process for all other regions.",
+        "remediation": "From the Console: 1. Login to AWS Console using https://console.aws.amazon.com/elasticbeanstalk 2. On the left hand side click Environments 3. Click on the Environment name that you want to update 4. Under the environment_name-env in the left column click Configuration 5. Scroll down under Configurations 6. Under category look for Software 7. Click on Edit 8. On the Modify software page Instance log streaming to CloudWatch Logs Log streaming - click the Enabled checkbox Set the required retention based on Organization requirements Lifecycle - Keep logs after terminating environment 9. Click Apply 10. Repeat steps 3-8 for each environment within the current region that needs Managed updates set. References: 1. https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.cloudwatchl ogs.html",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.cloudwatchl ogs.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control can be verified through AWS APIs or the boto3 SDK to check the configuration settings of Elastic Beanstalk environments, specifically confirming the log streaming configuration to CloudWatch Logs. This can be queried programmatically as AWS exposes the necessary APIs to retrieve these configurations.\n\n**PROGRAM NAME:** aws_elasticbeanstalk_environment_log_streaming_enabled\n\n**AUTOMATION DETAILS:**\n- **AWS API Calls/Boto3 SDK Methods**: Use the `boto3` library to interact with AWS Elastic Beanstalk.\n- **Actions**:\n  - Utilize the `describe_environments` method from the Elastic Beanstalk client to list all environments.\n  - For each environment, use `describe_configuration_settings` to retrieve details about the configuration, particularly under the 'Log streaming' setting in the Software category.\n- **Resources to Enumerate**: Review all Elastic Beanstalk environments within an AWS account. Ensure the process is repeated for each region to cover all possible environments.\n- **Configuration Property to Validate**: Ensure that the 'Log streaming' is set to 'enabled' for each Elastic Beanstalk environment.\n- **Pass/Fail Criteria**:\n  - **Pass**: If 'Log streaming' to CloudWatch Logs is enabled for the environment.\n  - **Fail**: If 'Log streaming' is disabled or not configured.\n\nThis approach effectively utilizes AWS API capabilities to ensure that Elastic Beanstalk environments are configured to stream logs to CloudWatch, aligning with the compliance requirement.",
+    "timestamp": "2025-10-28T15:44:42.733970",
+    "model": "gpt-4o"
+}

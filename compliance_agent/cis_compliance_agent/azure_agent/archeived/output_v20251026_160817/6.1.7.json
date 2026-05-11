@@ -1,0 +1,20 @@
+{
+    "id": "6.1.7",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "input_row": {
+        "id": "6.1.7",
+        "unique_id": "6.1.7__ensure-permissions-on-/etc/gshadow-are-configured",
+        "title": "Ensure permissions on /etc/gshadow are configured",
+        "description": " Gid is 0/root and Access is 0400 or more ...\"",
+        "rationale": "The /etc/gshadow file is used to store the information about groups that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "audit": "If attackers can gain read access to the /etc/gshadow file, they can easily run a password cracking program against the hashed password to break it. Other security information that is stored in the /etc/gshadow file (such as group administrators) could also be useful to subvert the group.",
+        "remediation": "Run the following command and verify verify Uid is 0/root, Gid is 0/root and Access is 0400 or more restrictive: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/gshadow /etc/gshadow 400 0/root 0/root",
+        "impact": "Run the following commands to set owner, group, and permissions on /etc/gshadow # chown root:root /etc/gshadow # chmod u-wx,go-rwx /etc/gshadow Default Value: /etc/gshadow 400 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "null": [
+            "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+        ]
+    },
+    "gpt_response": "### AUDIT APPROACH: Manual\n\n### MANUAL STEPS:\n1. **Access the Azure Portal:**\n   - Navigate to the Azure portal at [portal.azure.com](https://portal.azure.com).\n\n2. **Access your Linux VM or Azure Kubernetes Service (AKS) instance:**\n   - If you're checking a VM, go to the \"Virtual Machines\" section. Locate the VM in question and select \"Connect\" to SSH into the machine.\n   - If you're checking certain nodes in AKS, ensure you have access to your AKS cluster and connect to one of the nodes.\n\n3. **Check the permissions of the /etc/gshadow file:**\n   - Run the following command in the terminal:\n     ```bash\n     stat -Lc \"%n %a %u/%U %g/%G\" /etc/gshadow\n     ```\n   - This command will return the file name, permissions, owner UID, and group GID.\n\n4. **Verify Ownership and Permissions:**\n   - **What to verify:** Ensure that the output shows:\n     - Permissions: 0400 or more restrictive\n     - Owner UID: 0/root\n     - Group GID: 0/root\n\n5. **Expected secure configuration:**\n   - You should see output indicating the permissions set to \"400\" (read for the owner only) and the owner/group correctly assigned to \"root\".\n\n6. **Confirm compliance:**\n   - If the output matches the expected values, the control is compliant.\n   - If it does not, use the remediation steps to correct the configuration before confirming compliance.\n\n### REMEDIATION (if non-compliant):\n- To set the correct owner, group, and permissions on `/etc/gshadow`, run the following commands:\n  ```bash\n  sudo chown root:root /etc/gshadow\n  sudo chmod u-wx,go-rwx /etc/gshadow\n  ```\n\n### NOTES:\n- This control requires direct access to the filesystem, which cannot be performed using Azure APIs, hence a manual approach is necessary."
+}

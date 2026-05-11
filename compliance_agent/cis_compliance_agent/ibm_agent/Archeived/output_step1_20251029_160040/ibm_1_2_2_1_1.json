@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2.1.1",
+    "unique_id": "ibm_1_2_2_1_1",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure Block Storage is encrypted with customer managed keys",
+    "input_row": {
+        "id": "2.2.1.1",
+        "unique_id": "ibm_1_2_2_1_1",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure Block Storage is encrypted with customer managed keys",
+        "description": "By default, IBM Cloud Block Storage provides provider-managed encryption for all data. For enhanced security, customers can bring their own encryption keys and manage them through IBM Key Management Services – Key Protect or Hyper Protect Crypto Services (HPCS). Provider-managed encryption is turned on by default and cannot be turned off.",
+        "rationale": "With customer-managed keys, only customers can access and manage their master root keys, giving them full control over their data security.",
+        "audit": "You can use the IBM Cloud Block Storage configuration properties to verify whether a Cloud Object Storage bucket is enabled to use Key Protect. From Console, Navigate to your Cloud Object Storage instance: 1. In the IBM Cloud console, go to Menu icon > VPC Infrastructure > Storage > Block storage volumes . A list of all block storage volumes displays. 2. For each of the volumes listed, ensure the encryption field is Not pointing to \"Provider Managed\"",
+        "remediation": "You will not be able to change encryption option once data is already written to a Cloud Block Storage Volume. In order to ensure that objects are encrypted using customer managed keys you will need to create a new Cloud Block Storage volume, set it to use either Key Protect or Hyper Protect key management service and then upload/copy the existing objects to this new volume. Default Value: Provider managed References: 1. https://cloud.ibm.com/vpc-ext",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://cloud.ibm.com/vpc-ext"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThe audit for ensuring that IBM Cloud Block Storage is encrypted with customer-managed keys can be automated. This control involves verifying the encryption setting of Block Storage volumes to ensure they use customer-managed keys rather than provider-managed encryption. Given that this is a standard property configurable in IBM Cloud, it can be queried through IBM Cloud APIs or CLI tools. The IBM Cloud API and CLI have capabilities to manage and obtain details about storage volumes, including their encryption settings.\n\n**PROGRAM NAME:** ibm_block_storage_volume_customer_key_encryption_enabled\n\n**AUTOMATION DETAILS:**\n\n- **IBM Cloud API Calls:** Use the IBM Cloud VPC APIs to list the block storage volumes and check their encryption settings. The specific API call would be `GET /v1/volumes` which returns a list of all volumes, including details about their encryption.\n- **IBM Cloud CLI Commands:** Utilize the IBM Cloud CLI tool to interactively fetch block storage volume details. Commands such as `ibmcloud is volume <volume-id>` can be used to verify specific volume settings related to encryption.\n- **Resource Enumeration:** Enumerate all block storage volumes within the VPC infrastructure to assess each one's encryption configuration.\n- **Configuration Properties to Validate:** Check the `encryption` property of each volume to confirm it is set to use either Key Protect or Hyper Protect, indicating customer-managed encryption.\n- **Pass/Fail Criteria:** \n  - **Pass:** The encryption field of the block storage volume points to either Key Protect or Hyper Protect.\n  - **Fail:** The encryption field of the block storage volume is set to \"Provider Managed\". \n\nThis automated approach allows CSPM tools to efficiently check compliance with this control across all relevant resources in an IBM Cloud environment.",
+    "timestamp": "2025-10-29T16:04:06.460675",
+    "model": "gpt-4o"
+}

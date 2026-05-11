@@ -1,0 +1,22 @@
+{
+    "control_id": "4.8",
+    "unique_id": "aws_3_4_8",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure any user that has not accessed WorkDocs in 30 days is set to inactive.",
+    "input_row": {
+        "id": "4.8",
+        "unique_id": "aws_3_4_8",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure any user that has not accessed WorkDocs in 30 days is set to inactive.",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "Based on the provided information about the control \"Ensure any user that has not accessed WorkDocs in 30 days is set to inactive\" from the CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0, we need to decide on the optimal audit approach by analyzing the complete context and using our AWS knowledge. \n\nLet's break down the decision process:\n\n1. **Description + Rationale:**\n   - Both the description and rationale are missing. However, the title indicates that the control is about checking user activity in Amazon WorkDocs and potentially deactivating users after a 30-day inactivity period.\n\n2. **AWS Service:** Amazon WorkDocs\n   - WorkDocs is an AWS managed service, and user activity details are likely stored and could be retrievable through AWS APIs or the AWS Management Console.\n\n3. **AWS APIs:**\n   - Amazon WorkDocs provides APIs that can be used to manage the service. The `boto3` WorkDocs client includes methods to describe active users, their activity, and manage their states (active/inactive).\n   - API methods like `describe_users()` can be used to query user details, and the last activity can be potentially retrieved or inferred based on timestamps or activity logs.\n\n4. **Automated Feasibility:**\n   - Since it's about identifying inactive users based on access history, this can be automated by querying the user activity logs or timestamps of the last access using the AWS WorkDocs API.\n\n5. **Manual Considerations:**\n   - No mention of needing human judgment, application-level checks, or manual console actions that would suggest a manual audit path. Access patterns and user states can be retrieved through APIs.\n\n6. **Impact, Remediation, References:**\n   - These fields are empty; however, typical remediation would involve automation scripts modifying user states based on activity data retrieved from API calls.\n\n**DECISION:**\n\n**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** aws_workdocs_user_inactivity_check\n\n**AUTOMATION DETAILS:**\n- Use the `boto3` library's WorkDocs client to call `describe_users()` method.\n- Enumerate through the list of users to fetch their last activity timestamp.\n- Check if the last activity was more than 30 days ago.\n- Verify that users inactive for over 30 days are set to inactive.\n- Define Pass/Fail criteria:\n  - **Pass:** If a user inactive for more than 30 days is set to inactive.\n  - **Fail:** If a user inactive for more than 30 days remains active.\n- Ensure the audit covers all WorkDocs users in the specific AWS account and the applicable regions (if multi-region usage is configured).\n\nThis approach leverages AWS's API capabilities for automated compliance checks on user inactivity within Amazon WorkDocs.",
+    "timestamp": "2025-10-28T15:19:57.907382",
+    "model": "gpt-4o"
+}

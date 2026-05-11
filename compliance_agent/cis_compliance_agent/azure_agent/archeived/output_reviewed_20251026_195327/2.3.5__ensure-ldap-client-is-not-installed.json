@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.3.5__ensure-ldap-client-is-not-installed",
+    "control_id": "2.3.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Login to the Azure Portal**: Navigate to the Azure Portal and sign in with your administrator credentials.\n2. **Locate Kubernetes Cluster**: In the Azure Portal, go to \"Kubernetes services\" and select the Kubernetes cluster you wish to inspect.\n3. **Access the Nodes**: Access the node pool of the Kubernetes cluster. You may need to use the Azure CLI or an SSH client to connect to the nodes. \n4. **SSH into the Node**: Use SSH to connect to one of the nodes. You will need the VM’s public IP address and your SSH credentials (e.g., SSH key, if configured).\n5. **Check for LDAP Client Installation**: Run the following command on the node:\n   ```bash\n   rpm -q openldap-clients\n   ```\n6. **Verify the Output**: Check the output of the command. \n   - If the output indicates that \"openldap-clients is not installed\", the node is compliant.\n   - If it shows that the package is installed, the node is non-compliant.\n7. **Document the Findings**: Note whether the LDAP client is installed on each node and any necessary follow-up actions based on the compliance status. \n\n**Expected Secure Configuration**: The openldap-clients package should not be installed on the nodes.\n\n**How to Confirm Compliance**: If the command output confirms \"openldap-clients is not installed\", the nodes are compliant with the control. If the package is present, remediation actions should be taken to remove it."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The current classification as a manual approach is partially correct. While the manual steps are detailed, this compliance check can be automated using Azure capabilities.\n- **Azure APIs/CLI Feasibility:** Azure CLI or Azure PowerShell can be used to automate the process of checking installed packages on AKS nodes. Specifically, using Azure CLI to execute commands on AKS nodes via SSH can be scripted. Additionally, Azure Policy can be leveraged to enforce compliance by checking for specific software installations across VMs.\n\n**TECHNICAL ACCURACY:** 7\n\n- **Automation Details:** The manual steps are technically correct for a manual audit but lack automation details. The use of `rpm -q openldap-clients` is appropriate for checking the package installation on Linux nodes.\n- **Manual Steps Accuracy:** The steps are accurate but could benefit from more detail on how to efficiently SSH into multiple nodes, potentially using a script.\n- **Program Naming Convention:** The program name does not follow a specific convention, which is not directly relevant here but could be improved for consistency in documentation.\n\n**IMPROVEMENTS:**\n\n- **Automation Enhancement:** Consider using Azure CLI or Azure PowerShell scripts to automate the SSH process and package check across all nodes. This can be achieved using Azure Run Command or Azure Automation.\n- **Azure Policy:** Implement Azure Policy to automatically audit and enforce the absence of specific packages like `openldap-clients` on AKS nodes.\n- **Documentation:** Include details on how to handle SSH key management and node access in a secure and scalable manner.\n\n**CONFIDENCE:** MEDIUM\n\n- The assessment is technically sound for a manual process but lacks automation insights, which are feasible with Azure's capabilities.\n\n**FINAL RECOMMENDATION:**\n\n- **Modify:** Update the assessment to include an automated approach using Azure CLI or PowerShell scripts to check for LDAP client installation across nodes. Additionally, suggest implementing Azure Policy for continuous compliance monitoring.\n- **Re-classify:** Consider re-classifying this control as Automated, given the potential to script the compliance check using Azure's tools and services. This would provide more efficient and scalable compliance checks.",
+        "reviewed_at": "2025-10-26T16:41:36.641159"
+    },
+    "input_row": {
+        "id": "2.3.5",
+        "unique_id": "2.3.5__ensure-ldap-client-is-not-installed",
+        "title": "Ensure LDAP client is not installed",
+        "description": "The Lightweight Directory Access Protocol (LDAP) was introduced as a replacement for NIS/YP. It is a service that provides a method for looking up information from a central database.",
+        "rationale": "If the system will not need to act as an LDAP client, it is recommended that the software be removed to reduce the potential attack surface. Impact: Removing the LDAP client will prevent or inhibit using LDAP for authentication in your environment.",
+        "audit": "Run the following command to verify that the openldap-clients package is not installed: # rpm -q openldap-clients package openldap-clients is not installed",
+        "remediation": "Run the following command to remove the openldap-clients package: # dnf remove openldap-clients References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Removing the LDAP client will prevent or inhibit using LDAP for authentication in your environment.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "2.3.5__ensure-ldap-client-is-not-installed.json",
+        "review_version": "1.0"
+    }
+}

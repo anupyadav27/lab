@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.3",
+    "unique_id": "k8s_4_5_2_3",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Minimize the admission of containers wishing to share the host process ID namespace",
+    "input_row": {
+        "id": "5.2.3",
+        "unique_id": "k8s_4_5_2_3",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Minimize the admission of containers wishing to share the host process ID namespace",
+        "description": "Do not generally permit containers to be run with the hostPID flag set to true.",
+        "rationale": "A container running in the host's PID namespace can inspect processes running outside the container. If the container also has access to ptrace capabilities this can be used to escalate privileges outside of the container. There should be at least one admission control policy defined which does not permit containers to share the host PID namespace. If you need to run containers which require hostPID, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined with spec.hostPID: true will not be permitted unless they are run under a specific policy.",
+        "audit": "Fetch hostPID from each pod with get pods -A -o=jsonpath=$'{range .items[*]}{@.metadata.name}: {@.spec.hostPID}\\n{end}'",
+        "remediation": "Configure the Admission Controller to restrict the admission of hostPID containers. Default Value: By default, there are no restrictions on the creation of hostPID containers. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined with spec.hostPID: true will not be permitted unless they are run under a specific policy.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_hostpid_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all Pods across all namespaces using the Kubernetes API (e.g., `kubectl get pods -A -o json`).\n- For each Pod, inspect the `spec.hostPID` field.\n- Identify any Pods where `spec.hostPID: true`.\n- Additionally, check for the presence and enforcement of Pod Security Admission (PSA) or PodSecurityPolicy (if still in use) that restricts the use of `hostPID: true` except for explicitly allowed cases.\n- Pass Criteria: No Pods (except those explicitly allowed by policy) have `spec.hostPID: true`, and an admission control policy (e.g., PSA with `restricted` level or equivalent) is in place to prevent unauthorized use of `hostPID`.\n- Example kubectl command to enumerate offending pods:\n  ```\n  kubectl get pods -A -o=jsonpath=\"{range .items[?(@.spec.hostPID==true)]}{.metadata.namespace}/{.metadata.name}{'\\n'}{end}\"\n  ```\n- To verify policy enforcement, check for Pod Security Admission configuration:\n  - List namespace labels for PSA enforcement:\n    ```\n    kubectl get ns --show-labels | grep pod-security.kubernetes.io/enforce\n    ```\n  - Ensure namespaces are labeled with `pod-security.kubernetes.io/enforce=restricted` or an equivalent restrictive policy.\n- Fail Criteria: Any Pod is found with `spec.hostPID: true` outside of explicitly allowed exceptions, or no admission policy is in place to restrict `hostPID` usage.",
+    "timestamp": "2025-10-29T21:32:59.200084",
+    "model": "gpt-4.1"
+}

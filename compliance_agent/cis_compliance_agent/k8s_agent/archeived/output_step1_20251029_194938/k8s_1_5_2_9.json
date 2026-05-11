@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.9",
+    "unique_id": "k8s_1_5_2_9",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Minimize the admission of containers with added capabilities",
+    "input_row": {
+        "id": "5.2.9",
+        "unique_id": "k8s_1_5_2_9",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Minimize the admission of containers with added capabilities",
+        "description": "Do not generally permit containers with capabilities assigned beyond the default set.",
+        "rationale": "Containers run with a default set of capabilities as assigned by the Container Runtime. Capabilities outside this set can be added to containers which could expose them to risks of container breakout attacks. There should be at least one policy defined which prevents containers with capabilities beyond the default set from launching. If you need to run containers with additional capabilities, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods with containers which require capabilities outwith the default set will not be permitted.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that policies are present which prevent allowedCapabilities to be set to anything other than an empty array.",
+        "remediation": "Ensure that allowedCapabilities is not present in policies for the cluster unless it is set to an empty array. Default Value: By default, there are no restrictions on adding capabilities to containers. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods with containers which require capabilities outwith the default set will not be permitted.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_capabilities_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all Pod Security Policies (PSPs) if present (deprecated in 1.21+, but still relevant for clusters using them), and/or Pod Security Admission (PSA) configurations, and/or any third-party admission controllers (e.g., OPA Gatekeeper, Kyverno) that enforce allowedCapabilities.\n- For each policy (PSP, PSA, or equivalent constraint):\n  - Inspect the `allowedCapabilities` field.\n  - Validate that `allowedCapabilities` is either not present or is set to an empty array (`[]`), which means no additional Linux capabilities are permitted beyond the runtime default.\n- For PSA (Pod Security Admission), ensure that the `restricted` profile is enforced at the namespace or cluster level, as this profile prohibits adding capabilities beyond the default set.\n- Example kubectl commands:\n  - For PSPs:  \n    ```\n    kubectl get psp -o json | jq '.items[] | {name: .metadata.name, allowedCapabilities: .spec.allowedCapabilities}'\n    ```\n  - For Kyverno/Gatekeeper:  \n    - Query ClusterPolicy/Policy or ConstraintTemplates for rules affecting `spec.containers[].securityContext.capabilities.add`.\n  - For PSA:  \n    ```\n    kubectl get ns --show-labels\n    ```\n    - Check for `pod-security.kubernetes.io/enforce=restricted` or equivalent.\n- Pass Criteria:\n  - All policies that control capabilities must have `allowedCapabilities` unset or set to an empty array.\n  - No policy should allow additional capabilities cluster-wide unless explicitly justified and tightly scoped.\n- Fail Criteria:\n  - Any policy with `allowedCapabilities` set to a non-empty array (e.g., `[\"NET_ADMIN\"]`) without strict scoping.\n- This check is fully automatable via Kubernetes API and kubectl, requiring no subjective human review.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:12:35.727524",
+    "model": "gpt-4.1"
+}

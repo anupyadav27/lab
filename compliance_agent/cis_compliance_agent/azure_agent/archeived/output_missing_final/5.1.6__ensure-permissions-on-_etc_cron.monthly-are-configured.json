@@ -1,0 +1,17 @@
+{
+    "id": "5.1.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.1.6",
+        "unique_id": "5.1.6__ensure-permissions-on-/etc/cron.monthly-are-configured",
+        "title": "Ensure permissions on /etc/cron.monthly are configured",
+        "description": "The /etc/cron.monthly directory contains system cron jobs that need to run on a monthly basis. The files in this directory cannot be manipulated by the crontab command, but are instead edited by system administrators using a text editor. The commands below restrict read/write and search access to user and group root, preventing regular users from accessing this directory.",
+        "rationale": "Granting write access to this directory for non-privileged users could provide them the means for gaining unauthorized elevated privileges. Granting read access to this directory could give an unprivileged user insight in how to gain elevated privileges or circumvent auditing controls.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access does not grant permissions to group or other : # stat /etc/cron.monthly Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set ownership and permissions on /etc/cron.monthly : # chown root:root /etc/cron.monthly # chmod og-rwx /etc/cron.monthly References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Nodes**: SSH into each node of the Kubernetes cluster where Azure Kubernetes Service (AKS) is deployed.\n   \n2. **Verify Directory Permissions**: Run the command `stat /etc/cron.monthly` to check the ownership and permissions of the directory.\n\n3. **What to Verify/Validate**:\n   - The Uid and Gid should both be `0/root`.\n   - The directory permissions should be `drwx------` (0700).\n\n4. **Expected Secure Configuration**:\n   - Uid: (0/root)\n   - Gid: (0/root)\n   - Permissions: (0700/drwx------)\n\n5. **How to Confirm Compliance**:\n   - If the permissions are correctly set, the control is compliant. If not, document the deviations and proceed to remediate."
+}

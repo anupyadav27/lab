@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.3",
+    "unique_id": "gcp_1_5_3_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure default group for the root account is GID 0",
+    "input_row": {
+        "id": "5.3.3",
+        "unique_id": "gcp_1_5_3_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure default group for the root account is GID 0",
+        "description": "The usermod command can be used to specify which group the root user belongs to. This affects permissions of files that are created by the root user.",
+        "rationale": "Using GID 0 for the root account helps prevent root -owned files from accidentally becoming accessible to non-privileged users.",
+        "audit": "Run the following command and verify the result is 0 : # grep \"^root:\" /etc/passwd | cut -f4 -d: 0",
+        "remediation": "Run the following command to set the root user default group to GID 0 : # usermod -g 0 root",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis compliance control involves verifying the default group ID (GID) for the root account on instances using Container-Optimized OS, which is an operating system level check. Such checks generally involve accessing the OS and executing specific commands to retrieve configuration details, which cannot be directly queried through GCP APIs or Google Cloud SDK. The audit step provided instructs us to manually inspect the `/etc/passwd` file on the instance, indicating the need for SSH access to the instance for verification. Therefore, this control falls under the manual category, as it requires human intervention to verify the desired state.\n\n**MANUAL STEPS:**\n1. SSH into the GCP instance running Container-Optimized OS.\n2. Run the command `grep \"^root:\" /etc/passwd | cut -f4 -d:` to retrieve the GID of the root account.\n3. Verify that the output of the command is `0`, which confirms that the default group for the root account is correctly set to GID 0.\n4. If the GID is not `0`, follow the remediation step by running `usermod -g 0 root` with the necessary privileges to set the correct GID.\n5. Confirm the configuration by re-running the audit command to ensure compliance.",
+    "timestamp": "2025-10-28T21:39:35.853799",
+    "model": "gpt-4o"
+}

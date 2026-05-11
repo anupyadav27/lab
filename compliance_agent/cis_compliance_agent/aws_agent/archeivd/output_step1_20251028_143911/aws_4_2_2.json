@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2",
+    "unique_id": "aws_4_2_2",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+    "title": "Ensure configuring Security Groups",
+    "input_row": {
+        "id": "2.2",
+        "unique_id": "aws_4_2_2",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "title": "Ensure configuring Security Groups",
+        "description": "Security groups are your first line of defense for the EC2 instance. A security group is a firewall that controls inbound and outbound traffic.",
+        "rationale": "Security groups play a critical role in maintaining the security of your AWS resources. It is advisable to restrict traffic to only what is necessary for accessing your instance, thereby minimizing potential security risks.",
+        "audit": "Open traffic for SSH, HTTP, and HTTPS. Make sure to allow traffic from anywhere, unless you will be accessing the instance from a secure workstation or server with a static IP address.",
+        "remediation": "",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThe control focuses on the configuration of security groups, which is a standard AWS feature used to manage network access to AWS resources, particularly EC2 instances. The description indicates that security groups are responsible for controlling inbound and outbound traffic, making this an attribute of EC2 that is accessible via AWS APIs.\n\n- **Can AWS APIs query this property?** Yes, AWS provides APIs to list, describe, and modify security group rules.\n- **Is this a standard AWS service property (encryption, logging, access control, network rules)?** Yes, security groups are a key element of access control in AWS.\n- **Does boto3 SDK have methods to check this?** Yes, the `boto3` SDK includes methods such as `describe_security_groups` to retrieve security group configurations.\n- **Does AWS CLI have commands to retrieve this?** Yes, the AWS CLI can be used with commands like `aws ec2 describe-security-groups` to check security group rules.\n- **Does it require SSH/RDP to instances?** No, checking security group configurations does not require SSH access to instances.\n- **Does audit mention boto3/AWS CLI commands?** While not explicitly mentioned in the provided text, the control involves configuration checks that are typically done via CLI or SDK.\n- **Is it about IAM, S3, EC2, VPC, CloudTrail, Config, KMS, etc.?** Yes, it is about EC2 and its security groups.\n\n**PROGRAM NAME:** aws_ec2_security_group_inbound_rules_configured\n\n**AUTOMATION DETAILS:**\n\n- **AWS API calls or boto3 SDK methods to use:**\n  - Use `boto3.client('ec2').describe_security_groups()` to retrieve the list of security groups and their associated rules.\n  \n- **AWS CLI commands (if applicable):**\n  - Utilize `aws ec2 describe-security-groups` to fetch details about security groups.\n\n- **Specific resources to enumerate (accounts, regions, buckets, instances, etc.):**\n  - Enumerate all security groups within the targeted AWS account and region.\n\n- **Exact configuration properties/settings to validate:**\n  - Check inbound rules for each security group to ensure that SSH (`port 22`), HTTP (`port 80`), and HTTPS (`port 443`) access are not indiscriminately open to the world (`CIDR block 0.0.0.0/0`).\n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** No inbound rule for SSH, HTTP, or HTTPS is open to `0.0.0.0/0` unless explicitly required with justification.\n  - **Fail:** Any inbound rule for SSH, HTTP, or HTTPS is open to `0.0.0.0/0` without proper justification.\n\nThe automation would involve iterating over each security group, examining its inbound rules, and ensuring they conform to the specified security best practices.",
+    "timestamp": "2025-10-28T15:23:13.429445",
+    "model": "gpt-4o"
+}

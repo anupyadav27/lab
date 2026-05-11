@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.3",
+    "unique_id": "gcp_1_6_2_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure no legacy \"+\" entries exist in /etc/shadow",
+    "input_row": {
+        "id": "6.2.3",
+        "unique_id": "gcp_1_6_2_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure no legacy \"+\" entries exist in /etc/shadow",
+        "description": "The character + in various files used to be markers for systems to insert data from NIS maps at a certain point in a system configuration file. These entries are no longer required on most systems, but may exist in files that have been imported from other platforms.",
+        "rationale": "These entries may provide an avenue for attackers to gain privileged access on the system.",
+        "audit": "Run the following command and verify that no output is returned: # grep '^\\+:' /etc/shadow",
+        "remediation": "Remove any legacy '+' entries from /etc/shadow if they exist.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control ensures that there are no legacy \"+\" entries in the `/etc/shadow` file. This audit involves checking specific file contents on a virtual machine's operating system, which requires direct access to the instance. As this check is at the OS level and not directly accessible via GCP APIs, Google Cloud SDK, or GCP CLI, it requires SSH access to the instance to inspect file content, making this a manual process.\n\n**MANUAL STEPS:**\n\n1. **Access the Compute Engine VM:**\n   - SSH into the Compute Engine instance running Container-Optimized OS using the Google Cloud Console or `gcloud` command:\n     ```\n     gcloud compute ssh <INSTANCE_NAME> --zone <ZONE>\n     ```\n\n2. **Check `/etc/shadow` File for '+' Entries:**\n   - Execute the following command on the instance to search for any legacy \"+\" entries in the `/etc/shadow` file:\n     ```bash\n     grep '^+:' /etc/shadow\n     ```\n\n3. **Verify Output:**\n   - Ensure that no output is returned by the `grep` command. If there is output, it indicates the presence of legacy \"+\" entries, which is non-compliant.\n\n4. **Expected Secure Configuration:**\n   - The secure configuration is that there are no \"+\" entries present in the `/etc/shadow` file.\n\n5. **Confirm Compliance:**\n   - If the command returns no output, the system is compliant with this control. If any entries are found, they must be removed to achieve compliance.",
+    "timestamp": "2025-10-28T21:43:27.183679",
+    "model": "gpt-4o"
+}

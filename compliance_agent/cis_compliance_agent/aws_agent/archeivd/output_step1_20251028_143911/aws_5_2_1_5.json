@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.5",
+    "unique_id": "aws_5_2_1_5",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Ensure Images are not Publicly Available",
+    "input_row": {
+        "id": "2.1.5",
+        "unique_id": "aws_5_2_1_5",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Ensure Images are not Publicly Available",
+        "description": "EC2 allows you to make an AMI public, sharing it with all AWS accounts.",
+        "rationale": "Publicly sharing an AMI with all AWS accounts could expose organizational data and configuration information.",
+        "audit": "Perform the steps below to determine if any AMIs are shared with all AWS accounts. From the Console 1. Login to the EC2 console at https://console.aws.amazon.com/ec2/. 2. In the left pane, under Images, click AMIs. 3. Confirm the Owned by me is set. 4. Select the AMI from the list. 5. Click on the Permissions Tab 6. If this reads This image is currently Public. Please refer to the remediation below.",
+        "remediation": "Perform the steps below to set an AMIs to Private. From the Console 1. Login to the EC2 console at https://console.aws.amazon.com/ec2/. 2. In the left pane, under Images, click AMIs. 3. Confirm the Owned by me is set. 4. Select the AMI from the list. 5. Click on the Permissions Tab 6. Click on Edit 7. Click on the radio button Private Add AWS Account Number if you have a need to share with other Internal AWS accounts that your Organization owns. References: 1. https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/sharing-amis.html",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/sharing-amis.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit process described in the JSON can be automated using AWS APIs.\n- The AMIs public visibility status can be queried using AWS APIs, specifically with boto3 or AWS CLI commands.\n- This is a standard AWS resource configuration and does not require human judgment or console navigation.\n- The boto3 SDK provides methods to list and describe AMIs, including their permissions.\n\n**PROGRAM NAME:** aws_ec2_ami_public_access_restricted\n\n**AUTOMATION DETAILS:**\n- Use the boto3 SDK with the `ec2` client.\n- Use the `describe_images()` method to list AMIs with the filter `Owners=['self']` to get AMIs owned by the account.\n- Check the `Public` attribute of each AMI in the response to determine if it is publicly available.\n- AWS CLI equivalent: `aws ec2 describe-images --owners self` and check the `Public` field in the output.\n- Enumerate all owned AMIs for the account and region being assessed.\n- Pass criteria: An AMI should not have the `Public` attribute set to `True`.\n- Fail criteria: An AMI has the `Public` attribute set to `True`, indicating it is publicly available.",
+    "timestamp": "2025-10-28T15:35:25.148462",
+    "model": "gpt-4o"
+}

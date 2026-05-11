@@ -1,0 +1,22 @@
+{
+    "control_id": "4.6.1",
+    "unique_id": "gcp_2_4_6_1",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Create administrative boundaries between resources using namespaces",
+    "input_row": {
+        "id": "4.6.1",
+        "unique_id": "gcp_2_4_6_1",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Create administrative boundaries between resources using namespaces",
+        "description": "Use namespaces to isolate your Kubernetes objects.",
+        "rationale": "Limiting the scope of user permissions can reduce the impact of mistakes or malicious activities. A Kubernetes namespace allows you to partition created resources into logically named groups. Resources created in one namespace can be hidden from other namespaces. By default, each resource created by a user in Kubernetes cluster runs in a default namespace, called default. You can create additional namespaces and attach resources and users to them. You can use Kubernetes Authorization plugins to create policies that segregate access to namespace resources between different users. Impact: You need to switch between namespaces for administration.",
+        "audit": "Run the below command and review the namespaces created in the cluster. kubectl get namespaces Ensure that these namespaces are the ones you need and are adequately administered as per your requirements.",
+        "remediation": "Follow the documentation and create namespaces for objects in your deployment as you need them. Default Value: By default, Kubernetes starts with two initial namespaces: 1. default - The default namespace for objects with no other namespace 2. kube-system - The namespace for objects created by the Kubernetes system 3. kube-node-lease - Namespace used for node heartbeats 4. kube-public - Namespace used for public information in a cluster References: 1. https://kubernetes.io/docs/concepts/overview/working-with- objects/namespaces/#viewing-namespaces 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html 3. https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/589- efficient-node-heartbeats",
+        "profile_applicability": "•  Level 1",
+        "impact": "You need to switch between namespaces for administration.",
+        "references": "1. https://kubernetes.io/docs/concepts/overview/working-with- objects/namespaces/#viewing-namespaces 2. http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes- deployment.html 3. https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/589- efficient-node-heartbeats"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\n- The control involves checking the existence and administration of Kubernetes namespaces, which can be queried using Kubernetes tools, specifically `kubectl`.\n- The audit process involves using the `kubectl get namespaces` command, which can be automated to check for the presence of expected namespaces and confirm if they are managed as per the defined policies.\n- Kubernetes namespaces management and its properties are exposed through Kubernetes APIs, making this process automatable.\n\n**PROGRAM NAME:** gcp_gke_namespace_administrative_boundary_enforced\n\n**AUTOMATION DETAILS:**\n\n- Use the `kubectl` tool to interact with the Kubernetes cluster running on GKE.\n- Execute `kubectl get namespaces` to list all namespaces in the cluster. Retrieve the list of namespaces and compare it against expected namespaces for compliance checks.\n- Validate if critical namespaces like `default`, `kube-system`, `kube-node-lease`, and `kube-public` exist and check any additional namespaces created for specific workloads.\n- Verify if namespaces are configured according to organization requirements for partitioning resources and access control policies.\n- Ensure that role-based access control (RBAC) policies are appropriately applied to segregate access.\n- Pass criteria: Only expected and compliant namespaces exist with proper administrative controls applied. \n- Fail criteria: Unexpected namespaces found, or administrative rules are not properly applied on existing namespaces.\n\n**SOURCE:** CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "timestamp": "2025-10-28T21:56:53.933409",
+    "model": "gpt-4o"
+}

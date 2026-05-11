@@ -1,0 +1,17 @@
+{
+    "id": "6.2.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.3",
+        "unique_id": "aks_6.2.3__ensure-no-duplicate-uids-exist",
+        "title": "Ensure no duplicate UIDs exist",
+        "description": "Although the useradd program will not let you create a duplicate User ID (UID), it is possible for an administrator to manually edit the /etc/passwd file and change the UID field.",
+        "rationale": "Users must be assigned unique UIDs for accountability and to ensure appropriate access protections.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash cut -f3 -d\":\" /etc/passwd | sort -n | uniq -c | while read x ; do [ -z \"$x\" ] && break set - $x if [ $1 -gt 1 ]; then users=$(awk -F: '($3 == n) { print $1 }' n=$2 /etc/passwd | xargs) echo \"Duplicate UID ($2): $users\" fi done",
+        "remediation": "Based on the results of the audit script, establish unique UIDs and review all files owned by the shared UIDs to determine which UID they are supposed to belong to. References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access Kubernetes Nodes:**\n   - SSH into each Kubernetes node. This requires appropriate SSH keys or access permissions configured.\n\n2. **Verify UID Uniqueness:**\n   - Run the following command to list UIDs from the /etc/passwd file:\n     ```bash\n     cut -f3 -d\":\" /etc/passwd | sort -n | uniq -c\n     ```\n   - This command will give you a count of UIDs.\n\n3. **Identify Duplicates:**\n   - Analyze the output for any UIDs with a count greater than 1.\n\n4. **Document Findings:**\n   - For each duplicate UID found, run this command to identify the associated usernames:\n     ```bash\n     awk -F: '($3 == n) { print $1 }' n=<duplicate_uid> /etc/passwd\n     ```\n   - Replace `<duplicate_uid>` with the actual UID number.\n\n5. **Expected Secure Configuration:**\n   - Each user should have a unique UID assigned to avoid conflicts.\n\n6. **Confirm Compliance:**\n   - Ensure no UIDs have duplicates by verifying the output from the count command; any duplicates would indicate a non-compliance issue. Document any findings for remediation steps as necessary.\n\nThis process ensures accountability and appropriate access protections by confirming that all user IDs are unique across the Azure Kubernetes Service (AKS) input control policy."
+}

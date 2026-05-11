@@ -1,0 +1,22 @@
+{
+    "control_id": "1.4.11",
+    "unique_id": "k8s_5_1_4_11",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the etcd data directory permissions are set to 700 or more restrictive",
+    "input_row": {
+        "id": "1.4.11",
+        "unique_id": "k8s_5_1_4_11",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the etcd data directory permissions are set to 700 or more restrictive",
+        "description": "Ensure that the etcd data directory has permissions of 700 or more restrictive.",
+        "rationale": "etcd is a highly-available key-value store used by Kubernetes deployments for persistent storage of all of its REST API objects. This data directory should be protected from any unauthorized reads or writes. It should not be readable or writable by any group members or the world.",
+        "audit": "On the etcd server node, get the etcd data directory, passed as an argument --data-dir, from the below command: ps -ef | grep etcd Run the below command (based on the etcd data directory found above). For example, stat -c %a /var/lib/etcd/default.etcd Verify that the permissions are 700 or more restrictive.",
+        "remediation": "On the etcd server node, get the etcd data directory, passed as an argument --data-dir, from the below command: ps -ef | grep etcd Run the below command (based on the etcd data directory found above). For example, chmod 700 /var/lib/etcd/default.etcd Impact: None   109 | P a g e Default Value: By default, etcd data directory has permissions of 700. References: 1. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#data-dir 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None   109 | P a g e Default Value: By default, etcd data directory has permissions of 700.",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#data-dir 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file system permissions of the etcd data directory on the etcd server node(s). The permissions of a directory on the host OS (e.g., /var/lib/etcd/default.etcd) are not exposed via the Kubernetes API, kubectl, or any standard Kubernetes resource or controller configuration. The audit procedure explicitly instructs the operator to run OS-level commands (e.g., stat -c %a /var/lib/etcd/default.etcd) on the etcd host. Kubernetes does not provide an API or kubectl command to directly retrieve or validate host file system permissions for etcd data directories.\n\n**MANUAL STEPS:**\n1. On each etcd server node, determine the etcd data directory by inspecting the etcd process arguments (look for the --data-dir flag).\n2. Log in to the etcd server node using SSH or equivalent access.\n3. Run the following command, replacing <etcd_data_dir> with the actual directory path:\n   ```\n   stat -c %a <etcd_data_dir>\n   ```\n4. Verify that the output is 700 or more restrictive (i.e., only the owner has read, write, and execute permissions; no permissions for group or others).\n5. If the permissions are more permissive than 700, remediate by running:\n   ```\n   chmod 700 <etcd_data_dir>\n   ```\n6. Confirm compliance by re-running the stat command and ensuring the permissions are set to 700.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:47:31.150572",
+    "model": "gpt-4.1"
+}

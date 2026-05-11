@@ -1,0 +1,22 @@
+{
+    "control_id": "7.10",
+    "unique_id": "aws_6_7_10",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure to Configure Backup Window",
+    "input_row": {
+        "id": "7.10",
+        "unique_id": "aws_6_7_10",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure to Configure Backup Window",
+        "description": "",
+        "rationale": "",
+        "audit": "1. Perform Manual Backups (Optional) • If desired, you can also create manual backups of your DocumentDB cluster. • In the cluster details page, navigate to the Backup section. • Click on the Create backup button. • Provide a name for the backup and confirm the action. 2. Restore from Backups (Optional) • If a disaster occurs or you need to restore your DocumentDB cluster to a previous state, you can restore it from the available backups. • In the cluster details page, navigate to the Backup section. • Choose the backup from which you want to restore. • Follow the prompts and provide the necessary information to initiate the restore process. 3. Test Backup and Restore Procedures • Periodically test the backup and restore procedures to ensure they work as expected. • Perform test restores on non-production environments to validate the integrity and completeness of the backup data. 4. Regularly Monitor and Validate Backups • Regularly monitor the backup status and validate that the backups are completed successfully. • Monitor backup storage usage to ensure it is within the desired limits and plan for additional storage as needed.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThis compliance control can be audited using automated tools because configuring a backup window for AWS DocumentDB can be queried and confirmed via AWS APIs, specifically using the `boto3` SDK or AWS CLI commands. The control pertains to standard AWS service properties related to database management, such as backup configurations, which are programmatically accessible.\n\n**PROGRAM NAME:**\n\naws_documentdb_cluster_backup_window_configured\n\n**AUTOMATION DETAILS:**\n\nTo audit the configuration of the backup window for DocumentDB clusters, the automated program would:\n\n- Use the `boto3` SDK to interface with AWS DocumentDB, specifically the `describe_db_clusters` method.\n- Enumerate all DocumentDB clusters in the account across all available regions.\n- For each cluster, retrieve the properties and check the `PreferredBackupWindow` attribute.\n- Validate that a `PreferredBackupWindow` is set, indicating a backup window is configured.\n- Pass/Fail Criteria:\n  - **Pass**: A valid backup window configured with a specified time range (e.g., \"hh24:mi-hh24:mi\" in a consistent daily time window).\n  - **Fail**: The `PreferredBackupWindow` is empty or set to the default without specific times.\n\nThe validation ensures that DocumentDB clusters have a designated time window for automated backups, which is critical for data protection and integrity.",
+    "timestamp": "2025-10-28T15:59:38.317185",
+    "model": "gpt-4o"
+}

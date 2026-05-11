@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.2",
+    "unique_id": "aws_2_4_1_2",
+    "source": "CIS AMAZON ELASTIC KUBERNETES SERVICE (EKS) BENCHMARK V1.6.0",
+    "title": "Minimize access to secrets",
+    "input_row": {
+        "id": "4.1.2",
+        "unique_id": "aws_2_4_1_2",
+        "source": "CIS AMAZON ELASTIC KUBERNETES SERVICE (EKS) BENCHMARK V1.6.0",
+        "title": "Minimize access to secrets",
+        "description": "The Kubernetes API stores secrets, which may be service account tokens for the Kubernetes API or credentials used by workloads in the cluster. Access to these secrets should be restricted to the smallest possible group of users to reduce the risk of privilege escalation.",
+        "rationale": "Inappropriate access to secrets stored within the Kubernetes cluster can allow for an attacker to gain additional access to the Kubernetes cluster or external resources whose credentials are stored as secrets. Impact: Care should be taken not to remove access to secrets to system components which require this for their operation",
+        "audit": "Review the users who have get, list or watch access to secrets objects in the Kubernetes API.",
+        "remediation": "Where possible, remove get, list and watch access to secret objects in the cluster. Default Value: By default, the following list of principals have get privileges on secret objects CLUSTERROLEBINDING                                    SUBJECT TYPE            SA-NAMESPACE cluster-admin                                         system:masters Group system:controller:clusterrole-aggregation-controller  clusterrole- aggregation-controller  ServiceAccount  kube-system system:controller:expand-controller                   expand-controller ServiceAccount  kube-system system:controller:generic-garbage-collector           generic-garbage- collector           ServiceAccount  kube-system system:controller:namespace-controller                namespace-controller ServiceAccount  kube-system system:controller:persistent-volume-binder            persistent-volume- binder            ServiceAccount  kube-system system:kube-controller-manager                        system:kube-controller- manager      User",
+        "profile_applicability": "•  Level 1",
+        "impact": "Care should be taken not to remove access to secrets to system components which require this for their operation",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control focuses on restricting access to Kubernetes secrets, specifically the ability for users to have \"get\", \"list\", or \"watch\" permissions on secrets objects through the Kubernetes API. This requires a review of role-based access control (RBAC) settings within the Kubernetes environment. Since this involves evaluating specific roles and permissions configured within the Kubernetes cluster, it is not directly checkable through AWS APIs, boto3, or the AWS CLI, which are primarily designed for AWS resources rather than in-cluster Kubernetes resources.\n\n**MANUAL STEPS:**\n1. **Access Kubernetes Cluster Roles:**\n   - Use `kubectl get rolebindings --all-namespaces` and `kubectl get clusterrolebindings` to list all role bindings and cluster role bindings that grant permissions.\n   \n2. **Review Role Permissions:**\n   - For each role or cluster role, use `kubectl get role <role-name> -o yaml` or `kubectl get clusterrole <clusterrole-name> -o yaml` to examine the permissions.\n   - Check specifically for \"get\", \"list\", and \"watch\" permissions on \"secrets\".\n\n3. **Verify Secure Configuration:**\n   - Ensure that only necessary users, groups, or service accounts have these permissions. Refer to the default principals listed in the control for guidance.\n\n4. **Confirm Compliance:**\n   - Validate that all unnecessary permissions to secrets for ordinary users are removed, and that system components requiring access, as mentioned in the remediation, retain their necessary permissions.\n\nSince this control requires evaluating Kubernetes-specific configurations regarding access to secrets, a manual approach is warranted. This involves interaction with the Kubernetes RBAC configurations and does not involve direct AWS API calls.",
+    "timestamp": "2025-10-28T15:03:47.352145",
+    "model": "gpt-4o"
+}

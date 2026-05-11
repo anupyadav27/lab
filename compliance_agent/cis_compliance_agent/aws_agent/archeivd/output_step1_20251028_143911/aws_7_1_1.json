@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1",
+    "unique_id": "aws_7_1_1",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "title": "AWS Storage Backups",
+    "input_row": {
+        "id": "1.1",
+        "unique_id": "aws_7_1_1",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+        "title": "AWS Storage Backups",
+        "description": "AWS Storage Backups is a managed AWS Service that establishes high resiliency to your cloud resources. AWS Storage Backups are like making extra copies of your important stuff on Amazon's computers. It is an excellent strategy to ensure that the data and resources you use remain available in the event of unrecoverable damage or loss to your resources.",
+        "rationale": "AWS Backups enable you to back up and restore all data lost during the attack,While AWS Storage Backups provide a level of security, there are numerous methods to fortify your backups, ensuring the protection of your data and services.",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nUpon analyzing the fields provided in the input, it is noted that the control \"AWS Storage Backups\" does not have specific audit instructions. However, given that AWS Backups and AWS Storage services are standard AWS features, their verification can be automated using AWS APIs. Common practices include ensuring that AWS Storage services like S3, EFS, or RDS have backups configured properly, which can be checked programmatically.\n\n- AWS APIs such as boto3 provide methods to list backup configurations for services like AWS Backup. \n- Services such as AWS Backup can be queried using AWS CLI or boto3 to check for existing backup plans and the status of backups.\n\nTherefore, enabling monitoring and verification of backup settings can be fully automated.\n\n**PROGRAM NAME:** aws_backup_plan_enabled_for_resources\n\n**AUTOMATION DETAILS:**\n\n- **AWS API Calls**: Use `boto3` to interact with AWS Backup service. Specifically, `boto3.client('backup')` to invoke methods like `list_backup_vaults()` and `list_backup_plans()`.\n- **AWS CLI Commands**: Command such as `aws backup list-backup-plans` can be used to enumerate backup plans.\n- **Resources to Enumerate**: Check for backup plans and backup vaults in all active AWS Regions for covered resource types (such as S3, EFS, RDS, EC2 volumes).\n- **Configuration Properties**: Validate that backup plans are enabled and linked to appropriate resources ensuring that they cover critical data storage services.\n- **Pass/Fail Criteria**: \n  - Pass: When backups are scheduled and operational for all critical service resources.\n  - Fail: If there are no backup plans or if critical resources lack associated backup plans.\n\nThe goal is to ensure that backup configurations are in place for recovery to mitigate data loss and fulfill compliance requirements related to data resilience.",
+    "timestamp": "2025-10-28T16:06:53.681774",
+    "model": "gpt-4o"
+}

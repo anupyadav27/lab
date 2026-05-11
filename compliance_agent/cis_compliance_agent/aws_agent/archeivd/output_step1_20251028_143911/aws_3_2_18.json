@@ -1,0 +1,22 @@
+{
+    "control_id": "2.18",
+    "unique_id": "aws_3_2_18",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure Radius server is using the recommended security protocol",
+    "input_row": {
+        "id": "2.18",
+        "unique_id": "aws_3_2_18",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure Radius server is using the recommended security protocol",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Perform the steps below to set the protocol to MS-CHAPv2 for multi-factor authentication. From the console: For AWS Managed AD based environments; 1. Log in to the Directory Service console at https://console.aws.amazon.com/directoryservicev2 2. In the left pane select Directories. 3. On the Directory details page, select the Networking & security tab. 4. In the Multi-factor authentication section, choose Actions, and then choose Edit. 5. On the Enable multi-factor authentication (MFA) page change the following value: 6. Protocol - MS-CHAPv2 7. Click Save. For directory connector / self-managed AD environments 1. Log in to the AWS Workspaces console at https://console.aws.amazon.com/workspaces 2. In the left pane select Directories. 3. Select the directory ID link for your AWS Managed Microsoft AD directory. 4. On the Directories page, scroll to the Multi-factor authentication section and select Edit. 5. In the Multi-factor authentication section modify the protocol using the dropdown menu to be MS-CHAPv2 from the currently selected option. 6. Click Save once settings are as desired. Default Value: By default, this is dependent on your RADIUS server. References: 1. https://aws.amazon.com/blogs/security/how-to-enable-multi-factor-authentication- for-amazon-workspaces-and-amazon-quicksight-by-using-microsoft-ad-and-on- premises-credentials/ 2. https://docs.aws.amazon.com/directoryservice/latest/admin- guide/ms_ad_mfa.html CIS Controls:",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires checking the configuration of the RADIUS server's security protocol to ensure it is set to MS-CHAPv2 for multi-factor authentication in both AWS Managed AD and directory connector/self-managed AD environments. This setting is primarily configured through the AWS Management Console and not exposed directly via an AWS API. The control mandates steps through a UI-based process, involves navigating the AWS Directory Service and AWS WorkSpaces consoles, and requires modifying the security protocol setting through dropdown menus, which are not available via API calls or command-line tools.\n\nThe absence of direct API exposure for this specific configuration and dependency on administrative UI access means human judgment and step-by-step console navigation are required to verify compliance.\n\n**MANUAL STEPS:**\n1. **AWS Managed AD:**\n   - Log in to the AWS Directory Service console at https://console.aws.amazon.com/directoryservicev2.\n   - Navigate to \"Directories\" in the left pane.\n   - On the Directory details page, select the \"Networking & security\" tab.\n   - In the \"Multi-factor authentication\" section, choose \"Actions\" and then \"Edit.\"\n   - Ensure the \"Protocol\" is set to \"MS-CHAPv2\" and click \"Save.\"\n   - Confirm that the protocol change has been saved successfully.\n\n2. **Directory Connector/Self-managed AD:**\n   - Log in to the AWS Workspaces console at https://console.aws.amazon.com/workspaces.\n   - Select \"Directories\" from the left pane.\n   - Click on the directory ID link for your AWS Managed Microsoft AD directory.\n   - On the Directories page, scroll to the \"Multi-factor authentication\" section and select \"Edit.\"\n   - Ensure the protocol is set to \"MS-CHAPv2\" from the dropdown menu and save the settings.\n   - Verify that the protocol is set correctly and saved.\n\nThese steps ensure compliance by manually verifying and setting the recommended security protocol for the RADIUS server as per the provided console paths and settings.",
+    "timestamp": "2025-10-28T15:18:04.547905",
+    "model": "gpt-4o"
+}

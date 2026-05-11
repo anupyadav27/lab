@@ -1,0 +1,33 @@
+{
+    "control_id": "3.1.4",
+    "unique_id": "k8s_5_3_1_4",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --insecure-bind-address argument is not set",
+    "input_row": {
+        "id": "3.1.4",
+        "unique_id": "k8s_5_3_1_4",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --insecure-bind-address argument is not set",
+        "description": "Do not bind to insecure addresses.",
+        "rationale": "If you bind the federation apiserver to an insecure address, basically anyone who could connect to it over the insecure port, would have unauthenticated and unencrypted access to it. The federation apiserver doesn't do any authentication checking for insecure binds and neither the insecure traffic is encrypted. Hence, you should not bind the federation apiserver to an insecure address.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --insecure-bind-address argument does not exist or is set to 127.0.0.1.",
+        "remediation": "Edit the deployment specs and remove --insecure-bind-address. kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: None Default Value: By default, insecure bind address is set to 127.0.0.1. References: 1. https://kubernetes.io/docs/admin/federation-apiserver/  191 | P a g e 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, insecure bind address is set to 127.0.0.1.",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver/  191 | P a g e 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_federation_apiserver_insecure_bind_address_disabled\n\n**AUTOMATION DETAILS:**\n- Query the federation-apiserver Deployment in the federation-system namespace using the Kubernetes API or kubectl.\n- Inspect the container spec(s) for the federation-apiserver pod(s) and enumerate the command and args fields.\n- Specifically, check for the presence of the --insecure-bind-address argument:\n  - Pass if --insecure-bind-address is not present, or if it is set to 127.0.0.1.\n  - Fail if --insecure-bind-address is set to any value other than 127.0.0.1.\n- Example kubectl command:\n  ```\n  kubectl -n federation-system get deployment federation-apiserver-deployment -o json | jq '.spec.template.spec.containers[].args'\n  ```\n- Alternatively, use the Kubernetes API to retrieve the Deployment spec and parse the args/command fields for the federation-apiserver container.\n- Pass/Fail Criteria:\n  - Pass: --insecure-bind-address is absent or set to 127.0.0.1\n  - Fail: --insecure-bind-address is set to any other address (e.g., 0.0.0.0, public IP, etc.)",
+    "timestamp": "2025-10-29T21:54:56.802630",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification as Automated is correct. This control can be effectively checked using Kubernetes APIs or `kubectl`, which aligns with the automated approach.\n- The use of `kubectl` and Kubernetes API to query the deployment and inspect the container specifications is appropriate for this control.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly correct. The `kubectl` command provided is valid, and the use of `jq` to parse JSON output is a common practice.\n- The approach correctly identifies the need to check for the presence and value of the `--insecure-bind-address` argument.\n- However, the program name could be more descriptive. It currently doesn't specify the exact nature of the check (e.g., 'bind_address').\n\n**IMPROVEMENTS:**\n- The program name could be improved for clarity and convention adherence. A better name might be `k8s_federation_apiserver_deployment_insecure_bind_address_check`.\n- Consider checking both `command` and `args` fields, as arguments can be specified in either.\n- Ensure the check is comprehensive by also verifying if the `--insecure-bind-address` is set to `0.0.0.0` or any public IP, which are common insecure settings.\n- An alternative method could involve using Kubernetes SDKs (e.g., client-go for Go, or client libraries for Python) to programmatically access and verify configurations.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded with a clear understanding of how to automate the check using Kubernetes tools.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the program name to be more descriptive and ensure it follows the naming convention. Consider adding checks for both `command` and `args` fields to ensure comprehensive coverage.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:29:13.739348",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nBoth AI opinions agree that this control can be effectively checked using Kubernetes APIs or `kubectl`, which supports an automated approach. The audit steps provided in the compliance control data can be executed programmatically, allowing for efficient and consistent verification of the `--insecure-bind-address` argument.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nk8s_federation_apiserver_insecure_bind_address_check\n\n**AUTOMATION DETAILS:**\n- Kubernetes Resource/Service: Deployments\n- API/CLI Method: `kubectl get deployment`\n- Properties to Check: The `args` field of the federation-apiserver container specification\n- Pass Criteria: `--insecure-bind-address` is absent or set to `127.0.0.1`\n- Fail Criteria: `--insecure-bind-address` is set to any other address (e.g., `0.0.0.0`, public IP, etc.)",
+        "final_approach": "Automated",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T03:16:24.030853"
+    }
+}

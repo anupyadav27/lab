@@ -1,0 +1,17 @@
+{
+    "id": "6.2.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.2",
+        "unique_id": "aks_6.2.2__ensure-all-groups-in-/etc/passwd-exist-in-/etc/group",
+        "title": "Ensure all groups in /etc/passwd exist in /etc/group",
+        "description": "Over time, system administration errors and changes can lead to groups being defined in /etc/passwd but not in /etc/group .",
+        "rationale": "Groups defined in the /etc/passwd file but not in the /etc/group file pose a threat to system security since group permissions are not properly managed.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash for i in $(cut -s -d: -f4 /etc/passwd | sort -u ); do grep -q -P \"^.*?:[^:]*:$i:\" /etc/group if [ $? -ne 0 ]; then echo \"Group $i is referenced by /etc/passwd but does not exist in /etc/group\" fi done",
+        "remediation": "Analyze the output of the Audit step above and perform the appropriate action to correct any discrepancies found. References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH into the Kubernetes nodes:**\n   - Use the Azure portal or your preferred method to access the Kubernetes cluster.\n   - Identify the nodes running in your cluster and connect via SSH using the appropriate credentials.\n\n2. **Access the `/etc/passwd` and `/etc/group` files:**\n   - Once logged in to each node, open a terminal.\n   - Execute the command `cat /etc/passwd` to display the contents of the `/etc/passwd` file.\n   - Execute the command `cat /etc/group` to display the contents of the `/etc/group` file.\n\n3. **Verify group entries:**\n   - Compare the groups (fourth field in `/etc/passwd`) with the entries in `/etc/group`.\n   - Check if each group listed in `/etc/passwd` has a corresponding entry in `/etc/group`.\n\n4. **Analyze discrepancies:**\n   - For any group listed in `/etc/passwd` that does not exist in `/etc/group`, document these discrepancies.\n\n5. **Take corrective action:**\n   - Update the `/etc/group` file as needed to add any missing groups or remove invalid entries.\n\n**Expected secure configuration:**\n- All groups mentioned in `/etc/passwd` must have corresponding entries in `/etc/group`.\n\n6. **How to confirm compliance:**\n   - After making necessary changes, re-run the commands to check if discrepancies still exist.\n   - Ensure that the final output shows no groups from `/etc/passwd` are missing in `/etc/group`."
+}

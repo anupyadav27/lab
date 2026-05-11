@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.9__ensure-app-service-environment-has-tls-1.0-and-1.1-disabled",
+    "control_id": "2.9",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control is about ensuring TLS 1.0 and 1.1 are disabled in App Service Environments. This property can be queried via Azure Resource Manager APIs or Azure CLI.\n- The remediation steps provide clear instructions based on the Azure Portal, indicating that there are settings available through APIs to modify or check this property.\n- The references include official Azure documentation for app service environments, which typically exposes these configuration settings via APIs.\n\n**PROGRAM NAME:** azure_app_service_environment_tls_disabled\n\n**AUTOMATION DETAILS:**\n- The automated program will use the Azure Resource Manager (ARM) API or Azure CLI to check the configuration of App Service Environments related to TLS settings.\n- Specific resources to enumerate: All App Service Environments within the subscription.\n- Configuration properties/settings to validate: The properties relating to \"Allow TLS 1.0 and 1.1\" should be checked to confirm they are set to \"Off\".\n- Pass/Fail criteria: \n  - Pass if \"Allow TLS 1.0\" and \"Allow TLS 1.1\" properties are both set to \"Off\".\n  - Fail if either property is set to \"On\".\n\n**Example CLI Command:**\n```bash\naz appservice environment show --name <app_service_environment_name> --resource-group <resource_group_name> --query \"properties.allowTls1_0, properties.allowTls1_1\"\n```\n\nExpected output:\n- For compliance: \n  - `\"allowTls1_0\": false`\n  - `\"allowTls1_1\": false`\n\nThe program would loop through all App Service Environments, applying the above checks, and report whether the configuration is compliant with the security intent of having these protocols disabled."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- **Manual vs Automated Classification:** The classification as Automated is correct. The ability to query and modify TLS settings via Azure Resource Manager APIs and Azure CLI supports an automated approach.\n- **Azure APIs/CLI Capability:** The control can indeed be checked via Azure APIs/CLI, as demonstrated by the provided CLI command. Azure Resource Manager APIs and Azure CLI are appropriate tools for this task.\n\n**TECHNICAL ACCURACY:** 9\n\n- **Automation Details:** The automation details are technically accurate. The use of Azure CLI to query the TLS settings is correct, and the pass/fail criteria are well-defined.\n- **Manual Steps:** While the focus is on automation, the audit could benefit from a brief mention of manual verification steps using the Azure Portal for completeness.\n- **Program Name Convention:** The program name follows the convention: `azure_app_service_environment_tls_disabled`, which is clear and descriptive.\n\n**IMPROVEMENTS:**\n\n- **Additional Considerations:** It would be beneficial to include a fallback mechanism in case the CLI command fails or returns unexpected results, such as logging errors or retrying the operation.\n- **Alternative Approach:** Consider using Azure Policy to enforce TLS settings compliance, which can provide continuous monitoring and automatic remediation capabilities.\n- **Documentation Reference:** Include links to the specific Azure documentation pages for TLS configuration in App Service Environments to aid in understanding and remediation.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded, and the technical details align with Azure's capabilities for managing App Service Environment settings.\n\n**FINAL RECOMMENDATION:** Keep as-is\n\n- The automated approach is appropriate, and the technical execution is sound. Minor improvements could enhance robustness and documentation, but the current assessment is fundamentally accurate and effective.",
+        "reviewed_at": "2025-10-26T15:22:58.847553"
+    },
+    "input_row": {
+        "id": "2.9",
+        "unique_id": "2.9__ensure-app-service-environment-has-tls-1.0-and-1.1-disabled",
+        "title": "Ensure App Service Environment has TLS 1.0 and 1.1 disabled",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Go to App Service Environments. 2. Click the name of an App Service Environment. 3. Under Settings, click Configuration. 4. Next to Allow TLS 1.0 and 1.1, click the radio button next to Off. 5. Click Save. 6. Click Continue. 7. Repeat steps 1-6 for each App Service Environment requiring remediation. Default Value: TLS 1.0 and 1.1 are allowed by default. References: 1. https://learn.microsoft.com/en-us/azure/app-service/environment/app-service- app-service-environment-custom-settings 2. https://learn.microsoft.com/en-us/cli/azure/appservice/ase CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "metadata": {
+        "original_file": "2.9.json",
+        "review_version": "1.0"
+    }
+}

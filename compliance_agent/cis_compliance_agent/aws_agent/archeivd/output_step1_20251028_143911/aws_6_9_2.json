@@ -1,0 +1,22 @@
+{
+    "control_id": "9.2",
+    "unique_id": "aws_6_9_2",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure Data at Rest is Encrypted",
+    "input_row": {
+        "id": "9.2",
+        "unique_id": "aws_6_9_2",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure Data at Rest is Encrypted",
+        "description": "This helps ensure that the data is kept secure and protected when at rest. The user must choose from two key options which then determine when the data is encrypted at rest.",
+        "rationale": "Impact: If an unauthorized user steals the data, it would be unreadable for them because a key would be required to decrypt the message into plaintext.",
+        "audit": "1. Sign into the AWS Management Console • Sign into the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the Amazon Neptune Console • Navigate to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/neptune/. 3. Select the Neptune Cluster • Choose the Amazon Neptune cluster for which you want to enable encryption at rest. • Click on the cluster name to access its details page. 4. Enable Encryption at Rest • In the cluster details page, navigate to the Configuration or Encryption at Rest section. • Under Encryption at Rest, click on Modify. • In the Encryption at Rest dialog box, select the encryption option you prefer: o AWS managed key (default): Choose this option to use the default AWS managed key for encryption. o Customer-managed key (CMK): Choose this option if you want to use your own AWS Key Management Service (KMS) customer-managed key for encryption. Select the appropriate CMK from the dropdown menu.  • Click Apply Changes to enable encryption at rest for the Neptune cluster. 5. Verify Encryption Status • Wait a few minutes for the changes and configuration to take effect. • Refresh the cluster details page to see the updated encryption status. • Verify that encryption at rest is enabled for the Neptune cluster.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "If an unauthorized user steals the data, it would be unreadable for them because a key would be required to decrypt the message into plaintext.",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The encryption status of an Amazon Neptune cluster, which is part of AWS services, can be programmatically verified using AWS APIs.\n- The encryption configuration, such as whether an AWS-managed key or a customer-managed key is used, is explicitly set and can be queried using AWS SDK or CLI.\n- AWS provides APIs (via boto3 or AWS CLI) to check the encryption settings on Neptune clusters.\n- This check aligns with standard AWS resource properties commonly exposed via APIs.\n\n**PROGRAM NAME:** aws_neptune_cluster_encryption_at_rest_enabled\n\n**AUTOMATION DETAILS:**\n- Use the boto3 SDK to interact with the AWS Neptune service.\n- Call `describe_db_clusters()` from the boto3 Neptune client to retrieve properties of all DB clusters in the account.\n- Enumerate each cluster and check the \"StorageEncrypted\" status, which indicates if encryption at rest is enabled.\n- Also, ensure the \"KmsKeyId\" is present to verify if encryption is leveraging a specific KMS key.\n- Validate that `StorageEncrypted` is set to `True`.\n- If \"StorageEncrypted\" is `True`, the control passes, ensuring encryption at rest.\n- If absent or false, the control fails, indicating a lack of encryption.\n\nThese automation steps ensure that the Neptune clusters have encryption at rest enabled, as per the compliance benchmark, and leverage AWS’s robust API functionality for verification.",
+    "timestamp": "2025-10-28T16:01:18.898223",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "4.1",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "4.1",
+        "unique_id": "row305_4.1__ensure-ssl-is-configured-for-cyclecloud",
+        "title": "Ensure SSL is configured for CycleCloud",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "From SSH 1. Establish a secure shell session with the Azure CycleCloud server. 2. Navigate to the CycleCloud installation directory. 3. Use a text editor (e.g. Vim, Nano, Emacs) to open the cycle_server.properties file. 4. Edit the following properties to reflect true: webServerEnableHttps=true webServerRedirectHttp=true  5. Save and exit from the text editor. 6. Restart the CycleCloud service to enable the new property definitions: /opt/cycle_server/cycle_server restart Default Value: By default, CycleCloud is configured to use Java IO HTTPS with a Let's Encrypt SSL certificate, or self-signed certificate. References: 1. https://learn.microsoft.com/en-us/azure/cyclecloud/how-to/ssl- configuration?view=cyclecloud-8 2. https://learn.microsoft.com/en-us/azure/cyclecloud/concepts/security-best- practices?view=cyclecloud-8 CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Establish an SSH session to the CycleCloud server**  \n   - Use an SSH client to connect to the Azure CycleCloud server. You will need the server's IP address and appropriate credentials.\n\n2. **Navigate to CycleCloud installation directory**  \n   - Change to the CycleCloud installation directory using the command:  \n     ```bash\n     cd /opt/cycle_server/\n     ```\n\n3. **Open the `cycle_server.properties` file**  \n   - Use a text editor (Vim, Nano, or Emacs) to open the file:  \n     ```bash\n     vim cycle_server.properties\n     ```\n\n4. **Verify the configuration of SSL**  \n   - Check for the following entries in the file:  \n     ```plaintext\n     webServerEnableHttps=true\n     webServerRedirectHttp=true\n     ```\n   - Ensure both settings reflect 'true'.\n\n5. **Modify the configuration if necessary**  \n   - If either value is set to 'false', change them to 'true'. Save and exit the text editor.\n\n6. **Restart the CycleCloud service**  \n   - Execute the restart command to apply changes:  \n     ```bash\n     /opt/cycle_server/cycle_server restart\n     ```\n\n7. **Confirm compliance**  \n   - After restarting, repeat the verification in step 4 to ensure settings are correctly applied and the server is using HTTPS.\n\n8. **Document findings**  \n   - Record the current state of configuration settings for future reference and compliance checks.  \n\nExpected secure configuration is for both `webServerEnableHttps` and `webServerRedirectHttp` to be set to 'true', with the CycleCloud service correctly restarted to reflect changes. Check the service status if any issues arise post-restart to ensure it is operational."
+}

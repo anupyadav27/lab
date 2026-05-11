@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.10",
+    "unique_id": "k8s_7_1_1_10",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the Container Network Interface file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.10",
+        "unique_id": "k8s_7_1_1_10",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the Container Network Interface file ownership is set to root:root",
+        "description": "Ensure that the Container Network Interface files have ownership set to root:root.",
+        "rationale": "Container Network Interface provides various networking options for overlay networking. You should consult their documentation and restrict their respective file permissions to maintain the integrity of those files. Those files should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G <path/to/cni/files> Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root <path/to/cni/files> Default Value: NA References: 1. https://kubernetes.io/docs/concepts/cluster-administration/networking/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/cluster-administration/networking/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) for Container Network Interface (CNI) files on the host filesystem. The Kubernetes API and kubectl do not expose or provide methods to query file ownership or permissions on the underlying host OS. This check requires direct access to the node's file system, typically via SSH or similar means, to run OS-level commands (e.g., stat, ls -l) on the relevant CNI file paths. Therefore, this control cannot be automated via Kubernetes APIs or kubectl and must be performed manually.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Identify the directory where CNI binaries and configuration files are stored (commonly /etc/cni/net.d/ and /opt/cni/bin/).\n3. For each file in these directories, run:\n   - `stat -c %U:%G <path/to/cni/file>`\n   - Or: `ls -l <path/to/cni/file>`\n4. Verify that the owner and group for each file is set to root:root.\n5. If any file is not owned by root:root, remediate by running:\n   - `chown root:root <path/to/cni/file>`\n6. Confirm compliance by ensuring all relevant files are owned by root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:23:25.445341",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Manual is correct. The Kubernetes API and kubectl do not provide capabilities to inspect file ownership on the host filesystem. This task requires direct interaction with the node's operating system, which is outside the scope of Kubernetes API capabilities. Therefore, manual verification via SSH is necessary.\n\n**TECHNICAL ACCURACY:** 9\n\n- The manual steps provided are technically accurate and complete for verifying file ownership. The use of `stat` and `ls -l` commands is appropriate for checking file ownership. The remediation step using `chown` is also correct.\n- The program name convention (k8s_<service>_<resource>_<specific_detailed_security_check>) is not applicable here as this is a manual check and not a script or program. However, the description is clear and descriptive about the security check being performed.\n\n**IMPROVEMENTS:**\n\n- Consider documenting the specific paths to check for CNI files, as these can vary depending on the Kubernetes distribution or custom configurations.\n- While the manual approach is necessary, consider developing a script to automate the SSH and file checking process to reduce human error and improve efficiency.\n- Ensure that any remediation actions are logged and reviewed to maintain an audit trail.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded and aligns with the limitations of Kubernetes API capabilities. The manual steps are clear and accurate, providing confidence in the assessment's validity.\n\n**FINAL RECOMMENDATION:** Keep as-is\n\n- The assessment is accurate and does not require changes. The manual approach is justified given the current capabilities of Kubernetes and its CLI tools.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T01:33:19.076571"
+}

@@ -1,0 +1,31 @@
+{
+    "unique_id": "5.2.17__ensure-ssh-maxstartups-is-configured",
+    "control_id": "5.2.17",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access SSH Configuration Files:**\n   - SSH into the Azure Kubernetes Service (AKS) node where the SSH daemon is running.\n   - You can access the node using the Azure portal or Azure CLI to get the node's public IP address.\n\n2. **Verify MaxStartups Configuration:**\n   - Run the command: \n     ```bash\n     grep -Pis '^\\h*maxstartups\\h+' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf\n     ```\n   - What to verify: Ensure that the output does not return any lines, indicating that `MaxStartups` is not configured in any conflicting sections.\n\n3. **Check Output for Compliance:**\n   - Additionally, run: \n     ```bash\n     sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep -i maxstartups\n     ```\n   - Expected secure configuration: The output should state `maxstartups 10:30:100` or a more restrictive value.\n\n4. **Confirm Compliance:**\n   - If you find any results (especially if `MaxStartups` does not meet the secure configuration as specified), document them for remediation as outlined in the remediation section of the control.\n\nBy following these steps, one can manually audit the SSH MaxStartups configuration on the Azure Kubernetes Service nodes."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The classification as a manual approach is partially appropriate. While the steps outlined are manual, there are opportunities to automate this process using Azure capabilities.\n- **Azure APIs/CLI Capabilities:** Azure provides several tools that could automate this check. For instance, Azure CLI or Azure PowerShell can be used to execute scripts remotely on AKS nodes. Additionally, Azure Policy or Azure Automation can be leveraged to enforce and audit configurations across multiple nodes.\n\n**TECHNICAL ACCURACY:** 7\n\n- **Automation Details:** The assessment lacks automation details, which could be improved by leveraging Azure Automation or scripting capabilities.\n- **Manual Steps Accuracy:** The manual steps are generally accurate for checking the SSH configuration directly on the AKS nodes. However, accessing AKS nodes directly is not a recommended practice due to security concerns.\n- **Program Naming Convention:** The program name does not follow a specific naming convention, but the manual steps are clear.\n\n**IMPROVEMENTS:**\n\n- **Automation Opportunities:** Consider using Azure Automation or Azure CLI scripts to automate the SSH configuration checks. This can be done by deploying a script to run on all nodes within an AKS cluster.\n- **Security Considerations:** Directly accessing AKS nodes for configuration checks is not ideal. Instead, consider using Azure Policy to enforce and audit SSH configurations.\n- **Alternative Approach:** Use Azure Policy to define and enforce the desired state for SSH configurations, including `MaxStartups`. This would provide a more scalable and secure solution.\n\n**CONFIDENCE:** MEDIUM\n\n- The manual steps are technically correct, but the approach could be improved by leveraging Azure's automation capabilities. The current method is not scalable or secure for large environments.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Justification:** Modify the assessment to include automated checks using Azure CLI or PowerShell scripts. Consider implementing Azure Policy to enforce and audit SSH configurations across AKS nodes. This would enhance security and scalability, reducing the need for direct node access.",
+        "reviewed_at": "2025-10-26T15:59:46.247615"
+    },
+    "input_row": {
+        "id": "5.2.17",
+        "unique_id": "5.2.17__ensure-ssh-maxstartups-is-configured",
+        "title": "Ensure SSH MaxStartups is configured",
+        "description": "The MaxStartups parameter specifies the maximum number of concurrent unauthenticated connections to the SSH daemon.",
+        "rationale": "To protect a system from denial of service due to a large number of pending authentication connection attempts, use the rate limiting function of MaxStartups to protect availability of sshd logins and prevent overwhelming the daemon.",
+        "audit": "Run the following command: # sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep -i maxstartups Verify that output MaxStartups is 10:30:100 or more restrictive: maxstartups 10:30:100 Run the following command and verify the output: # grep -Pis '^\\h*maxstartups\\h+\"?(((0|1[1-9]|[1-9][0-9]{2,}):([0-9]+):([0- 9]+))|(([0-9]+):(0|3[1-9]|[4-9][0-9]|[1-9][0-9][0-9]+):([0-9]+))|(([0- 9]+):([0-9]+):(0|10[1-9]|1[1-9][0-9]|[2-9][0-9]{2}|[1-9][0-9]{3,})))\\b' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf Nothing should be returned. Note: If Include locations besides, or in addition to /etc/ssh/sshd_config.d/*.conf and/or Match set statements are used in your environment, those locations should be checked for the correct configuration as well.",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter above any Include entries as follows: MaxStartups 10:30:100 Note: First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a file in Include location. Default Value: MaxStartups 10:30:100 References: 1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "5.2.17.json",
+        "review_version": "1.0"
+    }
+}

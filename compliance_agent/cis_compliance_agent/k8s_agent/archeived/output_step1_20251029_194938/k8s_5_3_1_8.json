@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.8",
+    "unique_id": "k8s_5_3_1_8",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the admission control policy is not set to AlwaysAdmit",
+    "input_row": {
+        "id": "3.1.8",
+        "unique_id": "k8s_5_3_1_8",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the admission control policy is not set to AlwaysAdmit",
+        "description": "Do not allow all requests.",
+        "rationale": "Setting admission control policy to AlwaysAdmit allows all requests and do not filter any requests.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --admission-control argument is set to a value that does not include AlwaysAdmit.",
+        "remediation": "Edit the deployment specs and set --admission-control argument to a value that does not include AlwaysAdmit. kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: Only requests explicitly allowed by the admissions control policy would be served. Default Value: By default, AlwaysAdmit is used if no --admission-control flag is provided. References: 1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml  199 | P a g e 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Only requests explicitly allowed by the admissions control policy would be served. Default Value: By default, AlwaysAdmit is used if no --admission-control flag is provided.",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml  199 | P a g e 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_always_admit_disabled\n\n**AUTOMATION DETAILS:**\n- Query the deployment or pod specification for the federation-apiserver (typically in the namespace `federation-system`).\n- Use the Kubernetes API or `kubectl` to retrieve the command and arguments for the federation-apiserver container.\n    - Example command:  \n      ```\n      kubectl -n federation-system get deployment federation-apiserver-deployment -o json\n      ```\n    - Or, for pods:\n      ```\n      kubectl -n federation-system get pods -l app=federation-apiserver -o json\n      ```\n- Inspect the `spec.containers[].command` and/or `spec.containers[].args` fields for the presence of the `--admission-control` (or `--enable-admission-plugins` in newer versions) argument.\n- Validate that the argument does NOT include `AlwaysAdmit`.\n- Also verify that if the `--admission-control` flag is omitted, the default is NOT `AlwaysAdmit` (per the benchmark, AlwaysAdmit is the default if not set).\n- **Pass Criteria:**  \n  - The `--admission-control` (or equivalent) argument is present and does NOT include `AlwaysAdmit`.\n  - If the argument is missing, this is a fail (since the default is insecure).\n- **Fail Criteria:**  \n  - The `--admission-control` argument includes `AlwaysAdmit`, or is missing entirely.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:55:29.154684",
+    "model": "gpt-4.1"
+}

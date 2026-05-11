@@ -1,0 +1,37 @@
+{
+    "unique_id": "2.2.16__ensure-all-traffic-is-routed-through-the-virtual-network",
+    "control_id": "2.2.16",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.2.16",
+        "unique_id": "2.2.16__ensure-all-traffic-is-routed-through-the-virtual-network",
+        "title": "Ensure all traffic is routed through the virtual network",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Networking. 6. Under Outbound traffic configuration, next to Virtual network integration, click the virtual network and subnet name. 7. Under Application routing, check the box next to Outbound internet traffic. 8. Click Apply. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to route all traffic through the virtual network: az resource update --resource-group <resource-group-name> --name <app- name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" -- set properties.vnetRouteAllEnabled=true Default Value: For deployment slots integrated with a virtual network, all traffic is routed through the virtual network by default. References: 1. https://learn.microsoft.com/en-us/azure/app-service/configure-vnet-integration- routing#configure-application-routing 2. https://learn.microsoft.com/en-us/cli/azure/webapp 3. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control requires checking the configuration of virtual network integration in Azure App Service deployment slots.\n- The remediation includes specific Azure CLI commands that directly manipulate the properties of the application resource.\n- The Azure APIs/CLI can verify if all traffic is routed through the virtual network.\n\n**PROGRAM NAME:** azure_appservice_slot_vnet_routing_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n\n- **Azure Resource Manager APIs or Azure CLI commands to use:**\n  - The Azure CLI command to verify if traffic routing through the virtual network is enabled:\n    ```bash\n    az webapp deployment slot show --resource-group <resource-group-name> --name <app-name> --slot <deployment-slot-name> --query \"properties.vnetRouteAllEnabled\"\n    ```\n\n- **Specific resources to enumerate:**\n  - Iterate through all Azure App Services and their associated deployment slots.\n\n- **Exact configuration properties/settings to validate:**\n  - The property `vnetRouteAllEnabled` should be evaluated. \n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** If the `vnetRouteAllEnabled` is set to `true`.\n  - **Fail:** If the `vnetRouteAllEnabled` is set to `false` or is not present.\n\n- **Example API endpoint or CLI command:**\n  - As shown above:\n    ```bash\n    az webapp deployment slot show --resource-group <resource-group-name> --name <app-name> --slot <deployment-slot-name> --query \"properties.vnetRouteAllEnabled\"\n    ```\n\nThis program would provide an automated solution to ensure compliance with the requirement that all traffic from Azure App Service deployment slots is routed through the designated virtual network."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. Azure APIs and CLI commands can be effectively used to check the configuration of virtual network integration in Azure App Service deployment slots.\n- The use of Azure CLI to verify the `vnetRouteAllEnabled` property is appropriate and aligns with the capabilities provided by Azure Resource Manager APIs.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details are technically accurate. The CLI command provided correctly queries the `vnetRouteAllEnabled` property.\n- The program name `azure_appservice_slot_vnet_routing_enabled` follows a logical naming convention, although it could be slightly more descriptive by including \"check\" or \"verify\" to indicate its purpose.\n- The audit details are comprehensive, covering the necessary resources and configurations to validate.\n\n**IMPROVEMENTS:**\n- **Enhance Documentation:** Include a brief explanation of how to handle cases where the `vnetRouteAllEnabled` property is not present, as this could indicate a misconfiguration or a default setting that needs attention.\n- **Alternative Tools:** Consider mentioning the use of Azure Policy to enforce this configuration as an additional layer of automated compliance.\n- **Error Handling:** Suggest implementing error handling in the script to manage scenarios where the CLI command fails or returns unexpected results.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-aligned with Azure's capabilities and security best practices. The technical details are sound, and the approach is appropriate for the control in question.\n\n**FINAL RECOMMENDATION:** Keep as-is\n- The assessment is accurate and aligns with Azure's capabilities for automating compliance checks. The suggested improvements are minor and do not necessitate a reclassification or major modification.",
+        "reviewed_at": "2025-10-26T15:22:01.858930"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** Both AI opinions agree that the audit approach should be automated, leveraging Azure CLI and APIs to verify the configuration of virtual network integration in Azure App Service deployment slots. The Azure CLI command provided (`az webapp deployment slot show`) can effectively check the `vnetRouteAllEnabled` property, confirming whether all traffic is routed through the virtual network. This aligns with Azure's capabilities to automate such checks.\n\n**CONFIDENCE:** HIGH\n\n--- IF AUTOMATED ---\n\n**PROGRAM NAME:** \nazure_appservice_slot_vnet_routing_enabled\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Azure App Services\n- **API/CLI Method:** `az webapp deployment slot show`\n- **Properties to Check:** `properties.vnetRouteAllEnabled`\n- **Pass Criteria:** `vnetRouteAllEnabled` is `true`\n- **Fail Criteria:** `vnetRouteAllEnabled` is `false`\n\n**DISAGREEMENTS RESOLVED:** There were no disagreements between the AI opinions; both supported the automated approach using Azure CLI.\n\n**SOURCE:** CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+        "decided_at": "2025-10-27T13:58:28.067339"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.16__ensure-all-traffic-is-routed-through-the-virtual-network.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

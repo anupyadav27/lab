@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.1.3",
+    "unique_id": "gcp_1_4_1_1_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure logging is configured",
+    "input_row": {
+        "id": "4.1.1.3",
+        "unique_id": "gcp_1_4_1_1_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure logging is configured",
+        "description": "For an image using stackdriver, the /etc/stackdriver/logging.config.d/*.conf files specifies rules for logging and which files are to be used to log certain classes of messages. An image using fluent-bit uses /usr/share/fluent-bit/fluent- bit.conf for the same purpose.",
+        "rationale": "A great deal of important security-related information is sent via logging (e.g., successful and failed su attempts, failed login attempts, root login attempts, etc.).",
+        "audit": "Review the contents of the /etc/stackdriver/logging.config.d/*.conf if using an image with stackdriver or /usr/share/fluent-bit/fluent-bit.conf if using an image with fluent-bit to ensure appropriate logging is set. In addition, run the following command and verify that the log files are logging information: # ls -l /var/log/",
+        "remediation": "Edit the contents of /etc/stackdriver/logging.config.d/*.conf if using an image with stackdriver or /usr/share/fluent-bit/fluent-bit.conf if using an image with fluent-bit as appropriate for your environment. Then run the following commands to reload the logging configuration: For stackdriver-logging: # systemctl restart stackdriver-logging For fluent-bit: # systemctl restart fluent-bit /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above need to be performed after every boot for images using stackdriver. This is not the case for fluent- bit as the logging agent is in /usr/share/ which isn't stateless so changes will be persistent across reboots. References: 1. See the rsyslog.conf(5) man page for more information.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control described requires checking configuration files and verifying that logging is properly set up on specific system paths such as \"/etc/stackdriver/logging.config.d/*.conf\" or \"/usr/share/fluent-bit/fluent-bit.conf\". These paths are typically within the filesystem of a running instance using a specific Container-Optimized OS image, and such verification is at the application/OS level. Thus, it requires SSH access to the instances to manually inspect the logging configuration files and their contents, which cannot be audited through GCP APIs or CLI commands.\n\n**MANUAL STEPS:** \n1. **Access GCP Console:**\n   - Identify the Compute Engine instances running Container-Optimized OS that you wish to audit.\n   \n2. **SSH into Instance:**\n   - Use the Google Cloud SDK (gcloud) to SSH into each relevant instance. Example: `gcloud compute ssh instance-name --zone=us-central1-a`\n   \n3. **Verify Logging Configuration:**\n   - Navigate to the directory containing the logging configuration files:\n     - If using Stackdriver, run: `cat /etc/stackdriver/logging.config.d/*.conf`\n     - If using fluent-bit, run: `cat /usr/share/fluent-bit/fluent-bit.conf`\n   - Review the configuration files for appropriate logging settings. Look for directives that specify log file destinations and classes of messages being logged.\n   \n4. **Verify Log Activity:**\n   - Run the command `ls -l /var/log/` to check for active logging activity. This verifies that logs are being generated as per configurations.\n   \n5. **Expected Configuration:**\n   - Ensure the configuration files include necessary rules for capturing security-relevant events, like login attempts and system changes.\n   - Any anomalies or misconfigurations should be noted and rectified according to organizational logging policies.\n\n6. **Compliance Confirmation:**\n   - Confirm that logs are being captured and stored as intended, with no missing critical log data.\n   - Document any discrepancies or compliance failures for remediation actions.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:30:17.030734",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.8",
+    "unique_id": "k8s_1_5_1_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+    "input_row": {
+        "id": "5.1.8",
+        "unique_id": "k8s_1_5_1_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+        "description": "Cluster roles and roles with the impersonate, bind or escalate permissions should not be granted unless strictly required. Each of these permissions allow a particular subject to escalate their privileges beyond those explicitly granted by cluster administrators",
+        "rationale": "The impersonate privilege allows a subject to impersonate other users gaining their rights to the cluster. The bind privilege allows the subject to add a binding to a cluster role or role which escalates their effective permissions in the cluster. The escalate privilege allows a subject to modify cluster roles to which they are bound, increasing their rights to that level. Each of these permissions has the potential to allow for privilege escalation to cluster- admin level. Impact: There are some cases where these permissions are required for cluster service operation, and care should be taken before removing these permissions from system service accounts.",
+        "audit": "Review the users who have access to cluster roles or roles which provide the impersonate, bind or escalate privileges.",
+        "remediation": "Where possible, remove the impersonate, bind and escalate rights from subjects. Default Value: In a default kubeadm cluster, the system:masters group and clusterrole-aggregation- controller service account have access to the escalate privilege. The system:masters group also has access to bind and impersonate. References: 1. https://www.impidio.com/blog/kubernetes-rbac-security-pitfalls 2. https://raesene.github.io/blog/2020/12/12/Escalating_Away/ 3. https://raesene.github.io/blog/2021/01/16/Getting-Into-A-Bind-with-Kubernetes/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "There are some cases where these permissions are required for cluster service operation, and care should be taken before removing these permissions from system service accounts.",
+        "references": "1. https://www.impidio.com/blog/kubernetes-rbac-security-pitfalls 2. https://raesene.github.io/blog/2020/12/12/Escalating_Away/ 3. https://raesene.github.io/blog/2021/01/16/Getting-Into-A-Bind-with-Kubernetes/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_impersonate_bind_escalate_permissions_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRoles and Roles in the cluster using the Kubernetes API:\n  - `kubectl get clusterroles -o yaml`\n  - `kubectl get roles --all-namespaces -o yaml`\n- For each ClusterRole and Role, inspect the `rules` field for the following verbs:\n  - `impersonate`\n  - `bind`\n  - `escalate`\n- Identify which resources these verbs are granted on (e.g., `users`, `groups`, `roles`, `clusterroles`, etc.).\n- Enumerate all RoleBindings and ClusterRoleBindings:\n  - `kubectl get clusterrolebindings -o yaml`\n  - `kubectl get rolebindings --all-namespaces -o yaml`\n- Map which users, groups, or service accounts are bound to the roles/clusterroles that grant any of the above verbs.\n- Exclude system accounts/groups that are expected to have these permissions by default (e.g., `system:masters`, `clusterrole-aggregation-controller`).\n- Flag any non-system users, groups, or service accounts that have been granted roles/clusterroles with `impersonate`, `bind`, or `escalate` permissions.\n- **Pass Criteria:** Only system accounts/groups (as per Kubernetes defaults) have these permissions.\n- **Fail Criteria:** Any non-system user, group, or service account is bound to a role/clusterrole with `impersonate`, `bind`, or `escalate` verbs.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:09:06.271990",
+    "model": "gpt-4.1"
+}

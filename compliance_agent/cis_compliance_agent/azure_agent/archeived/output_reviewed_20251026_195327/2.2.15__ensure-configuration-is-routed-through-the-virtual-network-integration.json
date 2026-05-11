@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.2.15__ensure-configuration-is-routed-through-the-virtual-network-integration",
+    "control_id": "2.2.15",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_webapp_configuration_routed_through_vnet\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n\n- Use Azure Resource Manager APIs or Azure CLI commands to ensure that the container image pulls and content sharing for deployment slots are routed through virtual network integration.\n\n- Specific resources to enumerate:\n  - Web Apps in Azure (Microsoft.Web/sites)\n\n- Configuration Properties/Settings to Validate:\n  - `properties.vnetImagePullEnabled` should be set to `true`\n  - `properties.vnetContentShareEnabled` should be set to `true`\n\n- Clear Pass/Fail criteria:\n  - Pass: both `vnetImagePullEnabled` and `vnetContentShareEnabled` are set to `true`\n  - Fail: either or both settings are not set to `true`\n\n- Example API endpoint or CLI command to check:\n  ```bash\n  az resource show --resource-group <resource-group-name> --name <app-name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" --query \"properties.vnetImagePullEnabled, properties.vnetContentShareEnabled\"\n  ```\n  The output should show both settings as `true`. If any of these settings are `false` or missing, it indicates non-compliance."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n- The classification as Automated is correct. The compliance check can be effectively performed using Azure Resource Manager (ARM) APIs or Azure CLI, which supports automation.\n- The use of Azure CLI to query the properties of Web Apps for virtual network integration settings is appropriate and aligns with Azure's capabilities.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly accurate. The use of Azure CLI to check `properties.vnetImagePullEnabled` and `properties.vnetContentShareEnabled` is correct.\n- The program name `azure_webapp_configuration_routed_through_vnet` follows a logical naming convention, although it could be more descriptive.\n- The example CLI command provided is mostly correct; however, it should be noted that the resource type should be specified correctly, and the query syntax should ensure it captures both properties accurately.\n\n**IMPROVEMENTS:**\n- The CLI command could be improved for clarity and correctness. It should ensure that both properties are queried in a single command:\n  ```bash\n  az resource show --resource-group <resource-group-name> --name <app-name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" --query \"[properties.vnetImagePullEnabled, properties.vnetContentShareEnabled]\"\n  ```\n- Consider adding error handling or output parsing to handle cases where the properties might not exist, which could indicate a misconfiguration or a different service plan.\n- It would be beneficial to include a note on the required permissions needed to execute these commands, such as Reader or Contributor roles on the Azure subscription.\n\n**CONFIDENCE:** HIGH\n- The use of Azure CLI and ARM APIs for this compliance check is well-supported by Azure's capabilities, and the assessment aligns with best practices for automated compliance checks.\n\n**FINAL RECOMMENDATION:**\n- Modify: Improve the CLI command syntax for clarity and accuracy as suggested. Consider enhancing the program name for better descriptiveness, such as `azure_webapp_vnet_integration_compliance`.\n- Ensure that documentation includes necessary permissions and potential error handling for non-existent properties.",
+        "reviewed_at": "2025-10-26T15:17:53.328519"
+    },
+    "input_row": {
+        "id": "2.2.15",
+        "unique_id": "2.2.15__ensure-configuration-is-routed-through-the-virtual-network-integration",
+        "title": "Ensure configuration is routed through the virtual network integration",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to route container image pulls and content sharing through the virtual network integration: az resource update --resource-group <resource-group-name> --name <app- name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" -- set properties.vnetImagePullEnabled=true --set properties.vnetContentShareEnabled=true Default Value: By default, configuration traffic goes directly over the public route. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-vnet- integration#routes 2. https://learn.microsoft.com/en-us/azure/app-service/configure-vnet-integration- routing#configure-configuration-routing 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/cli/azure/resource Additional Information: In addition to configuring the routing for content sharing, you must also ensure that any firewall or Network Security Group configured on traffic from the subnet allow traffic to port 443 and 445. CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "metadata": {
+        "original_file": "2.2.15.json",
+        "review_version": "1.0"
+    }
+}

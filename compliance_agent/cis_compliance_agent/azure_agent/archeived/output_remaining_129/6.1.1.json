@@ -1,0 +1,17 @@
+{
+    "id": "6.1.1",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+    "input_row": {
+        "id": "6.1.1",
+        "unique_id": "row153_6.1.1__ensure-permissions-on-/etc/passwd-are-configured",
+        "title": "Ensure permissions on /etc/passwd are configured",
+        "description": " Uid is 0/root and G...\"",
+        "rationale": "The /etc/passwd file contains user account information that is used by many system utilities and therefore must be readable for these utilities to operate.",
+        "audit": "It is critical to ensure that the /etc/passwd file is protected from unauthorized write access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command to verify /etc/passwd is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd /etc/passwd 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/passwd: # chmod u-x,go-wx /etc/passwd # chown root:root /etc/passwd Default Value: /etc/passwd 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Open the Azure portal and navigate to the resource where the Azure VM is hosted.\n2. Connect to the VM using SSH or RDP.\n3. Once connected, open a terminal (for Linux) or Command Prompt (for Windows).\n4. Execute the command: `stat /etc/passwd` (Linux) or check the permissions via Windows file properties if it's a Windows VM.\n5. Verify the output for the permissions and ownership settings.\n6. Ensure the permissions on `/etc/passwd` show mode `644` (readable by all) and confirm that the owner and group are set to `root` (Uid 0 and Gid 0).\n7. If the permissions are not correct, make the necessary adjustments by executing:\n   - `chmod u-x,go-wx /etc/passwd` to set permissions.\n   - `chown root:root /etc/passwd` to set the owner and group appropriately.\n8. Confirm that the changes have been applied by running the command `stat /etc/passwd` again to ensure compliance.\n9. Document the findings and any adjustments made for compliance reporting."
+}

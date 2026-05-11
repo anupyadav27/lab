@@ -1,0 +1,22 @@
+{
+    "control_id": "3.11",
+    "unique_id": "aws_7_3_11",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure accessing Points and IAM Policies",
+    "input_row": {
+        "id": "3.11",
+        "unique_id": "aws_7_3_11",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure accessing Points and IAM Policies",
+        "description": "You can use IAM policies to control access to your EFS access points. To achieve this, utilize the elasticfilesystem:AccessPointArn IAM condition key. The AccessPointArn represents the Amazon Resource Name (ARN) of the access point that the file system is mounted with.",
+        "rationale": "The rationale for using IAM policies with the elasticfilesystem:AccessPointArn condition key is to ensure precise and secure access control to EFS access points. By specifying the access point's ARN, you can restrict interactions to authorized users and resources only, thereby enhancing data security and preventing unauthorized access. This approach maintains the integrity and confidentiality of your data within the AWS environment.",
+        "audit": "Below is a same IAM policy copied from the AWS documentation: { \"Version\": \"2012-10-17\", \"Id\": \"MyFileSystemPolicy\", \"Statement\": [ { \"Sid\": \"App1Access\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::111122223333:role/app1\" }, \"Action\": [ \"elasticfilesystem:ClientMount\", \"elasticfilesystem:ClientWrite\" ], \"Condition\": { \"StringEquals\": { \"elasticfilesystem:AccessPointArn\":\"arn:aws:elasticfilesystem:us-east- 1:222233334444:access-point/fsap-01234567\" } } }, { \"Sid\": \"App2Access\", \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::111122223333:role/app2\" }, \"Action\": [ \"elasticfilesystem:ClientMount\", \"elasticfilesystem:ClientWrite\" ], \"Condition\": { \"StringEquals\": { \"elasticfilesystem:AccessPointArn\":\"arn:aws:elasticfilesystem:us-east 1:222233334444:access-point/fsap-89abcdef\" } } } ] }",
+        "remediation": "References: 1. https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control involves verifying IAM policies associated with EFS access points using the `elasticfilesystem:AccessPointArn` condition. This involves checking IAM policy documents, which is a standard AWS feature that can be accessed and verified via AWS APIs.\n- These IAM policies can be queried using AWS API calls through boto3 or the AWS CLI to verify the presence and correctness of the condition using `elasticfilesystem:AccessPointArn`.\n- Boto3 and AWS CLI have methods that can be utilized to describe IAM policies and evaluate the IAM policy condition keys, making this control suitable for automation.\n\n**PROGRAM NAME:** aws_efs_access_point_iam_policy_condition_verified\n\n**AUTOMATION DETAILS:**\n- Use the boto3 SDK to access IAM policy details, focusing on EFS-related policies.\n- Specific methods to employ include `boto3.client('iam').get_policy_version()` to fetch the exact version of the policy required to evaluate conditions.\n- AWS CLI equivalent: `aws iam get-policy-version --policy-arn <policy-arn> --version-id <version-id>` to retrieve the IAM policy version and review the condition keys.\n- Enumerate all IAM policies across accounts and relevant regions that could potentially manage EFS access points.\n- Validate that IAM policies contain the `elasticfilesystem:AccessPointArn` condition key, ensuring it matches the correct ARN pattern and effect (e.g., \"Allow\").\n- Clear Pass/Fail criteria: Pass if the IAM policy contains the `elasticfilesystem:AccessPointArn` condition with correct settings, Fail otherwise.\n- Reference `https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html` for additional context and details on IAM policy configuration related to EFS access points.",
+    "timestamp": "2025-10-28T16:14:41.881759",
+    "model": "gpt-4o"
+}

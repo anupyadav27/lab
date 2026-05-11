@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.7",
+    "unique_id": "k8s_5_2_1_7",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --protect-kernel-defaults argument is set to true",
+    "input_row": {
+        "id": "2.1.7",
+        "unique_id": "k8s_5_2_1_7",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --protect-kernel-defaults argument is set to true",
+        "description": "Protect tuned kernel parameters from overriding kubelet default kernel parameter values.",
+        "rationale": "Kernel parameters are usually tuned and hardened by the system administrators before putting the systems into production. These parameters protect the kernel and the system. Your kubelet kernel defaults that rely on such parameters should be appropriately set to match the desired secured system state. Ignoring this could potentially lead to running pods with undesired kernel behavior.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --protect-kernel-defaults argument is set to true.",
+        "remediation": "Edit the /etc/kubernetes/kubelet file on each node and set the KUBELET_ARGS parameter to \"--protect-kernel-defaults=true\" KUBELET_ARGS=\"--protect-kernel-defaults=true\" Based on your system, restart the kubelet service. For example: systemctl restart kubelet.service Impact: You would have to re-tune kernel parameters to match kubelet parameters. Default Value: By default, --protect-kernel-defaults is not set.   159 | P a g e References: 1. https://kubernetes.io/docs/admin/kubelet/",
+        "profile_applicability": "•  Level 1",
+        "impact": "You would have to re-tune kernel parameters to match kubelet parameters. Default Value: By default, --protect-kernel-defaults is not set.   159 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification that the kubelet process on each node is started with the --protect-kernel-defaults=true flag.\n- This flag is set as a command-line argument to the kubelet process or within the kubelet configuration file on each node.\n- The Kubernetes API and kubectl do NOT expose the kubelet process arguments or the contents of the node's /etc/kubernetes/kubelet file.\n- The audit procedure explicitly instructs to run a process listing (ps -ef | grep kubelet) on each node, which requires OS-level access not available via Kubernetes APIs.\n- Therefore, this check cannot be fully automated via Kubernetes APIs or kubectl and requires manual/host-level verification.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes node in the cluster.\n2. Run the following command to list the kubelet process and its arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Examine the output and verify that the kubelet process is started with the argument:\n   ```\n   --protect-kernel-defaults=true\n   ```\n   Alternatively, check the kubelet configuration file (commonly /etc/kubernetes/kubelet or /var/lib/kubelet/config.yaml) for the setting:\n   ```\n   protectKernelDefaults: true\n   ```\n4. If the argument or configuration is present and set to true, the node is compliant. If not, remediation is required.\n5. Repeat for every node in the cluster.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:52:11.962891",
+    "model": "gpt-4.1"
+}

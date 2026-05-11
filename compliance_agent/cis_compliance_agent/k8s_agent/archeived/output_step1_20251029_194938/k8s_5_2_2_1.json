@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2.1",
+    "unique_id": "k8s_5_2_2_1",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the config file permissions are set to 644 or more restrictive",
+    "input_row": {
+        "id": "2.2.1",
+        "unique_id": "k8s_5_2_2_1",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the config file permissions are set to 644 or more restrictive",
+        "description": "Ensure that the config file has permissions of 644 or more restrictive.",
+        "rationale": "The config file controls various parameters that set the behavior of various components of the worker node. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system.",
+        "audit": "Run the below command (based on the file location on your system) on the each worker node. For example, stat -c %a /etc/kubernetes/config Verify that the permissions are 644 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the each worker node. For example, chmod 644 /etc/kubernetes/config Impact: None Default Value: By default, config file has permissions of 644.   173 | P a g e References: 1. https://kubernetes.io/docs/admin/kubelet/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, config file has permissions of 644.   173 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file permissions of the Kubernetes config file on each worker node (e.g., /etc/kubernetes/config). The permissions of files on the host OS are not exposed via the Kubernetes API, kubectl, or any Kubernetes-native resource or configuration. This check requires direct access to the node's filesystem (e.g., via SSH or a privileged DaemonSet), which is outside the scope of standard Kubernetes API or kubectl capabilities.\n\n**MANUAL STEPS:**\n1. Log in to each Kubernetes worker node using SSH or an equivalent method with sufficient privileges.\n2. Run the following command to check the permissions of the Kubernetes config file (replace the path if your config file is in a different location):\n   ```\n   stat -c %a /etc/kubernetes/config\n   ```\n3. Verify that the output is 644 or more restrictive (i.e., 600, 640, 644, 400, 440, or 444).\n4. If the permissions are more permissive than 644 (e.g., 666, 777), remediate by running:\n   ```\n   chmod 644 /etc/kubernetes/config\n   ```\n5. Repeat these steps on every worker node in the cluster to ensure compliance.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:53:39.484136",
+    "model": "gpt-4.1"
+}

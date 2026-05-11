@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.2",
+    "unique_id": "k8s_7_3_1_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Service account token authentication should not be used for users",
+    "input_row": {
+        "id": "3.1.2",
+        "unique_id": "k8s_7_3_1_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Service account token authentication should not be used for users",
+        "description": "Kubernetes provides service account tokens which are intended for use by workloads running in the Kubernetes cluster, for authentication to the API server. These tokens are not designed for use by end-users and do not provide for features such as revocation or expiry, making them insecure. A newer version of the feature (Bound service account token volumes) does introduce expiry but still does not allow for specific revocation.",
+        "rationale": "With any authentication mechanism the ability to revoke credentials if they are compromised or no longer required, is a key control. Service account token authentication does not allow for this due to the use of JWT tokens as an underlying technology. Impact: External mechanisms for authentication generally require additional software to be deployed.",
+        "audit": "Review user access to the cluster and ensure that users are not making use of service account token authentication.",
+        "remediation": "Alternative mechanisms provided by Kubernetes such as the use of OIDC should be implemented in place of service account tokens. Default Value: Service account token authentication is enabled by default.",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "External mechanisms for authentication generally require additional software to be deployed.",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verifying that end-users are not using service account tokens for authentication to the Kubernetes API. Kubernetes does not natively track or expose which authentication method (service account token vs. OIDC, etc.) a particular user is using when accessing the API. While you can enumerate service accounts and their tokens, and review RBAC bindings, there is no API or kubectl command that can definitively identify if a human user is authenticating with a service account token. This requires reviewing user access patterns, authentication logs, and possibly organizational policy, which is outside the scope of what the Kubernetes API exposes.\n\n**MANUAL STEPS:**\n1. Review Kubernetes API audit logs (if enabled) for evidence of users authenticating with service account tokens. Look for `user.username` fields that match service account naming conventions (e.g., `system:serviceaccount:<namespace>:<serviceaccount>`).\n2. Review RBAC RoleBindings and ClusterRoleBindings to ensure that service accounts are not bound to roles intended for human users.\n3. Review organizational identity and access management policies to ensure that end-users are provided with appropriate authentication mechanisms (e.g., OIDC, LDAP) and are not issued service account tokens.\n4. Interview cluster administrators or review documentation to confirm that service account tokens are not distributed to users for API access.\n5. Confirm that any automation or CI/CD systems using service account tokens are not being used by human users for interactive access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:33:47.357081",
+    "model": "gpt-4.1"
+}

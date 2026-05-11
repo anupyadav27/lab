@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.9",
+    "unique_id": "alicloud_1_1_2_9",
+    "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+    "title": "Ensure that the admission control plugin AlwaysAdmit is not set",
+    "input_row": {
+        "id": "1.2.9",
+        "unique_id": "alicloud_1_1_2_9",
+        "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+        "title": "Ensure that the admission control plugin AlwaysAdmit is not set",
+        "description": "Do\tnot\tallow\tall\trequests.",
+        "rationale": "Setting\tadmission\tcontrol\tplugin\tAlwaysAdmit\tallows\tall\trequests\tand\tdo\tnot\tfilter\tany requests. The\tAlwaysAdmit\tadmission\tcontroller\twas\tdeprecated\tin\tKubernetes\tv1.13.\tIts\tbehavior was\tequivalent\tto\tturning\toff\tall\tadmission\tcontrollers. Impact: Only\trequests\texplicitly\tallowed\tby\tthe\tadmissions\tcontrol\tplugins\twould\tbe\tserved.",
+        "audit": "Run\tthe\tfollowing\tcommand\ton\tthe\tmaster\tnode: ps -ef | grep kube-apiserver Verify\tthat\tif\tthe\t--enable-admission-plugins\targument\tis\tset,\tits\tvalue\tdoes\tnot\tinclude AlwaysAdmit.",
+        "remediation": "Edit\tthe\tAPI\tserver\tpod\tspecification\tfile\t/etc/kubernetes/manifests/kube- apiserver.yaml\ton\tthe\tmaster\tnode\tand\teither\tremove\tthe\t--enable-admission-plugins parameter,\tor\tset\tit\tto\ta\tvalue\tthat\tdoes\tnot\tinclude\tAlwaysAdmit. Default\tValue: AlwaysAdmit\tis\tnot\tin\tthe\tlist\tof\tdefault\tadmission\tplugins. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 74\t|\tP a g e 2. https://kubernetes.io/docs/admin/admission-controllers/#alwaysadmit Additional\tInformation: This\tcontrol\tcannot\tbe\taudited\tand\tmodified\tin\tACK\tmanaged\tclusters. CIS\tControls: Version\t6 14\tControlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow Controlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow 75\t|\tP a g e",
+        "profile_applicability": "",
+        "impact": "Only\trequests\texplicitly\tallowed\tby\tthe\tadmissions\tcontrol\tplugins\twould\tbe\tserved.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 74\t|\tP a g e 2. https://kubernetes.io/docs/admin/admission-controllers/#alwaysadmit Additional\tInformation: This\tcontrol\tcannot\tbe\taudited\tand\tmodified\tin\tACK\tmanaged\tclusters. CIS\tControls: Version\t6 14\tControlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow Controlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow 75\t|\tP a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The audit requires running a command on the master node to check the API server's configuration, which is not exposed through Alibaba Cloud APIs or Aliyun CLI.\n- This check involves verifying the content of the `kube-apiserver.yaml` file on the master node for the presence of the `AlwaysAdmit` admission control plugin, which requires direct access to the node.\n- The control cannot be audited and modified in ACK managed clusters as per the additional information provided, indicating the need for manual inspection and alteration.\n\n**MANUAL STEPS:** \n1. Access the Kubernetes master node in the ACK cluster.\n2. Run the following command to determine the running configuration of the API server: \n   ```bash\n   ps -ef | grep kube-apiserver\n   ```\n3. Check the output for the `--enable-admission-plugins` flag. Ensure that the value does not include `AlwaysAdmit`.\n4. Expected secure configuration: The `AlwaysAdmit` plugin should not be part of the admission plugins enabled.\n5. Edit the `/etc/kubernetes/manifests/kube-apiserver.yaml` file to remove `AlwaysAdmit` if it is present under the `--enable-admission-plugins` flag.\n6. Confirm compliance by verifying that the API server configuration does not include the `AlwaysAdmit` plugin after any necessary adjustments.",
+    "timestamp": "2025-10-29T14:41:56.237376",
+    "model": "gpt-4o"
+}

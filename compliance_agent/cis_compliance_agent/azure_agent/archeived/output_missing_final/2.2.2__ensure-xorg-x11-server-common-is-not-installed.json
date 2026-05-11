@@ -1,0 +1,17 @@
+{
+    "id": "2.2.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.2",
+        "unique_id": "2.2.2__ensure-xorg-x11-server-common-is-not-installed",
+        "title": "Ensure xorg-x11-server-common is not installed",
+        "description": "The X Window System provides a Graphical User Interface (GUI) where users can have multiple windows in which to run programs and various add on. The X Windows system is typically used on workstations where users login, but not on servers where users typically do not login.",
+        "rationale": "Unless your organization specifically requires graphical login access via X Windows, remove it to reduce the potential attack surface. Impact: Many Linux systems run applications which require a Java runtime. Some Linux Java packages have a dependency on specific X Windows xorg-x11-fonts. One workaround to avoid this dependency is to use the \"headless\" Java packages for your specific Java runtime.",
+        "audit": "Run the following command to Verify X Windows Server is not installed. # rpm -q xorg-x11-server-common package xorg-x11-server-common is not installed",
+        "remediation": "Run the following command to remove the X Windows Server packages: # dnf remove xorg-x11-server-common References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Many Linux systems run applications which require a Java runtime. Some Linux Java packages have a dependency on specific X Windows xorg-x11-fonts. One workaround to avoid this dependency is to use the \"headless\" Java packages for your specific Java runtime.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal**: Navigate to [Azure Portal](https://portal.azure.com) and log in with your credentials.\n2. **Locate the Virtual Machine**: Go to \"Virtual Machines\" in the left-hand navigation pane. Select the virtual machine (VM) that you want to check.\n3. **SSH into the VM**: Use SSH to connect to the VM. You may use the Azure Cloud Shell or your preferred terminal if the VM is accessible over the internet with SSH.\n4. **Check for X Windows Server Installation**:\n   - Run the command: `rpm -q xorg-x11-server-common`\n   - This command will check if the package `xorg-x11-server-common` is installed.\n5. **Verify the Output**: \n   - If the output states that the package is not installed, then it meets the compliance requirement.\n   - If the package is installed, proceed to the next step for remediation.\n6. **Remediation (if needed)**:\n   - To remove the package, run the command: `dnf remove xorg-x11-server-common`\n7. **Expected Secure Configuration**: The `xorg-x11-server-common` package should not be installed on the VM.\n8. **Confirm Compliance**: Repeat the check after any remediation to ensure that the package is indeed removed and that the VM conforms to the compliance requirement."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.4.10",
+    "unique_id": "k8s_5_1_4_10",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the flanneld file ownership is set to root:root",
+    "input_row": {
+        "id": "1.4.10",
+        "unique_id": "k8s_5_1_4_10",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the flanneld file ownership is set to root:root",
+        "description": "Ensure that the flanneld file ownership is set to root:root.",
+        "rationale": "The flanneld file controls various parameters that set the behavior of the flanneld service in the master node. Flannel is one of the various options for a simple overlay network. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root.",
+        "audit": "Run the below command (based on the file location on your system) on the master node. For example, stat -c %U:%G /etc/sysconfig/flanneld Verify that the ownership is set to root:root. Note: Flannel is an optional component of Kubernetes. If you are not using Flannel then this requirement is not applicable. If you are using any other option for configuring your networking, please extend this recommendation to cover important configuration files as appropriate.",
+        "remediation": "Run the below command (based on the file location on your system) on the master node. For example, chown root:root /etc/sysconfig/flanneld Impact: None   107 | P a g e Default Value: Note: Flannel is an optional component of Kubernetes and there are other alternatives that might be used in its place. Please checkout the Kubernetes documentation for other options. If you are using Flannel for setting up your networking then, by default, flanneld file ownership is set to root:root. References: 1. https://coreos.com/flannel/docs/latest/ 2. https://kubernetes.io/docs/concepts/cluster-administration/networking/#flannel",
+        "profile_applicability": "•  Level 1",
+        "impact": "None   107 | P a g e Default Value: Note: Flannel is an optional component of Kubernetes and there are other alternatives that might be used in its place. Please checkout the Kubernetes documentation for other options. If you are using Flannel for setting up your networking then, by default, flanneld file ownership is set to root:root.",
+        "references": "1. https://coreos.com/flannel/docs/latest/ 2. https://kubernetes.io/docs/concepts/cluster-administration/networking/#flannel"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership of the flanneld configuration file on the host OS (e.g., /etc/sysconfig/flanneld). This information is not exposed via the Kubernetes API, kubectl, or any Kubernetes-native resource. It requires direct access to the underlying node filesystem, typically via SSH or similar means, to run OS-level commands (e.g., stat, ls -l). Therefore, this check cannot be automated via Kubernetes APIs or kubectl and must be performed manually.\n\n**MANUAL STEPS:**\n\n1. **Identify if Flannel is in use:**\n   - Determine if your Kubernetes cluster is using Flannel as the CNI (Container Network Interface) plugin. This can be checked by reviewing the CNI configuration files (e.g., /etc/cni/net.d/) or by inspecting the running pods in the kube-system namespace for Flannel-related deployments.\n\n2. **Locate the flanneld configuration file:**\n   - Common locations include `/etc/sysconfig/flanneld`, `/etc/flannel/flannel.conf`, or as specified in your deployment documentation.\n\n3. **Check file ownership:**\n   - Log in to the master node (or any node running flanneld) using SSH or equivalent access.\n   - Run the following command, replacing the path with the actual location of your flanneld file:\n     ```\n     stat -c %U:%G /etc/sysconfig/flanneld\n     ```\n     or\n     ```\n     ls -l /etc/sysconfig/flanneld\n     ```\n\n4. **Validate ownership:**\n   - Confirm that the output shows the file is owned by `root:root`.\n\n5. **Confirm compliance:**\n   - The control passes if the file is owned by `root:root`.\n   - If not, remediate by running:\n     ```\n     chown root:root /etc/sysconfig/flanneld\n     ```\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:47:20.191889",
+    "model": "gpt-4.1"
+}

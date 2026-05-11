@@ -1,0 +1,17 @@
+{
+    "id": "1.4.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "1.4.3",
+        "unique_id": "1.4.3__ensure-permissions-on-/etc/motd-are-configured",
+        "title": "Ensure permissions on /etc/motd are configured",
+        "description": "The contents of the /etc/motd file are displayed to users after login and function as a message of the day for authenticated users.",
+        "rationale": "If the /etc/motd file does not have the correct ownership it could be modified by unauthorized users with incorrect or misleading information.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/motd Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set permissions on /etc/motd : # chown root:root /etc/motd # chmod u-x,go-wx /etc/motd References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Access the Azure portal and navigate to your Kubernetes cluster that hosts the Linux nodes.\n2. Use SSH to connect to one of the Linux nodes in the AKS cluster using an appropriate SSH key or credentials.\n3. Once connected, check the permissions on the `/etc/motd` file by executing the command:\n   ```\n   stat /etc/motd\n   ```\n4. Verify the output to confirm:\n   - Owner (Uid) and Group (Gid) are both `0` (root)\n   - Access permissions are `644` (read/write for owner, read for group and others)\n5. If the permissions or ownership are not correct, execute the following commands to fix them:\n   ```\n   sudo chown root:root /etc/motd\n   sudo chmod u-x,go-wx /etc/motd\n   ```\n6. Re-run the `stat /etc/motd` command to confirm the changes were successfully applied.\n7. Document the initial and corrected permissions as well as any actions taken for compliance verification."
+}

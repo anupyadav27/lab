@@ -1,0 +1,22 @@
+{
+    "control_id": "8.1",
+    "unique_id": "aws_5_8_1",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Ensure AWS Batch is configured with AWS Cloudwatch Logs.",
+    "input_row": {
+        "id": "8.1",
+        "unique_id": "aws_5_8_1",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Ensure AWS Batch is configured with AWS Cloudwatch Logs.",
+        "description": "You can configure Batch jobs to send log information to CloudWatch Logs.",
+        "rationale": "This enables you to view different logs from all your jobs in one convenient location.",
+        "audit": "From the Console 1. Login to the AWS Console using https://console.aws.amazon.com/batch/ 2. On the left hand side under Console settings, Click on Permissions 3. Under Job logs section 4. Confirm that Authorize Batch to use Cloudwatch is set with a green check. 5. If is is showing a red X refer to the remediation below.",
+        "remediation": "From the Console 1. Login to the AWS Console using https://console.aws.amazon.com/batch/. 2. In the left column under Console settings, Click on Permissions 3. In the Job logs section click on Edit 4. Click the Authorize Batch to use CloudWatch 5. Click Save",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**APPROACH DECISION:** Automated\n\n**PROGRAM NAME:** aws_batch_job_logs_cloudwatch_logging_enabled\n\n**AUTOMATION DETAILS:**\nTo automate the check for AWS Batch job logs being configured to use AWS CloudWatch Logs, the following steps can be implemented:\n\n1. **AWS API Calls or boto3 SDK Methods:**\n   - Use `boto3` to interact with the AWS Batch and AWS CloudWatch services.\n   - Specifically, leverage the AWS Batch API to describe job definitions and check logging configuration.\n\n2. **AWS CLI Commands:**\n   - Utilize the AWS CLI command `aws batch describe-job-definitions` to list all Batch job definitions.\n   - For each job definition, check the `containerProperties` and look for `logConfiguration` settings.\n\n3. **Resource Enumeration:**\n   - Enumerate all Batch job definitions across all regions where AWS Batch is used.\n\n4. **Configuration Properties/Settings to Validate:**\n   - Assess the `logConfiguration` for each job definition to ensure it has CloudWatch logs enabled.\n   - Check that the `logDriver` is set to `\"awslogs\"` which specifies the CloudWatch Logs driver.\n\n5. **Pass/Fail Criteria:**\n   - **Pass:** `logConfiguration` exists in job definitions with `logDriver` set to `\"awslogs\"`.\n   - **Fail:** No `logConfiguration` is present or `logDriver` is not set to `\"awslogs\"`.\n\nThis approach efficiently checks whether AWS Batch jobs have CloudWatch Logs configured, using available AWS APIs and standard command-line tools, ensuring compliance with the provided control.",
+    "timestamp": "2025-10-28T15:44:07.285423",
+    "model": "gpt-4o"
+}

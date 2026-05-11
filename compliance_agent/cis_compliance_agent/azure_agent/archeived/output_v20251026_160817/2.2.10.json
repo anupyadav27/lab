@@ -1,0 +1,20 @@
+{
+    "id": "2.2.10",
+    "source": null,
+    "input_row": {
+        "id": "2.2.10",
+        "unique_id": "2.2.10__ensure-'remote-debugging'-is-set-to-'off'",
+        "title": "Ensure 'Remote debugging' is set to 'Off'",
+        "description": "...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Configuration. 6. In the General settings pane, under Debugging, set Remote debugging to Off. 7. Click Save. 8. Click Continue. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to disable remote debugging: az resource update --name web --resource-group <resource-group-name> -- namespace Microsoft.Web --resource-type config --parent sites/<app- name>/slots/<deployment-slot-name> --set properties.remoteDebuggingEnabled=false Default Value: By default, remote debugging is set to off. References: 1. https://learn.microsoft.com/en-us/visualstudio/debugger/remote-debugging- azure-app-service 2. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-posture- vulnerability-management#pv-2-audit-and-enforce-secure-configurations 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- This control requires the checking of a property that can be confirmed programmatically, as the response to the \"remote debugging\" setting can be queried via the Azure Resource Manager APIs or CLI commands. The remediation steps provided also utilize Azure CLI commands to manage this property.\n\n**PROGRAM NAME:** azure_appservice_remote_debugging_disabled\n\n**AUTOMATION DETAILS:**\n- The automated program would check the remote debugging setting in the Azure App Services configuration.\n- To verify the configuration across different deployment slots of each app service, the following Azure CLI command can be used:\n  ```bash\n  az webapp show --name <app-name> --resource-group <resource-group-name> --query \"slots[?name=='<deployment-slot-name>'].properties.remoteDebuggingEnabled\"\n  ```\n- Specific properties to validate: \n  - `remoteDebuggingEnabled` should be set to `false`.\n- The program should iterate over all app services and their deployment slots to ensure that the remote debugging feature is turned off.\n- **Pass/Fail criteria:**\n  - **Pass** if `remoteDebuggingEnabled` is `false`.\n  - **Fail** if `remoteDebuggingEnabled` is `true` or the property is not found.\n- Example API endpoint for ARM API:\n  ```\n  GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{appName}/slots/{slotName}?api-version=2021-01-15\n  ``` \n- The JSON response should include `properties.remoteDebuggingEnabled`."
+}

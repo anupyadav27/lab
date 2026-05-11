@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.9",
+    "unique_id": "k8s_5_2_1_9",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --keep-terminated-pod-volumes argument is set to false",
+    "input_row": {
+        "id": "2.1.9",
+        "unique_id": "k8s_5_2_1_9",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --keep-terminated-pod-volumes argument is set to false",
+        "description": "Unmount volumes from the nodes on pod termination.",
+        "rationale": "On pod termination, you should unmount the volumes. Those volumes might have sensitive data that might be exposed if kept mounted on the node without any use. Additionally, such mounted volumes could be modified and later could be mounted on pods. Also, if you retain all mounted volumes for a long time, it might exhaust system resources and you might not be able to mount any more volumes on new pods.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that --keep-terminated-pod-volumes argument exists and is set to false.",
+        "remediation": "Edit the /etc/kubernetes/kubelet file on each node and set the KUBELET_ARGS parameter to \"--keep-terminated-pod-volumes=false\": KUBELET_ARGS=\"--keep-terminated-pod-volumes=false\" Based on your system, restart the kubelet service. For example: systemctl restart kubelet.service Impact: Volumes will not be available for debugging. Default Value: By default, --keep-terminated-pod-volumes argument is set to true.   163 | P a g e References: 1. https://kubernetes.io/docs/admin/kubelet/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Volumes will not be available for debugging. Default Value: By default, --keep-terminated-pod-volumes argument is set to true.   163 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The --keep-terminated-pod-volumes flag is a kubelet process startup argument.\n- This setting is not exposed via the Kubernetes API, kubectl, or any Kubernetes resource object.\n- The audit procedure requires checking the process arguments or the kubelet configuration file on each node, which is only accessible via host OS access (SSH or similar).\n- There is no Kubernetes-native way to retrieve or verify this flag remotely via API or kubectl.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes node in the cluster.\n2. Run the following command to inspect the kubelet process arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Examine the output for the presence of the --keep-terminated-pod-volumes flag.\n4. Confirm that the flag is either:\n   - Explicitly set to false: --keep-terminated-pod-volumes=false\n   - Or not present at all (if the default is acceptable per your policy and Kubernetes version).\n5. Alternatively, check the kubelet configuration file (commonly /etc/kubernetes/kubelet or /var/lib/kubelet/config.yaml) for the keepTerminatedPodVolumes setting and ensure it is set to false.\n6. If any node has the flag set to true or omitted (and the default is true), the cluster is non-compliant.\n7. Document your findings for each node to confirm compliance.",
+    "timestamp": "2025-10-29T21:52:28.726054",
+    "model": "gpt-4.1"
+}

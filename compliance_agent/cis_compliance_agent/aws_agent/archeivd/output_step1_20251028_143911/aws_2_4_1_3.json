@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.3",
+    "unique_id": "aws_2_4_1_3",
+    "source": "CIS AMAZON ELASTIC KUBERNETES SERVICE (EKS) BENCHMARK V1.6.0",
+    "title": "Minimize wildcard use in Roles and ClusterRoles",
+    "input_row": {
+        "id": "4.1.3",
+        "unique_id": "aws_2_4_1_3",
+        "source": "CIS AMAZON ELASTIC KUBERNETES SERVICE (EKS) BENCHMARK V1.6.0",
+        "title": "Minimize wildcard use in Roles and ClusterRoles",
+        "description": "Kubernetes Roles and ClusterRoles provide access to resources based on sets of objects and actions that can be taken on those objects. It is possible to set either of these to be the wildcard \"*\" which matches all items. Use of wildcards is not optimal from a security perspective as it may allow for inadvertent access to be granted when new resources are added to the Kubernetes API either as CRDs or in later versions of the product.",
+        "rationale": "The principle of least privilege recommends that users are provided only the access required for their role and nothing more. The use of wildcard rights grants is likely to provide excessive rights to the Kubernetes API.",
+        "audit": "Retrieve the roles defined across each namespaces in the cluster and review for wildcards kubectl get roles --all-namespaces -o yaml Retrieve the cluster roles defined in the cluster and review for wildcards kubectl get clusterroles -o yaml",
+        "remediation": "Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions.",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe audit involves reviewing Kubernetes Roles and ClusterRoles for wildcard usage, which requires inspecting role definitions in YAML format. This process is inherently manual as it requires human judgment to assess whether the use of wildcards (i.e., \"*\") is justified or if it poses a security risk according to organizational policy and the specific use case.\n\n**MANUAL STEPS:**\n1. **Retrieve Roles and ClusterRoles:**\n   - Use the `kubectl` command to list all roles in the cluster and examine them: `kubectl get roles --all-namespaces -o yaml`\n   - Use the `kubectl` command to list all cluster roles in the cluster and examine them: `kubectl get clusterroles -o yaml`\n    \n2. **Review for Wildcards:**\n   - Inspect each role and cluster role YAML output for permissions that use wildcards (\"*\"). This includes both resources and actions.\n   - Document any instances of wildcard usage, noting the specific resources and actions being granted.\n\n3. **Assess Justification:**\n   - Determine the necessity of the wildcard. Check if specific resources or actions can be enumerated instead of using a wildcard to adhere to the principle of least privilege.\n   - Consider discussing with the relevant teams (e.g., security, development) to understand the context of each wildcard usage.\n\n4. **Expected Secure Configuration:**\n   - Roles and ClusterRoles should be defined with specific permissions, avoiding wildcard (\"*\") usage unless absolutely necessary and justified with appropriate risk acceptance and documentation.\n\n5. **Confirm Compliance:**\n   - Compliance is achieved when all roles and cluster roles have specific permissions without unnecessary wildcards, adhering to the principle of least privilege.\n   - Any roles using wildcards should be reviewed and modified to use specific resources and actions where feasible.",
+    "timestamp": "2025-10-28T15:04:02.797077",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.9",
+    "unique_id": "k8s_3_1_1_9",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the Container Network Interface file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.9",
+        "unique_id": "k8s_3_1_1_9",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the Container Network Interface file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the Container Network Interface files have permissions of 600 or more restrictive.",
+        "rationale": "Container Network Interface provides various networking options for overlay networking. You should consult their documentation and restrict their respective file permissions to maintain the integrity of those files. Those files should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a <path/to/cni/files> Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 <path/to/cni/files> Default Value: NA References: 1. https://kubernetes.io/docs/concepts/cluster-administration/networking/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/cluster-administration/networking/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of file permissions on the Container Network Interface (CNI) files, which reside on the host filesystem (typically under /etc/cni/net.d/ or /opt/cni/bin/).\n- Kubernetes APIs and kubectl do not expose host-level file permissions or allow querying of in-guest OS file attributes.\n- The audit procedure explicitly requires running OS-level commands (e.g., stat -c %a <path/to/cni/files>) on the control plane node.\n- This check cannot be performed via Kubernetes API, kubectl, or controller/state configs.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Identify the directory containing the CNI configuration files (commonly /etc/cni/net.d/ or /opt/cni/bin/).\n3. For each file in the CNI directory, run:\n   - stat -c %a <path/to/cni/file>\n4. Verify that the permissions for each file are 600 or more restrictive (i.e., only the owner has read/write permissions, and no permissions are granted to group or others).\n5. Confirm compliance if all CNI files have permissions set to 600 or more restrictive.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:43:22.535070",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.1",
+    "unique_id": "k8s_1_3_1_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Client certificate authentication should not be used for users",
+    "input_row": {
+        "id": "3.1.1",
+        "unique_id": "k8s_1_3_1_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Client certificate authentication should not be used for users",
+        "description": "Kubernetes provides the option to use client certificates for user authentication. However as there is no way to revoke these certificates when a user leaves an organization or loses their credential, they are not suitable for this purpose. It is not possible to fully disable client certificate use within a cluster as it is used for component to component authentication.",
+        "rationale": "With any authentication mechanism the ability to revoke credentials if they are compromised or no longer required, is a key control. Kubernetes client certificate authentication does not allow for this due to a lack of support for certificate revocation. Impact: External mechanisms for authentication generally require additional software to be deployed.",
+        "audit": "Review user access to the cluster and ensure that users are not making use of Kubernetes client certificate authentication.",
+        "remediation": "Alternative mechanisms provided by Kubernetes such as the use of OIDC should be implemented in place of client certificates. Default Value: Client certificate authentication is enabled by default. Additional Information: The lack of certificate revocation was flagged up as a high risk issue in the recent Kubernetes security audit. Without this feature, client certificate authentication is not suitable for end users.",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "External mechanisms for authentication generally require additional software to be deployed.",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires reviewing how users authenticate to the Kubernetes cluster and ensuring that client certificate authentication is not used for end users. Kubernetes does not expose, via its API or kubectl, a definitive list of which users are authenticating with client certificates versus other mechanisms (such as OIDC or webhook). The API server does not log or expose the authentication method per user in a way that can be programmatically queried. Determining whether users are using client certificates requires reviewing the authentication configuration, certificate authorities, and possibly audit logs or external identity provider integrations, which is not possible solely via Kubernetes APIs or kubectl commands. This necessitates manual inspection of API server configuration, user onboarding/offboarding processes, and possibly audit logs.\n\n**MANUAL STEPS:**\n1. Review the Kubernetes API server authentication configuration (e.g., --client-ca-file, --oidc-* flags) on all control plane nodes to determine which authentication methods are enabled.\n2. Identify all certificate authorities referenced by --client-ca-file and review the issued certificates to determine which are used by system components (kubelets, controllers) and which, if any, are issued to human users.\n3. Examine RBAC bindings (ClusterRoleBindings and RoleBindings) to identify users and groups with access to the cluster.\n4. For each user or group with access, determine the authentication method used (client certificate, OIDC, webhook, etc.) by reviewing onboarding documentation, identity provider configurations, and any available audit logs.\n5. Confirm that no end users (humans) are authenticating via client certificates. Only system components should use client certificate authentication.\n6. If any end users are found to be using client certificates, flag as non-compliant and recommend migration to OIDC or another revocable authentication method.\n7. Document findings and remediation steps as appropriate.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:02:08.951775",
+    "model": "gpt-4.1"
+}

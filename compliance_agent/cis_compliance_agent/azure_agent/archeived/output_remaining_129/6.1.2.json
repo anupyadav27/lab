@@ -1,0 +1,17 @@
+{
+    "id": "6.1.2",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "input_row": {
+        "id": "6.1.2",
+        "unique_id": "row154_6.1.2__ensure-permissions-on-/etc/passwd--are-configured",
+        "title": "Ensure permissions on /etc/passwd- are configured",
+        "description": " Uid is 0/root and ...\"",
+        "rationale": "The /etc/passwd- file contains backup user account information.",
+        "audit": "It is critical to ensure that the /etc/passwd- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command to verify /etc/passwd- is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd- /etc/passwd- 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/passwd-: # chmod u-x,go-wx /etc/passwd- # chown root:root /etc/passwd- Default Value: /etc/passwd- 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH Access**: Connect to the Azure VM instance where the `/etc/passwd-` file is located using SSH. The command can be structured as follows:\n   ```\n   ssh username@public-ip-of-vm\n   ```\n   Replace `username` and `public-ip-of-vm` with the appropriate SSH username and public IP address of your Azure VM.\n\n2. **Verify File Permissions**: Once logged in, use the command to check the file permissions of `/etc/passwd-`:\n   ```\n   stat /etc/passwd-\n   ```\n   This command will display details about the file, including its permissions.\n\n3. **Expected Secure Configuration**: Verify that the output shows the permissions as `-rw-r--r--` (or `644`) with the owner and group both set to `root`. This means:\n   - The file should be in mode `644` or more restrictive.\n   - User ID (Uid) should be `0/root`.\n   - Group ID (Gid) should be `0/root`.\n\n4. **Confirm Compliance**: If the permissions and ownership are correct, it indicates compliance. If the permissions are either too permissive or the ownership is incorrect, follow the remediation steps to adjust:\n   ```\n   sudo chmod u-x,go-wx /etc/passwd-\n   sudo chown root:root /etc/passwd-\n   ``` \n   After running the commands to fix the configurations, re-check the permissions and ownership using the `stat` command to confirm compliance. \n\nBy following these steps, you will be able to assess if the control related to the permissions of the `/etc/passwd-` file is properly configured."
+}

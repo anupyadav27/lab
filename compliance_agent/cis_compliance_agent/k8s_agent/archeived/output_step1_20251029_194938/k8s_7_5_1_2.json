@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.2",
+    "unique_id": "k8s_7_5_1_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Minimize access to secrets",
+    "input_row": {
+        "id": "5.1.2",
+        "unique_id": "k8s_7_5_1_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Minimize access to secrets",
+        "description": "The Kubernetes API stores secrets, which may be service account tokens for the Kubernetes API or credentials used by workloads in the cluster. Access to these secrets should be restricted to the smallest possible group of users to reduce the risk of privilege escalation.",
+        "rationale": "Inappropriate access to secrets stored within the Kubernetes cluster can allow for an attacker to gain additional access to the Kubernetes cluster or external resources whose credentials are stored as secrets. Impact: Care should be taken not to remove access to secrets to system components which require this for their operation",
+        "audit": "Review the users who have get, list or watch access to secrets objects in the Kubernetes API.",
+        "remediation": "Where possible, remove get, list and watch access to secret objects in the cluster. Default Value: By default in a kubeadm cluster the following list of principals have get privileges on secret objects CLUSTERROLEBINDING                                    SUBJECT TYPE            SA-NAMESPACE cluster-admin                                         system:masters Group system:controller:clusterrole-aggregation-controller  clusterrole- aggregation-controller  ServiceAccount  kube-system system:controller:expand-controller                   expand-controller ServiceAccount  kube-system system:controller:generic-garbage-collector           generic-garbage- collector           ServiceAccount  kube-system system:controller:namespace-controller                namespace-controller ServiceAccount  kube-system system:controller:persistent-volume-binder            persistent-volume- binder            ServiceAccount  kube-system system:kube-controller-manager                        system:kube-controller- manager      User",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Care should be taken not to remove access to secrets to system components which require this for their operation",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_secret_access_minimized\n\n**AUTOMATION DETAILS:**\n\n- **Kubernetes API calls / kubectl commands:**\n  - Use `kubectl get clusterrole,role -o yaml` to enumerate all ClusterRoles and Roles.\n  - Parse each Role and ClusterRole for rules granting `get`, `list`, or `watch` verbs on the `secrets` resource in the `core` API group.\n  - Use `kubectl get clusterrolebinding,rolebinding -o yaml` to enumerate all ClusterRoleBindings and RoleBindings.\n  - Map which users, groups, or service accounts are bound to these roles.\n  - Identify all subjects (users, groups, service accounts) with access to `get`, `list`, or `watch` on `secrets`.\n\n- **Configuration properties/settings to validate:**\n  - Roles/ClusterRoles should not grant `get`, `list`, or `watch` on `secrets` to users/groups/service accounts beyond the minimal set required for cluster/system operation.\n  - Compare the list of subjects with access to the default set required for cluster operation (as listed in the remediation section).\n  - Flag any additional subjects with these permissions as a finding.\n\n- **Pass/Fail Criteria:**\n  - **Pass:** Only the documented system accounts and required controllers (e.g., `system:masters`, `system:kube-controller-manager`, and other default controllers) have `get`, `list`, or `watch` access to `secrets`.\n  - **Fail:** Any additional users, groups, or service accounts have these permissions.\n\n- **Example Steps:**\n  1. Enumerate all Roles/ClusterRoles with `secrets` resource rules and `get`, `list`, or `watch` verbs.\n  2. Enumerate all RoleBindings/ClusterRoleBindings that bind these roles to subjects.\n  3. Output a list of all subjects with these permissions.\n  4. Compare against the minimal required set; flag any excess.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:39:39.475373",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "6.2.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.1",
+        "unique_id": "aks_6.2.1__ensure-password-fields-are-not-empty",
+        "title": "Ensure password fields are not empty",
+        "description": "An account with an empty password field means that anybody may log in as that user without providing a password.",
+        "rationale": "All accounts must have passwords or be locked to prevent the account from being used by an unauthorized user.",
+        "audit": "Run the following command and verify that no output is returned: # awk -F: '($2 == \"\" ) { print $1 \" does not have a password \"}' /etc/shadow",
+        "remediation": "If any accounts in the /etc/shadow file do not have a password, run the following command to lock the account until it can be determined why it does not have a password: # passwd -l <username> Also, check to see if the account is logged in and investigate what it is being used for to determine if it needs to be forced off. References: 1. NIST SP 800-53 Rev. 5: IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Step 1:** SSH into each Kubernetes node within your Azure Kubernetes Service (AKS) cluster using a secure terminal client.\n2. **Step 2:** Execute the following command to check for accounts with empty password fields:\n   ```\n   awk -F: '($2 == \"\" ) { print $1 \" does not have a password \"}' /etc/shadow\n   ```\n3. **Step 3:** Review the output. If any accounts are listed, note the usernames that do not have a password set.\n4. **Step 4:** For each account identified without a password:\n   - Lock the account by running:\n     ```\n     passwd -l <username>\n     ```\n   - Check if the account is logged in by running:\n     ```\n     who | grep <username>\n     ```\n5. **Step 5:** Investigate the use of the account and determine if it needs to be forcefully logged off based on its activity and necessity.\n6. **Step 6:** Document any accounts without passwords and the actions taken to remediate the issue.\n\n**EXPECTED SECURE CONFIGURATION:** All user accounts must have a password set to prevent unauthorized access. Any account without a password should be locked until reviewed.\n\n**HOW TO CONFIRM COMPLIANCE:** After performing the checks and remediation, confirm compliance by ensuring that the output of the `awk` command returns no entries and that all identified accounts without passwords are locked."
+}

@@ -1,0 +1,17 @@
+{
+    "id": "3.1",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "3.1",
+        "unique_id": "row302_3.1__ensure-private-virtual-networks-are-used-for-container-instances",
+        "title": "Ensure Private Virtual Networks are used for Container Instances",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Container Instances which have been created with Public IP addresses will need to be re-created with private IP addresses. During the initial creation of a Container Instance, ensure that the Networking Type of \"Private\" is selected prior to creating the Container Instance. Default Value: By default, the \"Public\" Networking type is selected when creating a Container Instance from Azure Portal. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/baselines/container- instances-security-baseline?toc=%2Fazure%2Fcontainer- instances%2FTOC.json 2. https://learn.microsoft.com/en-us/azure/container-instances/container-instances- vnet CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit can be fully verified using Azure Resource Manager APIs. Azure offers APIs for querying the properties of Container Instances including networking settings.\n- The focus on ensuring that Container Instances are using private networking without requiring human judgment or SSH access aligns with automated capabilities.\n- The control discusses enforcement that could be cross-checked with the settings exposed via the API.\n\n**PROGRAM NAME:** azure_container_instances_networking_private_enabled\n\n**AUTOMATION DETAILS:**\n1. **APIs to Use:**\n   - Use Azure Resource Manager REST API to query Container Instances.\n   - Specifically, the `GET /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}` endpoint can be used.\n\n2. **Resources to Enumerate:**\n   - Enumerate all Container Instances within all resource groups of the subscription.\n\n3. **Configuration Properties to Validate:**\n   - Check the `properties.networkProfile.id` field within the response of a Container Instance to determine if it is associated with a private virtual network.\n   - Validate against the presence of `Public` IP configuration.\n\n4. **Pass/Fail Criteria:**\n   - **Pass:** If the Container Instance is associated with a private virtual network (i.e., `properties.networkProfile.id` indicates it is connected to a virtual network).\n   - **Fail:** If there is no association to a private network or if the `properties.ipAddress` indicates a `Public` IP is assigned.\n\n5. **Example API Endpoint:**\n   - `GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups?api-version=2021-03-01`"
+}

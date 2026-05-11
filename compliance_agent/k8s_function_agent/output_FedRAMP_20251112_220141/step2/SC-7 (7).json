@@ -1,0 +1,30 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_no_public_ingress",
+    "k8s_service_type_not_nodeport",
+    "k8s_ingress_tls_enabled",
+    "k8s_pod_security_context_host_network_disabled"
+  ],
+  "changes_made": [
+    "Renamed k8s_networkpolicy_no_public_ingress to k8s_networkpolicy_default_deny_public_ingress for clarity",
+    "Renamed k8s_service_type_not_nodeport to k8s_service_nodeport_disabled for consistency"
+  ],
+  "review_notes": "The functions are applicable to Kubernetes as they address boundary protection by controlling network access and securing communication channels. The original function names were mostly clear but required minor adjustments for consistency and clarity. The changes ensure alignment with naming conventions and improve the specificity of the checks.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Use 'default_deny_public_ingress' to specify the intent of the network policy more clearly",
+    "Use 'nodeport_disabled' to directly indicate the check being performed on service types"
+  ],
+  "control_id": "SC-7 (7)",
+  "title": "Boundary Protection | Split Tunneling for Remote Devices",
+  "step1_functions": [
+    "k8s_networkpolicy_no_public_ingress",
+    "k8s_service_type_not_nodeport",
+    "k8s_ingress_tls_enabled",
+    "k8s_pod_security_context_host_network_disabled"
+  ],
+  "step1_reasoning": "The control SC-7 (7) focuses on boundary protection and preventing unauthorized public access, which can be mapped to Kubernetes network security practices. NetworkPolicies can be used to restrict ingress traffic, ensuring no public access unless explicitly allowed. Services should avoid using NodePort to prevent exposing services directly to the internet. Ingress resources should have TLS enabled to secure traffic. Additionally, pods should not use the host network to prevent bypassing network policies."
+}

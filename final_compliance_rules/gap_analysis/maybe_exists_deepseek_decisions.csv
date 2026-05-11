@@ -1,0 +1,132 @@
+proposed_rule_id,existing_rule_id,csp,rule_type,decision,reason
+oci.object_storage.bucket.ssl_only,oci.object_storage.bucket.storage_website_https_only,oracle,config,SAME,"Both rules enforce HTTPS/SSL for Oracle Object Storage, with the proposed rule focusing on bucket SSL-only access and the existing rule on website HTTPS-only, which are effectively the same security c"
+oci.object_storage.bucket.encryption_state,oci.object_storage.bucket.storage_bucket_default_encryption,oracle,config,SAME,"Both check bucket encryption state; EXISTING specifies default encryption, covering the same security configuration."
+oci.identity.user.password_policy.enforce_change,oci.identity.user.password_policy_uppercase,oracle,config,DIFFERENT,"PROPOSED checks password change enforcement, EXISTING checks uppercase requirement; different password policy aspects."
+oci.identity.user.account_management_enabled,oci.identity.user.account_access_approval_enabled,oracle,config,DIFFERENT,"PROPOSED checks account management enabled, EXISTING checks account access approval; different functions."
+oci.identity.policy.least_privilege,oci.identity.policy.policy_admin_rbac_least_privilege_required,oracle,config,SAME,Both check least privilege for policies; EXISTING is more specific but covers the same security principle.
+oci.identity.policy,oci.identity.user.policy,oracle,config,UNSURE,"PROPOSED is generic policy check, EXISTING is user-specific policy; unclear if same scope without more context."
+oci.identity.password_policy.minimum_password_length,oci.identity.user.password_policy_minimum_length_14,oracle,config,SAME,Both check minimum password length in identity password policy; EXISTING specifies 14 as the requirement.
+oci.identity.password_policy.minimum_length,oci.identity.user.password_policy_minimum_length_14,oracle,config,SAME,Both check minimum password length in identity password policy; EXISTING specifies 14 as the requirement.
+oci.identity.auth_policy.password_policy.minimum_length,oci.identity.user.password_policy_minimum_length_14,oracle,config,SAME,Both check minimum password length in identity password policy; EXISTING specifies 14 as the requirement.
+oci.events.rule.enabled,oci.events.rule.trigger_logs_enabled,oracle,config,UNSURE,"PROPOSED checks if an Events rule is enabled, EXISTING checks if it triggers logs; unclear if same check without more context."
+oci.database.rds.instance_encryption_enabled,oci.database.autonomous_database.instance_encryption_enabled,oracle,config,DIFFERENT,"PROPOSED checks RDS instance encryption, EXISTING checks Autonomous Database encryption; different database services."
+oci.compute.instance.patch_management,oci.compute.instance.patch_compliance,oracle,config,SAME,"Both address patch management/compliance for Oracle compute instances, same security update check."
+oci.compute.instance.boot_volume_encryption,oci.compute.instance.volume_encryption_enabled,oracle,config,SAME,"Both verify encryption for boot/volumes on Oracle compute instances, same encryption-at-rest check."
+oci.compute.instance.backup_policy,oci.compute.instance.backup_enabled,oracle,config,DIFFERENT,"Proposed checks backup policy configuration, while existing checks backup enabled status; may differ in scope."
+oci.compute.instance.auto_backup,oci.compute.instance.backup_enabled,oracle,config,SAME,"Both check if auto backup is enabled for Oracle compute instances, same security configuration."
+oci.audit.configuration.retention_period_days,oci.audit.configuration.audit_retention_days_minimum_enabled,oracle,config,SAME,"Both focus on audit retention period days in Oracle Cloud, same check despite different compliance contexts."
+oci.audit.configuration.log_retention_days,oci.audit.configuration.audit_retention_days_minimum_enabled,oracle,config,SAME,"Both assess audit log retention days in Oracle Cloud, targeting the same configuration requirement."
+oci.audit.configuration.audit_log_enabled,oci.audit.configuration.enabled,oracle,config,SAME,"Both verify audit log configuration is enabled in Oracle Cloud, same security check with slight naming variation."
+k8s.service.not_external_ip,k8s.service.no.external_ip,k8s,config,SAME,"Both check for Kubernetes services without external IPs, identical security focus despite minor naming differences."
+k8s.rbac.service_account.default_token_check,k8s.rbac.default.service_account_audit,k8s,config,SAME,"Both address default service account tokens in Kubernetes RBAC, indicating same underlying configuration check."
+k8s.rbac.service_account.default_check,k8s.rbac.default.service_account_audit,k8s,config,SAME,"Both check default service account usage in Kubernetes RBAC, likely same security check with naming variation."
+k8s.rbac.role.wildcard_verb,k8s.rbac.audit.wildcard_verb_role_create,k8s,config,SAME,Both check for RBAC roles (ClusterRole or Role) using wildcard verbs.
+k8s.rbac.clusterrole.least_privilege,k8s.rbac.rolebinding.least_privilege,k8s,config,DIFFERENT,Proposed checks ClusterRole for least privilege; existing checks RoleBinding.
+k8s.rbac.clusterrole.clusterrole_least_privilege,k8s.rbac.rolebinding.least_privilege,k8s,config,DIFFERENT,Proposed checks ClusterRole for least privilege; existing checks RoleBinding.
+k8s.pod.security_context,k8s.pod.security.security_context_verification,k8s,config,SAME,Both verify the security context configuration for pods.
+k8s.pod.disruption_budget,k8s.pod.pod.disruption_budget_configured,k8s,config,SAME,Both check for the configuration of a Pod Disruption Budget.
+k8s.node.automatic_updates,k8s.node.node.automatic_updates_enabled,k8s,config,SAME,Both check if automatic updates are enabled on Kubernetes nodes.
+k8s.network.policy.default_deny,k8s.network.policy.default_deny_ingress_check,k8s,config,SAME,"Both check for a default-deny network policy, focusing on ingress."
+k8s.network.network_policy.deny_all_ingress,k8s.network.policy.default_deny_ingress_check,k8s,config,SAME,Both check for a network policy that denies all ingress traffic by default.
+k8s.audit.policy.log_all_requests,k8s.audit.policy.captures_all_requests,k8s,config,SAME,"Both check that the audit policy captures all requests, likely for compliance."
+k8s.audit.policy,k8s.audit.policy.configured,k8s,config,SAME,Both check for the presence of a Kubernetes audit policy configuration.
+k8s.audit.log.policy_configured,k8s.audit.policy.configured,k8s,config,SAME,Both check audit log policy is configured in Kubernetes.
+k8s.apiserver.audit.policy,k8s.apiserver.server.audit_policy_verification,k8s,config,SAME,Both check audit policy configuration for Kubernetes API server.
+ibm.vpc.instance.boot_volume_encryption,ibm.vpc.instance.boot_volume_encrypted,ibm,config,SAME,Both check encryption of boot volumes for VPC instances.
+ibm.vpc.instance.boot_volume.delete_volume_on_instance_delete,ibm.vpc.instance.boot_volume_encrypted,ibm,config,DIFFERENT,"Proposed checks deletion setting for boot volume, existing checks encryption."
+ibm.vpc.image.encrypted_boot_volume,ibm.vpc.instance.boot_volume_encrypted,ibm,config,SAME,Both check encryption of boot volumes for VPC images/instances.
+ibm.iam.policy.change_control,ibm.iam.activity.policy_change,ibm,config,SAME,Both check changes to IAM policies (change control vs. policy modification).
+ibm.iam.account_settings.activity_tracking,ibm.iam.activity.account_settings_change,ibm,config,SAME,Both check changes to IBM IAM account settings/activity tracking.
+gcp.monitoring.alert_policy.notification_channel_configured,gcp.monitoring.notification_channel.notification_destinations_configured,gcp,config,SAME,Both check notification channels are configured for alert policies.
+gcp.logging.sink.destination_encryption,gcp.logging.sink.sink_destination_encrypted,gcp,config,SAME,Both check encryption of log sink destination; naming variation.
+gcp.logging.sink.audit_log_retention,gcp.logging.audit.log_sink_deleted,gcp,config,DIFFERENT,"Proposed checks audit log retention, existing checks if log sink is deleted (stops export)."
+gcp.logging.log_bucket.retention_days,gcp.logging.log_stream.stream_retention_days_minimum,gcp,config,DIFFERENT,"Proposed checks log bucket retention, existing checks log stream retention—different logging scopes."
+gcp.iam.service_account.key_usage,gcp.iam.audit.service_account_key_create,gcp,config,DIFFERENT,"Proposed checks key usage, existing monitors key creation—different aspects of key management."
+gcp.iam.service_account.key_rotation,gcp.iam.audit.service_account_key_create,gcp,config,DIFFERENT,"Proposed checks key rotation, existing monitors key creation—different lifecycle controls."
+gcp.iam.service_account.inactive_disable,gcp.iam.activity.disable_service_account,gcp,config,SAME,Both check disabling inactive service accounts for security.
+gcp.gke.node.pool_gke_sandbox_enabled,gcp.gke.node_pool.node_pool_disk_encryption_enabled,gcp,config,DIFFERENT,"Proposed checks GKE sandbox, existing checks disk encryption—different security aspects."
+gcp.compute.instance.disk_encryption,gcp.compute.instance.instance_disk_encrypted,gcp,config,SAME,Both check disk encryption for Compute Engine instances.
+gcp.compute.firewall.no_permit_all,gcp.compute.firewall.firewall_no_permit_any_any,gcp,config,SAME,"Both check firewall rules for overly permissive ""any-any"" configurations."
+gcp.cloudasset.feed.enabled,gcp.cloudasset.feed.aggregator_org_aggregator_enabled,gcp,config,SAME,"Both check enabling Cloud Asset Inventory feeds, likely same security check."
+gcp.artifactregistry.image.vulnerability_scanning_enabled,gcp.artifactregistry.repo.registry_image_scanning_enabled,gcp,config,SAME,Both check vulnerability/image scanning for Artifact Registry repositories.
+azure.storage.storage_account.blob_encryption_enabled,azure.storage.account.blob.versioning.enabled,azure,config,DIFFERENT,"Proposed checks blob encryption, existing checks blob versioning—different security controls."
+azure.storage.account.secure_transfer_required,azure.storage.account.secure.transfer.enabled,azure,config,SAME,"Both check secure transfer (HTTPS) requirement for Azure Storage accounts, just naming difference."
+azure.storage.account.anonymous_auth_disabled,azure.storage.account.blob.anonymous.access.disabled,azure,config,SAME,"Both check disabling anonymous authentication for Azure Storage, existing specifies blob access but core check is same."
+azure.sql.database.long_term_retention_policy,azure.sql.database.long_term_retention_enabled,azure,config,SAME,"Both check long-term retention policy/enabled for Azure SQL Database, same security configuration."
+azure.policy.policy_assignment,azure.policy.assignment.enabled,azure,config,SAME,"Both check if Azure Policy assignments are enabled, just different naming."
+azure.monitor.activity_log_alert.configured,azure.monitor.activity_log.activity_log_alert_delete,azure,config,DIFFERENT,Proposed checks if activity log alerts are configured generally; existing alerts specifically on delete operations.
+azure.compute.virtual_machine.antimalware_enabled,azure.compute.virtual_machine.vm_vtpm_enabled,azure,config,DIFFERENT,"One checks antimalware enabled (security software), the other checks vTPM enabled (hardware-based security)."
+azure.backup.recovery_vault.policy_configured,azure.backup.policy.configured,azure,config,SAME,"Both check if a backup policy is configured for Azure Recovery Vault, just naming variation."
+azure.backup.recovery_services_vault.encryption,azure.backup.recovery.services.vault.infrastructure.encryption.enabled.check,azure,config,SAME,"Both check encryption for Azure Recovery Services Vault, likely same infrastructure encryption setting."
+azure.aks.cluster.rbac_enabled,azure.aks.cluster.private.cluster.enabled,azure,config,DIFFERENT,"One checks RBAC enabled (access control), the other checks private cluster enabled (network isolation)."
+aws.securityhub.hub.is_enabled,aws.securityhub.hub.securityhub_detectors_enabled,aws,config,SAME,"Both check if AWS Security Hub is enabled, just different naming for the detectors feature."
+aws.securityhub.hub.enabled,aws.securityhub.hub.securityhub_detectors_enabled,aws,config,SAME,Both check if Security Hub is enabled.
+aws.rds.db_instance.backup_retention_period,aws.rds.backup_retention_period.backup_retention_period_configured,aws,config,SAME,Both check RDS backup retention period configuration.
+aws.iam.password_policy.minimum_length,aws.iam.password.policy_minimum_length_14_configured,aws,config,SAME,Both check the minimum length in IAM password policy.
+aws.iam.account_password_policy.minimum_password_length,aws.iam.password.policy_minimum_length_14_configured,aws,config,SAME,Both check the minimum length in IAM password policy.
+aws.iam.account_password_policy.minimum_length,aws.iam.password.policy_minimum_length_14_configured,aws,config,SAME,Both check the minimum length in IAM password policy.
+aws.iam.account.password_policy.minimum_length,aws.iam.password.policy_minimum_length_14_configured,aws,config,SAME,Both check the minimum length in IAM password policy.
+aws.guardduty.detector.is_enabled,aws.guardduty.is.guardduty_enabled,aws,config,SAME,Both check if GuardDuty is enabled (detector-level check).
+aws.guardduty.detector.enabled,aws.guardduty.detector.guardduty_detectors_enabled,aws,config,SAME,Both check if GuardDuty detectors are enabled.
+aws.ec2.ebs.encryption_by_default,aws.ec2.resource.ebs_encryption_by_default_enabled,aws,config,SAME,Both check if EBS encryption is enabled by default.
+aws.cloudtrail.trail.is_multi_region_trails_enabled,aws.cloudtrail.multi.trail_cloudtrail_region_enabled,aws,config,SAME,Both check if CloudTrail trails are multi-region enabled.
+aws.cloudtrail.trail.is_multi_region_trails,aws.cloudtrail.multi.trail_cloudtrail_region_enabled,aws,config,SAME,"Both check if CloudTrail is configured as a multi-region trail, same security check (note: proposed ID typo ""trails"" vs ""trail"")."
+aws.cloudtrail.trail.is_multi_region_trail,aws.cloudtrail.multi.trail_cloudtrail_region_enabled,aws,config,SAME,"Both check if CloudTrail is configured as a multi-region trail, same security check."
+aws.cloudtrail.trail.enabled,aws.cloudtrail.trail.flow_logging_enabled,aws,config,DIFFERENT,"Proposed checks if CloudTrail is enabled, existing checks if flow logging is enabled within it."
+alicloud.ecs.instance.secure_boot_enabled,alicloud.ecs.trusted.launch_secure_boot_enabled,alicloud,config,SAME,"Both check if secure boot is enabled for ECS instances, same security check."
+alicloud.ecs.instance.patch_management,alicloud.ecs.instance.management_enabled,alicloud,config,UNSURE,"Proposed mentions patch management, existing mentions general management; unclear if same scope."
+alicloud.ecs.disk.encryption_enabled,alicloud.ecs.disk.encryption_at_rest_enabled,alicloud,config,SAME,"Both check if ECS disk encryption is enabled (encryption at rest), same security check."
+alicloud.actiontrail.trail.oss_write_enabled,alicloud.actiontrail.oss.dataevents_write_enabled,alicloud,config,SAME,"Both check if OSS write data events are enabled in ActionTrail, same security check."
+alicloud.actiontrail.trail.is_multi_region_enabled,alicloud.actiontrail.multi.region_enabled,alicloud,config,SAME,"Both check if multi-region is enabled for ActionTrail, identical security check."
+alicloud.actiontrail.trail.enabled,alicloud.actiontrail.trail.logging_enabled,alicloud,config,SAME,"Both check if ActionTrail (audit logging) is enabled, likely same security check with different naming."
+oci.objectstorage.audit.delete_bucket,oci.objectstorage.audit.bucket_change,oracle,ciem,DIFFERENT,"Proposed checks delete bucket events, existing checks bucket creation/update/change events."
+oci.identity.audit.policy_change,oci.identity.policy.policy_versioning_and_change_audit_enabled,oracle,ciem,SAME,"Both IDs involve auditing policy changes in OCI Identity, likely checking if audit logging is enabled for policy modifications."
+oci.iam.audit.user_capability,oci.iam.audit.create_user,oracle,ciem,DIFFERENT,"Proposed checks user capability (e.g., permissions or features), while existing audits user creation, which are distinct security events."
+oci.iam.audit.policy_modify,oci.iam.audit.update_policy,oracle,ciem,SAME,"Both IDs refer to modifying or updating an IAM policy in OCI, indicating they audit policy changes."
+oci.iam.audit.policy_edit,oci.iam.audit.update_policy,oracle,ciem,SAME,"Both IDs involve editing or updating an IAM policy in OCI, checking for modifications to IAM policies."
+oci.iam.activity_log.api_key_create,oci.iam.audit.create_api_key,oracle,ciem,SAME,"Both IDs refer to creating an API key in OCI IAM, indicating they audit the creation of API signing keys for user accounts."
+oci.compute.audit.launch_instance_without_trusted_platform,oci.compute.audit.launch_instance,oracle,ciem,DIFFERENT,"Proposed specifies ""without trusted platform,"" focusing on trusted platform module, while existing is a general instance launch audit."
+k8s.rbac.audit.rolebinding_create,k8s.rbac.rolebinding.audit_enabled,k8s,ciem,SAME,"Both IDs relate to auditing rolebinding creation in Kubernetes RBAC, implying they verify audit logging for rolebinding creation events."
+k8s.rbac.audit.rolebinding_change,k8s.rbac.rolebinding.audit_enabled,k8s,ciem,SAME,"Both IDs focus on auditing rolebinding changes in Kubernetes RBAC, suggesting they check if audit logging is enabled for such changes."
+k8s.rbac.audit.rolebinding_after_review,k8s.rbac.rolebinding.review,k8s,ciem,SAME,"Both IDs involve reviewing rolebindings in Kubernetes RBAC, indicating a check for review processes or audit of rolebinding reviews."
+k8s.rbac.audit.rolebinding,k8s.rbac.rolebinding.audit_enabled,k8s,ciem,SAME,"Both IDs refer to auditing rolebinding in Kubernetes RBAC, likely checking if audit logging is enabled for rolebinding changes."
+k8s.rbac.audit.escalate,k8s.rbac.audit.escalate_verb_used,k8s,ciem,SAME,Both check for use of the escalate verb in Kubernetes RBAC (same security check).
+k8s.audit.audit_policy_change,k8s.audit.policy.change_logging_enabled,k8s,ciem,SAME,"Both check for audit policy changes in Kubernetes (proposed name variation, same check)."
+k8s.audit.audit.policy_change,k8s.audit.policy.change_logging_enabled,k8s,ciem,SAME,"Both check for audit policy changes in Kubernetes (proposed name variation, same check)."
+ibm.vpc.activity_log.update_security_group_rule,ibm.vpc.activity.security_group_rule_change,ibm,ciem,SAME,Both check security group rule modifications (add/update/delete) in IBM VPC.
+ibm.iam.activity_log.service_id_apikey,ibm.iam.activity.service_id_locked,ibm,ciem,DIFFERENT,"Proposed checks service ID API key activity, existing checks service ID locked/unlocked only."
+ibm.iam.activity_log.service_id,ibm.iam.activity.service_id_locked,ibm,ciem,DIFFERENT,"Proposed checks service ID activity broadly, existing checks service ID locked/unlocked only."
+ibm.iam.activity_log.mfa_policy_change,ibm.iam.activity.policy_change,ibm,ciem,DIFFERENT,"Proposed checks MFA policy change specifically, existing checks general IAM policy change."
+ibm.iam.activity_log.api_key_creation,ibm.iam.activity.api_key_deleted,ibm,ciem,DIFFERENT,"Proposed checks API key creation, existing checks API key deletion only."
+ibm.iam.activity_log.api_key_create,ibm.iam.activity.api_key_deleted,ibm,ciem,DIFFERENT,"Proposed checks API key creation, existing checks API key deletion only."
+ibm.iam.activity_log.api_key_activity,ibm.iam.activity.api_key_deleted,ibm,ciem,DIFFERENT,"Proposed checks API key activity (likely creation/usage), existing checks API key deletion only."
+ibm.iam.activity_log.api_key,ibm.iam.activity.api_key_deleted,ibm,ciem,DIFFERENT,"Proposed checks API key activity (general events), existing checks API key deletion (specific removal action), indicating different checks."
+gcp.resourcemanager.audit.project_change,gcp.resourcemanager.audit.project_deleted,gcp,ciem,DIFFERENT,"Proposed checks project change (broad modifications), existing checks project deletion (specific destructive event), covering different scopes."
+gcp.logging.audit.update_sink,gcp.logging.activity.update_sink,gcp,ciem,SAME,"Both check updating a log export sink; proposed ""audit"" and existing ""activity"" likely refer to the same configuration update."
+gcp.logging.audit.sink_delete,gcp.logging.activity.delete_sink,gcp,ciem,SAME,"Both check deletion of a log export sink; proposed ""audit"" and existing ""activity"" may be naming variations for the same action."
+gcp.logging.audit.sink_config,gcp.logging.audit.audit_config_deleted,gcp,ciem,DIFFERENT,"Proposed checks sink configuration (general config changes), existing checks audit config deletion (specific removal event), targeting different logging aspects."
+gcp.iam.chain.service_account_key_create,gcp.iam.audit.service_account_key_create,gcp,ciem,SAME,"Both check service account key creation; proposed ""chain"" and existing ""audit"" likely refer to the same event in different contexts."
+gcp.iam.audit.set_iam_policy,gcp.iam.activity.set_iam_policy,gcp,ciem,SAME,"Both check setting an IAM policy; proposed ""audit"" and existing ""activity"" may be naming variations for the same configuration change."
+gcp.iam.audit.service_account_key_creation,gcp.iam.audit.service_account_key_create,gcp,ciem,SAME,"Both check service account key creation; proposed ""creation"" and existing ""create"" likely refer to the same security event."
+gcp.iam.audit.service_account_key_after_review,gcp.iam.audit.service_account_key_create,gcp,ciem,DIFFERENT,"Proposed checks service account key after review (post-review event), existing checks service account key creation (creation event), indicating different triggers or stages."
+gcp.iam.audit.disable_service_account,gcp.iam.activity.disable_service_account,gcp,ciem,DIFFERENT,"Proposed checks disabling a service account (audit), existing checks disabling a service account (activity), but different event types (audit vs activity) may target different logs or conditions."
+gcp.iam.activity_log.service_account_key_creation,gcp.iam.activity.delete_service_account_key,gcp,ciem,DIFFERENT,"Proposed checks key creation, existing checks key deletion; opposite actions in the key lifecycle."
+gcp.iam.activity_log.service_account_key_anomaly,gcp.iam.activity.delete_service_account_key,gcp,ciem,DIFFERENT,"Proposed checks anomalous key activity, existing checks key deletion; different security focuses (anomaly vs deletion)."
+gcp.iam.activity_log.service_account_key,gcp.iam.activity.delete_service_account_key,gcp,ciem,DIFFERENT,"Proposed checks service account key activity generally, existing checks key deletion specifically; different actions."
+gcp.iam.activity_log.role_binding_update,gcp.iam.activity.update_custom_role,gcp,ciem,DIFFERENT,"Proposed checks role binding updates broadly, existing checks custom role updates specifically; different IAM events."
+gcp.compute.audit.snapshot_create,gcp.compute.audit.snapshot_created,gcp,ciem,SAME,"Both check for disk snapshot creation in GCP Compute, just different naming (snapshot_create vs snapshot_created)."
+gcp.compute.activity_log.insert,gcp.compute.activity.snapshot_insert,gcp,ciem,DIFFERENT,"Proposed checks general compute insert activity, existing specifically checks disk snapshot creation; different scopes."
+azure.network.activity_log.nsg_rule_modify,azure.network.activity_log.nsg_rule_write,azure,ciem,SAME,"Both focus on NSG rule modifications (create or modify), same security check with slight naming variation."
+azure.network.activity_log.modify_nsg_voip,azure.network.activity_log.nsg_write,azure,ciem,SAME,"Same as pair 2, both check NSG write events, despite different naming suffixes (modify_nsg_voip vs nsg_write)."
+azure.network.activity_log.modify_nsg,azure.network.activity_log.nsg_write,azure,ciem,SAME,"Both monitor creation or modification of network security groups (NSG) in Azure, same security check."
+azure.monitor.audit.diagnostic_setting_delete,azure.monitor.activity_log.diagnostic_setting_delete,azure,ciem,SAME,"Both check for deletion of diagnostic settings in Azure Monitor, just different naming conventions (audit vs activity_log)."
+azure.monitor.activity_log.log_retention,azure.monitor.log.retention_configured,azure,ciem,SAME,Both check log retention configuration; existing rule covers the same setting.
+azure.monitor.activity_log.disable_diagnostic,azure.monitor.activity_log.diagnostic_setting_delete,azure,ciem,SAME,Both check for disabling/deleting diagnostic settings; existing rule covers deletion.
+azure.monitor.activity_log.diagnostic_setting_modified,azure.monitor.activity_log.diagnostic_setting_delete,azure,ciem,DIFFERENT,"Proposed checks diagnostic setting modifications, existing checks deletion; different events."
+azure.monitor.activity_log.diagnostic_setting_change,azure.monitor.activity_log.diagnostic_setting_delete,azure,ciem,DIFFERENT,"Proposed checks diagnostic setting changes, existing checks deletion; different events."
+azure.monitor.activity_log.diagnostic_disable,azure.monitor.activity_log.diagnostic_setting_delete,azure,ciem,SAME,Both check for disabling/deleting diagnostic settings; existing rule covers deletion.
+azure.monitor.activity_log.alert_rule_deletion,azure.monitor.activity.log.alert.sql.server.firewall.rule.deletion.check,azure,ciem,DIFFERENT,"Proposed checks alert rule deletion, existing checks SQL server firewall rule deletion; different resources."
+azure.monitor.activity_log.alert_rule_change,azure.monitor.activity_log.activity_log_alert_delete,azure,ciem,DIFFERENT,"Proposed checks alert rule changes, existing checks alert deletion; different scopes."
+azure.compute.activity_log.create_vm_image,azure.compute.activity_log.image_write,azure,ciem,SAME,Both check for VM image creation/write events; existing rule covers image creation/update.
+azure.compute.activity_log.create_vm,azure.compute.activity_log.vm_delete,azure,ciem,DIFFERENT,"Proposed checks VM creation, existing checks VM deletion; different events."
+aws.eks.audit.privileged_pod_create,aws.eks.audit_log.audit.privileged_pod,aws,ciem,SAME,"Both check for privileged pod creation in EKS, existing rule covers the same security concern."

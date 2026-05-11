@@ -1,0 +1,17 @@
+{
+    "id": "5.5.1",
+    "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json",
+    "input_row": {
+        "id": "5.5.1",
+        "unique_id": "5.5.1__manage-kubernetes-rbac-users-with-azure-ad",
+        "title": "Manage Kubernetes RBAC users with Azure AD",
+        "description": "Azure Kubernetes Service (AKS) can be configured to use Azure Active Directory (AD) for user authentication. In this configuration, you sign in to an AKS cluster using an Azure AD authentication token. You can also configure Kubernetes role-based access control (Kubernetes RBAC) to limit access to cluster resources based a user's identity or group membership.",
+        "rationale": "Kubernetes RBAC and AKS help you secure your cluster access and provide only the minimum required permissions to developers and operators.",
+        "audit": "",
+        "remediation": "References: 1. https://docs.microsoft.com/en-us/azure/aks/azure-ad-rbac 2. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- privileged-access#pa-7-follow-just-enough-administration-least-privilege-principle",
+        "impact": "",
+        "reference": "1. https://docs.microsoft.com/en-us/azure/aks/azure-ad-rbac 2. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- privileged-access#pa-7-follow-just-enough-administration-least-privilege-principle",
+        "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:** \n- The control is focused on monitoring the use of Azure Active Directory for user authentication in Azure Kubernetes Service (AKS), specifically pertaining to RBAC configurations. While human judgment could theoretically be needed to understand some nuanced configurations, the fact that it involves access control configurations relates closely to properties that are API-exposed and verifiable.\n\n**PROGRAM NAME:** azure_aks_rbac_azure_ad_enforced\n\n**AUTOMATION DETAILS:**\n- The automated program would check:\n  - **Azure Resource Manager APIs or Azure CLI commands to use:**\n    - Azure CLI: `az aks show --resource-group <resource-group-name> --name <aks-cluster-name>`\n    - Azure CLI: `az role assignment list --assignee <user_or_group_object_id> --scope <aks_resource_id>`\n  \n- **Specific resources to enumerate:**\n  - Azure subscriptions and resource groups containing AKS clusters, specifically the clusters themselves.\n\n- **Exact configuration properties/settings to validate:**\n  - Ensure that Azure AD integration is enabled for the AKS cluster, check that the Azure AD provider is set up correctly, and verify that role assignments for users and groups align with RBAC principle of least privilege.\n\n- **Clear Pass/Fail criteria with expected values:**\n  - Pass: \n    - Azure AD integration is enabled on the AKS cluster configuration.\n    - There are role assignments which limit access as per the principle of least privilege.\n  - Fail:\n    - Azure AD integration is not enabled.\n    - Role assignments grant excessive permissions.\n\n- **Example API endpoint or CLI command:**\n  - Command to check the AKS configuration for Azure AD: \n    ```\n    az aks show --resource-group <resource-group-name> --name <aks-cluster-name> --query \"aadProfile\"\n    ```\n  - Command to list RBAC role assignments:\n    ```\n    az role assignment list --scope <aks_resource_id>\n    ```"
+}

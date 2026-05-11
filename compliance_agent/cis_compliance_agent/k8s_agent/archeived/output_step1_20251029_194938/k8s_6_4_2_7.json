@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.7",
+    "unique_id": "k8s_6_4_2_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --hostname-override argument is not set",
+    "input_row": {
+        "id": "4.2.7",
+        "unique_id": "k8s_6_4_2_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --hostname-override argument is not set",
+        "description": "Do not override node hostnames.",
+        "rationale": "Overriding hostnames could potentially break TLS setup between the kubelet and the apiserver. Additionally, with overridden hostnames, it becomes increasingly difficult to associate logs with a particular node and process them for security analytics. Hence, you should setup your kubelet nodes with resolvable FQDNs and avoid overriding the hostnames with IPs. Impact: Some cloud providers may require this flag to ensure that hostname matches names issued by the cloud provider. In these environments, this recommendation should not apply.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that --hostname-override argument does not exist. Note This setting is not configurable via the Kubelet config file.",
+        "remediation": "Edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and remove the --hostname-override argument from the KUBELET_SYSTEM_PODS_ARGS variable. Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, --hostname-override argument is not set. References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/issues/22063",
+        "profile_applicability": "•  Level 1 - Worker Node •  Level 2 - Worker Node",
+        "impact": "Some cloud providers may require this flag to ensure that hostname matches names issued by the cloud provider. In these environments, this recommendation should not apply.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/issues/22063"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification that the kubelet process on each node is NOT started with the --hostname-override argument.\n- The CIS audit procedure specifies running ps -ef | grep kubelet on each node and visually inspecting the process arguments.\n- This flag is NOT configurable via the Kubelet config file and is only set via the process/systemd unit, which is not exposed via the Kubernetes API or kubectl.\n- Kubernetes APIs do not expose the process arguments or systemd unit files of the kubelet running on nodes.\n- This check requires host-level access (SSH or equivalent) to examine the process command line or systemd configuration.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes worker node.\n2. Run the following command to list the kubelet process and its arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Review the output and verify that the kubelet process is NOT started with the --hostname-override argument.\n4. Alternatively, inspect the kubelet systemd service file (commonly at /etc/systemd/system/kubelet.service.d/10-kubeadm.conf or similar) to ensure --hostname-override is not present in the KUBELET_SYSTEM_PODS_ARGS or other argument variables.\n5. Confirm compliance if --hostname-override is absent from both the running process and the service configuration.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:13:10.248748",
+    "model": "gpt-4.1"
+}

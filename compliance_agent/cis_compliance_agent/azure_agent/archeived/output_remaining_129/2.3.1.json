@@ -1,0 +1,17 @@
+{
+    "id": "2.3.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.3.1",
+        "unique_id": "aks_2.3.1__ensure-nis-client-is-not-installed",
+        "title": "Ensure NIS Client is not installed",
+        "description": "The Network Information Service (NIS), formerly known as Yellow Pages, is a client- server directory service protocol used to distribute system configuration files. The NIS client ( ypbind ) was used to bind a machine to an NIS server and receive the distributed configuration files.",
+        "rationale": "The NIS service is inherently an insecure system that has been vulnerable to DOS attacks, buffer overflows and has poor authentication for querying NIS maps. NIS generally has been replaced by such protocols as Lightweight Directory Access Protocol (LDAP). It is recommended that the service be removed. Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "audit": "Run the following command to verify that the ypbind package is not installed: # rpm -q ypbind package ypbind is not installed",
+        "remediation": "Run the following command to remove the ypbind package: # dnf remove ypbind References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access AKS Cluster Nodes:**\n   - Connect to your Azure Kubernetes Service (AKS) cluster using SSH. You can use the Azure CLI command:\n     ```\n     az aks get-credentials --resource-group <ResourceGroupName> --name <AKSClusterName>\n     ```\n   - Then SSH into one of the nodes by obtaining the node's IP address and using:\n     ```\n     ssh <username>@<node-ip>\n     ```\n\n2. **Verify NIS Client Installation:**\n   - Once connected to the node, run the following command to check if the NIS client package (ypbind) is installed:\n     ```\n     rpm -q ypbind\n     ```\n\n3. **Expected Secure Configuration:**\n   - The expected output from the command should indicate that the package is not installed, for example:\n     ```\n     package ypbind is not installed\n     ```\n\n4. **Confirm Compliance:**\n   - If the package is installed, take note of the instances and ensure remediation actions are taken as outlined in the control. If it is not installed, you are compliant with this control."
+}

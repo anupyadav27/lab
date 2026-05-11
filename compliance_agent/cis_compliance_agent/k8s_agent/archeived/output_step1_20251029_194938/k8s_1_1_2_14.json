@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.14",
+    "unique_id": "k8s_1_1_2_14",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the admission control plugin NodeRestriction is set",
+    "input_row": {
+        "id": "1.2.14",
+        "unique_id": "k8s_1_1_2_14",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the admission control plugin NodeRestriction is set",
+        "description": "Limit the Node and Pod objects that a kubelet could modify.",
+        "rationale": "Using the NodeRestriction plug-in ensures that the kubelet is restricted to the Node and Pod objects that it could modify as defined. Such kubelets will only be allowed to modify their own Node API object, and only modify Pod API objects that are bound to their node. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --enable-admission-plugins argument is set to a value that includes NodeRestriction.",
+        "remediation": "Follow the Kubernetes documentation and configure NodeRestriction plug-in on kubelets. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube-apiserver.yaml on the master node and set the -- enable-admission-plugins parameter to a value that includes NodeRestriction. --enable-admission-plugins=...,NodeRestriction,... Default Value: By default, NodeRestriction is not set. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#noderestriction 3. https://kubernetes.io/docs/admin/authorization/node/ 4. https://acotten.com/post/kube17-security",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#noderestriction 3. https://kubernetes.io/docs/admin/authorization/node/ 4. https://acotten.com/post/kube17-security"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_noderestriction_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify that the NodeRestriction admission control plugin is enabled.\n- This is typically set via the --enable-admission-plugins flag in the kube-apiserver manifest (commonly located at /etc/kubernetes/manifests/kube-apiserver.yaml).\n- Automated check steps:\n  1. Use kubectl to retrieve the kube-apiserver Pod specification in the kube-system namespace:\n     ```\n     kubectl -n kube-system get pod -l component=kube-apiserver -o yaml\n     ```\n     or, if running as a static Pod (most common in kubeadm-managed clusters), directly inspect the manifest file:\n     ```\n     cat /etc/kubernetes/manifests/kube-apiserver.yaml\n     ```\n  2. Parse the command or args section for the --enable-admission-plugins flag.\n  3. Confirm that the value for --enable-admission-plugins includes NodeRestriction (comma-separated list).\n- Pass Criteria: The --enable-admission-plugins flag is present and includes NodeRestriction in its value.\n- Fail Criteria: The --enable-admission-plugins flag is missing, or NodeRestriction is not listed in its value.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T19:55:46.181435",
+    "model": "gpt-4.1"
+}

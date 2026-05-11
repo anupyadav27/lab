@@ -1,0 +1,22 @@
+{
+    "control_id": "5.5.1",
+    "unique_id": "k8s_4_5_5_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+    "input_row": {
+        "id": "5.5.1",
+        "unique_id": "k8s_4_5_5_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+        "description": "Configure Image Provenance for your deployment.",
+        "rationale": "Kubernetes supports plugging in provenance rules to accept or reject the images in your deployments. You could configure such rules to ensure that only approved images are deployed in the cluster. Impact: You need to regularly maintain your provenance configuration based on container image updates.",
+        "audit": "Review the pod definitions in your cluster and verify that image provenance is configured as appropriate.",
+        "remediation": "Follow the Kubernetes documentation and setup image provenance. Default Value: By default, image provenance is not set. References: 1. https://kubernetes.io/docs/admin/admission-controllers/#imagepolicywebhook 2. https://github.com/kubernetes/community/blob/master/contributors/design- proposals/image-provenance.md 3. https://hub.docker.com/r/dnurmi/anchore-toolbox/ 4. https://github.com/kubernetes/kubernetes/issues/22888",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "You need to regularly maintain your provenance configuration based on container image updates.",
+        "references": "1. https://kubernetes.io/docs/admin/admission-controllers/#imagepolicywebhook 2. https://github.com/kubernetes/community/blob/master/contributors/design- proposals/image-provenance.md 3. https://hub.docker.com/r/dnurmi/anchore-toolbox/ 4. https://github.com/kubernetes/kubernetes/issues/22888"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_imagepolicywebhook_admission_controller_enabled\n\n**AUTOMATION DETAILS:**\n- Query the Kubernetes API server configuration to verify that the ImagePolicyWebhook admission controller is enabled.\n- Use the following methods:\n  - If access to the API server process arguments is available (e.g., via managed Kubernetes provider API, or by inspecting the kube-apiserver manifest in static pod deployments), check for the presence of the `--admission-control` or `--enable-admission-plugins` flag and ensure `ImagePolicyWebhook` is listed.\n  - For clusters using static pods (common in kubeadm and self-hosted setups), run:\n    ```\n    kubectl -n kube-system get pod -l component=kube-apiserver -o yaml\n    ```\n    - Inspect the `spec.containers.command` or `spec.containers.args` fields for `--enable-admission-plugins` or `--admission-control` and confirm `ImagePolicyWebhook` is present.\n  - For managed clusters, use provider-specific APIs or configuration management tools to retrieve the API server configuration and check for the enabled admission plugins.\n- Pass Criteria:\n  - The API server configuration includes `ImagePolicyWebhook` in the enabled admission plugins list.\n- Fail Criteria:\n  - `ImagePolicyWebhook` is not present in the enabled admission plugins list.\n- (Optional, for deeper validation) Check for the existence and configuration of the ImagePolicyWebhook webhook configuration file or API object, if applicable, to ensure it is properly set up to enforce image provenance policies.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:36:35.051976",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.5.1.2",
+    "unique_id": "gcp_1_1_5_1_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure local login warning banner is configured properly",
+    "input_row": {
+        "id": "1.5.1.2",
+        "unique_id": "gcp_1_1_5_1_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure local login warning banner is configured properly",
+        "description": "The contents of the /etc/issue file are displayed to users prior to login for local terminals. Unix-based systems have typically displayed information about the OS release and patch level upon logging in to the system. This information can be useful to developers who are developing software for a particular OS platform. If mingetty(8) supports the following options, they display operating system information: \\m - machine architecture \\r - operating system release \\s - operating system name \\v - operating system version - or the operating system's name",
+        "rationale": "Warning messages inform users who are attempting to login to the system of their legal status regarding the system and must include the name of the organization that owns the system and any monitoring policies that are in place. Displaying OS and patch level information in login banners also has the side effect of providing detailed system information to attackers attempting to target specific exploits of a system. Authorized users can easily get this information by running the \" uname -a \" command once they have logged in.",
+        "audit": "Run the following command and verify that the contents match site policy: # cat /etc/issue Run the following command and verify no results are returned: # grep -E -i \"(\\\\v|\\\\r|\\\\m|\\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/\"//g'))\" /etc/issue",
+        "remediation": "Edit the /etc/issue file with the appropriate contents according to your site policy, remove any instances of \\m , \\r , \\s , \\v or references to the OS platform # echo \"Authorized uses only. All activity may be monitored and reported.\" > /etc/issue /etc is stateless on Container-Optimized OS. Therefore, the steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This compliance control requires verifying the content of the `/etc/issue` file on the local filesystem of a specific Container-Optimized OS instance. The check includes ensuring the absence of certain placeholders or OS information which typically involves SSH access to the instance because these details are not accessible or configurable via GCP APIs, Google Cloud SDK, or GCP CLI.\n- It fundamentally involves accessing the OS-level configuration files that pertain to terminal login sessions, which is outside the scope of programmatically accessible GCP resources.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to securely connect to the Container-Optimized OS instance you wish to audit.\n\n2. **Check the /etc/issue File:**\n   - Run the command `cat /etc/issue` in the terminal.\n   - Ensure that the banner message aligns with your organization's policy and does not expose any sensitive OS information.\n\n3. **Verify Absence of Unwanted Placeholders:**\n   - Execute `grep -E -i \"\\\\m|\\\\r|\\\\s|\\\\v\" /etc/issue`.\n   - Verify no results are returned; otherwise, it indicates a non-compliant state where system information is potentially being disclosed.\n\n4. **Confirm Organization-Specific Policy Message:**\n   - Verify the presence of a legal or informational banner message that meets your organization's requirements, e.g., \"Authorized uses only. All activity may be monitored and reported.\"\n\n5. **Document Findings:**\n   - Record the audit process and the state of compliance. If non-compliant, follow the remediation steps to update the `/etc/issue` file appropriately.\n\nThese steps ensure that the local login warning banner is compliant with CIS standards and does not inadvertently disclose system information.",
+    "timestamp": "2025-10-28T21:22:32.180252",
+    "model": "gpt-4o"
+}

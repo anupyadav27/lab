@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_apiserver_authentication_enabled",
+    "k8s_apiserver_authorization_mode_rbac",
+    "k8s_rbac_service_account_token_automount_disabled",
+    "k8s_admission_controller_pod_security_enabled"
+  ],
+  "changes_made": [
+    "Renamed k8s_admission_controller_pod_security_enabled to k8s_admission_controller_security_policy_enforced for clarity"
+  ],
+  "review_notes": "The functions generally map well to the NIST SC-23(3) control, which focuses on session authenticity. The API server authentication and RBAC authorization are directly relevant. The service account token automount setting is also pertinent as it relates to session security. The admission controller function name was adjusted for clarity to better reflect its role in enforcing security policies.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "k8s_admission_controller_security_policy_enforced"
+  ],
+  "control_id": "SC-23(3)",
+  "title": "Session Authenticity - . ]",
+  "step1_functions": [
+    "k8s_apiserver_authentication_enabled",
+    "k8s_apiserver_authorization_mode_rbac",
+    "k8s_rbac_service_account_token_automount_disabled",
+    "k8s_admission_controller_pod_security_enabled"
+  ],
+  "step1_reasoning": "The control SC-23(3) focuses on session authenticity, which in the context of Kubernetes can be mapped to ensuring secure authentication and authorization mechanisms. This includes enabling authentication on the API server, using RBAC for authorization, and ensuring that service accounts do not automatically mount tokens unless necessary. Additionally, admission controllers can enforce security policies at the time of resource creation, contributing to session security."
+}

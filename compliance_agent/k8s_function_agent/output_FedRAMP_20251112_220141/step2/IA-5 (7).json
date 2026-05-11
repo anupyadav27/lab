@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_secret_no_unencrypted_static_authenticators",
+    "k8s_etcd_encryption_at_rest_enabled",
+    "k8s_secret_external_manager_configured"
+  ],
+  "changes_made": [
+    "Removed k8s_etcd_no_unencrypted_static_authenticators as it overlaps with k8s_etcd_encryption_at_rest_enabled",
+    "Renamed k8s_secret_management_external_provider_used to k8s_secret_external_manager_configured for consistency"
+  ],
+  "review_notes": "The control is applicable to Kubernetes as it involves ensuring that secrets are not stored in an unencrypted form. The functions mostly align with K8s security practices, but some naming and redundancy issues needed addressing. The function for etcd was redundant as encryption at rest covers the requirement. The naming for external secret management was adjusted for consistency with existing patterns.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Ensure function names are consistent with existing patterns and avoid redundancy"
+  ],
+  "control_id": "IA-5 (7)",
+  "title": "Authenticator Management | No Embedded Unencrypted Static Authenticators",
+  "step1_functions": [
+    "k8s_secret_no_unencrypted_static_authenticators",
+    "k8s_etcd_no_unencrypted_static_authenticators",
+    "k8s_secret_management_external_provider_used",
+    "k8s_secret_encryption_at_rest_enabled"
+  ],
+  "step1_reasoning": "The control 'IA-5 (7) - No Embedded Unencrypted Static Authenticators' focuses on ensuring that static authenticators (like passwords or tokens) are not stored in an unencrypted form. In Kubernetes, this translates to ensuring that Secrets are not stored in plain text and are encrypted at rest, particularly in etcd. Additionally, using external secret management solutions can help manage and rotate secrets securely."
+}

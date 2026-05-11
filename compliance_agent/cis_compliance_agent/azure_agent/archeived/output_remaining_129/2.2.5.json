@@ -1,0 +1,17 @@
+{
+    "id": "2.2.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.5",
+        "unique_id": "aks_2.2.5__ensure-a-dhcp-server-is-not-installed",
+        "title": "Ensure a dhcp server is not installed",
+        "description": "The Dynamic Host Configuration Protocol (DHCP) is a service that allows machines to be dynamically assigned IP addresses.",
+        "rationale": "Unless a system is specifically set up to act as a DHCP server, it is recommended that the dhcp-server package be removed to reduce the potential attack surface.",
+        "audit": "Run the following command to verify dhcp-server is not installed: # rpm -q dhcp-server package dhcp-server is not installed",
+        "remediation": "Run the following command to remove dhcp: # dnf remove dhcp-server References: 1. dhcpd(8) Additional Information: NIST SP 800-53 Rev. 5: • CM-7",
+        "impact": "",
+        "reference": "1. dhcpd(8) Additional Information: NIST SP 800-53 Rev. 5: • CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure portal** and navigate to the Kubernetes cluster where you want to verify the dhcp-server package installation.\n2. **Locate the node(s)** of the AKS cluster by checking the \"Nodes\" section under the \"Kubernetes services\" in the Azure portal.\n3. **Use SSH to connect** to one of the nodes. You might typically use a command such as `ssh -i <your_ssh_key> azureuser@<node_public_ip>`, replacing `<your_ssh_key>` and `<node_public_ip>` with your actual SSH key path and the public IP of the node.\n4. **Run the command:** `rpm -q dhcp-server` to check if the dhcp-server package is installed.\n5. **Verify the output:** If the output indicates that the package is not installed (e.g., \"package dhcp-server is not installed\"), it confirms compliance.\n6. **Expected secure configuration:** The absence of the dhcp-server package on the AKS nodes ensures a reduced attack surface.\n7. **How to confirm compliance:** If the command returns a message confirming the package is not installed, document this finding for compliance records. If the package is installed, remediate the issue by running `dnf remove dhcp-server` on the node."
+}

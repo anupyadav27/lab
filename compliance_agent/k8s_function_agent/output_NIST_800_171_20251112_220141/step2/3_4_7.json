@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_host_network_disabled",
+    "k8s_service_type_not_nodeport"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions provided are mostly accurate and map well to the control 3.4.7, which focuses on restricting nonessential services and ports. The function names generally follow the naming conventions and are descriptive. However, the function 'k8s_service_type_not_nodeport' could be refined for clarity.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider renaming 'k8s_service_type_not_nodeport' to 'k8s_service_nodeport_disabled' for better clarity and consistency with naming patterns."
+  ],
+  "control_id": "3_4_7",
+  "title": "3_4_7: 3.4.7 Restrict, disable, or prevent the use of nonessential programs, functions, ports, protocols, and services",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_host_network_disabled",
+    "k8s_service_type_not_nodeport"
+  ],
+  "step1_reasoning": "The control 3.4.7 focuses on restricting or disabling nonessential programs, functions, ports, protocols, and services. In Kubernetes, this can be mapped to network security and pod security configurations. NetworkPolicies can be used to enforce default deny rules for ingress and egress traffic, ensuring only essential network communication is allowed. Disabling host networking for pods prevents unnecessary exposure of host network interfaces. Additionally, restricting the use of NodePort services prevents exposing services on arbitrary ports on all nodes."
+}

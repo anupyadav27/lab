@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.2",
+    "unique_id": "k8s_3_5_3_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that all Namespaces have Network Policies defined",
+    "input_row": {
+        "id": "5.3.2",
+        "unique_id": "k8s_3_5_3_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that all Namespaces have Network Policies defined",
+        "description": "Use network policies to isolate traffic in your cluster network.",
+        "rationale": "Running different applications on the same Kubernetes cluster creates a risk of one compromised application attacking a neighboring application. Network segmentation is important to ensure that containers can communicate only with those they are supposed to. A network policy is a specification of how selections of pods are allowed to communicate with each other and other network endpoints. Network Policies are namespace scoped. When a network policy is introduced to a given namespace, all traffic not allowed by the policy is denied. However, if there are no network policies in a namespace all traffic will be allowed into and out of the pods in that namespace. Impact: Once network policies are in use within a given namespace, traffic not explicitly allowed by a network policy will be denied. As such it is important to ensure that, when introducing network policies, legitimate traffic is not blocked.",
+        "audit": "Run the below command and review the NetworkPolicy objects created in the cluster. kubectl get networkpolicy --all-namespaces Ensure that each namespace defined in the cluster has at least one Network Policy.",
+        "remediation": "Follow the documentation and create NetworkPolicy objects as you need them. Default Value: By default, network policies are not created. References: 1. https://kubernetes.io/docs/concepts/services-networking/networkpolicies/ 2. https://octetz.com/posts/k8s-network-policy-apis 3. https://kubernetes.io/docs/tasks/configure-pod-container/declare-network-policy/",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "Once network policies are in use within a given namespace, traffic not explicitly allowed by a network policy will be denied. As such it is important to ensure that, when introducing network policies, legitimate traffic is not blocked.",
+        "references": "1. https://kubernetes.io/docs/concepts/services-networking/networkpolicies/ 2. https://octetz.com/posts/k8s-network-policy-apis 3. https://kubernetes.io/docs/tasks/configure-pod-container/declare-network-policy/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_network_policy_namespace_policy_defined\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API (`/api/v1/namespaces`) or `kubectl get namespaces`.\n- For each namespace, query for the presence of at least one NetworkPolicy object using the Kubernetes API (`/apis/networking.k8s.io/v1/namespaces/<namespace>/networkpolicies`) or `kubectl get networkpolicy -n <namespace>`.\n- Validate that every namespace (except system namespaces like `kube-system`, `kube-public`, and `kube-node-lease` if desired) contains at least one NetworkPolicy object.\n- Pass Criteria: Every non-system namespace has at least one NetworkPolicy defined.\n- Fail Criteria: One or more non-system namespaces have zero NetworkPolicy objects.\n- Example CLI commands:\n  - `kubectl get namespaces -o json`\n  - For each namespace: `kubectl get networkpolicy -n <namespace> --no-headers`\n- The check is fully automatable via Kubernetes APIs and does not require human judgement.",
+    "timestamp": "2025-10-29T21:08:19.358532",
+    "model": "gpt-4.1"
+}

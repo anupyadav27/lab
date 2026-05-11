@@ -1,0 +1,22 @@
+{
+    "control_id": "4.6.4",
+    "unique_id": "gcp_2_4_6_4",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "The default namespace should not be used",
+    "input_row": {
+        "id": "4.6.4",
+        "unique_id": "gcp_2_4_6_4",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "The default namespace should not be used",
+        "description": "Kubernetes provides a default namespace, where objects are placed if no namespace is specified for them. Placing objects in this namespace makes application of RBAC and other controls more difficult.",
+        "rationale": "Resources in a Kubernetes cluster should be segregated by namespace, to allow for security controls to be applied at that level and to make it easier to manage resources. Impact: None",
+        "audit": "Run this command to list objects in default namespace kubectl get $(kubectl api-resources --verbs=list --namespaced=true -o name | paste -sd, -) --ignore-not-found -n default The only entries there should be system managed resources such as the kubernetes service OR kubectl get pods -n default Returning No resources found in default namespace.",
+        "remediation": "Ensure that namespaces are created to allow for appropriate segregation of Kubernetes resources and that all new resources are created in a specific namespace. Default Value: Unless a namespace is specific on object creation, the default namespace will be used",
+        "profile_applicability": "•  Level 2",
+        "impact": "None",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control involves verifying the use of the default namespace in a Kubernetes cluster, which is a conceptual and organizational element rather than a directly exposed GCP resource or setting that can be queried programmatically. This task requires checking the presence of resources in the default namespace using Kubernetes commands rather than using GCP APIs or Cloud SDK directly. Therefore, it falls under the category of tasks that require visual inspection and manual command execution to verify compliance.\n\n**MANUAL STEPS:**\n\n1. **Access the Kubernetes Cluster:**\n   - Use `kubectl` to access the Kubernetes cluster. Ensure you have the necessary permissions and context set to interact with the cluster.\n\n2. **List Resources in the Default Namespace:**\n   - Execute the following command to list resources in the default namespace:\n     ```bash\n     kubectl get $(kubectl api-resources --verbs=list --namespaced=true -o name | paste -sd, -) --ignore-not-found -n default\n     ```\n\n3. **Verify Resource Listing:**\n   - The expected result should only show system-managed resources such as the Kubernetes service. Any application-specific resources being listed indicates a non-compliance.\n\n4. **Check for Pods:**\n   - Alternatively, perform a direct check for pods in the default namespace:\n     ```bash\n     kubectl get pods -n default\n     ```\n   - The expected secure configuration is returning \"No resources found\" for user-managed resources.\n\n5. **Confirm Compliance:**\n   - To confirm compliance, no user-created resources should exist in the default namespace. All resources should be appropriately segregated into custom namespaces as per organizational or operational policies.\n\nNote: This approach relies on manual verification through the Kubernetes command-line interface, as there is no direct GCP API to enforce namespace-specific resource checks.",
+    "timestamp": "2025-10-28T21:57:46.441119",
+    "model": "gpt-4o"
+}

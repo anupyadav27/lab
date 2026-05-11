@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.4",
+    "unique_id": "k8s_1_4_1_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "If proxy kubeconfig file exists ensure ownership is set to root:root",
+    "input_row": {
+        "id": "4.1.4",
+        "unique_id": "k8s_1_4_1_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "If proxy kubeconfig file exists ensure ownership is set to root:root",
+        "description": "If kube-proxy is running, ensure that the file ownership of its kubeconfig file is set to root:root.",
+        "rationale": "The kubeconfig file for kube-proxy controls various parameters for the kube-proxy service in the worker node. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Find the kubeconfig file being used by kube-proxy by running the following command: ps -ef | grep kube-proxy If kube-proxy is running, get the kubeconfig file location from the --kubeconfig parameter. To perform the audit: Run the below command (based on the file location on your system) on the each worker node. For example, stat -c %U:%G <path><filename> Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the each worker node. For example, chown root:root <proxy kubeconfig file> Default Value: By default, proxy file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kube-proxy/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-proxy/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) of the kube-proxy's kubeconfig file on each worker node. The location of this file is determined by the --kubeconfig flag in the kube-proxy process, and the ownership must be checked at the OS file system level. Kubernetes APIs and kubectl do not expose file system ownership or permissions of files on the host. Therefore, this check cannot be performed via Kubernetes APIs or kubectl and requires direct access to the node's file system.\n\n**MANUAL STEPS:**\n1. On each worker node, identify the kube-proxy process and determine the path to its kubeconfig file:\n   - Run: `ps -ef | grep kube-proxy`\n   - Look for the `--kubeconfig` flag to find the file path (e.g., `/var/lib/kube-proxy/kubeconfig.conf`).\n2. Check the ownership of the kubeconfig file:\n   - Run: `stat -c %U:%G <path-to-kubeconfig-file>`\n3. Verify that the output shows `root:root` as the owner and group.\n4. If the ownership is not `root:root`, remediate by running:\n   - `chown root:root <path-to-kubeconfig-file>`\n5. Confirm compliance by re-running the `stat` command and ensuring the ownership is now `root:root`.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:03:40.929819",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "2.2.4",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.4",
+        "unique_id": "aks_2.2.4__ensure-a-print-server-is-not-installed",
+        "title": "Ensure a print server is not installed",
+        "description": "The Common Unix Print System (CUPS) provides the ability to print to both local and network printers. A system running CUPS can also accept print jobs from remote systems and print them to local printers. It also provides a web based remote administration capability.",
+        "rationale": "If the system does not need to print jobs or accept print jobs from other systems, it is recommended that CUPS be removed to reduce the potential attack surface. Note: Removing CUPS will prevent printing from the system Impact: Disabling CUPS will prevent printing from the system, a common task for workstation systems.",
+        "audit": "Run the following command to verify cups is not installed: # rpm -q cups package cups is not installed",
+        "remediation": "Run the following command to remove cups: # dnf remove cups References: 1. More detailed documentation on CUPS is available at the project homepage at http://www.cups.org. 2. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Disabling CUPS will prevent printing from the system, a common task for workstation systems.",
+        "reference": "1. More detailed documentation on CUPS is available at the project homepage at http://www.cups.org. 2. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Connect to your Azure Kubernetes Service (AKS) cluster using SSH or Azure CLI. You may need to use Azure Bastion or a Jumpbox if direct access is not available.\n2. Once you have access to a node in the AKS cluster, run the following command: `rpm -q cups` to check for the installation of the Common Unix Print System (CUPS).\n3. Verify the output of the command. If CUPS is installed, it will return the package name. If not, it will state that the package is not installed.\n4. If CUPS is found to be installed, proceed to remove it by running the command: `dnf remove cups`.\n5. After removal, re-run the command from step 2 to confirm that CUPS has been uninstalled successfully.\n\n**Expected secure configuration:**\nCUPS should not be installed on any nodes in the AKS cluster if printing functionality is not required.\n\n**How to confirm compliance:**\nYou will be compliant if, after running the `rpm -q cups` command, it returns a message stating that the package is not installed on all nodes in the AKS cluster."
+}

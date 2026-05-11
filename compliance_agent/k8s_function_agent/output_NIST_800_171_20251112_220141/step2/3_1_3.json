@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions generally map well to the control of managing data flow and access within Kubernetes. Network policies and RBAC are appropriate mechanisms for controlling the flow of CUI. The function names are mostly clear and follow the naming conventions, but the inclusion of 'k8s_service_type_loadbalancer_restricted' could be better named to reflect its purpose in controlling external exposure.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider renaming 'k8s_service_type_loadbalancer_restricted' to 'k8s_service_loadbalancer_exposure_restricted' for clarity on its purpose in controlling external exposure."
+  ],
+  "control_id": "3_1_3",
+  "title": "3_1_3: 3.1.3 Control the flow of CUI in accordance with approved authorizations",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "step1_reasoning": "The control '3_1_3: Control the flow of CUI in accordance with approved authorizations' is primarily about ensuring that sensitive data (CUI) is only accessible and transmitted according to specific authorizations. In Kubernetes, this can be mapped to network policies that restrict ingress and egress traffic, ensuring that only authorized communication paths are allowed. Additionally, RBAC can enforce least privilege access to control who can access and manage resources. Restricting the use of LoadBalancer services can prevent exposing services directly to the internet, aligning with the control's intent to manage data flow."
+}

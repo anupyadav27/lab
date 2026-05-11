@@ -1,0 +1,4771 @@
+{
+  "metadata": {
+    "date": "2025-11-09",
+    "version": "2.0",
+    "analyst": "AWS Security Expert",
+    "methodology": "Compliance CSV context analysis",
+    "key_principles": [
+      "Audit log functions \u2192 aws.cloudtrail.trail.flow_logs_enabled",
+      "Vulnerability assessment \u2192 Inspector rules",
+      "Use compliance requirement context to guide decisions"
+    ]
+  },
+  "services": {
+    "guardduty": {
+      "available_rules": [
+        "aws.guardduty.custom_identifier.source_trusted",
+        "aws.guardduty.custom_identifier.storage_encrypted",
+        "aws.guardduty.detector.destinations_encrypted",
+        "aws.guardduty.detector.detectors_enabled",
+        "aws.guardduty.detector.enabled_in_all_regions",
+        "aws.guardduty.detector.finding_export_encrypted_destination",
+        "aws.guardduty.finding.access_rbac_least_privilege",
+        "aws.guardduty.finding.alert_destinations_configured",
+        "aws.guardduty.finding.archival_export_encrypted",
+        "aws.guardduty.finding.export_destinations_private",
+        "aws.guardduty.finding.reports_storage_encrypted",
+        "aws.guardduty.finding.suppression_rules_documented_and_scoped",
+        "aws.guardduty.ip_set.sources_trusted",
+        "aws.guardduty.ip_set.storage_encrypted",
+        "aws.guardduty.ip_set.used_by_detectors"
+      ],
+      "rule_count": 15,
+      "compliance_functions": [
+        {
+          "name": "aws.guardduty.centrally_managed",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.5.25: Assessment And Decision On Information Security Events",
+            "A.5.28: Collection Of Evidence",
+            "A.5.29: Information Security During Disruption"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.guardduty.eks_audit_log_enabled",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.guardduty.enabled",
+          "usage_count": 128,
+          "frameworks": "CANADA_PBMM, CISA_CE, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-D",
+          "requirements": [
+            "CCCS CA-2: CCCS CA-2: Control Assessments",
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CCCS RA-1: CCCS RA-1: Policy and Procedures"
+          ],
+          "mapped_to": [
+            "aws.guardduty.detector.detectors_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "GUARDDUTY service enabled check"
+        },
+        {
+          "name": "aws.guardduty.no_high_severity_findings",
+          "usage_count": 26,
+          "frameworks": "CANADA_PBMM, CISA_CE, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, RBI_N",
+          "requirements": [
+            "CCCS IR-4: CCCS IR-4: Incident Handling",
+            "Your Data-3: Leverage malware protection capabilities",
+            "IR-4: Incident Handling"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.guardduty.security_center_enabled",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SI-16: CCCS SI-16: Memory Protection",
+            "SI-16: Memory Protection"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.guardduty.vulnerability_assessment_enabled",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SI-16: CCCS SI-16: Memory Protection",
+            "SI-16: Memory Protection"
+          ],
+          "mapped_to": [
+            "aws.inspector.assessment.agents_or_scanners_deployed"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Vulnerability assessment via AWS Inspector"
+        }
+      ],
+      "summary": {
+        "total_compliance": 6,
+        "mapped": 3,
+        "needs_development": 3,
+        "coverage_percent": 50
+      }
+    },
+    "cloudtrail": {
+      "available_rules": [
+        "aws.cloudtrail.trail.alert_destinations_configured",
+        "aws.cloudtrail.trail.alerts_for_anomalies_configured",
+        "aws.cloudtrail.trail.flow_logs_enabled",
+        "aws.cloudtrail.trail.ids_ips_enabled_where_supported",
+        "aws.cloudtrail.trail.logs_centralized_and_encrypted",
+        "aws.cloudtrail.trail.retention_days_minimum"
+      ],
+      "rule_count": 6,
+      "compliance_functions": [
+        {
+          "name": "aws.cloudtrail.account.usage_monitoring_config",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.3: Ensure usage of the 'root' account is monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.bucket.access_logging_enabled",
+          "usage_count": 5,
+          "frameworks": "GDPR, ISO27001, SOC2",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudtrail.bucket.is_not_publicly_accessible",
+          "usage_count": 6,
+          "frameworks": "GDPR, ISO27001",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.12.6: Technical Vulnerability Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.cloudwatch_logging_enabled",
+          "usage_count": 99,
+          "frameworks": "CANADA_PBMM, CISA_CE, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53,",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudtrail.cloudwatch_monitor_no_mfa_console_signin",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.2: Ensure management console sign-in without MFA is monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.config_changes_monitoring",
+          "usage_count": 2,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.5: Ensure CloudTrail configuration changes are monitored",
+            "5.9: Ensure AWS Config configuration changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.console_auth_failures_monitoring",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.6: Ensure AWS Management Console authentication failures are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.group.change_alerts_configured",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.10: Ensure security group changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.group.changes",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.10: Ensure security group changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.kms_encryption_enabled",
+          "usage_count": 49,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI",
+          "requirements": [
+            "CCCS CM-6: CCCS CM-6: Configuration Settings",
+            "CCCS CM-9: CCCS CM-9: Configuration Management Plan",
+            "CCCS CP-9: CCCS CP-9: System Backup"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.logs_centralized_and_encrypted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.cloudtrail.log_file_validation_enabled",
+          "usage_count": 54,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI",
+          "requirements": [
+            "CCCS AU-9: CCCS AU-9: Protection of Audit Information",
+            "CCCS CM-6: CCCS CM-6: Configuration Settings",
+            "CCCS CM-9: CCCS CM-9: Configuration Management Plan"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudtrail.monitor_organizations_changes_metric_filter",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.15: Ensure AWS Organizations changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.multi_region_enabled",
+          "usage_count": 102,
+          "frameworks": "CANADA_PBMM, CIS, CISA_CE, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_80",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.nacl_change_monitoring_configuration_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.11: Ensure Network Access Control List (NACL) changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.nacl_event_selectors_monitoring",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.11: Ensure Network Access Control List (NACL) changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.network.gateway_change_monitoring",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.12: Ensure changes to network gateways are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.network.gateway_changes",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.12: Ensure changes to network gateways are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.organizations_changes_monitoring_setup",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.15: Ensure AWS Organizations changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.policy.change_monitoring",
+          "usage_count": 2,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.4: Ensure IAM policy changes are monitored",
+            "5.8: Ensure S3 bucket policy changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.route_table_changes_metric_filter_alarm",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.13: Ensure route table changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.route_table_changes_metric_filter_alarm_monitoring",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.13: Ensure route table changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.s3_dataevents_read_enabled",
+          "usage_count": 90,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.s3_dataevents_write_enabled",
+          "usage_count": 80,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS,",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.threat_detection_enumeration",
+          "usage_count": 2,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.5.7: Threat Intelligence",
+            "cc_3_3: CC3.3 COSO Principle 8: The entity considers the potential for fraud in assessing risks to the achievement of objectives"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.threat_detection_llm_jacking",
+          "usage_count": 2,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.5.7: Threat Intelligence",
+            "cc_3_3: CC3.3 COSO Principle 8: The entity considers the potential for fraud in assessing risks to the achievement of objectives"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.threat_detection_privilege_escalation",
+          "usage_count": 2,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.5.7: Threat Intelligence",
+            "cc_3_3: CC3.3 COSO Principle 8: The entity considers the potential for fraud in assessing risks to the achievement of objectives"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.unauthorized_api_calls_monitoring_configured",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.1: Ensure unauthorized API calls are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudtrail.vpc_changes_monitoring_enabled",
+          "usage_count": 2,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.14: Ensure VPC changes are monitored",
+            "5.14: Ensure VPC changes are monitored"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 28,
+        "mapped": 4,
+        "needs_development": 24,
+        "coverage_percent": 14
+      }
+    },
+    "iam": {
+      "available_rules": [
+        "aws.iam.group.attached_policies_not_admin_star",
+        "aws.iam.group.attached_policies_not_admin_star",
+        "aws.iam.group.external_sharing_restricted_where_supported",
+        "aws.iam.group.membership_review_enabled_where_supported",
+        "aws.iam.group.no_inline_policies",
+        "aws.iam.group.no_inline_policies",
+        "aws.iam.instance_profile.no_instance_profile_with_admin_star",
+        "aws.iam.instance_profile.role_attached",
+        "aws.iam.instance_profile.role_policies_least_privilege",
+        "aws.iam.managed_policy.conditions_used_where_applicable",
+        "aws.iam.managed_policy.editors_rbac_least_privilege",
+        "aws.iam.managed_policy.no_action_star_on_resource_star",
+        "aws.iam.managed_policy.no_policy_allows_without_constraints",
+        "aws.iam.managed_policy.no_wildcard_admin_actions",
+        "aws.iam.managed_policy.resource_constraints_present",
+        "aws.iam.managed_policy.versioning_and_change_audit_enabled",
+        "aws.iam.oidc_provider.allowed_client_ids_audiences_restricted",
+        "aws.iam.oidc_provider.issuer_https_and_matches_discovery",
+        "aws.iam.oidc_provider.thumbprints_or_jwks_pinning_configured",
+        "aws.iam.oidc_provider.token_lifetime_reasonable",
+        "aws.iam.policy.conditions_used_where_applicable",
+        "aws.iam.policy.editors_rbac_least_privilege",
+        "aws.iam.policy.execution_roles_least_privilege",
+        "aws.iam.policy.no_action_star_on_resource_star",
+        "aws.iam.policy.no_policy_allows_without_constraints",
+        "aws.iam.policy.no_wildcard_admin_actions",
+        "aws.iam.policy.resource_constraints_present",
+        "aws.iam.policy.versioning_and_change_audit_enabled",
+        "aws.iam.policy.workflow_storage_encrypted",
+        "aws.iam.role.attached_policies_not_admin_star",
+        "aws.iam.role.attached_policies_not_admin_star",
+        "aws.iam.role.keys_not_used_or_rotated_90_days_or_less",
+        "aws.iam.role.max_session_duration_reasonable",
+        "aws.iam.role.no_inline_policies",
+        "aws.iam.role.no_inline_policies",
+        "aws.iam.role.no_user_managed_long_lived_keys",
+        "aws.iam.role.scopes_or_roles_least_privilege",
+        "aws.iam.role.session_duration_reasonable_where_applicable",
+        "aws.iam.role.trust_principals_allowlist_only",
+        "aws.iam.role.trust_requires_external_id_or_audience_condition_where_supported",
+        "aws.iam.role.workload_identity_federation_used_where_supported",
+        "aws.iam.saml_provider.assertion_lifetime_reasonable",
+        "aws.iam.saml_provider.audience_restriction_configured",
+        "aws.iam.saml_provider.certificates_not_expired",
+        "aws.iam.saml_provider.idp_metadata_signed",
+        "aws.iam.user.access_keys_rotated_90_days_or_less_when_present",
+        "aws.iam.user.console_password_present_only_if_required",
+        "aws.iam.user.inactive_90_days_disabled",
+        "aws.iam.user.mfa_required",
+        "aws.iam.user.no_inline_policies_attached"
+      ],
+      "rule_count": 50,
+      "compliance_functions": [
+        {
+          "name": "aws.iam.access_analyzer_active_status_all_regions",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "1.20: Ensure that IAM Access Analyzer is enabled for all regions"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.access_analyzer_external_access_enabled_all_regions",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.19: Ensure that IAM External Access Analyzer is enabled for all regions"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.avoid_root_usage",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.5.15: Access Control",
+            "A.9.2: User Access Management",
+            "A.9.4: System and Application Access Control"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.certificate.expiration_removal_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "1.19: Ensure that all expired SSL/TLS certificates stored in AWS IAM are removed"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.certificate.expired_removal_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.18: Ensure that all expired SSL/TLS certificates stored in AWS IAM are removed"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.console_mfa_enabled",
+          "usage_count": 2,
+          "frameworks": "CISA_CE",
+          "requirements": [
+            "Booting Up-2: Require multi-factor authentication (MFA) for all users",
+            "Your Surroundings-1: Leverage multi-factor authentication for all users"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.group.has_users",
+          "usage_count": 1,
+          "frameworks": "CISA_CE",
+          "requirements": [
+            "Your Surroundings-2: Grant access based on need-to-know and least privilege"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.key.",
+          "usage_count": 60,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, RBI",
+          "requirements": [
+            "CCCS IA-4: CCCS IA-4: Identifier Management",
+            "IA-4: Identifier Management",
+            "IA-4 (4): Identifier Management | Identify User Status"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.key.rotation_90_days_check",
+          "usage_count": 28,
+          "frameworks": "CIS, GDPR, HIPAA, ISO27001, NIST_800-53",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "164_308_a_3_ii_c: 164_308_a_3_ii_c: 164.308(a)(3)(ii)(C) Termination procedures",
+            "164_308_a_4_ii_c: 164_308_a_4_ii_c: 164.308(a)(4)(ii)(B) Access authorization"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.no_guest_accounts_with_permissions",
+          "usage_count": 1,
+          "frameworks": "RBI_BANK",
+          "requirements": [
+            "9.3: Guest Account Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.",
+          "usage_count": 4,
+          "frameworks": "CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Your Systems-2: Learn who is on your network - Maintain inventories of network connections",
+            "Your Surroundings-2: Grant access based on need-to-know and least privilege",
+            "3.2: Access Control Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.allows_privilege_escalation",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "cc_3_3: CC3.3 COSO Principle 8: The entity considers the potential for fraud in assessing risks to the achievement of objectives"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.attached",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.1: Ensure Administration of WorkSpaces is defined using IAM"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.attached_only_to_group_or_roles",
+          "usage_count": 48,
+          "frameworks": "CANADA_PBMM, FedRAMP, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CM-9: CCCS CM-9: Configuration Management Plan",
+            "CM-9: Configuration Management Plan",
+            "A.5.15: Access Control"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.awscloudshell_full_access_restriction_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "1.22: Ensure access to AWSCloudShellFullAccess is restricted"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.awscloudshellfullaccess_attachment_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.21: Ensure access to AWSCloudShellFullAccess is restricted"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.check_full_admin_privileges",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "1.16: Ensure IAM policies that allow full \"*:*\" administrative privileges are not attached"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.expires_passwords_within_90_days_or_less",
+          "usage_count": 8,
+          "frameworks": "ISO27001, NIST_800-171",
+          "requirements": [
+            "A.5.15: Access Control",
+            "A.9.2: User Access Management",
+            "A.9.3: User Responsibilities"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.least_privilege_audit",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "11.1: Ensure to Implement Identity and Access Management (IAM)"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.iam.policy.minimum_length_14",
+          "usage_count": 99,
+          "frameworks": "CANADA_PBMM, CIS, CISA_CE, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_80",
+          "requirements": [
+            "CCCS CM-6: CCCS CM-6: Configuration Settings",
+            "CCCS CM-9: CCCS CM-9: Configuration Management Plan",
+            "CCCS IA-2: CCCS IA-2: Identification and Authentication (organizational Users)"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.no_administrative_privileges",
+          "usage_count": 69,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS AC-5: CCCS AC-5: Separation of Duties",
+            "CCCS AC-6: CCCS AC-6: Least Privilege",
+            "AC-5: Separation of Duties"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.no_full_access_to_cloudtrail",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "cc_3_3: CC3.3 COSO Principle 8: The entity considers the potential for fraud in assessing risks to the achievement of objectives"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.no_full_admin_privileges_attached",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.15: Ensure IAM policies that allow full \"*:*\" administrative privileges are not attached"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.overly_permissive",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS AC-6: CCCS AC-6: Least Privilege",
+            "AC-6: Least Privilege"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.policy.reuse_24",
+          "usage_count": 18,
+          "frameworks": "GDPR, HIPAA, ISO27001, NIST_800-171, PCI-DSS",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "164_308_a_4_ii_c: 164_308_a_4_ii_c: 164.308(a)(4)(ii)(B) Access authorization",
+            "164_308_a_5_ii_d: 164_308_a_5_ii_d: 164.308(a)(5)(ii)(D) Password management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.role.awssupport_access_policy_attachment",
+          "usage_count": 2,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.16: Ensure a support role has been created to manage incidents with AWS Support",
+            "1.17: Ensure a support role has been created to manage incidents with AWS Support"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.role.created",
+          "usage_count": 2,
+          "frameworks": "GDPR, ISO27001",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.5.3: Segregation of Duties"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.role.least_privilege",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS AC-6: CCCS AC-6: Least Privilege",
+            "AC-6: Least Privilege"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.root_hardware_mfa_enabled",
+          "usage_count": 30,
+          "frameworks": "CIS, CISA_CE, GDPR, HIPAA, NIST_800-171, NIST_800-53",
+          "requirements": [
+            "Booting Up-2: Require multi-factor authentication (MFA) for all users",
+            "NA: Article 25 Data protection by design and by default",
+            "164_308_a_3_ii_a: 164_308_a_3_ii_a: 164.308(a)(3)(ii)(A) Authorization and/or supervision"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.root_mfa_enabled",
+          "usage_count": 41,
+          "frameworks": "CANADA_PBMM, CIS, CISA_CE, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_80",
+          "requirements": [
+            "CCCS IA-2: CCCS IA-2: Identification and Authentication (organizational Users)",
+            "Booting Up-2: Require multi-factor authentication (MFA) for all users",
+            "Your Surroundings-1: Leverage multi-factor authentication for all users"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.timestream_access_control_and_mfa_enforcement",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "10.4: Ensure Access Control and Authentication is Enabled"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.accesskey_unused",
+          "usage_count": 52,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS,",
+          "requirements": [
+            "CCCS AC-2: CCCS AC-2: Account Management",
+            "AC-2: Account Management",
+            "AC-2 (1): Account Management | Automated System Account Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.centralization_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.20: Ensure IAM users are managed centrally via identity federation or AWS Organizations for multi-account environments"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.console_access_unused",
+          "usage_count": 32,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS,",
+          "requirements": [
+            "CCCS AC-2: CCCS AC-2: Account Management",
+            "AC-2: Account Management",
+            "AC-2 (1): Account Management | Automated System Account Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.credentials_unused_45_days_disabled",
+          "usage_count": 7,
+          "frameworks": "CIS, CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Your Systems-2: Learn who is on your network - Maintain inventories of network connections",
+            "Your Surroundings-4: Develop IT policies addressing changes in user status",
+            "9.3: Guest Account Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.hardware_mfa_enabled",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.5: Secure Authentication"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.in_group",
+          "usage_count": 4,
+          "frameworks": "CIS, CISA_CE, RBI_BANK",
+          "requirements": [
+            "Your Surroundings-2: Grant access based on need-to-know and least privilege",
+            "9.3: Guest Account Management",
+            "2.14: Ensure IAM users receive permissions only through groups"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.management_centralization_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "1.21: Ensure IAM users are managed centrally via identity federation or AWS Organizations for multi-account environments"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.mfa_enabled_console_access",
+          "usage_count": 37,
+          "frameworks": "CANADA_PBMM, CIS, CISA_CE, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_80",
+          "requirements": [
+            "CCCS IA-2: CCCS IA-2: Identification and Authentication (organizational Users)",
+            "Your Systems-2: Learn who is on your network - Maintain inventories of network connections",
+            "Booting Up-2: Require multi-factor authentication (MFA) for all users"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.no_inline_policies",
+          "usage_count": 2,
+          "frameworks": "CISA_CE, RBI_BANK",
+          "requirements": [
+            "Your Surroundings-2: Grant access based on need-to-know and least privilege",
+            "3.2: Access Control Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.password_policy_complex",
+          "usage_count": 7,
+          "frameworks": "GDPR, HIPAA, ISO27001, NIST_800-171",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "164_308_a_5_ii_d: 164_308_a_5_ii_d: 164.308(a)(5)(ii)(D) Password management",
+            "A.5.15: Access Control"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.policy_elastic_disaster_recovery_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "3.12: Ensure configuring IAM for AWS Elastic Disaster Recovery"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.iam.user.single_active_access_key_audit",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.12: Ensure there is only one active access key for any single IAM user"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.iam.user.single_active_access_key_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "1.13: Ensure there is only one active access key for any single IAM user"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 44,
+        "mapped": 2,
+        "needs_development": 42,
+        "coverage_percent": 5
+      }
+    },
+    "s3": {
+      "available_rules": [
+        "aws.s3.bucket.access_logging_enabled",
+        "aws.s3.bucket.access_rbac_least_privilege",
+        "aws.s3.bucket.access_rbac_least_privilege",
+        "aws.s3.bucket.backup_storage_immutability_enabled",
+        "aws.s3.bucket.block_public_access_enabled",
+        "aws.s3.bucket.cmk_cmek_configured",
+        "aws.s3.bucket.cmk_cmek_key_configured",
+        "aws.s3.bucket.destination_private_only",
+        "aws.s3.bucket.encrypted_at_rest_cmek",
+        "aws.s3.bucket.encryption_at_rest_cmek",
+        "aws.s3.bucket.encryption_at_rest_enabled",
+        "aws.s3.bucket.encryption_at_rest_enabled",
+        "aws.s3.bucket.encryption_in_transit_tls_min_1_2",
+        "aws.s3.bucket.immutability_or_object_lock_where_supported",
+        "aws.s3.bucket.immutable_or_worm_enabled_where_supported",
+        "aws.s3.bucket.key_policy_least_privilege",
+        "aws.s3.bucket.key_rotation_enabled",
+        "aws.s3.bucket.lifecycle_policy_configured",
+        "aws.s3.bucket.policy_denies_public_and_insecure",
+        "aws.s3.bucket.require_tls_in_transit",
+        "aws.s3.bucket.retention_days_minimum",
+        "aws.s3.bucket.s3_block_public_access",
+        "aws.s3.bucket.s3_encrypted_at_rest",
+        "aws.s3.bucket.schedule_defined_min_frequency",
+        "aws.s3.bucket.storage_encrypted_and_private",
+        "aws.s3.bucket.versioning_enabled",
+        "aws.s3.bucket_encryption.at_rest_cmek_enabled",
+        "aws.s3.bucket_encryption.in_transit_tls_min_1_2",
+        "aws.s3.bucket_notification.cross_account_destinations_restricted",
+        "aws.s3.bucket_notification.destination_encrypted",
+        "aws.s3.bucket_notification.destination_least_privilege",
+        "aws.s3.bucket_policy.deny_insecure_transport",
+        "aws.s3.bucket_policy.deny_unencrypted_puts",
+        "aws.s3.bucket_policy.no_public_principals",
+        "aws.s3.bucket_policy.no_wildcards_on_actions_or_principals",
+        "aws.s3.intelligent_tiering.enforced_on_sensitive_datasets",
+        "aws.s3.intelligent_tiering.policies_defined",
+        "aws.s3.intelligent_tiering.protected_from_public_override",
+        "aws.s3.lifecycle_configuration.enforced_on_sensitive_datasets",
+        "aws.s3.lifecycle_configuration.expiration_rules_defined",
+        "aws.s3.lifecycle_configuration.immutable_retention_locked_where_required",
+        "aws.s3.lifecycle_configuration.policies_defined",
+        "aws.s3.lifecycle_configuration.protected_from_public_override",
+        "aws.s3.lifecycle_configuration.versioning_enabled_where_supported",
+        "aws.s3.object.encrypted_at_rest",
+        "aws.s3.object.not_publicly_readable",
+        "aws.s3.object.object_lock_or_immutability_enabled_where_supported",
+        "aws.s3.replication.auth_roles_least_privilege",
+        "aws.s3.replication.cross_region_replication_encrypted",
+        "aws.s3.replication.encryption_in_transit_tls_required",
+        "aws.s3.replication.lag_monitoring_alerts_enabled"
+      ],
+      "rule_count": 51,
+      "compliance_functions": [
+        {
+          "name": "aws.s3.account.level_public_access_blocks",
+          "usage_count": 72,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS, ",
+          "requirements": [
+            "CCCS AC-17: CCCS AC-17: Remote Access",
+            "CCCS SC-7: CCCS SC-7: Boundary Protection",
+            "AC-17: Remote Access"
+          ],
+          "mapped_to": [
+            "aws.s3.bucket.block_public_access_enabled",
+            "aws.s3.bucket.destination_private_only"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.s3.bucket.access_logging_enabled",
+          "usage_count": 2,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.4: Ensure that server access logging is enabled on the CloudTrail S3 bucket",
+            "3.4: Ensure that server access logging is enabled on the CloudTrail S3 bucket"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.s3.bucket.encryption_enabled",
+          "usage_count": 37,
+          "frameworks": "CANADA_PBMM, CISA_CE, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53,",
+          "requirements": [
+            "CCCS CP-9: CCCS CP-9: System Backup",
+            "CCCS SC-28: CCCS SC-28: Protection of Information at Rest",
+            "Your Data-2: Learn how your data is protected"
+          ],
+          "mapped_to": [
+            "aws.s3.bucket.encrypted_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.s3.bucket.kms_encryption",
+          "usage_count": 8,
+          "frameworks": "ISO27001, PCI-DSS",
+          "requirements": [
+            "A.8.11: Data Masking",
+            "A.8.24: Use of Cryptography",
+            "3.4.1: Requirement 3.4.1"
+          ],
+          "mapped_to": [
+            "aws.s3.bucket.encrypted_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.s3.bucket.lifecycle_enabled",
+          "usage_count": 5,
+          "frameworks": "ISO27001, PCI-DSS",
+          "requirements": [
+            "A.8.10: Information Deletion",
+            "3.1.1: Requirement 3.1.1",
+            "3.1.2: Requirement 3.1.2"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.s3.bucket.metrics_enabled",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_1: A1.1 Capacity Management: The entity conducts capacity planning to ensure adequate system capacity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.s3.bucket.object_level_write_logging_enabled",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.8: Ensure that object-level logging for write events is enabled for S3 buckets"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.s3.bucket.public_read_prohibited",
+          "usage_count": 3,
+          "frameworks": "CISA_CE, RBI_BANK",
+          "requirements": [
+            "Your Systems-3: Learn what information resides on your network",
+            "Booting Up-4: Implement secure configurations for hardware and software",
+            "17.1: Customer Data Protection"
+          ],
+          "mapped_to": [
+            "aws.s3.bucket.block_public_access_enabled",
+            "aws.s3.bucket.destination_private_only"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.s3.bucket.public_write_acl",
+          "usage_count": 12,
+          "frameworks": "PCI-DSS",
+          "requirements": [
+            "1.2.1: Requirement 1.2.1",
+            "1.2.5: Requirement 1.2.5",
+            "1.2.6: Requirement 1.2.6"
+          ],
+          "mapped_to": [
+            "aws.s3.bucket.block_public_access_enabled",
+            "aws.s3.bucket.destination_private_only"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.s3.bucket.public_write_prohibited",
+          "usage_count": 3,
+          "frameworks": "CISA_CE, RBI_BANK",
+          "requirements": [
+            "Your Systems-3: Learn what information resides on your network",
+            "Booting Up-4: Implement secure configurations for hardware and software",
+            "17.1: Customer Data Protection"
+          ],
+          "mapped_to": [
+            "aws.s3.bucket.block_public_access_enabled",
+            "aws.s3.bucket.destination_private_only"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.s3.bucket.replication_enabled",
+          "usage_count": 11,
+          "frameworks": "ISO27001, PCI-DSS, RBI_BANK, RBI_NBFC, SOC2",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities",
+            "2.2.1: Examine change records and the affected systems/networks, and interview personnel to verify that ...",
+            "2.2.3: (continued) If a system component contains primary functions that need different security levels,..."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.s3.bucket.secure_transport_policy",
+          "usage_count": 68,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, GDPR, HIPAA, NIST_800-171, NIST_800-53, PCI-DSS",
+          "requirements": [
+            "CCCS CA-9: CCCS CA-9: Internal System Connections",
+            "CA-9: Internal System Connections",
+            "NA: Article 32 Security of processing"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.s3.bucket.server_access_logging_enabled",
+          "usage_count": 60,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS, RBI_B",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.s3.bucket.versioning_enabled",
+          "usage_count": 52,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS, RBI_B",
+          "requirements": [
+            "CCCS CP-6: CCCS CP-6: Alternate Storage Site",
+            "CCCS CP-9: CCCS CP-9: System Backup",
+            "CP-6: Alternate Storage Site"
+          ],
+          "mapped_to": [
+            "aws.s3.bucket.versioning_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Versioning configuration check"
+        },
+        {
+          "name": "aws.s3.macie_classification_jobs_status",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.1.3: Ensure all data in Amazon S3 has been discovered, classified, and secured when necessary"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.s3.website_https_only",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SC-8: CCCS SC-8: Transmission Confidentiality and Integrity",
+            "SC-8: Transmission Confidentiality and Integrity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 16,
+        "mapped": 10,
+        "needs_development": 6,
+        "coverage_percent": 62
+      }
+    },
+    "ec2": {
+      "available_rules": [
+        "aws.ec2.ami.approved_image_allowlist_enforced",
+        "aws.ec2.ami.encrypted_cmek",
+        "aws.ec2.ami.image_signed_and_verified",
+        "aws.ec2.ami.not_publicly_shared",
+        "aws.ec2.ami.vuln_scanned_no_critical",
+        "aws.ec2.auto_scaling_group.instance_profile_least_privilege",
+        "aws.ec2.auto_scaling_group.no_public_ip_assigned",
+        "aws.ec2.auto_scaling_group.uses_approved_launch_template",
+        "aws.ec2.auto_scaling_group.volumes_encrypted",
+        "aws.ec2.customer_gateway.ip_addresses_valid_and_owned",
+        "aws.ec2.customer_gateway.no_public_management_interfaces_exposed",
+        "aws.ec2.dedicated_host.host_sharing_restricted",
+        "aws.ec2.dedicated_host.instance_auto_placement_controlled",
+        "aws.ec2.instance.data_volumes_encrypted_cmek",
+        "aws.ec2.instance.imds_hardened",
+        "aws.ec2.instance.no_public_ip_assigned",
+        "aws.ec2.instance.root_volume_encrypted_cmek",
+        "aws.ec2.instance.secure_boot_enabled",
+        "aws.ec2.instance.security_group_inbound_restricted",
+        "aws.ec2.instance.serial_console_access_restricted",
+        "aws.ec2.instance.ssh_key_based_auth_required",
+        "aws.ec2.instance.ssh_password_auth_disabled",
+        "aws.ec2.instance.user_data_no_secrets",
+        "aws.ec2.instance.vtpm_enabled",
+        "aws.ec2.key_pair.disable_unused_keys",
+        "aws.ec2.key_pair.max_age_days",
+        "aws.ec2.launch_template.imds_hardened",
+        "aws.ec2.launch_template.instance_profile_least_privilege",
+        "aws.ec2.launch_template.instance_profile_least_privilege",
+        "aws.ec2.launch_template.no_public_ip_assigned",
+        "aws.ec2.launch_template.no_public_ip_default",
+        "aws.ec2.launch_template.root_volume_encrypted_by_default",
+        "aws.ec2.launch_template.security_groups_restrictive",
+        "aws.ec2.launch_template.user_data_no_secrets",
+        "aws.ec2.launch_template.uses_approved_launch_template",
+        "aws.ec2.launch_template.volumes_encrypted",
+        "aws.ec2.network_acl.egress_restricted",
+        "aws.ec2.network_acl.endpoint_policies_applied",
+        "aws.ec2.network_acl.identity_aware_policies_enabled",
+        "aws.ec2.network_acl.no_allow_all_rules",
+        "aws.ec2.network_interface.security_groups_present",
+        "aws.ec2.network_interface.security_groups_restrictive",
+        "aws.ec2.reserved_instance.approval_workflow_required",
+        "aws.ec2.reserved_instance.billing_admins_mfa_required",
+        "aws.ec2.reserved_instance.purchase_permissions_restricted",
+        "aws.ec2.route_table.no_0_0_0_0_from_private_subnets",
+        "aws.ec2.route_table.vpc_endpoints_used_for_saas_where_supported",
+        "aws.ec2.security_group.default_deny_between_tiers",
+        "aws.ec2.security_group.egress_restricted",
+        "aws.ec2.security_group.endpoint_policies_applied",
+        "aws.ec2.security_group.exception_approvals_required",
+        "aws.ec2.security_group.identity_aware_policies_enabled",
+        "aws.ec2.security_group.no_0_0_0_0_ingress",
+        "aws.ec2.security_group.no_permit_all",
+        "aws.ec2.security_group.only_required_ports_open",
+        "aws.ec2.security_group.policies_present",
+        "aws.ec2.security_group.policy_store_encrypted",
+        "aws.ec2.security_group.tier_to_tier_policies_defined",
+        "aws.ec2.snapshot.cross_region_copy_encrypted",
+        "aws.ec2.snapshot.encrypted",
+        "aws.ec2.snapshot.not_public",
+        "aws.ec2.spot_instance.instance_profile_least_privilege",
+        "aws.ec2.spot_instance.no_public_ip_assigned",
+        "aws.ec2.spot_instance.uses_approved_launch_template",
+        "aws.ec2.subnet.automated_isolation_supported",
+        "aws.ec2.subnet.default_deny_between_tiers",
+        "aws.ec2.subnet.exception_approvals_required",
+        "aws.ec2.subnet.private_subnets_no_igw_route",
+        "aws.ec2.subnet.public_subnets_use_nacl_restrictions",
+        "aws.ec2.subnet.quarantine_network_defined",
+        "aws.ec2.subnet.route_table_association_present",
+        "aws.ec2.subnet.tier_to_tier_policies_defined",
+        "aws.ec2.volume.cmk_cmek_configured",
+        "aws.ec2.volume.encryption_at_rest_enabled",
+        "aws.ec2.volume.snapshots_encrypted",
+        "aws.ec2.vpc.automated_isolation_supported",
+        "aws.ec2.vpc.default_deny_between_tiers",
+        "aws.ec2.vpc.dns_hostnames_and_support_configured",
+        "aws.ec2.vpc.exception_approvals_required",
+        "aws.ec2.vpc.flow_logs_enabled",
+        "aws.ec2.vpc.quarantine_network_defined",
+        "aws.ec2.vpc.route_tables_no_unintended_internet_paths",
+        "aws.ec2.vpc.tier_to_tier_policies_defined",
+        "aws.ec2.vpc_endpoint.policy_least_privilege",
+        "aws.ec2.vpc_endpoint.private_dns_enabled_where_supported",
+        "aws.ec2.vpn_connection.ike_phase_encryption_strong",
+        "aws.ec2.vpn_connection.pre_shared_keys_rotation_policy_defined",
+        "aws.ec2.vpn_connection.tunnel_health_monitoring_enabled"
+      ],
+      "rule_count": 88,
+      "compliance_functions": [
+        {
+          "name": "aws.ec2.account.block_public_access",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "cc_6_6: CC6.6 The entity implements logical access security measures to protect against threats from sources outside its system boundaries"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.not_publicly_shared",
+            "aws.ec2.auto_scaling_group.no_public_ip_assigned"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.ec2.ami_public",
+          "usage_count": 3,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.12.6: Technical Vulnerability Management",
+            "A.8.1: User Endpoint Devices",
+            "cc_6_6: CC6.6 The entity implements logical access security measures to protect against threats from sources outside its system boundaries"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.not_publicly_shared",
+            "aws.ec2.auto_scaling_group.no_public_ip_assigned"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.ec2.ami_public_visibility_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.1.5: Ensure Images are not Publicly Available"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.not_publicly_shared",
+            "aws.ec2.auto_scaling_group.no_public_ip_assigned"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.ec2.backup_enabled",
+          "usage_count": 4,
+          "frameworks": "CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Booting Up-1: Employ a backup solution that automatically and continuously backs up critical data",
+            "6.1: Data Backup",
+            "3.4: System and Data Backup"
+          ],
+          "mapped_to": [
+            "aws.ec2.snapshot.cross_region_copy_encrypted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.ec2.client_vpn_endpoint_connection_logging_enabled",
+          "usage_count": 2,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.15: Logging",
+            "cc_a_1_1: A1.2 The entity authorizes, designs, develops or acquires, implements, operates, approves, maintains, and monitors environmental protections, software, data back-up processes, and recovery infrastructure to meet its objectives"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.ec2.ebs_encryption_by_default_enabled",
+          "usage_count": 46,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI",
+          "requirements": [
+            "CCCS CM-6: CCCS CM-6: Configuration Settings",
+            "CCCS CM-9: CCCS CM-9: Configuration Management Plan",
+            "CCCS CP-9: CCCS CP-9: System Backup"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.encrypted_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.ec2.ebs_public_snapshot",
+          "usage_count": 91,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS, SOC2",
+          "requirements": [
+            "CCCS AC-17: CCCS AC-17: Remote Access",
+            "CCCS SC-7: CCCS SC-7: Boundary Protection",
+            "AC-17: Remote Access"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.not_publicly_shared",
+            "aws.ec2.auto_scaling_group.no_public_ip_assigned"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.ec2.ebs_snapshots_encrypted",
+          "usage_count": 2,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.24: Use of Cryptography",
+            "cc_7_5: CC7.5 The entity identifies, develops, and implements activities to recover from identified security incidents"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.encrypted_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.ec2.elastic_ip_shodan",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.elastic_ip_unassigned",
+          "usage_count": 4,
+          "frameworks": "ISO27001, NIST_800-171",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.group.cifs_access_restriction_tcp_port_445",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "6.1.2: Ensure CIFS access is restricted to trusted networks to prevent unauthorized access"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.group.cifs_unrestricted_access_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.1.2: Ensure CIFS access is restricted to trusted networks to prevent unauthorized access"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.group.ingress_ipv6_restriction_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "6.4: Ensure no security groups allow ingress from ::/0 to remote server administration ports"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.detailed_monitoring_enabled",
+          "usage_count": 2,
+          "frameworks": "RBI_NBFC, SOC2",
+          "requirements": [
+            "3.2: Capacity Management",
+            "a1_1: A1.1 Capacity Management: The entity conducts capacity planning to ensure adequate system capacity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.iam_role_compliance_check",
+          "usage_count": 2,
+          "frameworks": "CIS",
+          "requirements": [
+            "2.17: Ensure IAM instance roles are used for AWS resource access from instances",
+            "1.18: Ensure IAM instance roles are used for AWS resource access from instances"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.imdsv2_enabled",
+          "usage_count": 45,
+          "frameworks": "CIS, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.internet_facing_with_instance_profile",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.managed_by_ssm",
+          "usage_count": 45,
+          "frameworks": "CANADA_PBMM, CISA_CE, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, RBI_B",
+          "requirements": [
+            "CCCS CM-2: CCCS CM-2: Baseline Configuration",
+            "CCCS CM-6: CCCS CM-6: Configuration Settings",
+            "CCCS CM-8: CCCS CM-8: System Component Inventory"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.no_public_ip",
+          "usage_count": 87,
+          "frameworks": "CANADA_PBMM, CISA_CE, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-D",
+          "requirements": [
+            "CCCS AC-17: CCCS AC-17: Remote Access",
+            "CCCS SC-7: CCCS SC-7: Boundary Protection",
+            "Booting Up-4: Implement secure configurations for hardware and software"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.not_publicly_shared",
+            "aws.ec2.auto_scaling_group.no_public_ip_assigned"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.ec2.instance.older_than_specific_days",
+          "usage_count": 15,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53",
+          "requirements": [
+            "CCCS CM-2: CCCS CM-2: Baseline Configuration",
+            "CM-2: Baseline Configuration",
+            "CM-2 (2): Baseline Configuration | Automation Support for Accuracy and Currency"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.paravirtual_type",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_cassandra_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_cifs_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_elasticsearch_kibana_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_ftp_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_kafka_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_kerberos_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_ldap_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_memcached_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_mongodb_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_mysql_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_oracle_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_postgresql_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_rdp_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_redis_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_sqlserver_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_ssh_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.port_telnet_exposed_to_internet",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.profile_attached",
+          "usage_count": 20,
+          "frameworks": "CANADA_PBMM, FedRAMP, ISO27001, NIST_800-171, NIST_800-53",
+          "requirements": [
+            "CCCS CM-6: CCCS CM-6: Configuration Settings",
+            "CM-6: Configuration Settings",
+            "CM-6 (1): Configuration Settings | Automated Management, Application, and Verification"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.secrets_user_data",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.ssh_key_authentication",
+          "usage_count": 1,
+          "frameworks": "RBI_BANK",
+          "requirements": [
+            "9.1: Authentication Framework - SSH Key Authentication"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.instance.uses_single_eni",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.launch_template_imdsv2_required",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.launch_template_no_public_ip",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.not_publicly_shared",
+            "aws.ec2.auto_scaling_group.no_public_ip_assigned"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.ec2.launch_template_no_secrets",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.networkacl_allow_ingress_any_port",
+          "usage_count": 33,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CM-2: CCCS CM-2: Baseline Configuration",
+            "CCCS CM-7: CCCS CM-7: Least Functionality",
+            "CM-2: Baseline Configuration"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.networkacl_allow_ingress_tcp_port_22",
+          "usage_count": 12,
+          "frameworks": "ISO27001, PCI-DSS, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.networkacl_allow_ingress_tcp_port_3389",
+          "usage_count": 12,
+          "frameworks": "ISO27001, PCI-DSS, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.networkacl_unrestricted_ingress",
+          "usage_count": 2,
+          "frameworks": "RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "4.3: Network Access Controls",
+            "2.8: Network Security"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.networkacl_unused",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.patch_compliance",
+          "usage_count": 4,
+          "frameworks": "CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Your Systems-1: Learn what is on your network - Maintain inventories of hardware and software assets",
+            "Booting Up-3: Enable automatic updates and patch quickly",
+            "21.2: Patch Management and Updates"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_all_ports",
+          "usage_count": 15,
+          "frameworks": "ISO27001, PCI-DSS, SOC2",
+          "requirements": [
+            "A.8.1: User Endpoint Devices",
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_high_risk_tcp_ports",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_cassandra_7199_9160_8888",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_elasticsearch_kibana_9200_9300_5601",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_ftp_20_21",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_kafka_9092",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_memcached_11211",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_mongodb_27017_27018",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_mysql_3306",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_oracle_1521_2483",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_postgres_5432",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_redis_6379",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_sql_server_1433_1434",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_allow_ingress_from_internet_to_tcp_port_telnet_23",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_common_ports_restricted",
+          "usage_count": 2,
+          "frameworks": "CISA_CE, RBI_NBFC",
+          "requirements": [
+            "Booting Up-4: Implement secure configurations for hardware and software",
+            "2.8: Network Security"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_default_restrict_traffic",
+          "usage_count": 23,
+          "frameworks": "CIS, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS, RBI_BANK",
+          "requirements": [
+            "A.12.6: Technical Vulnerability Management",
+            "A.13.1: Network Security Management",
+            "A.8.20: Network Security"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_from_launch_wizard",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_not_used",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_rdp_restricted",
+          "usage_count": 8,
+          "frameworks": "ISO27001, RBI_BANK, RBI_NBFC, SOC2",
+          "requirements": [
+            "A.12.6: Technical Vulnerability Management",
+            "A.13.1: Network Security Management",
+            "A.8.20: Network Security"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_ssh_restricted",
+          "usage_count": 37,
+          "frameworks": "CIS, CISA_CE, HIPAA, ISO27001, NIST_800-171, PCI-DSS, RBI_BANK, RBI_NBFC, SOC2",
+          "requirements": [
+            "Booting Up-4: Implement secure configurations for hardware and software",
+            "164_308_a_1_ii_b: 164_308_a_1_ii_b: 164.308(a)(1)(ii)(B) Risk Management",
+            "164_312_e_1: 164_312_e_1: 164.312(e)(1) Transmission security"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.securitygroup_with_many_ingress_egress_rules",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.ssm_association_compliance",
+          "usage_count": 1,
+          "frameworks": "CISA_CE",
+          "requirements": [
+            "Your Systems-1: Learn what is on your network - Maintain inventories of hardware and software assets"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.stopped_instance",
+          "usage_count": 1,
+          "frameworks": "CISA_CE",
+          "requirements": [
+            "Your Systems-1: Learn what is on your network - Maintain inventories of hardware and software assets"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.transitgateway_auto_accept_vpc_attachments",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.volume.encrypted",
+          "usage_count": 3,
+          "frameworks": "CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Your Data-2: Learn how your data is protected",
+            "3.3: Data Encryption",
+            "2.9: Encryption"
+          ],
+          "mapped_to": [
+            "aws.ec2.ami.encrypted_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.ec2.volume.in_use",
+          "usage_count": 1,
+          "frameworks": "CISA_CE",
+          "requirements": [
+            "Your Systems-1: Learn what is on your network - Maintain inventories of hardware and software assets"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.ec2.volume.protected_by_backup_plan",
+          "usage_count": 3,
+          "frameworks": "ISO27001, PCI-DSS",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities",
+            "3.1.1: Requirement 3.1.1",
+            "3.1.2: Requirement 3.1.2"
+          ],
+          "mapped_to": [
+            "aws.ec2.snapshot.cross_region_copy_encrypted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.ec2.volume.snapshots_exists",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "cc_7_5: CC7.5 The entity identifies, develops, and implements activities to recover from identified security incidents"
+          ],
+          "mapped_to": [
+            "aws.ec2.snapshot.cross_region_copy_encrypted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.ec2.vpc_flow_logging_reject_enabled",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "4.7: Ensure VPC flow logging is enabled in all VPCs"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.ec2.vpc_peering_route_table_least_access_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "6.6: Ensure routing tables for VPC peering are \"least access\""
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 81,
+        "mapped": 14,
+        "needs_development": 67,
+        "coverage_percent": 17
+      }
+    },
+    "cloudwatch": {
+      "available_rules": [
+        "aws.cloudwatch.alarm.alarm_actions_configured",
+        "aws.cloudwatch.alarm.alert_destinations_configured",
+        "aws.cloudwatch.alarm.alerts_for_backup_failures_configured",
+        "aws.cloudwatch.alarm.alerts_for_replication_lag_configured",
+        "aws.cloudwatch.alarm.alerts_for_rpo_rto_breach_configured",
+        "aws.cloudwatch.alarm.critical_alarms_enabled",
+        "aws.cloudwatch.alarm.destinations_authenticated",
+        "aws.cloudwatch.anomaly_detector.alerts_configured",
+        "aws.cloudwatch.anomaly_detector.detectors_enabled",
+        "aws.cloudwatch.anomaly_detector.training_data_sources_approved",
+        "aws.cloudwatch.dashboard.public_embeds_disabled",
+        "aws.cloudwatch.dashboard.sharing_restricted_to_org",
+        "aws.cloudwatch.dashboard.sso_required",
+        "aws.cloudwatch.destination.endpoint_private_networking",
+        "aws.cloudwatch.destination.iam_policy_least_privilege",
+        "aws.cloudwatch.destination.tls_min_1_2_enforced",
+        "aws.cloudwatch.insights_query.access_rbac_least_privilege",
+        "aws.cloudwatch.insights_query.storage_encrypted",
+        "aws.cloudwatch.log_group.access_rbac_least_privilege",
+        "aws.cloudwatch.log_group.cross_account_destinations_restricted",
+        "aws.cloudwatch.log_group.destination_encrypted",
+        "aws.cloudwatch.log_group.destination_least_privilege",
+        "aws.cloudwatch.log_group.encryption_at_rest_cmek",
+        "aws.cloudwatch.log_group.immutability_or_object_lock_where_supported",
+        "aws.cloudwatch.log_group.retention_days_minimum",
+        "aws.cloudwatch.log_stream.cross_account_destinations_restricted",
+        "aws.cloudwatch.log_stream.destination_encrypted",
+        "aws.cloudwatch.log_stream.destination_least_privilege",
+        "aws.cloudwatch.log_stream.encryption_at_rest_enabled",
+        "aws.cloudwatch.log_stream.ingestion_auth_required",
+        "aws.cloudwatch.log_stream.retention_days_minimum",
+        "aws.cloudwatch.metric.admin_activity_logging_enabled",
+        "aws.cloudwatch.metric.alerts_for_anomalies_configured",
+        "aws.cloudwatch.metric.api_access_log_fields_identity_present",
+        "aws.cloudwatch.metric.api_access_log_sink_configured",
+        "aws.cloudwatch.metric.api_access_logging_enabled",
+        "aws.cloudwatch.metric.api_execution_logging_level_minimum_error",
+        "aws.cloudwatch.metric.api_logs_retention_days_minimum",
+        "aws.cloudwatch.metric.flow_logs_enabled",
+        "aws.cloudwatch.metric.logs_retention_days_minimum",
+        "aws.cloudwatch.metric.query_access_logging_enabled",
+        "aws.cloudwatch.metric_filter.console_root_login_detected_filter_present",
+        "aws.cloudwatch.metric_filter.iam_policy_change_detected_filter_present",
+        "aws.cloudwatch.metric_filter.kms_key_deletion_or_disable_detected_filter_present",
+        "aws.cloudwatch.metric_filter.network_acl_or_sg_change_detected_filter_present"
+      ],
+      "rule_count": 45,
+      "compliance_functions": [
+        {
+          "name": "aws.cloudwatch.alarm_configured",
+          "usage_count": 3,
+          "frameworks": "CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Your Data-1: Learn what is happening on your network",
+            "5.2: Security Monitoring",
+            "3.2: Capacity Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.alarm_cpu_utilization_configured",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_1: A1.1 Capacity Management: The entity conducts capacity planning to ensure adequate system capacity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.alarm_memory_utilization_configured",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_1: A1.1 Capacity Management: The entity conducts capacity planning to ensure adequate system capacity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.bucket.policy_changes",
+          "usage_count": 5,
+          "frameworks": "GDPR, ISO27001, SOC2",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.changes_to_vpcs_alarm_configured",
+          "usage_count": 48,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CCCS SI-2: CCCS SI-2: Flaw Remediation",
+            "CA-7: Continuous Monitoring"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.group.changes",
+          "usage_count": 5,
+          "frameworks": "GDPR, ISO27001, SOC2",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.group.edr_log_delivery_configured",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "6.12: Ensure CloudWatch Metrics for AWS EDR"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.group.kms_encryption_enabled",
+          "usage_count": 29,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CP-9: CCCS CP-9: System Backup",
+            "CCCS SC-13: CCCS SC-13: Cryptographic Protection",
+            "CP-9: System Backup"
+          ],
+          "mapped_to": [
+            "aws.cloudwatch.insights_query.storage_encrypted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.cloudwatch.group.no_secrets_in_logs",
+          "usage_count": 2,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.15: Logging",
+            "A.8.16: Monitoring Activities"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.group.not_publicly_accessible",
+          "usage_count": 2,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.15: Logging",
+            "A.8.16: Monitoring Activities"
+          ],
+          "mapped_to": [
+            "aws.cloudwatch.dashboard.public_embeds_disabled",
+            "aws.cloudwatch.destination.endpoint_private_networking"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.cloudwatch.group.retention",
+          "usage_count": 42,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS, RBI_B",
+          "requirements": [
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CA-7: Continuous Monitoring",
+            "CA-7 (1): Continuous Monitoring | Independent Assessment"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.log_analysis_enabled",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS AU-6: CCCS AU-6: Audit Record Review, Analysis, and Reporting",
+            "AU-6: Audit Record Review, Analysis, and Reporting"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_alarm_configured",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS AU-6: CCCS AU-6: Audit Record Review, Analysis, and Reporting",
+            "AU-6: Audit Record Review, Analysis, and Reporting"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+          "usage_count": 5,
+          "frameworks": "GDPR, ISO27001, SOC2",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+          "usage_count": 5,
+          "frameworks": "GDPR, ISO27001, SOC2",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_authentication_failures",
+          "usage_count": 7,
+          "frameworks": "GDPR, HIPAA, ISO27001",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "164_308_a_5_ii_c: 164_308_a_5_ii_c: 164.308(a)(5)(ii)(C) Log-in monitoring",
+            "164_308_a_6_i: 164_308_a_6_i: 164.308(a)(6)(i) Security incident procedures"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_aws_organizations_changes",
+          "usage_count": 3,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.15: Logging",
+            "A.8.16: Monitoring Activities",
+            "cc_5_2: CC5.2 COSO Principle 11: The entity also selects and develops general control activities over technology to support the achievement of objectives"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+          "usage_count": 5,
+          "frameworks": "GDPR, ISO27001",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.10.1: Cryptographic Controls",
+            "A.12.4: Logging and Monitoring"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_root_usage",
+          "usage_count": 6,
+          "frameworks": "GDPR, HIPAA, ISO27001",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "164_308_a_6_i: 164_308_a_6_i: 164.308(a)(6)(i) Security incident procedures",
+            "164_308_a_6_ii: 164_308_a_6_ii: 164.308(a)(6)(ii) Response and reporting"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_sign_in_without_mfa",
+          "usage_count": 4,
+          "frameworks": "GDPR, ISO27001",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.log_metric_filter_unauthorized_api_calls",
+          "usage_count": 4,
+          "frameworks": "GDPR, ISO27001",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.cloudwatch.network.acls_alarm_configured",
+          "usage_count": 45,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CCCS SI-2: CCCS SI-2: Flaw Remediation",
+            "CA-7: Continuous Monitoring"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.network.gateways_alarm_configured",
+          "usage_count": 45,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CCCS SI-2: CCCS SI-2: Flaw Remediation",
+            "CA-7: Continuous Monitoring"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.network.route_tables_alarm_configured",
+          "usage_count": 43,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CCCS SI-2: CCCS SI-2: Flaw Remediation",
+            "CA-7: Continuous Monitoring"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.cloudwatch.policy.changes",
+          "usage_count": 7,
+          "frameworks": "GDPR, ISO27001, PCI-DSS, SOC2",
+          "requirements": [
+            "NA: Article 25 Data protection by design and by default",
+            "A.12.4: Logging and Monitoring",
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 25,
+        "mapped": 13,
+        "needs_development": 12,
+        "coverage_percent": 52
+      }
+    },
+    "kms": {
+      "available_rules": [
+        "aws.kms.alias.alias_points_to_active_key",
+        "aws.kms.alias.default_keys_disabled_where_cmek_required",
+        "aws.kms.alias.key_has_alias",
+        "aws.kms.alias.logging_enabled",
+        "aws.kms.grant.constraints_present",
+        "aws.kms.grant.grantee_principal_valid",
+        "aws.kms.grant.lessthan_wildcard_permissions",
+        "aws.kms.key.at_rest_cmek_enabled",
+        "aws.kms.key.default_keys_disabled_where_cmek_required",
+        "aws.kms.key.in_transit_tls_min_1_2",
+        "aws.kms.key.key_deletion_requires_waiting_period",
+        "aws.kms.key.key_not_publicly_accessible",
+        "aws.kms.key.key_policy_least_privilege",
+        "aws.kms.key.key_rotation_enabled",
+        "aws.kms.key.logging_enabled",
+        "aws.kms.key.mtls_required_for_internal_services_where_supported",
+        "aws.kms.key.tls_min_1_2_enforced"
+      ],
+      "rule_count": 17,
+      "compliance_functions": [
+        {
+          "name": "aws.kms.cmk_are_used",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.11: Data Masking",
+            "A.8.24: Use of Cryptography",
+            "A.8.5: Secure Authentication"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.cmk_not_deleted_unintentionally",
+          "usage_count": 2,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.11: Data Masking",
+            "A.8.24: Use of Cryptography"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.cmk_not_multi_region",
+          "usage_count": 2,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.11: Data Masking",
+            "A.8.24: Use of Cryptography"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.cmk_rotation_enabled",
+          "usage_count": 22,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-53, RBI_BANK, RBI_NBF",
+          "requirements": [
+            "CCCS SC-12: CCCS SC-12: Cryptographic Key Establishment and Management",
+            "SC-12: Cryptographic Key Establishment and Management",
+            "NA: Article 25 Data protection by design and by default"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.cmk_state_change_monitoring",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "5.7: Ensure disabling or scheduled deletion of customer created CMKs is monitored"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.key.expiration_set",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SC-12: CCCS SC-12: Cryptographic Key Establishment and Management",
+            "SC-12: Cryptographic Key Establishment and Management"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.key.lifecycle_policy",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SC-12: CCCS SC-12: Cryptographic Key Establishment and Management",
+            "SC-12: Cryptographic Key Establishment and Management"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.key.not_publicly_accessible",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.1: User Endpoint Devices"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.kms.key.not_scheduled_for_deletion",
+          "usage_count": 3,
+          "frameworks": "CISA_CE, RBI_BANK",
+          "requirements": [
+            "Your Data-2: Learn how your data is protected",
+            "11.1: Key Vault Protection",
+            "7.1: Certificate Lifecycle Management"
+          ],
+          "mapped_to": [
+            "aws.kms.alias.alias_points_to_active_key"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        }
+      ],
+      "summary": {
+        "total_compliance": 9,
+        "mapped": 9,
+        "needs_development": 0,
+        "coverage_percent": 100
+      }
+    },
+    "rds": {
+      "available_rules": [
+        "aws.rds.cluster.audit_logging_enabled",
+        "aws.rds.cluster.deletion_protection_enabled",
+        "aws.rds.cluster.deletion_protection_enabled",
+        "aws.rds.cluster.encryption_at_rest_cmek",
+        "aws.rds.cluster.encryption_at_rest_enabled",
+        "aws.rds.cluster.iam_or_managed_identity_auth_enabled_where_supported",
+        "aws.rds.cluster.minor_version_auto_upgrade_enabled",
+        "aws.rds.cluster.private_networking_enforced",
+        "aws.rds.cluster.public_access_disabled",
+        "aws.rds.cluster.require_tls_in_transit",
+        "aws.rds.cluster_snapshot.cross_account_sharing_restricted",
+        "aws.rds.cluster_snapshot.cross_region_copy_encrypted",
+        "aws.rds.cluster_snapshot.encrypted",
+        "aws.rds.cluster_snapshot.not_publicly_shared",
+        "aws.rds.db_user.approved_list_of_superusers_only",
+        "aws.rds.db_user.no_unused_or_default_superusers",
+        "aws.rds.db_user.password_auth_hardened_or_iam_auth_preferred_where_supported",
+        "aws.rds.instance.deletion_protection_enabled",
+        "aws.rds.instance.encryption_at_rest_enabled",
+        "aws.rds.instance.iam_or_managed_identity_auth_enabled_where_supported",
+        "aws.rds.instance.public_access_disabled",
+        "aws.rds.instance.require_tls_in_transit",
+        "aws.rds.option_group.insecure_extensions_not_enabled",
+        "aws.rds.option_group.only_approved_extensions_enabled",
+        "aws.rds.parameter_group.audit_logging_enabled_where_supported",
+        "aws.rds.parameter_group.insecure_features_disabled_where_applicable",
+        "aws.rds.parameter_group.require_ssl",
+        "aws.rds.reserved_instance.approval_workflow_required",
+        "aws.rds.reserved_instance.billing_admins_mfa_required",
+        "aws.rds.reserved_instance.purchase_permissions_restricted",
+        "aws.rds.security_group.egress_restricted",
+        "aws.rds.security_group.no_0_0_0_0_ingress_on_db_ports",
+        "aws.rds.security_group.only_required_ports_open",
+        "aws.rds.snapshot.cross_account_sharing_restricted",
+        "aws.rds.snapshot.cross_region_copy_encrypted",
+        "aws.rds.snapshot.cross_region_copy_encrypted",
+        "aws.rds.snapshot.encrypted",
+        "aws.rds.snapshot.encrypted",
+        "aws.rds.snapshot.not_public",
+        "aws.rds.snapshot.not_publicly_shared",
+        "aws.rds.subnet_group.private_subnets_only"
+      ],
+      "rule_count": 41,
+      "compliance_functions": [
+        {
+          "name": "aws.rds.backup_retention_period",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_2: A1.2 Backup and Disaster Recovery: The entity implements backup processes, data recovery infrastructure, and environmental protections"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster_snapshot.cross_account_sharing_restricted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.rds.cluster.copy_tags_to_snapshots",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.5.13: Labelling Of Information"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster_snapshot.cross_account_sharing_restricted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.rds.cluster.default_admin",
+          "usage_count": 6,
+          "frameworks": "PCI-DSS",
+          "requirements": [
+            "2.1.1: Examine documentation and interview personnel to verify that security policies and operational pr...",
+            "2.1.2: Requirement 2.1.2",
+            "2.2.1: Examine change records and the affected systems/networks, and interview personnel to verify that ..."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.cluster.integration_cloudwatch_logs",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.15: Logging"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.rds.cluster.minor_version_upgrade_enabled",
+          "usage_count": 5,
+          "frameworks": "PCI-DSS",
+          "requirements": [
+            "6.2.1: Examine documented software development procedures to verify that processes are defined that incl...",
+            "6.2.2: Requirement 6.2.2",
+            "6.2.3: Requirement 6.2.3"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.cluster.multi_az",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.cluster.storage_encrypted",
+          "usage_count": 2,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.11: Data Masking",
+            "A.8.24: Use of Cryptography"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.encryption_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.rds.dynamodb_table_encryption_enabled",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SC-28: CCCS SC-28: Protection of Information at Rest",
+            "SC-28: Protection of Information at Rest"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.encryption_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.rds.instance.auto_minor_version_upgrade_check",
+          "usage_count": 4,
+          "frameworks": "CIS, CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Booting Up-3: Enable automatic updates and patch quickly",
+            "21.2: Patch Management and Updates",
+            "2.6: Patch Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.backup_enabled",
+          "usage_count": 47,
+          "frameworks": "CANADA_PBMM, CISA_CE, FedRAMP, GDPR, HIPAA, NIST_800-171, NIST_800-53, PCI-DSS, ",
+          "requirements": [
+            "CCCS CP-6: CCCS CP-6: Alternate Storage Site",
+            "CCCS CP-9: CCCS CP-9: System Backup",
+            "Booting Up-1: Employ a backup solution that automatically and continuously backs up critical data"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster_snapshot.cross_account_sharing_restricted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.rds.instance.backup_encrypted",
+          "usage_count": 1,
+          "frameworks": "RBI_BANK",
+          "requirements": [
+            "8.1: Database Encryption"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.encryption_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.rds.instance.copy_tags_to_snapshots",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "cc_7_5: CC7.5 The entity identifies, develops, and implements activities to recover from identified security incidents"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster_snapshot.cross_account_sharing_restricted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.rds.instance.default_admin",
+          "usage_count": 6,
+          "frameworks": "PCI-DSS",
+          "requirements": [
+            "2.1.1: Examine documentation and interview personnel to verify that security policies and operational pr...",
+            "2.1.2: Requirement 2.1.2",
+            "2.2.1: Examine change records and the affected systems/networks, and interview personnel to verify that ..."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.deletion_protection",
+          "usage_count": 24,
+          "frameworks": "CANADA_PBMM, FedRAMP, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS CM-3: CCCS CM-3: Configuration Change Control",
+            "CCCS CP-2: CCCS CP-2: Contingency Plan",
+            "CCCS SC-22: CCCS SC-22: Architecture and Provisioning for Name/address Resolution Service"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.enhanced_monitoring_enabled",
+          "usage_count": 24,
+          "frameworks": "CANADA_PBMM, FedRAMP, NIST_800-171, NIST_800-53, RBI_NBFC",
+          "requirements": [
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CCCS SI-2: CCCS SI-2: Flaw Remediation",
+            "CA-7: Continuous Monitoring"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.iam_authentication_enabled",
+          "usage_count": 1,
+          "frameworks": "RBI_BANK",
+          "requirements": [
+            "8.2: Database Access Control"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.inside_vpc",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.integration_cloudwatch_logs",
+          "usage_count": 56,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, SOC2",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.rds.instance.multi_az",
+          "usage_count": 38,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, RBI_BANK,",
+          "requirements": [
+            "CCCS CP-2: CCCS CP-2: Contingency Plan",
+            "CCCS SC-22: CCCS SC-22: Architecture and Provisioning for Name/address Resolution Service",
+            "CP-2: Contingency Plan"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.no_public_access",
+          "usage_count": 73,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS, ",
+          "requirements": [
+            "CCCS AC-17: CCCS AC-17: Remote Access",
+            "CCCS SC-7: CCCS SC-7: Boundary Protection",
+            "AC-17: Remote Access"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.private_networking_enforced",
+            "aws.rds.cluster.public_access_disabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.rds.instance.performance_insights_enabled",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_1: A1.1 Capacity Management: The entity conducts capacity planning to ensure adequate system capacity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.protected_by_backup_plan",
+          "usage_count": 2,
+          "frameworks": "PCI-DSS",
+          "requirements": [
+            "3.1.1: Requirement 3.1.1",
+            "3.1.2: Requirement 3.1.2"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster_snapshot.cross_account_sharing_restricted"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.rds.instance.security_configuration_review",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "3.11: Ensure accessing Points and IAM Policies"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.rds.instance.storage_encrypted",
+          "usage_count": 34,
+          "frameworks": "CANADA_PBMM, CIS, CISA_CE, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_80",
+          "requirements": [
+            "CCCS CP-9: CCCS CP-9: System Backup",
+            "CCCS SC-28: CCCS SC-28: Protection of Information at Rest",
+            "Your Data-2: Learn how your data is protected"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.encryption_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.rds.instance.transport_encrypted",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.24: Use of Cryptography"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.encryption_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.rds.snapshots_encrypted",
+          "usage_count": 8,
+          "frameworks": "ISO27001, PCI-DSS",
+          "requirements": [
+            "A.8.11: Data Masking",
+            "A.8.24: Use of Cryptography",
+            "3.4.1: Requirement 3.4.1"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.encryption_at_rest_cmek"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.rds.snapshots_public_access",
+          "usage_count": 67,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS",
+          "requirements": [
+            "CCCS AC-17: CCCS AC-17: Remote Access",
+            "CCCS SC-7: CCCS SC-7: Boundary Protection",
+            "AC-17: Remote Access"
+          ],
+          "mapped_to": [
+            "aws.rds.cluster.private_networking_enforced",
+            "aws.rds.cluster.public_access_disabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        }
+      ],
+      "summary": {
+        "total_compliance": 27,
+        "mapped": 15,
+        "needs_development": 12,
+        "coverage_percent": 56
+      }
+    },
+    "vpc": {
+      "available_rules": [
+        "aws.vpc.customer_gateway.dns_hostnames_and_support_configured",
+        "aws.vpc.customer_gateway.flow_logs_enabled",
+        "aws.vpc.customer_gateway.route_tables_no_unintended_internet_paths",
+        "aws.vpc.internet_gateway.dns_hostnames_and_support_configured",
+        "aws.vpc.internet_gateway.flow_logs_enabled",
+        "aws.vpc.internet_gateway.route_tables_no_unintended_internet_paths",
+        "aws.vpc.nat_gateway.dns_hostnames_and_support_configured",
+        "aws.vpc.nat_gateway.flow_logs_enabled",
+        "aws.vpc.nat_gateway.route_tables_no_unintended_internet_paths",
+        "aws.vpc.network_acl.dns_hostnames_and_support_configured",
+        "aws.vpc.network_acl.flow_logs_enabled",
+        "aws.vpc.network_acl.route_tables_no_unintended_internet_paths",
+        "aws.vpc.network_interface.dns_hostnames_and_support_configured",
+        "aws.vpc.network_interface.flow_logs_enabled",
+        "aws.vpc.network_interface.route_tables_no_unintended_internet_paths",
+        "aws.vpc.route_table.dns_hostnames_and_support_configured",
+        "aws.vpc.route_table.flow_logs_enabled",
+        "aws.vpc.route_table.route_tables_no_unintended_internet_paths",
+        "aws.vpc.security_group.dns_hostnames_and_support_configured",
+        "aws.vpc.security_group.flow_logs_enabled",
+        "aws.vpc.security_group.route_tables_no_unintended_internet_paths",
+        "aws.vpc.subnet.dns_hostnames_and_support_configured",
+        "aws.vpc.subnet.flow_logs_enabled",
+        "aws.vpc.subnet.route_tables_no_unintended_internet_paths",
+        "aws.vpc.vpc.dns_hostnames_and_support_configured",
+        "aws.vpc.vpc.flow_logs_enabled",
+        "aws.vpc.vpc.route_tables_no_unintended_internet_paths",
+        "aws.vpc.vpc_endpoint.dns_hostnames_and_support_configured",
+        "aws.vpc.vpc_endpoint.flow_logs_enabled",
+        "aws.vpc.vpc_endpoint.route_tables_no_unintended_internet_paths",
+        "aws.vpc.vpn_connection.dns_hostnames_and_support_configured",
+        "aws.vpc.vpn_connection.flow_logs_enabled",
+        "aws.vpc.vpn_connection.route_tables_no_unintended_internet_paths",
+        "aws.vpc.vpn_gateway.dns_hostnames_and_support_configured",
+        "aws.vpc.vpn_gateway.flow_logs_enabled",
+        "aws.vpc.vpn_gateway.route_tables_no_unintended_internet_paths"
+      ],
+      "rule_count": 36,
+      "compliance_functions": [
+        {
+          "name": "aws.vpc.different_regions",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.endpoint_connections_trust_boundaries",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.endpoint_for_ec2_enabled",
+          "usage_count": 9,
+          "frameworks": "ISO27001, PCI-DSS",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.endpoint_multi_az_enabled",
+          "usage_count": 4,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities",
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.endpoint_services_allowed_principals_trust_boundaries",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.flow_log_active_rejects_enabled",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "3.7: Ensure VPC flow logging is enabled in all VPCs"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.vpc.flow_logs_enabled",
+          "usage_count": 33,
+          "frameworks": "CISA_CE, GDPR, HIPAA, ISO27001, NIST_800-171, PCI-DSS, RBI_BANK, RBI_NBFC, SOC2",
+          "requirements": [
+            "Your Data-1: Learn what is happening on your network",
+            "NA: Article 25 Data protection by design and by default",
+            "NA: Article 30 Records of processing activities"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.vpc.group.closed",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.23: Web Filtering"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.nacl_ingress_restricted_ports_22_3389",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "6.2: Ensure no Network ACLs allow ingress from 0.0.0.0/0 to remote server administration ports"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.network.acl_unused",
+          "usage_count": 2,
+          "frameworks": "CISA_CE, RBI_BANK",
+          "requirements": [
+            "Your Systems-1: Learn what is on your network - Maintain inventories of hardware and software assets",
+            "4.2: Network Inventory Management"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.network.security_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "8.2: Ensure Network Security is Enabled"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.peering_routing_tables_with_least_privilege",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.subnet_different_az",
+          "usage_count": 4,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities",
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.subnet_no_public_ip_by_default",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.subnet_separate_private_public",
+          "usage_count": 4,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.vpc.vpn_connection_tunnels_up",
+          "usage_count": 4,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities",
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 16,
+        "mapped": 2,
+        "needs_development": 14,
+        "coverage_percent": 12
+      }
+    },
+    "lambda": {
+      "available_rules": [
+        "aws.lambda.event_source_mapping.permissions_least_privilege",
+        "aws.lambda.event_source_mapping.source_authenticated",
+        "aws.lambda.function.artifacts_encrypted_and_private",
+        "aws.lambda.function.change_audit_logging_enabled",
+        "aws.lambda.function.change_audit_logging_enabled",
+        "aws.lambda.function.dead_letter_queue_configured",
+        "aws.lambda.function.env_no_plaintext_secrets",
+        "aws.lambda.function.execution_roles_least_privilege",
+        "aws.lambda.function.execution_roles_least_privilege",
+        "aws.lambda.function.jobs_private_networking",
+        "aws.lambda.function.logging_and_tracing_enabled",
+        "aws.lambda.function.outputs_encrypted",
+        "aws.lambda.function.policies_present_for_sensitive_fields",
+        "aws.lambda.function.remediation_roles_least_privilege",
+        "aws.lambda.function.role_least_privilege",
+        "aws.lambda.function.vpc_private_networking_enabled",
+        "aws.lambda.layer.source_trusted",
+        "aws.lambda.layer.version_immutable",
+        "aws.lambda.provisioned_concurrency.execution_role_least_privilege",
+        "aws.lambda.version.published_and_immutable",
+        "aws.lambda.version.rollforward_rollback_controls_present"
+      ],
+      "rule_count": 21,
+      "compliance_functions": [
+        {
+          "name": "aws.lambda.function.cloudwatch_lambda_insights_enabled",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.2: Ensure Cloudwatch Lambda insights is enabled"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.code_signing_config_present",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.8: Ensure that Code Signing is enabled for Lambda functions."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.environment_variables_kms_encryption_enabled",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.12: Ensure encryption in transit is enabled for Lambda environment variables"
+          ],
+          "mapped_to": [
+            "aws.lambda.function.artifacts_encrypted_and_private"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.lambda.function.execution_role_existence_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.7: Ensure Lambda functions are referencing active execution roles."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.execution_role_no_admin_privileges",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.9: Ensure there are no Lambda functions with admin privileges within your AWS account"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.inside_vpc",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.invoke_api_operations_cloudtrail_logging_enabled",
+          "usage_count": 2,
+          "frameworks": "ISO27001, SOC2",
+          "requirements": [
+            "A.8.15: Logging",
+            "cc_a_1_1: A1.2 The entity authorizes, designs, develops or acquires, implements, operates, approves, maintains, and monitors environmental protections, software, data back-up processes, and recovery infrastructure to meet its objectives"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.lambda.function.reserved_concurrency",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_1: A1.1 Capacity Management: The entity conducts capacity planning to ensure adequate system capacity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.resource_policy_cross_account_access_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.10: Ensure Lambda functions do not allow unknown cross account access via permission policies."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.restrict_public_access",
+          "usage_count": 50,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, RBI_BANK,",
+          "requirements": [
+            "CCCS AC-17: CCCS AC-17: Remote Access",
+            "CCCS SC-7: CCCS SC-7: Boundary Protection",
+            "AC-17: Remote Access"
+          ],
+          "mapped_to": [
+            "aws.lambda.function.artifacts_encrypted_and_private",
+            "aws.lambda.function.jobs_private_networking"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.lambda.function.runtime_support_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.11: Ensure that the runtime environment versions used for your Lambda functions do not have end of support dates."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.unique_iam_role_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "12.5: Ensure every Lambda function has its own IAM Role"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.url_authentication",
+          "usage_count": 1,
+          "frameworks": "RBI_NBFC",
+          "requirements": [
+            "2.11: Mobile Financial Services Security"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.url_cors_policy",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.1: User Endpoint Devices"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.lambda.function.url_public",
+          "usage_count": 51,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53",
+          "requirements": [
+            "CCCS AC-17: CCCS AC-17: Remote Access",
+            "CCCS SC-7: CCCS SC-7: Boundary Protection",
+            "AC-17: Remote Access"
+          ],
+          "mapped_to": [
+            "aws.lambda.function.artifacts_encrypted_and_private",
+            "aws.lambda.function.jobs_private_networking"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Public access security check"
+        },
+        {
+          "name": "aws.lambda.function.vpc_multi_az",
+          "usage_count": 3,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.20: Network Security",
+            "A.8.21: Security of Network Services",
+            "A.8.22: Segregation of Networks"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 16,
+        "mapped": 4,
+        "needs_development": 12,
+        "coverage_percent": 25
+      }
+    },
+    "elbv2": {
+      "available_rules": [
+        "aws.elbv2.listener.cipher_policy_secure",
+        "aws.elbv2.listener.tls_min_1_2",
+        "aws.elbv2.load_balancer.access_logs_enabled",
+        "aws.elbv2.load_balancer.listener_tls_min_1_2",
+        "aws.elbv2.load_balancer.valid_certificate_attached",
+        "aws.elbv2.load_balancer.waf_attached_where_supported",
+        "aws.elbv2.target_group.health_checks_tls_where_supported",
+        "aws.elbv2.target_group.targets_in_private_subnets"
+      ],
+      "rule_count": 8,
+      "compliance_functions": [
+        {
+          "name": "aws.elbv2.alb_https_redirect",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SC-8: CCCS SC-8: Transmission Confidentiality and Integrity",
+            "SC-8: Transmission Confidentiality and Integrity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elbv2.deletion_protection",
+          "usage_count": 34,
+          "frameworks": "CANADA_PBMM, FedRAMP, HIPAA, NIST_800-171, NIST_800-53",
+          "requirements": [
+            "CCCS CM-2: CCCS CM-2: Baseline Configuration",
+            "CCCS CM-3: CCCS CM-3: Configuration Change Control",
+            "CCCS CP-2: CCCS CP-2: Contingency Plan"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elbv2.group.health_check_enabled",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_1: A1.1 Capacity Management: The entity conducts capacity planning to ensure adequate system capacity"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elbv2.insecure_ssl_ciphers",
+          "usage_count": 4,
+          "frameworks": "ISO27001, NIST_800-171, NIST_800-53",
+          "requirements": [
+            "A.10.1: Cryptographic Controls",
+            "NA: 3_5_10: 3.5.10 Store and transmit only cryptographically-protected passwords",
+            "SC-8(1): Transmission Confidentiality And Integrity - Transmission confidentiality and integrity | cryptographic protection implement"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elbv2.internet_facing",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.1: User Endpoint Devices"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elbv2.is_in_multiple_az",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elbv2.logging_enabled",
+          "usage_count": 49,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS,",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.elbv2.ssl_listeners",
+          "usage_count": 9,
+          "frameworks": "PCI-DSS",
+          "requirements": [
+            "2.3.1: Requirement 2.3.1",
+            "2.3.2: Interview responsible personnel and examine key-management documentation to verify that wireless ...",
+            "4.1.1: Examine documentation and interview personnel to verify that security policies and operational pr..."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elbv2.waf_acl_attached",
+          "usage_count": 5,
+          "frameworks": "NIST_800-171, NIST_800-53, PCI-DSS",
+          "requirements": [
+            "NA: 3_13_1: 3.13.1 Monitor, control, and protect communications (i.e., information transmitted or received by organizational systems) at the external boundaries and key internal boundaries of organizational systems",
+            "NA: 3_13_5: 3.13.5 Implement subnetworks for publicly accessible system components that are physically or logically separated from internal networks",
+            "AC-4(21): Information Flow Enforcement - Information flow enforcement | physical or logical separation of information flo"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 9,
+        "mapped": 1,
+        "needs_development": 8,
+        "coverage_percent": 11
+      }
+    },
+    "elb": {
+      "available_rules": [
+        "aws.elb.load_balancer.access_logs_enabled",
+        "aws.elb.load_balancer.listener_tls_min_1_2",
+        "aws.elb.load_balancer.valid_certificate_attached",
+        "aws.elb.load_balancer.waf_attached_where_supported"
+      ],
+      "rule_count": 4,
+      "compliance_functions": [
+        {
+          "name": "aws.elb.desync_mitigation_mode",
+          "usage_count": 1,
+          "frameworks": "PCI-DSS",
+          "requirements": [
+            "10.2.1.5: Examine audit log configurations and log data to verify that changes to identification and authen..."
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elb.insecure_ssl_ciphers",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.10.1: Cryptographic Controls"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elb.internet_facing",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.1: User Endpoint Devices"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elb.is_in_multiple_az",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.14: Redundancy of information processing facilities"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        },
+        {
+          "name": "aws.elb.logging_enabled",
+          "usage_count": 49,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, ISO27001, NIST_800-171, NIST_800-53, PCI-DSS,",
+          "requirements": [
+            "CCCS AU-2: CCCS AU-2: Event Logging",
+            "CCCS AU-3: CCCS AU-3: Content of Audit Records",
+            "CCCS AU-8: CCCS AU-8: Time Stamps"
+          ],
+          "mapped_to": [
+            "aws.cloudtrail.trail.flow_logs_enabled"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Audit logging captured by CloudTrail. Per expert principle: CloudTrail enabled = audit logs for all AWS services."
+        },
+        {
+          "name": "aws.elb.ssl_listeners",
+          "usage_count": 71,
+          "frameworks": "CANADA_PBMM, FedRAMP, GDPR, HIPAA, NIST_800-171, NIST_800-53, PCI-DSS",
+          "requirements": [
+            "CCCS CA-9: CCCS CA-9: Internal System Connections",
+            "CCCS SC-13: CCCS SC-13: Cryptographic Protection",
+            "CA-9: Internal System Connections"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 6,
+        "mapped": 1,
+        "needs_development": 5,
+        "coverage_percent": 17
+      }
+    },
+    "backup": {
+      "available_rules": [
+        "aws.backup.backup_job.alert_destinations_configured",
+        "aws.backup.backup_job.alert_destinations_configured",
+        "aws.backup.backup_job.alert_rules_for_job_failures_configured",
+        "aws.backup.backup_job.alert_rules_for_sla_breach_configured",
+        "aws.backup.backup_job.alerts_for_backup_failures_configured",
+        "aws.backup.backup_job.alerts_for_replication_lag_configured",
+        "aws.backup.backup_job.alerts_for_rpo_rto_breach_configured",
+        "aws.backup.backup_job.execution_roles_least_privilege",
+        "aws.backup.backup_job.logs_enabled",
+        "aws.backup.backup_job.logs_enabled",
+        "aws.backup.backup_job.metrics_export_enabled",
+        "aws.backup.backup_job.network_private_only",
+        "aws.backup.backup_job.results_storage_encrypted_and_private",
+        "aws.backup.backup_job.roles_least_privilege",
+        "aws.backup.backup_plan.approvals_required_for_changes",
+        "aws.backup.backup_plan.auth_roles_least_privilege",
+        "aws.backup.backup_plan.backup_admins_mfa_required",
+        "aws.backup.backup_plan.backup_keys_access_least_privilege",
+        "aws.backup.backup_plan.backup_vault_rbac_least_privilege",
+        "aws.backup.backup_plan.change_audit_logging_enabled",
+        "aws.backup.backup_plan.cross_region_replication_encrypted",
+        "aws.backup.backup_plan.encryption_in_transit_tls_required",
+        "aws.backup.backup_plan.failed_jobs_alerting_enabled",
+        "aws.backup.backup_plan.job_success_rate_minimum",
+        "aws.backup.backup_plan.lag_monitoring_alerts_enabled",
+        "aws.backup.backup_plan.last_backup_recency_within_days",
+        "aws.backup.backup_plan.no_public_access_to_backup_vault",
+        "aws.backup.backup_plan.policy_assignment_complete",
+        "aws.backup.backup_plan.resource_discovery_synced",
+        "aws.backup.backup_plan.storage_encrypted_and_private",
+        "aws.backup.backup_plan.unprotected_assets_alerting_enabled",
+        "aws.backup.backup_vault.backup_storage_immutability_enabled",
+        "aws.backup.backup_vault.cmk_cmek_key_configured",
+        "aws.backup.backup_vault.destination_private_only",
+        "aws.backup.backup_vault.encrypted_at_rest_cmek",
+        "aws.backup.backup_vault.encryption_at_rest_enabled",
+        "aws.backup.backup_vault.encryption_in_transit_tls_min_1_2",
+        "aws.backup.backup_vault.immutable_or_worm_enabled_where_supported",
+        "aws.backup.backup_vault.key_policy_least_privilege",
+        "aws.backup.backup_vault.key_rotation_enabled",
+        "aws.backup.backup_vault.schedule_defined_min_frequency",
+        "aws.backup.recovery_point.agent_to_service_tls_required",
+        "aws.backup.recovery_point.encryption_at_rest_cmek_where_supported",
+        "aws.backup.recovery_point.min_telemtry_required_no_pii",
+        "aws.backup.recovery_point.private_network_only",
+        "aws.backup.recovery_point.security_groups_restrictive",
+        "aws.backup.recovery_point.volumes_encrypted",
+        "aws.backup.restore_job.cross_account_restore_blocked_by_policy",
+        "aws.backup.restore_job.from_encrypted_backups_only",
+        "aws.backup.restore_job.logs_and_artifacts_encrypted",
+        "aws.backup.restore_job.roles_least_privilege"
+      ],
+      "rule_count": 51,
+      "compliance_functions": [
+        {
+          "name": "aws.backup.enabled_for_ec2",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_2: A1.2 Backup and Disaster Recovery: The entity implements backup processes, data recovery infrastructure, and environmental protections"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.backup.encryption_enabled",
+          "usage_count": 2,
+          "frameworks": "CANADA_PBMM, FedRAMP",
+          "requirements": [
+            "CCCS SC-28: CCCS SC-28: Protection of Information at Rest",
+            "SC-28: Protection of Information at Rest"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.results_storage_encrypted_and_private"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.backup.plan_configured",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_2: A1.2 Backup and Disaster Recovery: The entity implements backup processes, data recovery infrastructure, and environmental protections"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.backup.plan_min_retention",
+          "usage_count": 4,
+          "frameworks": "CISA_CE, RBI_BANK, RBI_NBFC",
+          "requirements": [
+            "Booting Up-1: Employ a backup solution that automatically and continuously backs up critical data",
+            "Your Data-4: Establish regular automated backups",
+            "6.1: Data Backup"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.backup.plans_exist",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.13: Information Backup"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.backup.recovery_point_encrypted",
+          "usage_count": 4,
+          "frameworks": "ISO27001, PCI-DSS, SOC2",
+          "requirements": [
+            "A.8.13: Information Backup",
+            "A.8.24: Use of Cryptography",
+            "3.5.1.3: Requirement 3.5.1.3"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.results_storage_encrypted_and_private"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.backup.recovery_point_retention",
+          "usage_count": 2,
+          "frameworks": "CISA_CE",
+          "requirements": [
+            "Booting Up-1: Employ a backup solution that automatically and continuously backs up critical data",
+            "Your Data-4: Establish regular automated backups"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.backup.replication_check",
+          "usage_count": 1,
+          "frameworks": "CIS",
+          "requirements": [
+            "6.9: Ensure Continuous Disaster Recovery Operations"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.backup.reportplans_exist",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.13: Information Backup"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        },
+        {
+          "name": "aws.backup.vault_encryption_enabled",
+          "usage_count": 1,
+          "frameworks": "SOC2",
+          "requirements": [
+            "a1_2: A1.2 Backup and Disaster Recovery: The entity implements backup processes, data recovery infrastructure, and environmental protections"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.results_storage_encrypted_and_private"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.backup.vaults_encrypted",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.24: Use of Cryptography"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.results_storage_encrypted_and_private"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Encryption configuration check"
+        },
+        {
+          "name": "aws.backup.vaults_exist",
+          "usage_count": 1,
+          "frameworks": "ISO27001",
+          "requirements": [
+            "A.8.13: Information Backup"
+          ],
+          "mapped_to": [
+            "aws.backup.backup_job.alert_destinations_configured"
+          ],
+          "status": "MAPPED",
+          "confidence": "HIGH",
+          "expert_notes": "Backup/snapshot configuration check"
+        }
+      ],
+      "summary": {
+        "total_compliance": 12,
+        "mapped": 12,
+        "needs_development": 0,
+        "coverage_percent": 100
+      }
+    },
+    "securityhub": {
+      "available_rules": [],
+      "rule_count": 0,
+      "compliance_functions": [
+        {
+          "name": "aws.securityhub.hub_enabled_in_all_regions",
+          "usage_count": 59,
+          "frameworks": "CANADA_PBMM, CIS, FedRAMP, HIPAA, ISO27001, NIST_800-171, NIST_800-53, RBI_BANK,",
+          "requirements": [
+            "CCCS CA-2: CCCS CA-2: Control Assessments",
+            "CCCS CA-7: CCCS CA-7: Continuous Monitoring",
+            "CA-2: Control Assessments"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 1,
+        "mapped": 0,
+        "needs_development": 1,
+        "coverage_percent": 0
+      }
+    },
+    "inspector": {
+      "available_rules": [
+        "aws.inspector.assessment.agents_or_scanners_deployed",
+        "aws.inspector.assessment.policy_store_encrypted",
+        "aws.inspector.assessment.results_export_destination_encrypted",
+        "aws.inspector.assessment.roles_least_privilege",
+        "aws.inspector.assessment.scope_includes_all_asset_groups",
+        "aws.inspector.finding.alert_destinations_configured",
+        "aws.inspector.finding.archival_export_encrypted",
+        "aws.inspector.finding.suppression_rules_documented_and_scoped"
+      ],
+      "rule_count": 8,
+      "compliance_functions": [
+        {
+          "name": "aws.inspector.is_enabled",
+          "usage_count": 1,
+          "frameworks": "NIST_800-53",
+          "requirements": [
+            "SI-16: Memory Protection"
+          ],
+          "mapped_to": [],
+          "status": "NEEDS_DEVELOPMENT",
+          "confidence": "N/A",
+          "expert_notes": "Requires manual expert review for proper mapping"
+        }
+      ],
+      "summary": {
+        "total_compliance": 1,
+        "mapped": 0,
+        "needs_development": 1,
+        "coverage_percent": 0
+      }
+    }
+  }
+}

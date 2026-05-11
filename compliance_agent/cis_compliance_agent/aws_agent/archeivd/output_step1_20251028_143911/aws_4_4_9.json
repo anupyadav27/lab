@@ -1,0 +1,22 @@
+{
+    "control_id": "4.9",
+    "unique_id": "aws_4_4_9",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+    "title": "Ensure cleaning up FSx Resources",
+    "input_row": {
+        "id": "4.9",
+        "unique_id": "aws_4_4_9",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "title": "Ensure cleaning up FSx Resources",
+        "description": "Cleaning up FSx resources involves removing unused or unnecessary FSx file systems and associated components to optimize costs and maintain a secure cloud environment. This includes deleting redundant file systems, snapshots, and mount targets, while ensuring all data is backed up or migrated. Regular cleanup prevents resource sprawl, reduces expenses, and maintains the overall health and performance of your AWS infrastructure.",
+        "rationale": "The rationale for cleaning up FSx resources is to optimize costs and ensure a secure and efficient cloud environment. By removing unused or unnecessary file systems, snapshots, and mount targets, you prevent resource sprawl and reduce unnecessary expenses. Regular cleanup also helps maintain the overall health and performance of your AWS infrastructure, ensuring it remains organized and secure.",
+        "audit": "To clean the FSx resources - 1. Terminate the EC2 instance. 2. Delete Fsx cache - On the actions drop down, select delete cache. 3. Verify that you want to delete the service. 4. Select Delete. It will take some time to delete the cache. 5. Delete the S3 Bucket Before you can delete the bucket you must first empty the bucket. Check the radio box and select Empty Select the bucket that you want to delete and select Delete n the S3 console.",
+        "remediation": "References: 1. https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/getting-started-step3.html",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/getting-started-step3.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control \"Ensure cleaning up FSx Resources\" can be approached through automation since AWS provides APIs for managing FSx resources. These APIs allow for listing, describing, and deleting FSx file systems, backups, and other related components, which are the primary focus of this control. The use of AWS CLI and boto3 SDK will enable programmatically verifying and enforcing the cleanup of these resources.\n\n**PROGRAM NAME:** aws_fsx_resource_cleanup_check\n\n**AUTOMATION DETAILS:**\n- **AWS API Calls / Boto3 SDK Methods:**\n  - Use `boto3.client('fsx').describe_file_systems()` to list all FSx file systems.\n  - Use `boto3.client('fsx').delete_file_system()` to delete unused FSx file systems.\n  - Use `boto3.client('fsx').describe_backups()` to identify unused FSx backups.\n  - Use `boto3.client('fsx').delete_backup()` to remove these backups.\n  - Use `boto3.client('s3').list_buckets()` and `boto3.client('s3').delete_bucket()` to manage S3 buckets if necessary.\n\n- **AWS CLI Commands (if applicable):**\n  - Use `aws fsx describe-file-systems` to list FSx file systems.\n  - Use `aws fsx delete-file-system` to delete a file system.\n  - Use `aws fsx describe-backups` and `aws fsx delete-backup` for managing backups.\n\n- **Specific Resources to Enumerate:**\n  - Enumerate all FSx file systems and backups across regions.\n  - Verify if there are any unnecessary FSx file systems or backups that are not being used or accessed as per the defined policy or usage metrics.\n\n- **Exact Configuration Properties/Settings to Validate:**\n  - Check age or last accessed time of FSx resources to determine if they are unused.\n  - Validate if the file systems and backups are part of a defined retention policy.\n\n- **Clear Pass/Fail Criteria with Expected Values:**\n  - **Pass:** The FSx file systems and backups are in active use as per defined criteria, or they are removed if determined to be unused.\n  - **Fail:** There are orphaned FSx file systems or backups that have not been accessed or used within the acceptable timeframe.\n\nThis automation would facilitate consistent policy enforcement and cost management by programmatically managing FSx resources across an AWS environment.",
+    "timestamp": "2025-10-28T15:30:25.223458",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.10",
+    "unique_id": "k8s_4_1_1_10",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the Container Network Interface file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.10",
+        "unique_id": "k8s_4_1_1_10",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the Container Network Interface file ownership is set to root:root",
+        "description": "Ensure that the Container Network Interface files have ownership set to root:root.",
+        "rationale": "Container Network Interface provides various networking options for overlay networking. You should consult their documentation and restrict their respective file permissions to maintain the integrity of those files. Those files should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G <path/to/cni/files> Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root <path/to/cni/files> Default Value: NA References: 1. https://kubernetes.io/docs/concepts/cluster-administration/networking/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/cluster-administration/networking/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) for Container Network Interface (CNI) files on the host filesystem (e.g., /etc/cni/net.d, /opt/cni/bin). Kubernetes APIs and kubectl do not expose host-level file ownership or permissions. This check requires direct OS-level access to the control plane node(s) to inspect file attributes, which is outside the scope of Kubernetes API or kubectl capabilities.\n\n---\n\n**MANUAL STEPS:**\n\n1. SSH into each Kubernetes control plane node.\n2. Identify the directory where CNI files are stored (commonly /etc/cni/net.d and/or /opt/cni/bin).\n3. For each file in these directories, run:\n   - `stat -c %U:%G <path/to/cni/file>`\n4. Verify that the output for each file shows `root:root` as the owner and group.\n5. Confirm compliance if all CNI files are owned by root:root. If any file is not, remediation is required.\n\n---\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:11:35.995408",
+    "model": "gpt-4.1"
+}

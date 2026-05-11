@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2",
+    "unique_id": "gcp_3_1_2",
+    "source": "CIS GOOGLE CLOUD PLATFORM FOUNDATION BENCHMARK V4.0.0",
+    "title": "Ensure that Multi-Factor Authentication is 'Enabled' for All Non-Service Accounts",
+    "input_row": {
+        "id": "1.2",
+        "unique_id": "gcp_3_1_2",
+        "source": "CIS GOOGLE CLOUD PLATFORM FOUNDATION BENCHMARK V4.0.0",
+        "title": "Ensure that Multi-Factor Authentication is 'Enabled' for All Non-Service Accounts",
+        "description": "Setup multi-factor authentication for Google Cloud Platform accounts.",
+        "rationale": "Multi-factor authentication requires more than one mechanism to authenticate a user. This secures user logins from attackers exploiting stolen or weak credentials.",
+        "audit": "From Google Cloud Console For each Google Cloud Platform project, folder, or organization: 1. Identify non-service accounts. 2. Manually verify that multi-factor authentication for each account is set.",
+        "remediation": "From Google Cloud Console For each Google Cloud Platform project: 1. Identify non-service accounts. 2. Setup multi-factor authentication for each account. Default Value: By default, multi-factor authentication is not set. References: 1. https://cloud.google.com/solutions/securing-gcp-account-u2f 2. https://support.google.com/accounts/answer/185839",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://cloud.google.com/solutions/securing-gcp-account-u2f 2. https://support.google.com/accounts/answer/185839"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nAlthough multi-factor authentication (MFA) is a critical security control for user accounts and is often checkable via APIs in some contexts, the control in question is specific to non-service accounts across Google Cloud Platform environments. The audit description indicates the need for manual verification of MFA status for each account, suggesting a process that likely involves human judgments and a review of settings that are potentially managed outside standard APIs. Further, there is no direct reference to GCP APIs, CLI, or Google Cloud SDK (gcloud) commands being able to automatically verify the MFA status for all non-service accounts through the GCP console.\n\nThe control requires confirmation that MFA is enabled for all individual non-service accounts, which involves user identity management settings that may be more complex to automate universally across diverse environments, especially since non-service accounts may involve various user configurations that are not directly exposed via API endpoints. As such, the manual approach, as suggested by the audit instructions, is the most reliable means to confirm compliance with this control.\n\n**MANUAL STEPS:**\n\n1. **Identify Non-Service Accounts:**\n   - Access the Google Cloud Console and navigate to the \"IAM & Admin\" section.\n   - List all users associated with your Google Cloud projects, folders, or organization.\n   - Filter out any service accounts to focus on non-service user accounts.\n\n2. **Verify MFA Status:**\n   - For each user account identified, navigate to their account security settings.\n   - Confirm that multi-factor authentication is enabled. This may involve checking settings in the Google Account Security menu where MFA settings are configured.\n   \n3. **Expected Secure Configuration:**\n   - Verify that each non-service account requires a second factor of authentication in addition to the password, such as an authenticator app or security key.\n\n4. **Confirm Compliance:**\n   - Document which accounts have MFA enabled and address any accounts that do not comply by setting up MFA as described in the remediation instructions.",
+    "timestamp": "2025-10-28T22:07:37.627989",
+    "model": "gpt-4o"
+}

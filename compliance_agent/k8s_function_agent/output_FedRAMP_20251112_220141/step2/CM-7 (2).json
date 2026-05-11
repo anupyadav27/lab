@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_security_standard_exec_disabled",
+    "k8s_admission_controller_exec_deny"
+  ],
+  "changes_made": [
+    "Changed k8s_pod_security_policy_exec_disabled to k8s_pod_security_standard_exec_disabled for consistency with Pod Security Standards terminology"
+  ],
+  "review_notes": "The functions generally map well to the control CM-7 (2) by focusing on limiting program execution through network policies and security standards. The naming convention is mostly followed, but a minor adjustment was needed to align with the current terminology for Pod Security Standards.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Ensure the use of 'security_standard' instead of 'security_policy' to reflect the updated terminology in Kubernetes."
+  ],
+  "control_id": "CM-7 (2)",
+  "title": "Least Functionality | Prevent Program Execution",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_security_policy_exec_disabled",
+    "k8s_admission_controller_exec_deny"
+  ],
+  "step1_reasoning": "The control CM-7 (2) focuses on preventing unauthorized program execution and ensuring least functionality. In Kubernetes, this can be mapped to network policies that restrict ingress and egress traffic by default, thereby limiting the exposure of services and preventing unauthorized access. Additionally, Pod Security Policies (or their replacement, Pod Security Standards) can be used to prevent the execution of unauthorized binaries within containers. Admission controllers can enforce policies that deny execution of specific commands or binaries, ensuring that only approved programs are executed within the cluster."
+}

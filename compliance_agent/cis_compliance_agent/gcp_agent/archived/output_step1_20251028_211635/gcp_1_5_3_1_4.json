@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.1.4",
+    "unique_id": "gcp_1_5_3_1_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure inactive password lock is 30 days or less",
+    "input_row": {
+        "id": "5.3.1.4",
+        "unique_id": "gcp_1_5_3_1_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure inactive password lock is 30 days or less",
+        "description": "User accounts that have been inactive for over a given period of time can be automatically disabled. It is recommended that accounts that are inactive for 30 days after password expiration be disabled.",
+        "rationale": "Inactive accounts pose a threat to system security since the users are not logging in to notice failed login attempts or other anomalies.",
+        "audit": "Run the following command and verify INACTIVE conforms to sire policy (no more than 30 days): # useradd -D | grep INACTIVE INACTIVE=30 Verify all users with a password have Password inactive no more than 30 days after password expires: Run the following command and Review list of users and INACTIVE to verify that all users' INACTIVE conforms to site policy (no more than 30 days): # grep -E ^[^:]+:[^\\!*] /etc/shadow | cut -d: -f1,7 <user>:<INACTIVE>",
+        "remediation": "Run the following command to set the default password inactivity period to 30 days: # useradd -D -f 30 Modify user parameters for all users with a password set to match: # chage --inactive 30 <user> Additional Information: You can also check this setting in /etc/shadow directly. The 7th field should be 30 or less for all users with a password. Note: A value of -1 would disable this setting.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis compliance control requires verification of OS-level configurations, specifically checking the inactivity period for user accounts in the `/etc/shadow` file to ensure they adhere to a 30-day inactivity lock policy. This check involves SSH access to the instance to execute commands and manually review user account configurations, which are not accessible via GCP APIs or Google Cloud SDK.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - SSH into the Google Container Optimized OS instance that needs to be audited.\n\n2. **Check Default Inactivity Period:**\n   - Execute the command: `useradd -D | grep INACTIVE`\n   - Verify that the output shows `INACTIVE=30`, indicating that 30 days is the default inactivity period.\n\n3. **Review User Accounts:**\n   - Run the following command to list all users and their inactivity periods:\n     ```bash\n     grep -E ^[^:]+:[^\\\\!*] /etc/shadow | cut -d: -f1,7\n     ```\n   - Verify that for each user listed, the `<INACTIVE>` value is 30 or less. A value of `-1` indicates the setting is disabled.\n\n4. **Expected Secure Configuration:**\n   - All user accounts should have a `<INACTIVE>` value of 30 or less, ensuring compliance with the policy.\n\n5. **Confirm Compliance:**\n   - If any user account has an `<INACTIVE>` value greater than 30 (excluding `-1`), the system is non-compliant and the users' inactivity period should be adjusted using the command provided in the remediation instructions:\n\n     ```bash\n     chage --inactive 30 <user>\n     ```",
+    "timestamp": "2025-10-28T21:38:52.473902",
+    "model": "gpt-4o"
+}

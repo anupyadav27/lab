@@ -1,0 +1,17 @@
+{
+    "id": "5.4.5",
+    "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json",
+    "input_row": {
+        "id": "5.4.5",
+        "unique_id": "5.4.5__encrypt-traffic-to-https-load-balancers-with-tls-certificates",
+        "title": "Encrypt traffic to HTTPS load balancers with TLS certificates",
+        "description": "Encrypt traffic to HTTPS load balancers using TLS certificates.",
+        "rationale": "Encrypting traffic between users and your Kubernetes workload is fundamental to protecting data sent over the web.",
+        "audit": "",
+        "remediation": "References: 1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-4-encrypt-sensitive-information-in-transit",
+        "impact": "",
+        "reference": "1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-4-encrypt-sensitive-information-in-transit",
+        "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:** \nThe control focuses on ensuring that traffic to HTTPS load balancers is encrypted using TLS certificates. The description provides clear guidance on the need for encryption, and the remediation references documentation indicating security standards for sensitive information in transit. No manual validation is required, as encryption settings are standard Azure properties that can be verified through API checks related to load balancers.\n\n**PROGRAM NAME:** azure_aks_https_load_balancer_tls_enabled\n\n**AUTOMATION DETAILS:**\nThe automated program would check the following:\n\n- **APIs to Use:** Azure Resource Manager API\n- **Resources to Enumerate:**\n  - Kubernetes service clusters\n  - Appropriate load balancers associated with the AKS\n- **Exact Configuration Properties/Settings to Validate:**\n  - Ensure HTTPS is enabled for load balancers\n  - Check for the presence of valid TLS/SSL certificates\n- **Pass/Fail Criteria:**\n  - **Pass:** HTTPS is enabled, and a valid TLS certificate is configured for each load balancer.\n  - **Fail:** HTTPS is not enabled or a valid TLS certificate is missing.\n- **Example API Endpoint:**\n  - GET `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers?api-version=2021-02-01`\n  - This will return the load balancer configurations including the enabled state of HTTPS and certificate details. \n\nThe program would assess whether all traffic to the AKS load balancers is encrypted as per the security guidelines provided in the referenced documentation."
+}

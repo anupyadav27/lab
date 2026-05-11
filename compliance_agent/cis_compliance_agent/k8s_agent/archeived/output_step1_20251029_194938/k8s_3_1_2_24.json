@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.24",
+    "unique_id": "k8s_3_1_2_24",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate",
+    "input_row": {
+        "id": "1.2.24",
+        "unique_id": "k8s_3_1_2_24",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate",
+        "description": "Setup TLS connection on the API server.",
+        "rationale": "API server communication contains sensitive parameters that should remain encrypted in transit. Configure the API server to serve only HTTPS traffic. Impact: TLS and client certificate authentication must be configured for your Kubernetes cluster deployment.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --tls-cert-file and --tls-private-key-file arguments exist and they are set as appropriate.",
+        "remediation": "Follow the Kubernetes documentation and set up the TLS connection on the apiserver. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the master node and set the TLS certificate and private key file parameters. --tls-cert-file=<path/to/tls-certificate-file> --tls-private-key-file=<path/to/tls-key-file> Default Value: By default, --tls-cert-file and --tls-private-key-file are presented and created for use. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. http://rootsquash.com/2016/05/10/securing-the-kubernetes-api/ 3. https://github.com/kelseyhightower/docker-kubernetes-tls-guide",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "TLS and client certificate authentication must be configured for your Kubernetes cluster deployment.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. http://rootsquash.com/2016/05/10/securing-the-kubernetes-api/ 3. https://github.com/kelseyhightower/docker-kubernetes-tls-guide"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_tls_cert_and_key_file_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the static Pod manifest at `/etc/kubernetes/manifests/kube-apiserver.yaml` (for clusters using static Pods), or via the Kubernetes API if the control plane is managed as a Pod.\n- Use `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml` to retrieve the kube-apiserver Pod spec, or directly inspect the manifest file if running outside Kubernetes management.\n- Parse the `command` or `args` section of the kube-apiserver container to verify the presence of the `--tls-cert-file` and `--tls-private-key-file` flags.\n- Validate that both flags are present and reference non-empty file paths.\n- Optionally, verify that the referenced files are mounted into the container via the `volumeMounts` and `volumes` sections.\n- Pass Criteria: Both `--tls-cert-file` and `--tls-private-key-file` arguments are set with valid, non-empty paths in the kube-apiserver configuration.\n- Fail Criteria: Either argument is missing, empty, or not set in the kube-apiserver configuration.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:49:58.822783",
+    "model": "gpt-4.1"
+}

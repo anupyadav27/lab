@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.2",
+    "unique_id": "gcp_1_6_2_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure no legacy \"+\" entries exist in /etc/passwd",
+    "input_row": {
+        "id": "6.2.2",
+        "unique_id": "gcp_1_6_2_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure no legacy \"+\" entries exist in /etc/passwd",
+        "description": "The character + in various files used to be markers for systems to insert data from NIS maps at a certain point in a system configuration file. These entries are no longer required on most systems, but may exist in files that have been imported from other platforms.",
+        "rationale": "These entries may provide an avenue for attackers to gain privileged access on the system.",
+        "audit": "Run the following command and verify that no output is returned: # grep '^\\+:' /etc/passwd",
+        "remediation": "Remove any legacy '+' entries from /etc/passwd if they exist.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control \"Ensure no legacy '+' entries exist in /etc/passwd\" specifically requires checking the contents of the `/etc/passwd` file for legacy entries. This type of file examination is done at the operating system level within an instance. As GCP does not provide a direct API or cloud-native method to inspect or audit the contents of files at the OS level within VM instances, this requires SSH access to the instance to execute the necessary command. Consequently, this falls under manual inspection.\n\n**MANUAL STEPS:**\n\n1. **Access the GCP VM Instance:**\n   - Use SSH to connect to the relevant VM instance running Container Optimized OS.\n\n2. **Execute Command to Check /etc/passwd:**\n   - Run the following command to identify any legacy '+' entries:\n     ```\n     grep '^+:' /etc/passwd\n     ```\n   \n3. **Verify Output:**\n   - **Expected Result:** No output from the command, indicating no legacy '+' entries exist.\n   - If there is output, it indicates the presence of these legacy entries, which require remediation.\n\n4. **Remediation:**\n   - If any '+' entries are found, edit the `/etc/passwd` file to remove these entries to ensure compliance.\n\n5. **Secure Configuration Validation:**\n   - Ensure that the corrected `/etc/passwd` file retains its integrity and only contains required entries for system operation.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:43:13.715160",
+    "model": "gpt-4o"
+}

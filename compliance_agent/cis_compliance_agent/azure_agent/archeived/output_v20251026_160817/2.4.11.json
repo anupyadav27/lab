@@ -1,0 +1,17 @@
+{
+    "id": "2.4.11",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.4.11",
+        "unique_id": "2.4.11__ensure-managed-identities-are-configured",
+        "title": "Ensure managed identities are configured",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Go to App Services or Function App. 2. Click the name of a function app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Identity. 6. To add a system assigned managed identity: 1. In the System assigned pane, under Status, click On. 2. Click Save. 3. Click Yes. 7. To add a user assigned managed identity: 1. In the User assigned pane, click Add. 2. Use the filter box to search for a managed identity. 3. Select the identity. 4. Click Add. 8. Repeat steps 1-7 for each function app and deployment slot requiring remediation. Remediate from PowerShell For each deployment slot requiring remediation, run the following command to assign a system-assigned managed identity: Set-AzWebAppSlot -ResourceGroupName <resource-group-name> -Name <function- app-name> -Slot <deployment-slot-name> -AssignIdentity $true Default Value: Managed identities are disabled by default for function app deployment slots. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-identity- management#im-1-use-centralized-identity-and-authentication-system 2. https://learn.microsoft.com/en-us/azure/app-service/overview-managed-identity 3. https://learn.microsoft.com/en-us/cli/azure/functionapp 4. https://learn.microsoft.com/en-us/powershell/module/az.websites/set- azwebappslot CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_app_service_managed_identities_configured\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n- Utilize Azure Resource Manager APIs to validate the configurations of managed identities for Azure App Services and Function Apps.\n- Specifically, the program will enumerate through Function Apps and their associated deployment slots within specified resource groups.\n- The checks will include validating the configuration properties to see if managed identities (both system assigned and user assigned) are enabled for the Function Apps and their deployment slots.\n- Clear Pass/Fail criteria would be:\n  - **Pass:** System assigned managed identity property is set to true, indicating it is enabled.\n  - **Pass:** User assigned managed identity property includes the assigned identities, ensuring appropriate identities are attached.\n  - **Fail:** Any deployment slot has the system assigned managed identity property set to false or user assigned managed identity property being empty.\n- Example CLI commands that would be used:\n  - `az functionapp identity show --name <function-app-name> --resource-group <resource-group-name>` \n  - API endpoint to check through ARM: `GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{webSiteName}?api-version=2021-02-01` where it contains the properties of managed identities."
+}

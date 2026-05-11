@@ -1,0 +1,22 @@
+{
+    "control_id": "4.3",
+    "unique_id": "aws_6_4_3",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure DynamoDB Encryption at Rest",
+    "input_row": {
+        "id": "4.3",
+        "unique_id": "aws_6_4_3",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure DynamoDB Encryption at Rest",
+        "description": "Encryption at rest in Amazon DynamoDB enhances the security of your data by encrypting it using AWS Key Management Service (AWS KMS) keys. Here is how to enable encryption at rest while creating a DynamoDB table.",
+        "rationale": "Once the user is in their AWS account, they should open the DynamoDB to create the table and enable encryption. A key would be required to be created to enable encryption. Only the authorized user would always have access to this key. Enabling encryption would keep the user’s data private and stored securely, which would only allow them to access it with their key. Impact: Add an additional layer of security by preventing any unauthorized personnel from accessing the data since both IAM access to the data and access to the encryption key would be required.",
+        "audit": "1. Open DynamoDB Console • Sign in to the AWS Management Console and open the DynamoDB console at https://console.aws.amazon.com/dynamodb/. 2. Create DynamoDB Table • Click Create table. This will bring you to the Create DynamoDB table page. 3. Specify Table Details • Enter a Table name and Primary key. • The primary key consists of a partition key and, optionally, a sort key. • Fill in these details according to your requirements. 4. Enable Encryption • Under the Settings section, check the Enable encryption at rest. • By default, DynamoDB uses an AWS-owned CMK to encrypt your data.  • To use an AWS-managed CMK or a customer-managed CMK instead, select AWS-managed CMK or Customer-managed CMK from the dropdown menu, then choose the desired CMK. 5. Create a Table • Click Create. • This will create your DynamoDB table with encryption at rest enabled. Note : 1. The setting for encryption at rest applies to all DynamoDB data associated with the table, including primary key data and indexes. 2. If you need to apply encryption at rest to an existing table, you can modify the table settings. However, modifying settings on large tables could take time and impact performance during the transition. 3. Ensure you have the necessary permissions in AWS KMS when choosing an AWS-managed CMK or a customer-managed CMK.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Add an additional layer of security by preventing any unauthorized personnel from accessing the data since both IAM access to the data and access to the encryption key would be required.",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control to ensure \"DynamoDB Encryption at Rest\" can be fully verified via AWS APIs, specifically using the boto3 SDK or AWS CLI.\n- Encryption at rest for DynamoDB is a standard AWS service property and can be programmatically checked.\n- AWS APIs offer methods to query the encryption status of DynamoDB tables.\n- This control does not require SSH access to instances or involve application-level settings, making it suitable for automation.\n\n**PROGRAM NAME:** aws_dynamodb_table_encryption_at_rest_enabled\n\n**AUTOMATION DETAILS:**\n- To verify if encryption at rest is enabled for a DynamoDB table, use the `boto3` SDK with the DynamoDB client.\n- Specifically, use the `describe_table` method to retrieve the table details.\n- Check the `SSEDescription` part of the response which indicates server-side encryption status.\n- The `Status` field within `SSEDescription` should be \"ENABLED\" to confirm that encryption at rest is active.\n- Enumerate all DynamoDB tables in the account and region to perform this check.\n- Pass criteria: The `SSEDescription` exists and `Status` is \"ENABLED\".\n- AWS CLI command example: `aws dynamodb describe-table --table-name <table_name>` and check for `SSEDescription.Status: ENABLED`.\n\nThis method ensures that the property can be verified programmatically, confirming compliance with the CIS Benchmark recommendation for DynamoDB tables.",
+    "timestamp": "2025-10-28T15:52:36.352605",
+    "model": "gpt-4o"
+}

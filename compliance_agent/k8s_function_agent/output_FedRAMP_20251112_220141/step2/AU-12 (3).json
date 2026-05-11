@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_policy_captures_metadata",
+    "k8s_audit_log_retention_configured",
+    "k8s_rbac_audit_changes_by_authorized_users"
+  ],
+  "changes_made": [
+    "Renamed k8s_audit_logging_enabled to k8s_apiserver_audit_logging_enabled for consistency with resource naming conventions"
+  ],
+  "review_notes": "The functions mostly map well to Kubernetes security controls related to audit logging and RBAC. However, the naming of 'k8s_audit_logging_enabled' was slightly inconsistent with the naming convention for API server configurations, which typically use 'apiserver' as the resource identifier. The function names are otherwise descriptive and specific, clearly indicating the checks being performed.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Use 'apiserver' instead of 'audit' for resource name in k8s_audit_logging_enabled"
+  ],
+  "control_id": "AU-12 (3)",
+  "title": "Audit Record Generation | Changes by Authorized Individuals",
+  "step1_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_policy_captures_metadata",
+    "k8s_audit_log_retention_configured",
+    "k8s_rbac_audit_changes_by_authorized_users"
+  ],
+  "step1_reasoning": "The control AU-12 (3) focuses on generating audit records for changes made by authorized individuals. In Kubernetes, this can be achieved through audit logging, which captures API server requests and responses, including those made by authorized users. The audit policy can be configured to capture metadata about these changes. Additionally, RBAC can be used to ensure that only authorized users can make changes, and their actions are logged."
+}

@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.6__ensure-app-service-environment-is-deployed-with-an-internal-load-balancer",
+    "control_id": "2.6",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:** The control can be fully verified via Azure Resource Manager APIs.\n\n**PROGRAM NAME:** azure_app_service_environment_internal_load_balancer_verified\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n- Use Azure Resource Manager (ARM) APIs to query the properties of App Service Environments.\n- Enumerate App Service Environments within the specified subscriptions and resource groups.\n- Validate that the `virtualIP` configuration is set to `Internal`.\n- Pass/Fail criteria: \n   - **Pass:** The `virtualIP` property is set to `Internal` for the App Service Environment.\n   - **Fail:** The `virtualIP` property is not set to `Internal`.\n- Example API endpoint: \n   - GET request to `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}?api-version=2021-02-01` \n   - Check the `properties.virtualIP` field in the response for compliance verification."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "### 1. APPROACH VALIDATION: AGREE\n- **Classification Correctness:** The classification as an automated audit is correct. The use of Azure Resource Manager (ARM) APIs allows for programmatically checking the configuration of App Service Environments.\n- **Azure API/CLI Feasibility:** This control can indeed be checked via Azure APIs. The ARM API endpoint provided is appropriate for retrieving the necessary configuration details to verify compliance.\n\n### 2. TECHNICAL ACCURACY: 9\n- **Automation Details:** The automation details are technically accurate. The use of the `GET` request to the specified ARM API endpoint is correct for retrieving the properties of App Service Environments. The focus on the `virtualIP` property for compliance verification is appropriate.\n- **Program Name:** The program name `azure_app_service_environment_internal_load_balancer_verified` follows a logical naming convention, though it could be slightly more concise, such as `azure_app_service_env_internal_lb_check`.\n- **Completeness:** The audit details are comprehensive for automation purposes. However, there could be additional checks for edge cases, such as ensuring the API version is up-to-date and compatible with the current Azure environment.\n\n### 3. IMPROVEMENTS:\n- **Additional Considerations:** \n  - Ensure that the API version used (`2021-02-01`) is the latest or still supported, as Azure API versions are periodically updated.\n  - Consider implementing error handling for scenarios where the API call fails or returns unexpected results.\n  - Include logging mechanisms to track which App Service Environments were checked and their compliance status.\n- **Alternative Approaches:** \n  - Use Azure CLI or PowerShell scripts as alternative methods to query the same information, which can be useful for environments where API access might be restricted or for integration into existing scripts.\n\n### 4. CONFIDENCE: HIGH\n- The assessment is well-founded with a clear understanding of Azure capabilities and security best practices. The use of ARM APIs is a robust method for verifying the control.\n\n### 5. FINAL RECOMMENDATION: Keep as-is\n- The current automated approach is suitable and technically sound. The only recommendation is to ensure the API version remains current and consider minor improvements for robustness and logging. No reclassification is necessary as the automated approach is justified and effective.",
+        "reviewed_at": "2025-10-26T16:42:23.432318"
+    },
+    "input_row": {
+        "id": "2.6",
+        "unique_id": "2.6__ensure-app-service-environment-is-deployed-with-an-internal-load-balancer",
+        "title": "Ensure App Service Environment is deployed with an internal load balancer",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "It is not possible to change the virtual IP configuration of a deployed App Service Environment. When deploying an App Service Environment, next to Virtual IP, select Internal: The endpoint is an internal load balancer (ILB ASE). Default Value: When deploying an App Service Environment, Internal: The endpoint is an internal load balancer (ILB ASE) is the default selected option for Virtual IP. References: 1. https://learn.microsoft.com/en-us/azure/app-service/environment/creation CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "metadata": {
+        "original_file": "2.6__ensure-app-service-environment-is-deployed-with-an-internal-load-balancer.json",
+        "review_version": "1.0"
+    }
+}

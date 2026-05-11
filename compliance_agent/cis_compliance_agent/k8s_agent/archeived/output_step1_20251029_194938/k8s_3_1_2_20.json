@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.20",
+    "unique_id": "k8s_3_1_2_20",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the --request-timeout argument is set as appropriate",
+    "input_row": {
+        "id": "1.2.20",
+        "unique_id": "k8s_3_1_2_20",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the --request-timeout argument is set as appropriate",
+        "description": "Set global request timeout for API server requests as appropriate.",
+        "rationale": "Setting global request timeout allows extending the API server request timeout limit to a duration appropriate to the user's connection speed. By default, it is set to 60 seconds which might be problematic on slower connections making cluster resources inaccessible once the data volume for requests exceeds what can be transmitted in 60 seconds. But, setting this timeout limit to be too large can exhaust the API server resources making it prone to Denial-of-Service attack. Hence, it is recommended to set this limit as appropriate and change the default limit of 60 seconds only if needed. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --request-timeout argument is either not set or set to an appropriate value.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml and set the below parameter as appropriate and if needed. For example, --request-timeout=300s Default Value: By default, --request-timeout is set to 60 seconds. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://github.com/kubernetes/kubernetes/pull/51415",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://github.com/kubernetes/kubernetes/pull/51415"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_request_timeout_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification on all control plane nodes. This is typically found in the static Pod manifest at `/etc/kubernetes/manifests/kube-apiserver.yaml`, which is mounted into the kubelet and visible via the Kubernetes API as a static Pod in the `kube-system` namespace.\n- Use the Kubernetes API or `kubectl` to retrieve the kube-apiserver Pod spec:\n  - Command: `kubectl -n kube-system get pod -l component=kube-apiserver -o json`\n- Parse the `spec.containers[].command` or `spec.containers[].args` array for the presence of the `--request-timeout` flag.\n- If the flag is present, extract its value (e.g., `--request-timeout=300s`).\n- If the flag is absent, the default of 60 seconds applies.\n- Pass Criteria:\n  - The `--request-timeout` flag is set to a value appropriate for the environment (typically ≤ 300s, but this may be organization-specific), OR the flag is absent (default 60s).\n- Fail Criteria:\n  - The `--request-timeout` flag is set to an excessively high value (e.g., > 300s) without justification, or is missing when organizational policy requires a specific value.\n- The automation should report the current value and flag any configuration that deviates from organizational standards or best practices.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:49:12.129895",
+    "model": "gpt-4.1"
+}

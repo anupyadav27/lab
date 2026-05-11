@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1",
+    "unique_id": "k8s_3_2_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the --cert-file and --key-file arguments are set as appropriate",
+    "input_row": {
+        "id": "2.1",
+        "unique_id": "k8s_3_2_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the --cert-file and --key-file arguments are set as appropriate",
+        "description": "Configure TLS encryption for the etcd service.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should be encrypted in transit. Impact: Client connections only over TLS would be served.",
+        "audit": "Run the following command on the etcd server node ps -ef | grep etcd Verify that the --cert-file and the --key-file arguments are set as appropriate.",
+        "remediation": "Follow the etcd service documentation and configure TLS encryption. Then, edit the etcd pod specification file /etc/kubernetes/manifests/etcd.yaml on the master node and set the below parameters. --cert-file=</path/to/ca-file> --key-file=</path/to/key-file> Default Value: By default, TLS encryption is not set. References: 1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Client connections only over TLS would be served.",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_etcd_tls_cert_and_key_file_configured\n\n**AUTOMATION DETAILS:**\n- Query the etcd static pod manifest on all master nodes, typically located at `/etc/kubernetes/manifests/etcd.yaml`.\n- Use `kubectl` to check for the presence of the etcd pod (usually in the `kube-system` namespace, but often managed as a static pod and visible via `kubectl get pods -n kube-system -o wide | grep etcd`).\n- Retrieve the etcd pod specification using:\n  ```\n  kubectl get pod <etcd-pod-name> -n kube-system -o yaml\n  ```\n  or directly inspect the static pod manifest file if accessible.\n- Parse the container `command` or `args` fields in the etcd pod spec to verify that both `--cert-file` and `--key-file` arguments are present and set to non-empty paths.\n- Pass Criteria:\n  - The etcd container command or args include both `--cert-file=<path>` and `--key-file=<path>`, where `<path>` points to valid certificate and key files.\n- Fail Criteria:\n  - Either argument is missing, empty, or commented out.\n- Optional: For deeper validation, confirm that the referenced files are mounted into the pod via `volumeMounts` and `volumes` in the pod spec.\n- Example automated check (pseudo-code):\n  ```\n  etcd_pods = kubectl.get_pods(namespace=\"kube-system\", label_selector=\"component=etcd\")\n  for pod in etcd_pods:\n      args = pod.spec.containers[0].args or pod.spec.containers[0].command\n      assert \"--cert-file=\" in args and \"--key-file=\" in args\n  ```\n- This check can be fully automated using Kubernetes API or by reading the static pod manifest file, without requiring host-level access or subjective review.",
+    "timestamp": "2025-10-29T20:52:37.955200",
+    "model": "gpt-4.1"
+}

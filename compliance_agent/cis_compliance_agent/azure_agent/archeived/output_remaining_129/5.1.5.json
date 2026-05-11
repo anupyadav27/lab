@@ -1,0 +1,17 @@
+{
+    "id": "5.1.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.1.5",
+        "unique_id": "aks_5.1.5__ensure-permissions-on-/etc/cron.weekly-are-configured",
+        "title": "Ensure permissions on /etc/cron.weekly are configured",
+        "description": "The /etc/cron.weekly directory contains system cron jobs that need to run on a weekly basis. The files in this directory cannot be manipulated by the crontab command, but are instead edited by system administrators using a text editor. The commands below restrict read/write and search access to user and group root, preventing regular users from accessing this directory.",
+        "rationale": "Granting write access to this directory for non-privileged users could provide them the means for gaining unauthorized elevated privileges. Granting read access to this directory could give an unprivileged user insight in how to gain elevated privileges or circumvent auditing controls.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access does not grant permissions to group or other : # stat /etc/cron.weekly Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set ownership and permissions on /etc/cron.weekly : # chown root:root /etc/cron.weekly # chmod og-rwx /etc/cron.weekly References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect to the AKS cluster**: Use the Azure CLI to connect to your AKS cluster with `az aks get-credentials --resource-group <yourResourceGroup> --name <yourAKSClusterName>`.\n2. **SSH into the Kubernetes nodes**: Use SSH to access one of the nodes in your AKS cluster. This typically requires using the `ssh` command with the appropriate credentials and node IP address.\n3. **Check the permissions of the directory**: Run the command `stat /etc/cron.weekly` to check the permissions.\n4. **What to verify/validate**: Ensure that the output shows the permissions are set to `drwx------` and both Uid and Gid are `0`, indicating ownership by the `root` user and group.\n5. **Expected secure configuration**: Access should be `0700` (drwx------) with both Uid and Gid being `0` (root).\n6. **How to confirm compliance**: If the permissions are correctly set as required, then the configuration is compliant. If any of the permissions are different, it indicates a non-compliant state that needs remediation. \n\nIf any corrective actions are needed, use the commands:\n- `sudo chown root:root /etc/cron.weekly` \n- `sudo chmod og-rwx /etc/cron.weekly` \n\nto set the proper ownership and permissions."
+}

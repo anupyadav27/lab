@@ -1,0 +1,25 @@
+{
+    "control_id": "2.15",
+    "unique_id": "aws_3_2_15",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure primary interface ports for Workspaces are not open to all inbound traffic.",
+    "input_row": {
+        "id": "2.15",
+        "unique_id": "aws_3_2_15",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure primary interface ports for Workspaces are not open to all inbound traffic.",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThis control can be assessed using AWS APIs that pertain to networking rules in AWS Workspaces, specifically by checking the configuration of security group rules related to Workspaces. Since this involves verifying network access, which is a standard AWS service property (similar to EC2 security groups), AWS APIs can be utilized to check for compliance.\n\n**PROGRAM NAME:** aws_workspaces_security_group_inbound_ports_restriction\n\n**AUTOMATION DETAILS:**\n- **AWS API Calls / boto3 SDK Methods:**\n  - Use `boto3` to interact with AWS Workspaces and EC2.\n  - Use `boto3.workspace.describe_workspaces()` to retrieve a list of all Workspaces.\n  - For each Workspace, identify the associated VPC and security groups using `boto3.ec2.describe_security_groups()`.\n  - Inspect inbound rules for each security group associated with Workspaces.\n\n- **AWS CLI Commands (if applicable):**\n  - `aws ec2 describe-security-groups --group-ids <security-group-id>`\n\n- **Specific Resources to Enumerate:**\n  - Enumerate all Workspaces within the account.\n  - Enumerate all security groups associated with those Workspaces.\n\n- **Exact Configuration Properties/Settings to Validate:**\n  - Check inbound rules for open ports or rules that allow traffic from `0.0.0.0/0`.\n\n- **Clear Pass/Fail Criteria with Expected Values:**\n  - **Pass:** Inbound rules do not allow traffic from `0.0.0.0/0` for critical ports associated with Workspace primary interfaces.\n  - **Fail:** Inbound rules allow traffic from `0.0.0.0/0` for critical ports associated with Workspace primary interfaces.\n\nThis automated approach leverages AWS API capabilities to systematically ensure that security groups associated with AWS Workspaces adhere to the specified criteria.",
+    "timestamp": "2025-10-28T15:17:31.965582",
+    "model": "gpt-4o",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Automated is correct. The task of verifying security group rules for AWS Workspaces can be effectively automated using AWS APIs, specifically through boto3 and AWS CLI. These tools are well-suited for enumerating resources and checking configurations, such as security group rules, which are standard AWS service properties.\n\n**TECHNICAL ACCURACY:** 8\n\n- The automation details are mostly accurate. The use of `boto3.workspace.describe_workspaces()` is correct for retrieving a list of Workspaces. However, there is a slight oversight in directly associating security groups with Workspaces. Workspaces are typically associated with a directory, and the directory is linked to a VPC, which in turn has associated security groups. The method `boto3.ec2.describe_security_groups()` is valid for inspecting security groups, but the relationship between Workspaces and security groups should be clarified.\n- The AWS CLI command `aws ec2 describe-security-groups --group-ids <security-group-id>` is correct for retrieving security group details.\n- The program name `aws_workspaces_security_group_inbound_ports_restriction` is descriptive but could be more precise to reflect the specific security check, such as `aws_workspaces_security_group_inbound_open_ports_check`.\n\n**IMPROVEMENTS:**\n\n- Clarify the relationship between Workspaces and security groups. Workspaces are linked to a directory, and the directory is associated with a VPC. The VPC's security groups should be inspected.\n- Consider using `boto3.ec2.describe_network_interfaces()` to identify network interfaces associated with Workspaces and their security groups.\n- The program name could be improved to `aws_workspaces_security_group_inbound_open_ports_check` for better clarity and specificity.\n- Ensure that the script checks for specific critical ports that should not be open, as the current description is somewhat generic.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is largely accurate, and the use of AWS API capabilities is appropriate for automating this compliance check.\n\n**FINAL RECOMMENDATION:**\n\n- Modify: Clarify the relationship between Workspaces and security groups in the automation details. Consider using `boto3.ec2.describe_network_interfaces()` for a more direct association. Update the program name to `aws_workspaces_security_group_inbound_open_ports_check` for clarity.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-28T18:57:46.769259"
+}

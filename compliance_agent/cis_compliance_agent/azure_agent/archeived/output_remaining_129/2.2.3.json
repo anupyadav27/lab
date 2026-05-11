@@ -1,0 +1,17 @@
+{
+    "id": "2.2.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.3",
+        "unique_id": "aks_2.2.3__ensure-avahi-is-not-installed",
+        "title": "Ensure avahi is not installed",
+        "description": "Avahi is a free zeroconf implementation, including a system for multicast DNS/DNS-SD service discovery. Avahi allows programs to publish and discover services and hosts running on a local network with no specific configuration. For example, a user can plug a computer into a network and Avahi automatically finds printers to print to, files to look at and people to talk to, as well as network services running on the machine.",
+        "rationale": "Automatic discovery of network services is not normally required for system functionality. It is recommended to remove this package to reduce the potential attack surface.",
+        "audit": "Run one of the following command to verify avahi is not installed: # rpm -q avahi package avahi is not installed",
+        "remediation": "Run the following commands to stop, and remove avahi: # systemctl stop avahi-daemon.socket avahi-daemon.service # dnf remove avahi References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. SSH into the Azure Kubernetes Service (AKS) node or access it through an Azure Bastion host.\n2. Run the command: `rpm -q avahi` to check if the avahi package is installed.\n3. Verify the output of the command:\n   - If the output states that the package is not installed, it is compliant.\n   - If the package is listed, it is non-compliant.\n4. To ensure compliance, if avahi is installed, run the following commands:\n   - `systemctl stop avahi-daemon.socket avahi-daemon.service`\n   - `dnf remove avahi`\n5. Confirm that running `rpm -q avahi` again returns no package found, indicating that the avahi service is no longer installed on the node.\n\n**EXPECTED SECURE CONFIGURATION:**\n- The avahi package should not be installed on any AKS nodes.\n\n**HOW TO CONFIRM COMPLIANCE:**\n- Post-removal of the avahi package, re-run the initial command (`rpm -q avahi`) to ensure that no output is returned, confirming compliance."
+}

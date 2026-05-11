@@ -1,0 +1,17 @@
+{
+    "id": "2.2.11",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.11",
+        "unique_id": "aks_2.2.11__ensure-imap-and-pop3-server-is-not-installed",
+        "title": "Ensure IMAP and POP3 server is not installed",
+        "description": "dovecot is an open source IMAP and POP3 server for Linux based systems.",
+        "rationale": "Unless POP3 and/or IMAP servers are to be provided by this system, it is recommended that the package be removed to reduce the potential attack surface. Note: Several IMAP/POP3 servers exist and can use other service names. These should also be audited and the packages removed if not required.",
+        "audit": "Run the following command to verify dovecot and cyrus-imapd are not installed: # rpm -q dovecot cyrus-imapd package dovecot is not installed package cyrus-imapd is not installed",
+        "remediation": "Run the following command to remove dovecot and cyrus-imapd: # dnf remove dovecot cyrus-imapd References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect to the AKS cluster via SSH:**\n   - Use the Azure portal or Azure CLI to obtain the SSH connection command for the AKS cluster nodes.\n   - Example CLI command: `az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>`\n\n2. **Check for installed packages:**\n   - Run the following command on each node to verify whether dovecot and cyrus-imapd are installed:\n     ```\n     rpm -q dovecot cyrus-imapd\n     ```\n\n3. **Validate the output:**\n   - You should see output indicating that both packages are not installed:\n     ```\n     package dovecot is not installed\n     package cyrus-imapd is not installed\n     ```\n\n4. **Confirm compliance:**\n   - If both dovecot and cyrus-imapd are not installed, the control is compliant.\n   - If either package is installed, the control is not compliant and remediation is required."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.3",
+    "unique_id": "k8s_5_2_1_3",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+    "input_row": {
+        "id": "2.1.3",
+        "unique_id": "k8s_5_2_1_3",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+        "description": "Do not allow all requests. Enable explicit authorization.",
+        "rationale": "Kubelets, by default, allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --authorization-mode argument exists and is not set to AlwaysAllow.",
+        "remediation": "Edit the /etc/kubernetes/kubelet file on each node and set the KUBELET_ARGS parameter to \"--authorization-mode=Webhook\": KUBELET_ARGS=\"--authorization-mode=Webhook\" Based on your system, restart the kubelet service. For example: systemctl restart kubelet.service Impact: Unauthorized requests will be denied. Default Value: By default, --authorization-mode argument is set to AlwaysAllow. References: 1. https://kubernetes.io/docs/admin/kubelet/  151 | P a g e 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication",
+        "profile_applicability": "•  Level 1",
+        "impact": "Unauthorized requests will be denied. Default Value: By default, --authorization-mode argument is set to AlwaysAllow.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/  151 | P a g e 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the kubelet process argument --authorization-mode on each node.\n- The kubelet's startup arguments (such as --authorization-mode) are not exposed via the Kubernetes API or kubectl; they are set at the OS/process level.\n- The audit procedure involves running ps -ef | grep kubelet on each node, which requires host-level access.\n- There is no Kubernetes API or kubectl command that can directly retrieve the kubelet process arguments or its configuration file contents from the control plane.\n- Therefore, this check cannot be fully automated via Kubernetes APIs or kubectl and requires manual/host-level verification.\n\n**MANUAL STEPS:**\n1. SSH into each node in the Kubernetes cluster.\n2. Run the following command to list the kubelet process and its arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Examine the output and locate the --authorization-mode argument.\n4. Verify that --authorization-mode is present and is NOT set to AlwaysAllow. The recommended value is Webhook (e.g., --authorization-mode=Webhook).\n5. If --authorization-mode is missing or set to AlwaysAllow, this is a finding (non-compliant).\n6. Repeat for all nodes in the cluster to ensure consistent configuration.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:51:23.289577",
+    "model": "gpt-4.1"
+}

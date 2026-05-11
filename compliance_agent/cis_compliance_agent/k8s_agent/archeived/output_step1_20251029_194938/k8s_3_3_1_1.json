@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.1",
+    "unique_id": "k8s_3_3_1_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Client certificate authentication should not be used for users",
+    "input_row": {
+        "id": "3.1.1",
+        "unique_id": "k8s_3_3_1_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Client certificate authentication should not be used for users",
+        "description": "Kubernetes provides the option to use client certificates for user authentication. However as there is no way to revoke these certificates when a user leaves an organization or loses their credential, they are not suitable for this purpose. It is not possible to fully disable client certificate use within a cluster as it is used for component to component authentication.",
+        "rationale": "With any authentication mechanism the ability to revoke credentials if they are compromised or no longer required, is a key control. Kubernetes client certificate authentication does not allow for this due to a lack of support for certificate revocation. Impact: External mechanisms for authentication generally require additional software to be deployed.",
+        "audit": "Review user access to the cluster and ensure that users are not making use of Kubernetes client certificate authentication.",
+        "remediation": "Alternative mechanisms provided by Kubernetes such as the use of OIDC should be implemented in place of client certificates. Default Value: Client certificate authentication is enabled by default. Additional Information: The lack of certificate revocation was flagged up as a high risk issue in the recent Kubernetes security audit. Without this feature, client certificate authentication is not suitable for end users.",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "External mechanisms for authentication generally require additional software to be deployed.",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires determining whether any users are accessing the Kubernetes cluster using client certificate authentication. Kubernetes does not natively record or expose, via its API or kubectl, which authentication method was used by a particular user for a given session. While you can enumerate current users and their RBAC bindings, there is no API or object that directly indicates whether a user is using a client certificate versus OIDC or another authentication method. This information is only available by reviewing kube-apiserver audit logs (if configured with sufficient detail), external authentication system logs, or by analyzing the distribution and use of client certificates outside the cluster. Therefore, this check cannot be fully automated via Kubernetes APIs or kubectl.\n\n**MANUAL STEPS:**\n1. Review the kube-apiserver authentication configuration:\n   - Access the kube-apiserver manifest (typically located at `/etc/kubernetes/manifests/kube-apiserver.yaml`).\n   - Check for the presence of the `--client-ca-file` flag, which enables client certificate authentication.\n2. Review user access mechanisms:\n   - Identify all users with access to the Kubernetes API (e.g., via kubeconfig files, CI/CD pipelines, automation scripts).\n   - Examine the kubeconfig files distributed to users. Look for `client-certificate` and `client-key` fields under user entries, which indicate client certificate authentication.\n3. Review audit logs (if enabled):\n   - Access the Kubernetes audit logs.\n   - Search for authentication events that indicate the use of client certificates (look for `authentication.k8s.io` events with `user.username` fields matching certificate subjects).\n4. Confirm with cluster administrators:\n   - Verify with administrators or DevOps teams whether client certificates are issued to users for API access.\n   - Ensure that alternative authentication mechanisms (e.g., OIDC, LDAP) are in place for user access.\n5. Validate compliance:\n   - Ensure that no end users are configured to use client certificate authentication for Kubernetes API access.\n   - Only Kubernetes components (e.g., kubelets, controllers) should use client certificates for mutual authentication.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:53:57.417971",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "csp": "Azure",
+    "phase": "3_to_4",
+    "date": "2025-11-08",
+    "total_consolidations": 115,
+    "status": "ready_for_application"
+  },
+  
+  "consolidations": {
+    "_comment_01": "=== ACTIVE DIRECTORY → AD (Service Rename) ===",
+    
+    "azure_active_directory_aws_attached_policy_no_administrative_privileges": "azure_ad_policy_no_administrative_privileges",
+    "azure_active_directory_customer_attached_policy_no_administrative_privileges": "azure_ad_policy_no_administrative_privileges",
+    "azure_active_directory_inline_policy_no_administrative_privileges": "azure_ad_policy_no_administrative_privileges",
+    
+    "azure_active_directory_password_policy_lowercase": "azure_ad_user_password_policy_complex",
+    "azure_active_directory_password_policy_number": "azure_ad_user_password_policy_complex",
+    "azure_active_directory_password_policy_symbol": "azure_ad_user_password_policy_complex",
+    "azure_active_directory_password_policy_uppercase": "azure_ad_user_password_policy_complex",
+    
+    "azure_active_directory_user_accesskey_unused": "azure_ad_user_accesskey_unused",
+    "azure_active_directory_user_console_access_unused": "azure_ad_user_console_access_unused",
+    "azure_active_directory_policy_no_administrative_privileges": "azure_ad_policy_no_administrative_privileges",
+    "azure_active_directory_policy_overly_permissive": "azure_ad_policy_overly_permissive",
+    "azure_active_directory_role_least_privilege": "azure_ad_role_least_privilege",
+    "azure_active_directory_user_mfa_enabled": "azure_ad_user_mfa_enabled",
+    "azure_active_directory_password_policy_minimum_length_14": "azure_ad_user_password_policy_minimum_length_14",
+    "azure_active_directory_policy_attached_only_to_group_or_roles": "azure_ad_policy_attached_only_to_group_or_roles",
+    
+    "_comment_02": "=== MONITOR - AWS TERMINOLOGY CLEANUP ===",
+    
+    "azure_monitor_cloudwatch_logging_enabled": "azure_monitor_logging_enabled",
+    "azure_monitor_cloudwatch_logs_enabled": "azure_monitor_logging_enabled",
+    
+    "azure_monitor_s3_dataevents_read_enabled": "azure_monitor_storage_read_events_enabled",
+    "azure_monitor_s3_dataevents_write_enabled": "azure_monitor_storage_write_events_enabled",
+    
+    "azure_monitor_log_file_validation_enabled": "azure_monitor_log_file_integrity_enabled",
+    "azure_monitor_log_file_validation_status_check": "azure_monitor_log_file_integrity_enabled",
+    
+    "azure_monitor_log_group_retention": "azure_monitor_log_retention_configured",
+    "azure_monitor_log_group_retention_policy_specific_days_enabled": "azure_monitor_log_retention_configured",
+    
+    "_comment_03": "=== COMPUTE - EBS → DISK ===",
+    
+    "azure_compute_ebs_default_encryption": "azure_compute_disk_encryption_enabled",
+    "azure_compute_ebs_volume_encryption": "azure_compute_disk_encryption_enabled",
+    "azure_compute_ebs_public_snapshot": "azure_compute_disk_public_snapshot",
+    
+    "_comment_04": "=== STORAGE - BUCKET → ACCOUNT ===",
+    
+    "azure_storage_bucket_default_encryption": "azure_storage_account_encryption_enabled",
+    "azure_storage_bucket_encryption_enabled": "azure_storage_account_encryption_enabled",
+    
+    "azure_storage_bucket_logging_enabled": "azure_storage_account_logging_enabled",
+    "azure_storage_bucket_server_access_logging_enabled": "azure_storage_account_logging_enabled",
+    
+    "azure_storage_bucket_public_access": "azure_storage_account_public_access",
+    "azure_storage_bucket_policy_public_write_access": "azure_storage_account_policy_public_write_access",
+    "azure_storage_bucket_secure_transport_policy": "azure_storage_account_secure_transport_policy",
+    
+    "_comment_05": "=== SQL - INSTANCE → DATABASE ===",
+    
+    "azure_sql_instance_backup_enabled": "azure_sql_database_backup_enabled",
+    "azure_sql_instance_storage_encrypted": "azure_sql_database_encryption_at_rest_enabled",
+    "azure_sql_instance_encryption_at_rest_enabled": "azure_sql_database_encryption_at_rest_enabled",
+    "azure_sql_instance_no_public_access": "azure_sql_database_no_public_access",
+    "azure_sql_instance_deletion_protection": "azure_sql_database_deletion_protection",
+    "azure_sql_instance_enhanced_monitoring_enabled": "azure_sql_database_auditing_enabled",
+    "azure_sql_instance_integration_cloudwatch_logs": "azure_sql_database_diagnostic_settings_enabled",
+    
+    "_comment_06": "=== SECURITY CENTER - SUFFIX CLEANUP ===",
+    
+    "azure_security_center_is_enabled": "azure_security_center_enabled",
+    
+    "_comment_07": "=== AZURE FUNCTIONS - FUNCTION → APP ===",
+    
+    "azure_functions_function_not_publicly_accessible": "azure_functions_app_restrict_public_access",
+    "azure_functions_function_public_access_check": "azure_functions_app_restrict_public_access",
+    "azure_functions_function_url_public": "azure_functions_app_url_public",
+    
+    "_comment_08": "=== SYNAPSE (SQL Data Warehouse) ===",
+    
+    "azure_sql_snapshots_public_access": "azure_sql_database_snapshots_public_access"
+  },
+  
+  "statistics": {
+    "active_directory_renames": 15,
+    "monitor_consolidations": 8,
+    "compute_consolidations": 3,
+    "storage_consolidations": 7,
+    "sql_consolidations": 8,
+    "security_center": 1,
+    "functions_consolidations": 3,
+    "total": 45
+  },
+  
+  "notes": {
+    "phase_3_vs_phase_2": "Phase 2 had 23 mappings. Phase 3 identified 45 concrete consolidations (focusing on highest-impact changes).",
+    "remaining_work": "Additional ~70 functions need simple renames (active_directory→ad prefix changes across all AD functions not explicitly listed).",
+    "approach": "Apply these 45 consolidations first, then systematic prefix replacement for remaining AD functions."
+  }
+}
+

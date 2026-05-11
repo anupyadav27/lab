@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.1",
+    "unique_id": "k8s_4_5_2_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the cluster has at least one active policy control mechanism in place",
+    "input_row": {
+        "id": "5.2.1",
+        "unique_id": "k8s_4_5_2_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the cluster has at least one active policy control mechanism in place",
+        "description": "Every Kubernetes cluster should have at least one policy control mechanism in place to enforce the other requirements in this section. This could be the in-built Pod Security Admission controller, or a third party policy control system.",
+        "rationale": "Without an active policy control mechanism, it is not possible to limit the use of containers with access to underlying cluster nodes, via mechanisms like privileged containers, or the use of hostPath volume mounts. Impact: Where policy control systems are in place, there is a risk that workloads required for the operation of the cluster may be stopped from running. Care is required when implementing admission control policies to ensure that this does not occur.",
+        "audit": "Review the workloads deployed to the cluster to understand if Pod Security Admission or external admission control systems are in place.",
+        "remediation": "Ensure that either Pod Security Admission or an external policy control system is in place for every namespace which contains user workloads. Default Value: By default, Pod Security Admission is enabled but no policies are in place. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-admission",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Where policy control systems are in place, there is a risk that workloads required for the operation of the cluster may be stopped from running. Care is required when implementing admission control policies to ensure that this does not occur.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-admission"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_policy_control_mechanism_active\n\n**AUTOMATION DETAILS:**\n\nThe automated program will verify that at least one active policy control mechanism is in place for the cluster by checking for the presence and enforcement of Pod Security Admission (PSA) policies or third-party policy controllers (e.g., OPA Gatekeeper, Kyverno).\n\n**Steps:**\n\n1. **Check for Pod Security Admission (PSA) Policies:**\n   - Use `kubectl get ns --show-labels` to enumerate all namespaces and inspect for the presence of PSA labels:\n     - `pod-security.kubernetes.io/enforce`\n     - `pod-security.kubernetes.io/audit`\n     - `pod-security.kubernetes.io/warn`\n   - For each namespace, verify that at least one of these labels is set to a valid policy level (`privileged`, `baseline`, or `restricted`).\n   - Pass if at least one namespace (ideally those with user workloads) has a PSA policy label set.\n\n2. **Check for PodSecurityPolicy (PSP) (if using legacy clusters):**\n   - Use `kubectl get psp` to check for the existence of PodSecurityPolicy resources (deprecated in v1.25+).\n   - Pass if at least one PSP exists and is referenced by RoleBindings or ClusterRoleBindings.\n\n3. **Check for Third-Party Policy Controllers:**\n   - Use `kubectl get pods -A` to look for known controllers such as:\n     - OPA Gatekeeper: pods in `gatekeeper-system` namespace\n     - Kyverno: pods in `kyverno` namespace\n     - Other admission controllers (search for pods with names containing `policy`, `admission`, `gatekeeper`, `kyverno`)\n   - Optionally, use `kubectl get validatingwebhookconfigurations` and `kubectl get mutatingwebhookconfigurations` to enumerate active admission webhooks enforcing policy.\n\n**Pass Criteria:**\n- At least one of the following is true:\n  - One or more namespaces have PSA labels set to a valid policy level.\n  - At least one PodSecurityPolicy is present and bound.\n  - At least one third-party policy controller is detected as running and registered via webhook configurations.\n\n**Fail Criteria:**\n- No PSA labels set on any namespace, AND\n- No PodSecurityPolicy resources present, AND\n- No third-party policy controller pods or webhook configurations detected.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:32:40.171539",
+    "model": "gpt-4.1"
+}

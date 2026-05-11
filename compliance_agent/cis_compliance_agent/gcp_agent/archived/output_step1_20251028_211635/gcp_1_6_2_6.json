@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.6",
+    "unique_id": "gcp_1_6_2_6",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure root PATH Integrity",
+    "input_row": {
+        "id": "6.2.6",
+        "unique_id": "gcp_1_6_2_6",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure root PATH Integrity",
+        "description": "The root user can execute any command on the system and could be fooled into executing programs unintentionally if the PATH is not set correctly.",
+        "rationale": "Including the current working directory (.) or other writable directory in root 's executable path makes it likely that an attacker can gain superuser access by forcing an administrator operating as root to execute a Trojan horse program.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash PATH=\"$(sudo -Hiu root env | grep '^PATH' | cut -d= -f2)\" echo \"$PATH\" | grep -q \"::\" && echo \"Empty directory in PATH (::)\" echo \"$PATH\" | grep -q \":$\" && echo \"Trailing : in PATH\" for dir in $(echo \"$PATH\" | tr \":\" \" \"); do if [ -d \"$dir\" ]; then ls -ldH \"$dir\" | awk 'substr($1,6,1) != \"-\" {print $9, \"is group writable\"} substr($1,9,1) != \"-\" {print $9, \"is world writable\"} $3 != \"root\" {print $9, \"is not owned by root\"}' else base_dir=$(echo \"$dir\" | cut -d \"/\" -f2) # Ignore if directory is on read-only partition rw=$(findmnt -T \"/$base_dir\" | sed '1d' | grep -v \"\\sro,\") if [ -n \"$rw\" ]; then echo \"$dir is not a directory\" fi fi done",
+        "remediation": "Correct or justify any items discovered in the Audit step.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control \"Ensure root PATH Integrity\" is focused on verifying the integrity of the PATH environment variable for the root user on Google Container-Optimized OS (COS) instances. This verification is inherently tied to the configuration and setup of the operating system environment, specifically directories and permissions, which require SSH access for validation. \n\nHere’s why the manual approach is appropriate:\n\n- ✓ Requires SSH access to the OS: The check involves executing a bash script to assess the root PATH environment variable. This script needs to be run on the instance to inspect directory permissions and ownership.\n- ✓ Examination of OS-level details: The control requires inspecting file system directories for write permissions and the status of the PATH environment variable, which are not exposed via GCP APIs or CLI.\n- ✓ No mention of GCP API or Google Cloud SDK (gcloud) in the audit field: The audit script provided is not designed to be executed through GCP SDK or CLI but rather needs local execution on the target system.\n\n**MANUAL STEPS:**\n\n1. **Access the GCP Console:**\n   - Navigate to the Compute Engine section.\n   - Identify the instance running Google Container-Optimized OS that you wish to audit.\n\n2. **Establish SSH Access to the Instance:**\n   - Use the SSH functionality provided in the GCP Console, or utilize an SSH client to connect to the instance.\n   - Ensure you have sufficient permissions to execute commands as the root user.\n\n3. **Execute the Provided Audit Script:**\n   - Use the script provided in the audit section of the control to check the integrity of the root PATH.\n   - Run the script directly in the SSH session.\n\n4. **Verify Output and Confirm Compliance:**\n   - Ensure the root user’s PATH does not include a trailing colon (`:`) or empty directory.\n   - Confirm all directories in the PATH are not group or world writable and are owned by root.\n   - Validate no results are returned indicating potential issues with the PATH integrity.\n\n5. **Remediation if Necessary:**\n   - If the audit script indicates discrepancies, adjust the PATH environment variable and directory permissions/ownership as required.\n\nBy following these manual steps, you ensure the root PATH integrity is verified, and any issues are promptly resolved, aligning with the CIS benchmark best practices for Google Container-Optimized OS.",
+    "timestamp": "2025-10-28T21:44:15.580671",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "3.2.4",
+    "unique_id": "gcp_1_3_2_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure suspicious packets are logged",
+    "input_row": {
+        "id": "3.2.4",
+        "unique_id": "gcp_1_3_2_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure suspicious packets are logged",
+        "description": "When enabled, this feature logs packets with un-routable source addresses to the kernel log.",
+        "rationale": "Enabling this feature and logging these packets allows an administrator to investigate the possibility that an attacker is sending spoofed packets to their system.",
+        "audit": "Run the following commands and verify output matches: # sysctl net.ipv4.conf.all.log_martians net.ipv4.conf.all.log_martians = 1 # sysctl net.ipv4.conf.default.log_martians net.ipv4.conf.default.log_martians = 1",
+        "remediation": "Run the following commands to set the active kernel parameters: # sysctl -w net.ipv4.conf.all.log_martians=1 # sysctl -w net.ipv4.conf.default.log_martians=1 # sysctl -w net.ipv4.route.flush=1 /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires checking the kernel parameters on a running instance of the Container-Optimized OS.\n- It involves running specific sysctl commands directly on the instances using SSH access.\n- There is no GCP API that exposes these specific OS-level kernel settings.\n- The audit field specifies manual commands (`sysctl`) to be run and verified, indicating a need for manual SSH access.\n- Changes and verification of sysctl parameters involve OS-level configurations, which must be done directly on each instance.\n\n**MANUAL STEPS:**\n1. **Access the Instance:**\n   - Connect to the Container-Optimized OS instance via SSH using the Cloud Console or any SSH client.\n   - Command: `gcloud compute ssh <INSTANCE_NAME> --zone=<ZONE>`\n\n2. **Check Kernel Parameters:**\n   - Run the following commands to check if suspicious packet logging is enabled:\n     - `sysctl net.ipv4.conf.all.log_martians`\n     - `sysctl net.ipv4.conf.default.log_martians`\n\n3. **Verify Configuration:**\n   - Confirm that the output for both commands is `net.ipv4.conf.all.log_martians = 1` and `net.ipv4.conf.default.log_martians = 1`.\n   - These configurations indicate that logging of suspicious packets is enabled at both the global and default levels.\n\n4. **Remediation (if necessary):**\n   - If the parameters are not set to `1`, run the following commands to enable them temporarily:\n     - `sysctl -w net.ipv4.conf.all.log_martians=1`\n     - `sysctl -w net.ipv4.conf.default.log_martians=1`\n     - `sysctl -w net.ipv4.route.flush=1`\n\n5. **Reboot Persistence:**\n   - Note that changes are not persistent across reboots due to the stateless nature of the Container-Optimized OS. Ensure the sysctl commands are re-applied after every system reboot.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:26:15.528207",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "3.2.1",
+    "unique_id": "k8s_2_3_2_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that a minimal audit policy is created",
+    "input_row": {
+        "id": "3.2.1",
+        "unique_id": "k8s_2_3_2_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that a minimal audit policy is created",
+        "description": "Kubernetes can audit the details of requests made to the API server. The --audit- policy-file flag must be set for this logging to be enabled.",
+        "rationale": "Logging is an important detective control for all systems, to detect potential unauthorised access. Impact: Audit logs will be created on the master nodes, which will consume disk space. Care should be taken to avoid generating too large volumes of log information as this could impact the available of the cluster nodes.",
+        "audit": "Run the following command on one of the cluster master nodes: ps -ef | grep kube-apiserver Verify that the --audit-policy-file is set. Review the contents of the file specified and ensure that it contains a valid audit policy.",
+        "remediation": "Create an audit policy file for your cluster. Default Value: Unless the --audit-policy-file flag is specified, no auditing will be carried out. References: 1. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Audit logs will be created on the master nodes, which will consume disk space. Care should be taken to avoid generating too large volumes of log information as this could impact the available of the cluster nodes.",
+        "references": "1. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_policy_file_configured\n\n**AUTOMATION DETAILS:**\n- Query the configuration of all kube-apiserver instances in the cluster.\n- Specifically, check the process arguments or static pod manifest for the presence of the --audit-policy-file flag.\n- Validate that the flag is set and points to a file path (e.g., --audit-policy-file=/etc/kubernetes/audit-policy.yaml).\n- For clusters using static pods (common in kubeadm and managed distributions), inspect the kube-apiserver manifest (typically at /etc/kubernetes/manifests/kube-apiserver.yaml) via the Kubernetes API (using kubectl get pod -n kube-system -o yaml or by accessing the node's file system if necessary).\n- Pass Criteria:\n  - The --audit-policy-file flag is present in the kube-apiserver command line or manifest.\n  - The value is a non-empty file path.\n- Fail Criteria:\n  - The --audit-policy-file flag is missing or empty.\n- (Optional advanced check) If possible, retrieve and parse the referenced audit policy file to ensure it is a valid YAML and contains at least a minimal audit policy (e.g., has at least one rule).\n- Example kubectl command for static pod manifest inspection:\n  - kubectl -n kube-system get pod -l component=kube-apiserver -o yaml\n  - Review the command or args section for --audit-policy-file\n- Example for managed clusters (if API exposes config): Use provider-specific APIs or commands to retrieve API server configuration.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:27:50.210244",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.3",
+    "unique_id": "k8s_4_4_1_3",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "If proxy kubeconfig file exists ensure permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "4.1.3",
+        "unique_id": "k8s_4_4_1_3",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "If proxy kubeconfig file exists ensure permissions are set to 600 or more restrictive",
+        "description": "If kube-proxy is running, and if it is using a file-based kubeconfig file, ensure that the proxy kubeconfig file has permissions of 600 or more restrictive.",
+        "rationale": "The kube-proxy kubeconfig file controls various parameters of the kube-proxy service in the worker node. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. It is possible to run kube-proxy with the kubeconfig parameters configured as a Kubernetes ConfigMap instead of a file. In this case, there is no proxy kubeconfig file. Impact: None",
+        "audit": "Find the kubeconfig file being used by kube-proxy by running the following command: ps -ef | grep kube-proxy If kube-proxy is running, get the kubeconfig file location from the --kubeconfig parameter. To perform the audit: Run the below command (based on the file location on your system) on the each worker node. For example, stat -c %a <path><filename> Verify that a file is specified and it exists with permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the each worker node. For example, chmod 600 <proxy kubeconfig file> Default Value: By default, proxy file has permissions of 640. References: 1. https://kubernetes.io/docs/admin/kube-proxy/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-proxy/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file system permissions of the kube-proxy kubeconfig file on each worker node.\n- The location of the kubeconfig file is determined by the --kubeconfig flag in the kube-proxy process, which is not exposed via the Kubernetes API or kubectl.\n- File system permissions (e.g., 600) can only be checked by accessing the underlying OS of each node (SSH or equivalent), not via Kubernetes APIs or kubectl.\n- Therefore, this check cannot be automated via Kubernetes-native mechanisms and requires manual/host-level inspection.\n\n**MANUAL STEPS:**\n1. On each worker node, identify the kube-proxy process and determine the path to the kubeconfig file:\n   - Run: `ps -ef | grep kube-proxy`\n   - Look for the `--kubeconfig` flag to find the file path.\n2. Verify that the kubeconfig file exists at the specified location.\n3. Check the file permissions:\n   - Run: `stat -c %a <path-to-kubeconfig-file>`\n4. Confirm that the permissions are set to 600 or more restrictive (e.g., 600, 400, 440).\n5. If the file does not exist (e.g., kube-proxy uses a ConfigMap), note that this control is not applicable for that node.\n6. Document compliance status for each node.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:24:55.804853",
+    "model": "gpt-4.1"
+}

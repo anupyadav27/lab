@@ -1,0 +1,62 @@
+{
+  "service": "guardduty",
+  "expert_mapping": {
+    "aws.guardduty.enabled": {
+      "description": "Check if AWS GuardDuty is enabled for security monitoring (CCCS CA-2 Control Assessments)",
+      "mapped_rules": ["aws.guardduty.detector.enabled_in_all_regions"],
+      "mapping_type": "direct",
+      "confidence": "high",
+      "notes": "enabled_in_all_regions covers the 'enabled' requirement across all regions"
+    },
+    
+    "aws.guardduty.centrally_managed": {
+      "description": "Check if GuardDuty is centrally managed (likely via AWS Organizations)",
+      "mapped_rules": [],
+      "mapping_type": "needs_development",
+      "confidence": "n/a",
+      "notes": "No rule checks central management via Organizations - needs new implementation"
+    },
+    
+    "aws.guardduty.eks_audit_log_enabled": {
+      "description": "Check if EKS audit logs are being monitored by GuardDuty (ISO27001 A.8.15 Logging)",
+      "mapped_rules": [],
+      "mapping_type": "needs_development", 
+      "confidence": "n/a",
+      "notes": "Specific EKS audit log integration - not covered by detector-level checks. May need EKS service check instead"
+    },
+    
+    "aws.guardduty.no_high_severity_findings": {
+      "description": "Check that GuardDuty has no active high-severity security findings",
+      "mapped_rules": [],
+      "mapping_type": "needs_development",
+      "confidence": "n/a",
+      "notes": "This is a posture check (querying findings), not a configuration check. Needs GuardDuty findings API implementation"
+    },
+    
+    "aws.guardduty.security_center_enabled": {
+      "description": "Memory Protection requirement - possibly GuardDuty runtime protection features",
+      "mapped_rules": ["aws.guardduty.detector.detectors_enabled"],
+      "mapping_type": "possible_but_review_needed",
+      "confidence": "medium",
+      "notes": "CCCS SI-16 Memory Protection - could map to basic GuardDuty enabled check, but verify if specific protection features are required"
+    },
+    
+    "aws.guardduty.vulnerability_assessment_enabled": {
+      "description": "Vulnerability assessment through GuardDuty",
+      "mapped_rules": [],
+      "mapping_type": "needs_clarification",
+      "confidence": "n/a",
+      "notes": "GuardDuty doesn't do vulnerability scanning - this might be Amazon Inspector integration or needs clarification on requirement"
+    }
+  },
+  
+  "summary": {
+    "total_compliance_functions": 6,
+    "can_map_directly": 1,
+    "can_map_with_review": 1,
+    "needs_development": 3,
+    "needs_clarification": 1,
+    "coverage": "17% direct, 33% with review"
+  }
+}
+

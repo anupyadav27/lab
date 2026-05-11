@@ -1,0 +1,40 @@
+{
+    "unique_id": "2.2.12__ensure-managed-identities-are-configured",
+    "control_id": "2.2.12",
+    "source": null,
+    "input_row": {
+        "id": "2.2.12",
+        "unique_id": "2.2.12__ensure-managed-identities-are-configured",
+        "title": "Ensure managed identities are configured",
+        "description": "...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Identity. 6. To add a system assigned managed identity: 1. In the System assigned pane, under Status, click On. 2. Click Save. 3. Click Yes. 7. To add a user assigned managed identity: 1. In the User assigned pane, click Add. 2. Use the filter box to search for a managed identity. 3. Select the identity. 4. Click Add. 8. Repeat steps 1-7 for each app and deployment slot requiring remediation. Remediate from PowerShell For each deployment slot requiring remediation, run the following command to assign a system-assigned managed identity: Set-AzWebAppSlot -ResourceGroupName <resource-group-name> -Name <app-name> - Slot <deployment-slot-name> -AssignIdentity $true Default Value: Managed identities are disabled by default for App Service deployment slots. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-identity- management#im-1-use-centralized-identity-and-authentication-system 2. https://learn.microsoft.com/en-us/azure/app-service/overview-managed-identity 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/powershell/module/az.websites/get-azwebapp 5. https://learn.microsoft.com/en-us/powershell/module/az.websites/get- azwebappslot 6. https://learn.microsoft.com/en-us/powershell/module/az.websites/set- azwebappslot CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control requires checking the status of managed identities for Azure App Service deployment slots, which can be programmatically verified through Azure APIs. \n- The audit field is empty but can be inferred from the provided remediation steps involving CLI commands and PowerShell scripts, indicating that it can be automated.\n- Azure CLI and PowerShell provide commands to manage identities, which further confirms that this control is auditable via API.\n\n**PROGRAM NAME:** azure_app_service_deployment_slot_managed_identity_configured\n\n**AUTOMATION DETAILS:** \n- The automated program would utilize the Azure Resource Manager APIs or Azure CLI commands to check if managed identities are properly configured for App Service deployment slots.\n- Specific resources to enumerate would include App Service Groups and their respective deployment slots.\n- Relevant Azure CLI command: \n  - `az webapp deployment slot show --resource-group <resource-group-name> --name <app-name> --slot <deployment-slot-name>`\n- Configuration properties/settings to validate:\n  - Check `identity.type` status to verify if it is set to either `SystemAssigned` or `UserAssigned`.\n- Pass/Fail criteria:\n  - Pass: Identity type includes `SystemAssigned` or `UserAssigned` as expected.\n  - Fail: Identity type is `None` which indicates managed identity is not configured.\n- Example CLI command to check managed identity status would be:\n  ```bash\n  az webapp deployment slot show --resource-group <resource-group-name> --name <app-name> --slot <deployment-slot-name> --query identity\n  ```"
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. The status of managed identities for Azure App Service deployment slots can indeed be verified using Azure APIs, CLI, and PowerShell. The use of Azure Resource Manager APIs and Azure CLI commands is appropriate for this task.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details provided are technically accurate. The use of the Azure CLI command `az webapp deployment slot show` with the `--query identity` parameter is correct for checking the managed identity status. The pass/fail criteria are well-defined based on the identity type.\n- The program name follows the convention: azure_<service>_<resource>_<security_intent>, which is good practice.\n- However, a minor point of improvement could be the inclusion of PowerShell cmdlets for completeness, as they are also commonly used in Azure environments.\n\n**IMPROVEMENTS:**\n- It would be beneficial to include PowerShell cmdlets as an alternative method for checking managed identity status, such as using `Get-AzWebApp` with the appropriate parameters.\n- Consider adding a note on handling scenarios where multiple identities might be configured, ensuring that both `SystemAssigned` and `UserAssigned` identities are checked.\n- Include error handling and logging recommendations for the automation script to ensure robust operation and easy troubleshooting.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded, and the technical details align with Azure's capabilities for managing and auditing managed identities.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is, with a suggestion to enhance the documentation by including PowerShell cmdlets and additional error handling considerations. The current approach is sound and leverages Azure's automation capabilities effectively.",
+        "reviewed_at": "2025-10-26T14:30:10.252417"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** Both AI opinions agree that the audit of managed identities for Azure App Service deployment slots can be automated using Azure APIs, CLI, and PowerShell. The necessary properties are accessible through Azure Resource Manager APIs, and the use of Azure CLI commands like `az webapp deployment slot show` confirms that this control can be programmatically verified. The technical accuracy of the proposed automation approach is high, and the program name follows the correct naming convention.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nazure_app_service_deployment_slot_managed_identity_configured\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Azure App Service Deployment Slots\n- **API/CLI Method:** `az webapp deployment slot show --resource-group <resource_group> --name <app_service_name> --slot <slot_name> --query identity`\n- **Properties to Check:** `identity.type`\n- **Pass Criteria:** The `identity.type` property should be set to `SystemAssigned` or `UserAssigned`.\n- **Fail Criteria:** The `identity.type` property is `None` or not set, indicating that managed identities are not configured.\n\n---\n\n**DISAGREEMENTS RESOLVED:** There were no disagreements between the AI opinions; both concurred on the automated approach, and the technical details provided were accurate and complete.",
+        "decided_at": "2025-10-27T14:41:01.389299"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.12__ensure-managed-identities-are-configured.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

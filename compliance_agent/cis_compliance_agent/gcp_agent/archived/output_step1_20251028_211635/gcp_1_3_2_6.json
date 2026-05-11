@@ -1,0 +1,22 @@
+{
+    "control_id": "3.2.6",
+    "unique_id": "gcp_1_3_2_6",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure bogus ICMP responses are ignored",
+    "input_row": {
+        "id": "3.2.6",
+        "unique_id": "gcp_1_3_2_6",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure bogus ICMP responses are ignored",
+        "description": "Setting icmp_ignore_bogus_error_responses to 1 prevents the kernel from logging bogus responses (RFC-1122 non-compliant) from broadcast reframes, keeping file systems from filling up with useless log messages.",
+        "rationale": "Some routers (and some attackers) will send responses that violate RFC-1122 and attempt to fill up a log file system with many useless error messages.",
+        "audit": "Run the following commands and verify output matches: # sysctl net.ipv4.icmp_ignore_bogus_error_responses net.ipv4.icmp_ignore_bogus_error_responses = 1 # grep \"net.ipv4.icmp_ignore_bogus_error_responses\" /etc/sysctl.conf /etc/sysctl.d/* net.ipv4.icmp_ignore_bogus_error_responses = 1",
+        "remediation": "Set the following parameter in /etc/sysctl.conf or a /etc/sysctl.d/* file: net.ipv4.icmp_ignore_bogus_error_responses = 1 Run the following commands to set the active kernel parameters: # sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=1 # sysctl -w net.ipv4.route.flush=1 /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control \"Ensure bogus ICMP responses are ignored\" involves verifying kernel parameters within a Container-Optimized OS instance, specifically checking sysctl settings. This requires SSH access to instances to execute commands like `sysctl` and `grep` to confirm the configuration is correctly applied.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to connect to the Container-Optimized OS instance you need to audit. This can be done using the Google Cloud Console or SSH from a terminal.\n     ```\n     gcloud compute ssh <INSTANCE_NAME> --zone=<ZONE>\n     ```\n\n2. **Verify Kernel Parameter:**\n   - Once connected, run the following command to check if the `net.ipv4.icmp_ignore_bogus_error_responses` is set to 1.\n     ```\n     sysctl net.ipv4.icmp_ignore_bogus_error_responses\n     ```\n   - Expected output should be:\n     ```\n     net.ipv4.icmp_ignore_bogus_error_responses = 1\n     ```\n\n3. **Check Configuration Files:**\n   - Use the `grep` command to search through the `/etc/sysctl.conf` and any files within `/etc/sysctl.d/` to ensure persistence.\n     ```\n     grep \"net.ipv4.icmp_ignore_bogus_error_responses\" /etc/sysctl.conf /etc/sysctl.d/*\n     ```\n   - Expected result: Entries should show `net.ipv4.icmp_ignore_bogus_error_responses = 1`\n\n4. **Verify Persistence across Reboots:**\n   - As noted, `/etc` is stateless on Container-Optimized OS, so persistent changes need to be reapplied after reboots.\n   - Document the process to reapply settings after each restart, potentially using instance metadata startup scripts if applicable.\n\n5. **Confirm Compliance:**\n   - Validate that the setting is both active in the current kernel and documented for reapplication (if feasible) after system restarts.\n   - Ensure that no erroneous entries or misconfigurations are present in pertinent configuration files.\n\nThese steps require manual verification since there is no API or SDK method available directly for these OS-specific checks on GCP.",
+    "timestamp": "2025-10-28T21:26:48.737339",
+    "model": "gpt-4o"
+}

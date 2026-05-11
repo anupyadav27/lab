@@ -1,0 +1,33 @@
+{
+    "control_id": "3.5",
+    "unique_id": "aws_4_3_5",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+    "title": "Ensure using Security Groups for VPC",
+    "input_row": {
+        "id": "3.5",
+        "unique_id": "aws_4_3_5",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "title": "Ensure using Security Groups for VPC",
+        "description": "A security group controls the traffic that is allowed to reach and leave the resources that it is associated with. For example, after you associate a security group with an EC2 instance, it controls the inbound and outbound traffic for the instance.",
+        "rationale": "",
+        "audit": "1. Go to https://console.aws.amazon.com/vpc/ 2. Navigate to Security Groups and select on the VPC that houses your mount target. 3. Ensure that incoming traffic is restricted to SSH access on port 22 using TCP protocol and outbound traffic is accepting all traffic.",
+        "remediation": "",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control involves checking security group configurations, a standard AWS service property.\n- AWS APIs, specifically for EC2 and VPC, provide methods to inspect security group rules.\n- Boto3 SDK and AWS CLI have commands to retrieve and evaluate security group configurations.\n- This is relevant to network rules, which are properties exposed by AWS APIs.\n- The audit process can be automated using AWS API calls to verify if security groups are configured correctly to restrict incoming traffic to SSH on port 22.\n\n**PROGRAM NAME:** aws_vpc_security_group_ssh_access_restricted\n\n**AUTOMATION DETAILS:**\n- Use the `boto3` SDK, specifically the `ec2` client, to list and inspect security group rules.\n- Enumerate all security groups across AWS accounts and regions using `describe_security_groups()`.\n- Check each security group's inbound rules for port 22 using the TCP protocol:\n  - Confirm that only specific, approved IP ranges are allowed SSH access.\n  - Verify that outbound rules are accepting all traffic, satisfying the control.\n- AWS CLI equivalent: `aws ec2 describe-security-groups --query \"SecurityGroups[*].{GroupName:GroupName, IpPermissions:IpPermissions}\"`\n- Pass/Fail Criteria:\n  - Pass: Only allowed IP addresses are specified for inbound SSH access on port 22.\n  - Pass: Outbound rules allow all traffic.\n  - Fail: SSH access on port 22 is open to all IP addresses (0.0.0.0/0) or does not conform to the restriction requirement.\n- Additional validation: Cross-check all public-facing resources to ensure appropriate security group associations.",
+    "timestamp": "2025-10-28T15:26:37.790049",
+    "model": "gpt-4o",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification as Automated is correct. Security group configurations can be effectively checked using AWS APIs, boto3, and AWS CLI.\n- AWS provides comprehensive SDK capabilities and CLI commands to retrieve and evaluate security group configurations, making automation feasible and efficient.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly accurate. The use of `boto3` and the `describe_security_groups()` method is appropriate for listing and inspecting security group rules.\n- The AWS CLI command provided is valid and correctly queries security group details.\n- The program name, `aws_vpc_security_group_ssh_access_restricted`, is somewhat descriptive but could be improved for clarity.\n- The pass/fail criteria are well-defined, focusing on SSH access restrictions and outbound rule configurations.\n\n**IMPROVEMENTS:**\n- The program name could be more descriptive. A suggestion would be `aws_vpc_security_group_ssh_port22_restriction_check` to clearly indicate the specific port being audited.\n- Consider adding checks for security groups associated with public-facing resources, as public exposure increases risk.\n- Incorporate AWS Config rules, such as `INCOMING_SSH_DISABLED`, to provide continuous monitoring and compliance checks.\n- Ensure the script handles pagination in `describe_security_groups()` to cover all security groups if the account has a large number.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded, leveraging AWS API capabilities effectively. The automation approach is sound, and the technical details are mostly accurate.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the program name to `aws_vpc_security_group_ssh_port22_restriction_check` for better clarity.\n- Consider integrating AWS Config rules for continuous compliance monitoring.\n- Ensure the script accounts for pagination in API responses.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-28T18:23:33.578388",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**  \nBoth AI opinions correctly identify that AWS security group configurations are fully accessible and auditable via AWS APIs (boto3, AWS CLI). The control’s requirements—verifying inbound SSH (port 22) restrictions and outbound allow-all rules—map directly to properties returned by the describe_security_groups API call. No manual inspection is needed, as all necessary data is programmatically available and can be evaluated at scale.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:**  \naws_vpc_security_group_ssh_port22_restriction_check\n\n**AUTOMATION DETAILS:**\n- AWS Resource/Service: VPC Security Groups\n- API/CLI Method: boto3 ec2.describe_security_groups(), aws ec2 describe-security-groups\n- Properties to Check:\n  - Inbound (IpPermissions): Only TCP port 22 is allowed, and only from approved IP ranges (not 0.0.0.0/0 unless explicitly allowed by policy).\n  - Outbound (IpPermissionsEgress): All traffic (0.0.0.0/0, all ports, all protocols) is allowed.\n- Pass Criteria:\n  - Inbound rules restrict SSH (TCP port 22) to specific, approved IP addresses/ranges.\n  - Outbound rules allow all traffic.\n- Fail Criteria:\n  - Inbound SSH (TCP port 22) is open to 0.0.0.0/0 without restriction or is not present.\n  - Outbound rules do not allow all traffic.\n\n---\n\n**DISAGREEMENTS RESOLVED:**  \nThere were no substantive disagreements; both AI opinions agreed on automation. The second opinion suggested a more descriptive program name, which has been adopted for clarity.\n\n**SOURCE:** CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "final_approach": "Automated",
+        "confidence": "HIGH",
+        "program_name": "aws_vpc_security_group_ssh_port22_restriction_check",
+        "model": "gpt-4.1",
+        "timestamp": "2025-10-28T21:15:30.657583"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.1",
+    "unique_id": "k8s_6_1_2_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --anonymous-auth argument is set to false",
+    "input_row": {
+        "id": "1.2.1",
+        "unique_id": "k8s_6_1_2_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --anonymous-auth argument is set to false",
+        "description": "Disable anonymous requests to the API server.",
+        "rationale": "When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the API server. You should rely on authentication to authorize access and disallow anonymous requests. If you are using RBAC authorization, it is generally considered reasonable to allow anonymous access to the API Server for health checks and discovery purposes, and hence this recommendation is not scored. However, you should consider whether anonymous discovery is an acceptable risk for your purposes. Impact: Anonymous requests will be rejected.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --anonymous-auth argument is set to false. Alternative Audit kubectl get pod -nkube-system -lcomponent=kube-apiserver -o=jsonpath='{range .items[ ]}{.spec.containers[ ].command} {\"\\n\"}{end}' | grep '--anonymous-auth' | grep -i false If the exit code is '1', then the control isn't present / failed",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the below parameter. --anonymous-auth=false Default Value: By default, anonymous access is enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authentication/#anonymous-requests",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "Anonymous requests will be rejected.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authentication/#anonymous-requests"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_anonymous_auth_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification in the kube-system namespace.\n- Use the Kubernetes API or kubectl to retrieve the command-line arguments for the kube-apiserver container.\n- Example kubectl command:\n  ```\n  kubectl get pod -n kube-system -l component=kube-apiserver -o=jsonpath='{range .items[*]}{.spec.containers[*].command}{\"\\n\"}{end}'\n  ```\n- Parse the output to check for the presence of the `--anonymous-auth` flag.\n- Pass Criteria: The flag `--anonymous-auth=false` must be explicitly set in the kube-apiserver command arguments.\n- Fail Criteria: The flag is missing, or set to `--anonymous-auth=true`.\n- If the flag is not present, default behavior may allow anonymous access (depending on Kubernetes version), so explicit setting is required for compliance.\n- This check can be fully automated using the Kubernetes API or kubectl, without requiring host-level access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:00:53.444216",
+    "model": "gpt-4.1"
+}

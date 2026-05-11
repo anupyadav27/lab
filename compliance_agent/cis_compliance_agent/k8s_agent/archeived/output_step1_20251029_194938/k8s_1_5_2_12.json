@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.12",
+    "unique_id": "k8s_1_5_2_12",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Minimize the admission of HostPath volumes",
+    "input_row": {
+        "id": "5.2.12",
+        "unique_id": "k8s_1_5_2_12",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Minimize the admission of HostPath volumes",
+        "description": "Do not generally admit containers which make use of hostPath volumes.",
+        "rationale": "A container which mounts a hostPath volume as part of its specification will have access to the filesystem of the underlying cluster node. The use of hostPath volumes may allow containers access to privileged areas of the node filesystem. There should be at least one admission control policy defined which does not permit containers to mount hostPath volumes. If you need to run containers which require hostPath volumes, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined which make use of hostPath volumes will not be permitted unless they are run under a spefific policy.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that each policy disallows the admission of containers with hostPath volumes.",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers which use hostPath volumes. Default Value: By default, there are no restrictions on the creation of hostPath volumes. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined which make use of hostPath volumes will not be permitted unless they are run under a spefific policy.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_hostpath_volumes_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API (`kubectl get ns`).\n- For each namespace, check for the presence and configuration of Pod Security Admission (PSA) labels (`pod-security.kubernetes.io/enforce`, `pod-security.kubernetes.io/audit`, `pod-security.kubernetes.io/warn`) or legacy PodSecurityPolicy (if still in use).\n- For each namespace, determine if the enforced Pod Security Standard level is `restricted` (which disallows hostPath volumes by default).\n  - Command: `kubectl get ns --show-labels`\n  - Look for: `pod-security.kubernetes.io/enforce=restricted`\n- If PSA is not enabled, enumerate any PodSecurityPolicy objects (`kubectl get psp`) and check for policies that restrict `hostPath` usage:\n  - Inspect the `volumes` field in each PSP; ensure `hostPath` is not allowed, or if allowed, is tightly scoped.\n  - For each PSP, check the `allowedHostPaths` field. If `hostPath` is allowed, ensure it is only for specific, controlled paths and not wildcarded.\n- For clusters using OPA Gatekeeper or Kyverno, enumerate all ConstraintTemplates and Constraints/ClusterPolicies that restrict `hostPath` usage.\n- Pass Criteria:\n  - Every namespace with user workloads must have Pod Security Admission enforced at the `restricted` level, or an equivalent policy (PSP, Kyverno, Gatekeeper) that denies `hostPath` volumes except for explicitly allowed, tightly scoped exceptions.\n- Fail Criteria:\n  - Any namespace allows pods to use `hostPath` volumes without restriction, or lacks a policy denying `hostPath` volumes.\n- Example kubectl commands:\n  - `kubectl get ns --show-labels`\n  - `kubectl get psp -o yaml | grep -A10 'volumes:'`\n  - `kubectl get constraints` (for Gatekeeper)\n  - `kubectl get clusterpolicies` (for Kyverno)\n- The check is fully automatable via Kubernetes API and CLI, requiring no human judgement or host access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:13:19.291679",
+    "model": "gpt-4.1"
+}

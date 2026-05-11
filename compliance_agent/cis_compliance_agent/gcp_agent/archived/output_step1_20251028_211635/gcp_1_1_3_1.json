@@ -1,0 +1,22 @@
+{
+    "control_id": "1.3.1",
+    "unique_id": "gcp_1_1_3_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure authentication required for single user mode",
+    "input_row": {
+        "id": "1.3.1",
+        "unique_id": "gcp_1_1_3_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure authentication required for single user mode",
+        "description": "Single user mode (rescue mode) is used for recovery when the system detects an issue during boot or by manual selection from the bootloader.",
+        "rationale": "Requiring authentication in single user mode (rescue mode) prevents an unauthorized user from rebooting the system into single user to gain root privileges without credentials.",
+        "audit": "Run the following commands and verify that /sbin/sulogin or /usr/sbin/sulogin is used as shown: # grep /systemd-sulogin-shell /usr/lib/systemd/system/rescue.service ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue # grep /systemd-sulogin-shell /usr/lib/systemd/system/emergency.service ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency",
+        "remediation": "Rootfs is read-only file system. Therefore, update to an OS image which requires single user mode authentication.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The control \"Ensure authentication required for single user mode\" involves verifying the content of specific files `/usr/lib/systemd/system/rescue.service` and `/usr/lib/systemd/system/emergency.service` on the Google Container-Optimized OS (COS).\n- Checking whether `/sbin/sulogin` or `/usr/sbin/sulogin` is used as the shell requires file inspection rather than querying a network-accessible API.\n- This type of check necessitates SSH access to inspect the system files directly on the instance.\n- Consequently, it is not feasible to automate this check through GCP APIs or Google Cloud SDK tools, as these do not provide OS-level configuration file contents.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to connect to your Container-Optimized OS instance in GCP. You can do this via the GCP Console or using the gcloud CLI:\n     ```bash\n     gcloud compute ssh <INSTANCE_NAME>\n     ```\n\n2. **Check Rescue Service Configuration:**\n   - Inside the SSH session, inspect the rescue service file to ensure it's properly configured with sulogin:\n     ```bash\n     grep '/systemd-sulogin-shell' /usr/lib/systemd/system/rescue.service\n     ```\n   - Confirm that the output includes `ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue`.\n\n3. **Check Emergency Service Configuration:**\n   - Verify the emergency service configuration similarly:\n     ```bash\n     grep '/systemd-sulogin-shell' /usr/lib/systemd/system/emergency.service\n     ```\n   - Confirm that the output includes `ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency`.\n\n4. **Expected Secure Configuration:**\n   - Both services should be configured to use the sulogin shell, ensuring authentication is required in single-user mode.\n   - A secure instance will display the expected `ExecStart` configuration lines in both service files.\n\n5. **Remediation if Non-compliant:**\n   - If the configurations do not match, update to a COS image version which includes the necessary sulogin lock down as prescribed in the remediation section.\n\nBy following these steps, you ensure that the configuration complies with the CIS benchmark requirement for secure single-user mode configurations.",
+    "timestamp": "2025-10-28T21:20:50.601652",
+    "model": "gpt-4o"
+}

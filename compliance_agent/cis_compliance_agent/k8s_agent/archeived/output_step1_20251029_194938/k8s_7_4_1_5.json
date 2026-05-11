@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.5",
+    "unique_id": "k8s_7_4_1_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the --kubeconfig kubelet.conf file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "4.1.5",
+        "unique_id": "k8s_7_4_1_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the --kubeconfig kubelet.conf file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the kubelet.conf file has permissions of 600 or more restrictive.",
+        "rationale": "The kubelet.conf file is the kubeconfig file for the node, and controls various parameters that set the behavior and identity of the worker node. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Automated AAC auditing has been modified to allow CIS-CAT to input a variable for the <PATH>/<FILENAME> of the kubelet config file. Please set $kubelet_config=<PATH> based on the file location on your system for example: export kubelet_config=/etc/kubernetes/kubelet.conf To perform the audit manually: Run the below command (based on the file location on your system) on the each worker node. For example, stat -c %a /etc/kubernetes/kubelet.conf Verify that the ownership is set to root:root.Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the each worker node. For example, chmod 600 /etc/kubernetes/kubelet.conf Default Value: By default, kubelet.conf file has permissions of 600. References: 1. https://kubernetes.io/docs/admin/kubelet/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of file permissions and ownership (600 or more restrictive, owned by root:root) on the kubelet.conf file on each worker node.\n- These file system permissions and ownership attributes are not exposed via the Kubernetes API, kubectl, or any Kubernetes controller or resource.\n- Verification requires direct access to the underlying host OS to inspect file metadata, which is outside the scope of Kubernetes API or kubectl capabilities.\n- Therefore, this check cannot be automated using Kubernetes-native tools and must be performed manually.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes worker node.\n2. Identify the location of the kubelet.conf file (commonly /etc/kubernetes/kubelet.conf, but may vary).\n3. Run the following command to check the file permissions and ownership:\n   ```\n   stat -c \"%a %U %G\" /etc/kubernetes/kubelet.conf\n   ```\n4. Verify that:\n   - The permissions are 600 or more restrictive (i.e., only the owner has read and write permissions).\n   - The owner and group are both root.\n5. If the permissions or ownership are not compliant, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/kubelet.conf\n   chmod 600 /etc/kubernetes/kubelet.conf\n   ```\n6. Repeat for each worker node in the cluster.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:35:13.271788",
+    "model": "gpt-4.1"
+}

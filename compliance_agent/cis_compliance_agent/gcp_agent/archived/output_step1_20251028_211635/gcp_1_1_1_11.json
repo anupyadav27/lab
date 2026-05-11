@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.11",
+    "unique_id": "gcp_1_1_1_11",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure nosuid option set on /dev/shm partition",
+    "input_row": {
+        "id": "1.1.11",
+        "unique_id": "gcp_1_1_1_11",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure nosuid option set on /dev/shm partition",
+        "description": "The nosuid mount option specifies that the filesystem cannot contain setuid files.",
+        "rationale": "Setting this option on a file system prevents users from introducing privileged programs onto the system and allowing non-root users to execute them.",
+        "audit": "Verify that the nosuid option is set if a /dev/shm partition exists. Run the following command and verify that nothing is returned: # mount | grep -E '\\s/dev/shm\\s' | grep -v nosuid",
+        "remediation": "Run the following command to remount /dev/shm : # mount -o remount,nosuid /dev/shm /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- This control requires verifying the mount options for the `/dev/shm` partition on a Container-Optimized OS (COS) instance. The audit involves checking a specific mount configuration that is typically not exposed or modifiable through standard GCP APIs or SDK methods.\n- The `audit` field specifies running a command that needs to access the file system of the individual COS instances, indicating that this check requires SSH access to the instance.\n- Container-Optimized OS is designed to have a stateless `/etc`, meaning the configuration changes at the OS level need human intervention after each boot, further confirming that this is not easily automatable.\n- The Google Cloud Platform does not provide direct management capabilities for OS-level mount settings via cloud APIs.\n\n**MANUAL STEPS:**\n\n1. **Access the COS Instance:**\n   - Use SSH to connect to each relevant Container-Optimized OS instance.\n   - You can use the following command:\n     ```\n     gcloud compute ssh <INSTANCE_NAME> --zone <ZONE>\n     ```\n\n2. **Verify Mount Options:**\n   - Execute the following command to check the mount options for `/dev/shm`:\n     ```\n     mount | grep -E '\\\\s/dev/shm\\\\s' | grep -v nosuid\n     ```\n   - Ensure no output is returned from this command. If any output is returned, it indicates the `nosuid` option is not set.\n\n3. **Expected Secure Configuration:**\n   - The `nosuid` option should be observed in the mount options for `/dev/shm`. The absence of output from step 2 confirms compliance.\n\n4. **Non-compliance Resolution:**\n   - To remediate, run the following command on the instance:\n     ```\n     sudo mount -o remount,nosuid /dev/shm\n     ```\n   - Note that changes to `/etc` are not persistent in COS, so this needs to be reapplied after each instance restart. A startup script may be employed to automate this task across instance restarts.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:19:37.645847",
+    "model": "gpt-4o"
+}

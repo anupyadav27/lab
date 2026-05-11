@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.12",
+    "unique_id": "k8s_3_5_1_12",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Minimize access to webhook configuration objects",
+    "input_row": {
+        "id": "5.1.12",
+        "unique_id": "k8s_3_5_1_12",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Minimize access to webhook configuration objects",
+        "description": "Users with rights to create/modify/delete validatingwebhookconfigurations or mutatingwebhookconfigurations can control webhooks that can read any object admitted to the cluster, and in the case of mutating webhooks, also mutate admitted objects. This could allow for privilege escalation or disruption of the operation of the cluster.",
+        "rationale": "The ability to manage webhook configuration should be limited",
+        "audit": "Review the users who have access to validatingwebhookconfigurations or mutatingwebhookconfigurations objects in the Kubernetes API.",
+        "remediation": "Where possible, remove access to the validatingwebhookconfigurations or mutatingwebhookconfigurations objects References: 1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#control- admission-webhooks",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "",
+        "references": "1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#control- admission-webhooks"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_webhook_configuration_access_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRole and Role objects in the cluster using the Kubernetes API or kubectl (kubectl get clusterroles, kubectl get roles --all-namespaces).\n- For each ClusterRole and Role, inspect the rules[].resources field for the presence of \"validatingwebhookconfigurations\" or \"mutatingwebhookconfigurations\" in the \"admissionregistration.k8s.io\" API group.\n- Identify all ClusterRoleBindings and RoleBindings that grant these roles to users, groups, or service accounts (kubectl get clusterrolebindings, kubectl get rolebindings --all-namespaces).\n- Aggregate a list of all subjects (users, groups, service accounts) who have create, update, patch, or delete verbs on these resources.\n- Pass Criteria: Only explicitly authorized and minimal set of users/groups/service accounts have these permissions (ideally, only cluster administrators).\n- Fail Criteria: Any unnecessary or excessive subjects (including wildcards or broad groups) have create, update, patch, or delete access to \"validatingwebhookconfigurations\" or \"mutatingwebhookconfigurations\".\n- Example kubectl command to find relevant roles:\n  ```\n  kubectl get clusterroles -o yaml | grep -A 10 'resources:' | grep -E 'validatingwebhookconfigurations|mutatingwebhookconfigurations'\n  ```\n  Then trace bindings to determine who has access.",
+    "timestamp": "2025-10-29T21:04:27.770251",
+    "model": "gpt-4.1"
+}

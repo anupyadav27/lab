@@ -1,0 +1,841 @@
+[
+  {
+    "section": "3 Section",
+    "id": "3.1.1",
+    "title": "Ensure that the proxy kubeconfig file permissions are set to  644 or more restrictive",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "If kube-proxy is running, and if it is configured by a kubeconfig file, ensure that the proxy kubeconfig file has permissions of 644 or more restrictive.",
+    "rationale": "The kube-proxy kubeconfig file controls various parameters of the kube-proxy service on the worker node. You should restrict its file permissions to maintain the integrity of the file. The file should be writable only by the administrators on the system.",
+    "audit": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Click on the desired cluster to open the Details page, then click on the desired Node pool to open the Node pool Details . Note the name of the desired node 4. Go to VM Instances by visiting https://console.cloud.google.com/compute/instances 5. Find the desired node and click on 'SSH' to open an SSH connection to the node. Using Command Line Method 1 SSH to the worker nodes To check to see if the Kubelet Service is running: sudo systemctl status kubelet The output should return Active: active (running) since.. Run the following command on each node to find the appropriate kubeconfig file: ps -ef | grep kubelet The output of the above command should return something similar to --kubeconfig /var/lib/kubelet/kubeconfig which is the location of the kubeconfig file. Run this command to obtain the kubeconfig file permissions: Internal Only - General stat -c %a /var/lib/kubelet/kubeconfig The output of the above command gives you the kubeconfig file's permissions. Verify that if a file is specified and it exists, the permissions are 644 or more restrictive. Method 2 Create and Run a Privileged Pod. You will need to run a pod that is privileged enough to access the host's file system. This can be achieved by deploying a pod that uses the hostPath volume to mount the node's file system into the pod. Here's an example of a simple pod definition that mounts the root of the host to /host within the pod: apiVersion: v1 kind: Pod metadata: name: file-check spec: volumes: - name: host-root hostPath: path: / type: Directory containers: - name: nsenter image: busybox command: [\"sleep\", \"3600\"] volumeMounts: - name: host-root mountPath: /host securityContext: privileged: true Save this to a file (e.g., file-check-pod.yaml) and create the pod: kubectl apply -f file-check-pod.yaml Once the pod is running, you can exec into it to check file permissions on the node: kubectl exec -it file-check -- sh Now you are in a shell inside the pod, but you can access the node's file system through the /host directory and check the permission level of the file: ls -l /host/var/lib/kubelet/kubeconfig Verify that if a file is specified and it exists, the permissions are 644 or more restrictive.",
+    "remediation": "Run the below command (based on the file location on your system) on the each worker node. For example, Internal Only - General chmod 644",
+    "default_value": "The default permissions of the proxy kubeconfig file are 644.",
+    "impact": "Overly permissive file permissions increase security risk to the platform.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/admin/kube-proxy/ 2. https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks",
+    "references": [
+      "https://kubernetes.io/docs/admin/kube-proxy/",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.1.2",
+    "title": "Ensure that the proxy kubeconfig file ownership is set to  root:root",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "If kube-proxy is running, ensure that the file ownership of its kubeconfig file is set to root:root.",
+    "rationale": "The kubeconfig file for kube-proxy controls various parameters for the kube-proxy service in the worker node. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root.",
+    "audit": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Click on the desired cluster to open the Details page, then click on the desired Node pool to open the Node pool Details . Note the name of the desired node 4. Go to VM Instances by visiting https://console.cloud.google.com/compute/instances 5. Find the desired node and click on 'SSH' to open an SSH connection to the node. Using Command Line Method 1 SSH to the worker nodes To check to see if the Kubelet Service is running: sudo systemctl status kubelet The output should return Active: active (running) since.. Run the following command on each node to find the appropriate kubeconfig file: ps -ef | grep kubelet The output of the above command should return something similar to --kubeconfig /var/lib/kubelet/kubeconfig which is the location of the kubeconfig file. Run this command to obtain the kubeconfig file ownership: Internal Only - General stat -c %U:%G /var/lib/kubelet/kubeconfig The output of the above command gives you the kubeconfig file's ownership. Verify that the ownership is set to root:root. Method 2 Create and Run a Privileged Pod. You will need to run a pod that is privileged enough to access the host's file system. This can be achieved by deploying a pod that uses the hostPath volume to mount the node's file system into the pod. Here's an example of a simple pod definition that mounts the root of the host to /host within the pod: apiVersion: v1 kind: Pod metadata: name: file-check spec: volumes: - name: host-root hostPath: path: / type: Directory containers: - name: nsenter image: busybox command: [\"sleep\", \"3600\"] volumeMounts: - name: host-root mountPath: /host securityContext: privileged: true Save this to a file (e.g., file-check-pod.yaml) and create the pod: kubectl apply -f file-check-pod.yaml Once the pod is running, you can exec into it to check file ownership on the node: kubectl exec -it file-check -- sh Now you are in a shell inside the pod, but you can access the node's file system through the /host directory and check the ownership of the file: ls -l /host/var/lib/kubelet/kubeconfig The output of the above command gives you the kubeconfig file's ownership. Verify that the ownership is set to root:root.",
+    "remediation": "Run the below command (based on the file location on your system) on each worker node. For example, Internal Only - General chown root:root",
+    "default_value": "The default ownership of the proxy kubeconfig file is root:root.",
+    "impact": "Overly permissive file access increases the security risk to the platform.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/admin/kube-proxy/ 2. https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks",
+    "references": [
+      "https://kubernetes.io/docs/admin/kube-proxy/",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.1.3",
+    "title": "Ensure that the kubelet configuration file has permissions  set to 600",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Ensure that if the kubelet configuration file exists, it has permissions of 600.",
+    "rationale": "The kubelet reads various parameters, including security settings, from a config file specified by the --config argument. If this file exists, you should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system.",
+    "audit": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Click on the desired cluster to open the Details page, then click on the desired Node pool to open the Node pool Details . Note the name of the desired node 4. Go to VM Instances by visiting https://console.cloud.google.com/compute/instances 5. Find the desired node and click on 'SSH' to open an SSH connection to the node. Using Command Line Method 1 First, SSH to the relevant worker node: To check to see if the Kubelet Service is running: sudo systemctl status kubelet The output should return Active: active (running) since.. Run the following command on each node to find the appropriate Kubelet config file: ps -ef | grep kubelet The output of the above command should return something similar to --config /etc/kubernetes/kubelet/kubelet-config.yaml which is the location of the Kubelet config file. Run the following command: Internal Only - General stat -c %a /etc/kubernetes/kubelet/kubelet-config.yaml The output of the above command is the Kubelet config file's permissions. Verify that the permissions are 644 or more restrictive. Method 2 Create and Run a Privileged Pod. You will need to run a pod that is privileged enough to access the host's file system. This can be achieved by deploying a pod that uses the hostPath volume to mount the node's file system into the pod. Here's an example of a simple pod definition that mounts the root of the host to /host within the pod: apiVersion: v1 kind: Pod metadata: name: file-check spec: volumes: - name: host-root hostPath: path: / type: Directory containers: - name: nsenter image: busybox command: [\"sleep\", \"3600\"] volumeMounts: - name: host-root mountPath: /host securityContext: privileged: true Save this to a file (e.g., file-check-pod.yaml) and create the pod: kubectl apply -f file-check-pod.yaml Once the pod is running, you can exec into it to check file permissions on the node: kubectl exec -it file-check -- sh Now you are in a shell inside the pod, but you can access the node's file system through the /host directory and check the permission level of the file: ls -l /host/etc/kubernetes/kubelet/kubelet-config.yaml Verify that if a file is specified and it exists, the permissions are 644 or more restrictive.",
+    "remediation": "Run the following command (using the kubelet config file location): chmod 600",
+    "default_value": "The default permissions for the kubelet configuration file are 600. Internal Only - General",
+    "impact": "Overly permissive file access increases the security risk to the platform.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ 2. https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks",
+    "references": [
+      "https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.1.4",
+    "title": "Ensure that the kubelet configuration file ownership is set to  root:root",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Ensure that if the kubelet configuration file exists, it is owned by root:root.",
+    "rationale": "The kubelet reads various parameters, including security settings, from a config file specified by the --config argument. If this file is specified you should restrict its file permissions to maintain the integrity of the file. The file should be owned by root:root.",
+    "audit": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Click on the desired cluster to open the Details page, then click on the desired Node pool to open the Node pool Details . Note the name of the desired node 4. Go to VM Instances by visiting https://console.cloud.google.com/compute/instances 5. Find the desired node and click on 'SSH' to open an SSH connection to the node. Using Command Line Method 1 First, SSH to the relevant worker node: To check to see if the Kubelet Service is running: sudo systemctl status kubelet The output should return Active: active (running) since.. Run the following command on each node to find the appropriate Kubelet config file: ps -ef | grep kubelet The output of the above command should return something similar to --config /etc/kubernetes/kubelet/kubelet-config.yaml which is the location of the Kubelet config file. Run the following command: Internal Only - General stat -c %U:%G /etc/kubernetes/kubelet/kubelet-config.yaml The output of the above command is the Kubelet config file's ownership. Verify that the ownership is set to root:root Method 2 Create and Run a Privileged Pod. You will need to run a pod that is privileged enough to access the host's file system. This can be achieved by deploying a pod that uses the hostPath volume to mount the node's file system into the pod. Here's an example of a simple pod definition that mounts the root of the host to /host within the pod: apiVersion: v1 kind: Pod metadata: name: file-check spec: volumes: - name: host-root hostPath: path: / type: Directory containers: - name: nsenter image: busybox command: [\"sleep\", \"3600\"] volumeMounts: - name: host-root mountPath: /host securityContext: privileged: true Save this to a file (e.g., file-check-pod.yaml) and create the pod: kubectl apply -f file-check-pod.yaml Once the pod is running, you can exec into it to check file ownership on the node: kubectl exec -it file-check -- sh Now you are in a shell inside the pod, but you can access the node's file system through the /host directory and check the ownership of the file: ls -l /etc/kubernetes/kubelet/kubelet-config.yaml The output of the above command gives you the file's ownership. Verify that the ownership is set to root:root.",
+    "remediation": "Run the following command (using the config file location identified in the Audit step): Internal Only - General chown root:root",
+    "default_value": "The default file ownership is root:root.",
+    "impact": "Overly permissive file access increases the security risk to the platform.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ 2. https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks",
+    "references": [
+      "https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/cis-benchmarks"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.1",
+    "title": "Ensure that the Anonymous Auth is Not Enabled Draft",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Disable anonymous requests to the Kubelet server.",
+    "rationale": "When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the Kubelet server. You should rely on authentication to authorize access and disallow anonymous requests.",
+    "audit": "Audit Method 1: Kubelets can accept configuration via a configuration file and in some cases via command line arguments. It is important to note that parameters provided as command line arguments will override their counterpart parameters in the configuration file (see -- config details in the Kubelet CLI Reference for more info, where you can also find out which configuration parameters can be supplied as a command line argument). With this in mind, it is important to check for the existence of command line arguments as well as configuration file entries when auditing Kubelet configuration. Firstly, SSH to each node and execute the following command to find the Kubelet process: ps -ef | grep kubelet The output of the above command provides details of the active Kubelet process, from which we can see the command line arguments provided to the process. Also note the location of the configuration file, provided with the --config argument, as this will be needed to verify configuration. The file can be viewed with a command such as more or less, like so: Internal Only - General sudo less /path/to/kubelet-config.json Verify that Anonymous Authentication is not enabled. This may be configured as a command line argument to the kubelet service with --anonymous-auth=false or in the kubelet configuration file via \"authentication\": { \"anonymous\": { \"enabled\": false }. Audit Method 2: It is also possible to review the running configuration of a Kubelet via the /configz endpoint of the Kubernetes API. This can be achieved using kubectl to proxy your requests to the API. Discover all nodes in your cluster by running the following command: kubectl get nodes Next, initiate a proxy with kubectl on a local port of your choice. In this example we will use 8080: kubectl proxy --port=8080 With this running, in a separate terminal run the following command for each node: export NODE_NAME=my-node-name curl http://localhost:8080/api/v1/nodes/${NODE_NAME}/proxy/configz The curl command will return the API response which will be a JSON formatted string representing the Kubelet configuration. Verify that Anonymous Authentication is not enabled checking that \"authentication\": { \"anonymous\": { \"enabled\": false } is in the API response.",
+    "remediation": "Remediation Method 1: If configuring via the Kubelet config file, you first need to locate the file. To do this, SSH to each node and execute the following command to find the kubelet process: ps -ef | grep kubelet The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less, like so: sudo less /path/to/kubelet-config.json Disable Anonymous Authentication by setting the following parameter: Internal Only - General \"authentication\": { \"anonymous\": { \"enabled\": false } } Remediation Method 2: If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string. For systems using systemd, such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf. Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured: --anonymous-auth=false For Both Remediation Steps: Based on your system, restart the kubelet service and check the service status. The following example is for operating systems using systemd, such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured: systemctl daemon-reload systemctl restart kubelet.service systemctl status kubelet -l",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "Anonymous requests will be rejected.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/ 2. https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn- authz/#kubelet-authentication 3. https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/",
+    "references": [
+      "https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/",
+      "https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn",
+      "https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.2",
+    "title": "Ensure that the --authorization-mode argument is not set to  AlwaysAllow",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Do not allow all requests. Enable explicit authorization.",
+    "rationale": "Kubelets can be configured to allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests.",
+    "audit": "Audit Method 1: Kubelets can accept configuration via a configuration file and in some cases via command line arguments. It is important to note that parameters provided as command line arguments will override their counterpart parameters in the configuration file (see -- config details in the Kubelet CLI Reference for more info, where you can also find out which configuration parameters can be supplied as a command line argument). With this in mind, it is important to check for the existence of command line arguments as well as configuration file entries when auditing Kubelet configuration. Firstly, SSH to each node and execute the following command to find the Kubelet process: ps -ef | grep kubelet The output of the above command provides details of the active Kubelet process, from which we can see the command line arguments provided to the process. Also note the location of the configuration file, provided with the --config argument, as this will be needed to verify configuration. The file can be viewed with a command such as more or less, like so: Internal Only - General sudo less /path/to/kubelet-config.json Verify that Webhook Authentication is enabled. This may be enabled as a command line argument to the kubelet service with --authentication-token-webhook or in the kubelet configuration file via \"authentication\": { \"webhook\": { \"enabled\": true } }. Verify that the Authorization Mode is set to WebHook. This may be set as a command line argument to the kubelet service with --authorization-mode=Webhook or in the configuration file via \"authorization\": { \"mode\": \"Webhook }. Audit Method 2: It is also possible to review the running configuration of a Kubelet via the /configz endpoint of the Kubernetes API. This can be achieved using kubectl to proxy your requests to the API. Discover all nodes in your cluster by running the following command: kubectl get nodes Next, initiate a proxy with kubectl on a local port of your choice. In this example we will use 8080: kubectl proxy --port=8080 With this running, in a separate terminal run the following command for each node: export NODE_NAME=my-node-name curl http://localhost:8080/api/v1/nodes/${NODE_NAME}/proxy/configz The curl command will return the API response which will be a JSON formatted string representing the Kubelet configuration. Verify that Webhook Authentication is enabled with \"authentication\": { \"webhook\": { \"enabled\": true } } in the API response. Verify that the Authorization Mode is set to WebHook with \"authorization\": { \"mode\": \"Webhook } in the API response.",
+    "remediation": "Remediation Method 1: If configuring via the Kubelet config file, you first need to locate the file. To do this, SSH to each node and execute the following command to find the kubelet process: ps -ef | grep kubelet The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less, like so: sudo less /path/to/kubelet-config.json Enable Webhook Authentication by setting the following parameter: Internal Only - General \"authentication\": { \"webhook\": { \"enabled\": true } } Next, set the Authorization Mode to Webhook by setting the following parameter: \"authorization\": { \"mode\": \"Webhook } Finer detail of the authentication and authorization fields can be found in the Kubelet Configuration documentation. Remediation Method 2: If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string. For systems using systemd, such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf. Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured: --authentication-token-webhook --authorization-mode=Webhook For Both Remediation Steps: Based on your system, restart the kubelet service and check the service status. The following example is for operating systems using systemd, such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured: systemctl daemon-reload systemctl restart kubelet.service systemctl status kubelet -l",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "Unauthorized requests will be denied.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/ 2. https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn- authz/#kubelet-authentication 3. https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/ Internal Only - General",
+    "references": [
+      "https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/",
+      "https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn",
+      "https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.3",
+    "title": "Ensure that a Client CA File is Configured",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Enable Kubelet authentication using certificates.",
+    "rationale": "The connections from the apiserver to the kubelet are used for fetching logs for pods, attaching (through kubectl) to running pods, and using the kubelet’s port-forwarding functionality. These connections terminate at the kubelet’s HTTPS endpoint. By default, the apiserver does not verify the kubelet’s serving certificate, which makes the connection subject to man-in-the-middle attacks, and unsafe to run over untrusted and/or public networks. Enabling Kubelet certificate authentication ensures that the apiserver could authenticate the Kubelet before submitting any requests.",
+    "audit": "Audit Method 1: Kubelets can accept configuration via a configuration file and in some cases via command line arguments. It is important to note that parameters provided as command line arguments will override their counterpart parameters in the configuration file (see -- config details in the Kubelet CLI Reference for more info, where you can also find out which configuration parameters can be supplied as a command line argument). With this in mind, it is important to check for the existence of command line arguments as well as configuration file entries when auditing Kubelet configuration. Firstly, SSH to each node and execute the following command to find the Kubelet process: ps -ef | grep kubelet The output of the above command provides details of the active Kubelet process, from which we can see the command line arguments provided to the process. Also note the location of the configuration file, provided with the --config argument, as this will be needed to verify configuration. The file can be viewed with a command such as more or less, like so: Internal Only - General sudo less /path/to/kubelet-config.json Verify that a client certificate authority file is configured. This may be configured using a command line argument to the kubelet service with --client-ca-file or in the kubelet configuration file via \"authentication\": { \"x509\": {\"clientCAFile\": } }\". Audit Method 2: It is also possible to review the running configuration of a Kubelet via the /configz endpoint of the Kubernetes API. This can be achieved using kubectl to proxy your requests to the API. Discover all nodes in your cluster by running the following command: kubectl get nodes Next, initiate a proxy with kubectl on a local port of your choice. In this example we will use 8080: kubectl proxy --port=8080 With this running, in a separate terminal run the following command for each node: export NODE_NAME=my-node-name curl http://localhost:8080/api/v1/nodes/${NODE_NAME}/proxy/configz The curl command will return the API response which will be a JSON formatted string representing the Kubelet configuration. Verify that a client certificate authority file is configured with \"authentication\": { \"x509\": {\"clientCAFile\": } }\" in the API response.",
+    "remediation": "Remediation Method 1: If configuring via the Kubelet config file, you first need to locate the file. To do this, SSH to each node and execute the following command to find the kubelet process: ps -ef | grep kubelet The output of the above command provides details of the active kubelet process, from which we can see the location of the configuration file provided to the kubelet service with the --config argument. The file can be viewed with a command such as more or less, like so: sudo less /path/to/kubelet-config.json Configure the client certificate authority file by setting the following parameter appropriately: Internal Only - General \"authentication\": { \"x509\": {\"clientCAFile\": } }\" Remediation Method 2: If using executable arguments, edit the kubelet service file on each worker node and ensure the below parameters are part of the KUBELET_ARGS variable string. For systems using systemd, such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, then this file can be found at /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf. Otherwise, you may need to look up documentation for your chosen operating system to determine which service manager is configured: --client-ca-file= For Both Remediation Steps: Based on your system, restart the kubelet service and check the service status. The following example is for operating systems using systemd, such as the Amazon EKS Optimised Amazon Linux or Bottlerocket AMIs, and invokes the systemctl command. If systemctl is not available then you will need to look up documentation for your chosen operating system to determine which service manager is configured: systemctl daemon-reload systemctl restart kubelet.service systemctl status kubelet -l",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "You require TLS to be configured on apiserver as well as kubelets.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/ 2. https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn- authz/#kubelet-authentication 3. https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/",
+    "references": [
+      "https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/",
+      "https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn",
+      "https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.4",
+    "title": "Ensure that the --read-only-port is disabled",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Disable the read-only port.",
+    "rationale": "The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster.",
+    "audit": "If using a Kubelet configuration file, check that there is an entry for authentication: anonymous: enabled set to 0. First, SSH to the relevant node: Run the following command on each node to find the appropriate Kubelet config file: ps -ef | grep kubelet The output of the above command should return something similar to --config /etc/kubernetes/kubelet/kubelet-config.json which is the location of the Kubelet config file. Open the Kubelet config file: cat /etc/kubernetes/kubelet/kubelet-config.json Verify that the --read-only-port argument exists and is set to 0. If the --read-only-port argument is not present, check that there is a Kubelet config file specified by --config. Check that if there is a readOnlyPort entry in the file, it is set to 0.",
+    "remediation": "If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to 0 Internal Only - General \"readOnlyPort\": 0 If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string. --read-only-port=0 For each remediation: Based on your system, restart the kubelet service and check status systemctl daemon-reload systemctl restart kubelet.service systemctl status kubelet -l",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/admin/kubelet/",
+    "references": [
+      "https://kubernetes.io/docs/admin/kubelet/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.5",
+    "title": "Ensure that the --streaming-connection-idle-timeout  argument is not set to 0",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Do not disable timeouts on streaming connections.",
+    "rationale": "Setting idle timeouts ensures that you are protected against Denial-of-Service attacks, inactive connections and running out of ephemeral ports. Note: By default, --streaming-connection-idle-timeout is set to 4 hours which might be too high for your environment. Setting this as appropriate would additionally ensure that such streaming connections are timed out after serving legitimate use cases.",
+    "audit": "Audit Method 1: First, SSH to the relevant node: Run the following command on each node to find the running kubelet process: ps -ef | grep kubelet If the command line for the process includes the argument streaming-connection- idle-timeout verify that it is not set to 0. If the streaming-connection-idle-timeout argument is not present in the output of the above command, refer instead to the config argument that specifies the location of the Kubelet config file e.g. --config /etc/kubernetes/kubelet-config.yaml. Open the Kubelet config file: Internal Only - General cat /etc/kubernetes/kubelet-config.yaml Verify that the streamingConnectionIdleTimeout argument is not set to 0. Audit Method 2: If using the api configz endpoint consider searching for the status of \"streamingConnectionIdleTimeout\":\"4h0m0s\" by extracting the live configuration from the nodes running kubelet. Set the local proxy port and the following variables and provide proxy port number and node name; HOSTNAME_PORT=\"localhost-and-port-number\" NODE_NAME=\"The-Name-Of-Node-To-Extract-Configuration\" from the output of \"kubectl get nodes\" kubectl proxy --port=8001 & export HOSTNAME_PORT=localhost:8001 (example host and port number) export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\") curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"",
+    "remediation": "Remediation Method 1: If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to a non-zero value in the format of #h#m#s \"streamingConnectionIdleTimeout\": \"4h0m0s\" You should ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not specify a --streaming-connection-idle-timeout argument because it would override the Kubelet config file. Remediation Method 2: If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string. --streaming-connection-idle-timeout=4h0m0s Remediation Method 3: If using the api configz endpoint consider searching for the status of \"streamingConnectionIdleTimeout\": by extracting the live configuration from the nodes running kubelet. **See detailed step-by-step configmap procedures in Reconfigure a Node's Kubelet in a Live Cluster, and then rerun the curl statement from audit process to check for kubelet configuration changes Internal Only - General kubectl proxy --port=8001 & export HOSTNAME_PORT=localhost:8001 (example host and port number) export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\") curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\" For all three remediations: Based on your system, restart the kubelet service and check status systemctl daemon-reload systemctl restart kubelet.service systemctl status kubelet -l",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "Long-lived connections could be interrupted.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/pull/18552",
+    "references": [
+      "https://kubernetes.io/docs/admin/kubelet/",
+      "https://github.com/kubernetes/kubernetes/pull/18552"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.6",
+    "title": "Ensure that the --make-iptables-util-chains argument is set  to true",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Allow Kubelet to manage iptables.",
+    "rationale": "Kubelets can automatically manage the required changes to iptables based on how you choose your networking options for the pods. It is recommended to let kubelets manage the changes to iptables. This ensures that the iptables configuration remains in sync with pods networking configuration. Manually configuring iptables with dynamic pod network configuration changes might hamper the communication between pods/containers and to the outside world. You might have iptables rules too restrictive or too open.",
+    "audit": "Audit Method 1: First, SSH to each node: Run the following command on each node to find the Kubelet process: ps -ef | grep kubelet If the output of the above command includes the argument --make-iptables-util- chains then verify it is set to true. If the --make-iptables-util-chains argument does not exist, and there is a Kubelet config file specified by --config, verify that the file does not set makeIPTablesUtilChains to false. Audit Method 2: If using the api configz endpoint consider searching for the status of authentication... \"makeIPTablesUtilChains.:true by extracting the live configuration from the nodes running kubelet. Set the local proxy port and the following variables and provide proxy port number and node name; HOSTNAME_PORT=\"localhost-and-port-number\" NODE_NAME=\"The-Name-Of-Node-To-Extract-Configuration\" from the output of \"kubectl get nodes\" Internal Only - General kubectl proxy --port=8001 & export HOSTNAME_PORT=localhost:8001 (example host and port number) export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\") curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"",
+    "remediation": "Remediation Method 1: If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet/kubelet-config.json and set the below parameter to true \"makeIPTablesUtilChains\": true Ensure that /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --make-iptables-util-chains argument because that would override your Kubelet config file. Remediation Method 2: If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string. --make-iptables-util-chains:true Remediation Method 3: If using the api configz endpoint consider searching for the status of \"makeIPTablesUtilChains.: true by extracting the live configuration from the nodes running kubelet. **See detailed step-by-step configmap procedures in Reconfigure a Node's Kubelet in a Live Cluster, and then rerun the curl statement from audit process to check for kubelet configuration changes kubectl proxy --port=8001 & export HOSTNAME_PORT=localhost:8001 (example host and port number) export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\") curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\" For all three remediations: Based on your system, restart the kubelet service and check status Internal Only - General systemctl daemon-reload systemctl restart kubelet.service systemctl status kubelet -l",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "Kubelet would manage the iptables on the system and keep it in sync. If you are using any other iptables management solution, then there might be some conflicts.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/",
+    "references": [
+      "https://kubernetes.io/docs/admin/kubelet/",
+      "https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.7",
+    "title": "Ensure that the --eventRecordQPS argument is set to 0 or a  level which ensures appropriate event capture",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Security relevant information should be captured. The eventRecordQPS on the Kubelet configuration can be used to limit the rate at which events are gathered and sets the maximum event creations per second. Setting this too low could result in relevant events not being logged, however the unlimited setting of 0 could result in a denial of service on the kubelet.",
+    "rationale": "It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data.",
+    "audit": "Run the following command on each node: sudo grep \"eventRecordQPS\" /etc/systemd/system/kubelet.service.d/10- kubeadm.conf Review the value set for the argument and determine whether this has been set to an appropriate level for the cluster. If the argument does not exist, check that there is a Kubelet config file specified by -- config and review the value in this location.",
+    "remediation": "If using a Kubelet config file, edit the file to set eventRecordQPS: to an appropriate level. If using command line arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. Based on your system, restart the kubelet service. For example: Internal Only - General systemctl daemon-reload systemctl restart kubelet.service",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "Setting this parameter to 0 could result in a denial of service condition due to excessive events being created. The cluster's event processing and storage systems should be scaled to handle expected event loads.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/apis/kubeletco nfig/v1beta1/types.go 3. https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/",
+    "references": [
+      "https://kubernetes.io/docs/admin/kubelet/",
+      "https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/apis/kubeletco",
+      "https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.8",
+    "title": "Ensure that the --rotate-certificates argument is not present  or is set to true",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Enable kubelet client certificate rotation.",
+    "rationale": "The --rotate-certificates setting causes the kubelet to rotate its client certificates by creating new CSRs as its existing credentials expire. This automated periodic rotation ensures that the there is no downtime due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad. Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself. Note: This feature also requires the RotateKubeletClientCertificate feature gate to be enabled.",
+    "audit": "Audit Method 1: SSH to each node and run the following command to find the Kubelet process: ps -ef | grep kubelet If the output of the command above includes the --RotateCertificate executable argument, verify that it is set to true. If the output of the command above does not include the --RotateCertificate executable argument then check the Kubelet config file. The output of the above command should return something similar to --config /etc/kubernetes/kubelet/kubelet-config.json which is the location of the Kubelet config file. Open the Kubelet config file: cat /etc/kubernetes/kubelet-config.yaml Verify that the RotateCertificate argument is not present, or is set to true. Internal Only - General",
+    "remediation": "Remediation Method 1: If modifying the Kubelet config file, edit the kubelet-config.yaml file /etc/kubernetes/kubelet/kubelet-config.yaml and set the below parameter to true \"RotateCertificate\":true Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the -- RotateCertificate executable argument to false because this would override the Kubelet config file. Remediation Method 2: If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string. --RotateCertificate=true",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "None",
+    "additional_information": "",
+    "references_text": "1. https://github.com/kubernetes/kubernetes/pull/41912 2. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls- bootstrapping/#kubelet-configuration 3. https://kubernetes.io/docs/imported/release/notes/ 4. https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/ 5. https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/",
+    "references": [
+      "https://github.com/kubernetes/kubernetes/pull/41912",
+      "https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls",
+      "https://kubernetes.io/docs/imported/release/notes/",
+      "https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/",
+      "https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "3 Section",
+    "id": "3.2.9",
+    "title": "Ensure that the RotateKubeletServerCertificate argument is  set to true",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Enable kubelet server certificate rotation.",
+    "rationale": "RotateKubeletServerCertificate causes the kubelet to both request a serving certificate after bootstrapping its client credentials and rotate the certificate as its existing credentials expire. This automated periodic rotation ensures that the there are no downtimes due to expired certificates and thus addressing availability in the CIA (Confidentiality, Integrity, and Availability) security triad. Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to implement rotation yourself.",
+    "audit": "Audit Method 1: First, SSH to each node: Run the following command on each node to find the Kubelet process: ps -ef | grep kubelet If the output of the command above includes the --rotate-kubelet-server- certificate executable argument verify that it is set to true. If the process does not have the --rotate-kubelet-server-certificate executable argument then check the Kubelet config file. The output of the above command should return something similar to --config /etc/kubernetes/kubelet-config.yaml which is the location of the Kubelet config file. Open the Kubelet config file: Internal Only - General cat /etc/kubernetes/kubelet-config.yaml Verify that RotateKubeletServerCertificate argument exists in the featureGates section and is set to true. Audit Method 2: If using the api configz endpoint consider searching for the status of \"RotateKubeletServerCertificate\":true by extracting the live configuration from the nodes running kubelet. Set the local proxy port and the following variables and provide proxy port number and node name; HOSTNAME_PORT=\"localhost-and-port-number\" NODE_NAME=\"The-Name-Of-Node-To-Extract-Configuration\" from the output of \"kubectl get nodes\" kubectl proxy --port=8001 & export HOSTNAME_PORT=localhost:8001 (example host and port number) export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\") curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\"",
+    "remediation": "Remediation Method 1: If modifying the Kubelet config file, edit the kubelet-config.json file /etc/kubernetes/kubelet-config.yaml and set the below parameter to true \"featureGates\": { \"RotateKubeletServerCertificate\":true }, Additionally, ensure that the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf does not set the --rotate-kubelet-server-certificate executable argument to false because this would override the Kubelet config file. Remediation Method 2: If using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubelet-args.conf on each worker node and add the below parameter at the end of the KUBELET_ARGS variable string. --rotate-kubelet-server-certificate=true Remediation Method 3: If using the api configz endpoint consider searching for the status of \"RotateKubeletServerCertificate\": by extracting the live configuration from the nodes running kubelet. **See detailed step-by-step configmap procedures in Reconfigure a Node's Kubelet in a Live Cluster, and then rerun the curl statement from audit process to check for kubelet configuration changes Internal Only - General kubectl proxy --port=8001 & export HOSTNAME_PORT=localhost:8001 (example host and port number) export NODE_NAME=gke-cluster-1-pool1-5e572947-r2hg (example node name from \"kubectl get nodes\") curl -sSL \"http://${HOSTNAME_PORT}/api/v1/nodes/${NODE_NAME}/proxy/configz\" For all three remediation methods: Restart the kubelet service and check status. The example below is for when using systemctl to manage services: systemctl daemon-reload systemctl restart kubelet.service systemctl status kubelet -l",
+    "default_value": "See the GKE documentation for the default value.",
+    "impact": "None",
+    "additional_information": "",
+    "references_text": "1. https://github.com/kubernetes/kubernetes/pull/45059 2. https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration",
+    "references": [
+      "https://github.com/kubernetes/kubernetes/pull/45059",
+      "https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "4 Section",
+    "id": "4.1.1",
+    "title": "Ensure that the cluster-admin role is only used where  required",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "The RBAC role cluster-admin provides wide-ranging powers over the environment and should be used only where and when needed.",
+    "rationale": "Kubernetes provides a set of default roles where RBAC is used. Some of these roles such as cluster-admin provide wide-ranging privileges which should only be applied where absolutely necessary. Roles such as cluster-admin allow super-user access to perform any action on any resource. When used in a ClusterRoleBinding, it gives full control over every resource in the cluster and in all namespaces. When used in a RoleBinding, it gives full control over every resource in the rolebinding's namespace, including the namespace itself.",
+    "audit": "Obtain a list of the principals who have access to the cluster-admin role by reviewing the clusterrolebinding output for each role binding that has access to the cluster- admin role. kubectl get clusterrolebindings -o=custom- columns=NAME:.metadata.name,ROLE:.roleRef.name,SUBJECT:.subjects[*].name Review each principal listed and ensure that cluster-admin privilege is required for it.",
+    "remediation": "Identify all clusterrolebindings to the cluster-admin role. Check if they are used and if they need this role or if they could use a role with fewer privileges. Where possible, first bind users to a lower-privileged role and then remove the clusterrolebinding to the cluster-admin role : Internal Only - General kubectl delete clusterrolebinding [name]",
+    "default_value": "By default a single clusterrolebinding called cluster-admin is provided with the system:masters group as its principal.",
+    "impact": "Care should be taken before removing any clusterrolebindings from the environment to ensure they were not required for operation of the cluster. Specifically, modifications should not be made to clusterrolebindings with the system: prefix as they are required for the operation of system components.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/concepts/cluster-administration/ 2. https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+    "references": [
+      "https://kubernetes.io/docs/concepts/cluster-administration/",
+      "https://kubernetes.io/docs/reference/access-authn-authz/rbac/"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "4 Section",
+    "id": "4.1.4",
+    "title": "Ensure that default service accounts are not actively used",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "The default service account should not be used to ensure that rights granted to applications can be more easily audited and reviewed.",
+    "rationale": "Kubernetes provides a default service account which is used by cluster workloads where no specific service account is assigned to the pod. Where access to the Kubernetes API from a pod is required, a specific service account should be created for that pod, and rights granted to that service account. The default service account should be configured such that it does not provide a service account token and does not have any explicit rights assignments.",
+    "audit": "For each namespace in the cluster, review the rights assigned to the default service account and ensure that it has no roles or cluster roles bound to it apart from the defaults. Additionally ensure that the automountServiceAccountToken: false setting is in place for each default service account.",
+    "remediation": "Create explicit service accounts wherever a Kubernetes workload requires specific access to the Kubernetes API server. Modify the configuration of each default service account to include this value automountServiceAccountToken: false",
+    "default_value": "By default the default service account allows for its service account token to be mounted in pods in its namespace. Internal Only - General",
+    "impact": "All workloads which require access to the Kubernetes API will require an explicit service account to be created.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+    "references": [
+      "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "4 Section",
+    "id": "4.1.5",
+    "title": "Ensure that Service Account Tokens are only mounted  where necessary",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Service accounts tokens should not be mounted in pods except where the workload running in the pod explicitly needs to communicate with the API server",
+    "rationale": "Mounting service account tokens inside pods can provide an avenue for privilege escalation attacks where an attacker is able to compromise a single pod in the cluster. Avoiding mounting these tokens removes this attack avenue.",
+    "audit": "Review pod and service account objects in the cluster and ensure that the option below is set, unless the resource explicitly requires this access. automountServiceAccountToken: false",
+    "remediation": "Modify the definition of pods and service accounts which do not need to mount service account tokens to disable it.",
+    "default_value": "By default, all pods get a service account token mounted in them.",
+    "impact": "Pods mounted without service account tokens will not be able to communicate with the API server, except where the resource is available to unauthenticated principals.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/ Internal Only - General",
+    "references": [
+      "https://kubernetes.io/docs/tasks/configure-pod-container/configure-service"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "4 Section",
+    "id": "4.2.1",
+    "title": "Ensure that the cluster enforces Pod Security Standard  Baseline profile or stricter for all namespaces.",
+    "assessment": "Manual",
+    "profile": "• Level 1",
+    "description": "The Pod Security Standard Baseline profile defines a baseline for container security. You can enforce this by using the built-in Pod Security Admission controller.",
+    "rationale": "Without an active mechanism to enforce the Pod Security Standard Baseline profile, it is not possible to limit the use of containers with access to underlying cluster nodes, via mechanisms like privileged containers, or the use of hostPath volume mounts.",
+    "audit": "diff <(kubectl get namespace -l pod-security.kubernetes.io/enforce=baseline -o jsonpath='{range .items[]}{.metadata.name}{\"\\n\"}') <(kubectl get namespace -o jsonpath='{range .items[]}{.metadata.name}{\"\\n\"}')",
+    "remediation": "Ensure that Pod Security Admission is in place for every namespace which contains user workloads. Run the following command to enforce the Baseline profile in a namespace: kubectl label namespace pod-security.kubernetes.io/enforce=baseline",
+    "default_value": "By default, Pod Security Admission is enabled but no policies are in place. Internal Only - General",
+    "impact": "Enforcing a baseline profile will limit the use of containers.",
+    "additional_information": "",
+    "references_text": "N/A",
+    "references": [],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "4 Section",
+    "id": "4.3.1",
+    "title": "Ensure that the CNI in use supports Network Policies",
+    "assessment": "Manual",
+    "profile": "• Level 1",
+    "description": "There are a variety of CNI plugins available for Kubernetes. If the CNI in use does not support Network Policies it may not be possible to effectively restrict traffic in the cluster.",
+    "rationale": "Kubernetes network policies are enforced by the CNI plugin in use. As such it is important to ensure that the CNI plugin supports both Ingress and Egress network policies. See also recommendation 5.6.7.",
+    "audit": "Review the documentation of CNI plugin in use by the cluster, and confirm that it supports Ingress and Egress network policies.",
+    "remediation": "To use a CNI plugin with Network Policy, enable Network Policy in GKE, and the CNI plugin will be updated. See recommendation 5.6.7.",
+    "default_value": "This will depend on the CNI plugin in use.",
+    "impact": "None",
+    "additional_information": "One example here is Flannel (https://github.com/flannel-io/flannel) which does not support Network policy unless Calico is also in use. Internal Only - General",
+    "references_text": "1. https://kubernetes.io/docs/concepts/services-networking/network-policies/ 2. https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage- net/network-plugins/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview",
+    "references": [
+      "https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+      "https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "4 Section",
+    "id": "4.3.2",
+    "title": "Ensure that all Namespaces have Network Policies defined",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Use network policies to isolate traffic in the cluster network.",
+    "rationale": "Running different applications on the same Kubernetes cluster creates a risk of one compromised application attacking a neighboring application. Network segmentation is important to ensure that containers can communicate only with those they are supposed to. A network policy is a specification of how selections of pods are allowed to communicate with each other and other network endpoints. Network Policies are namespace scoped. When a network policy is introduced to a given namespace, all traffic not allowed by the policy is denied. However, if there are no network policies in a namespace all traffic will be allowed into and out of the pods in that namespace.",
+    "audit": "Run the below command and review the NetworkPolicy objects created in the cluster. kubectl get networkpolicy --all-namespaces ensure that each namespace defined in the cluster has at least one Network Policy.",
+    "remediation": "Follow the documentation and create NetworkPolicy objects as needed. See: https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy for more information.",
+    "default_value": "By default, network policies are not created. Internal Only - General",
+    "impact": "Once network policies are in use within a given namespace, traffic not explicitly allowed by a network policy will be denied. As such it is important to ensure that, when introducing network policies, legitimate traffic is not blocked.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy 2. https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/network",
+      "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "4 Section",
+    "id": "4.6.2",
+    "title": "Ensure that the seccomp profile is set to RuntimeDefault in  the pod definitions",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Enable RuntimeDefault seccomp profile in the pod definitions.",
+    "rationale": "Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container.",
+    "audit": "Review the pod definitions output for all namespaces in the cluster with the command below. kubectl get pods --all-namespaces -o json | jq -r '.items[] | select(.metadata.annotations.\"seccomp.security.alpha.kubernetes.io/pod\" == \"runtime/default\" or .spec.securityContext.seccompProfile.type == \"RuntimeDefault\") | {namespace: .metadata.namespace, name: .metadata.name, seccompProfile: .spec.securityContext.seccompProfile.type}'",
+    "remediation": "Use security context to enable the RuntimeDefault seccomp profile in your pod definitions. An example is as below: { \"namespace\": \"kube-system\", \"name\": \"metrics-server-v0.7.0-dbcc8ddf6-gz7d4\", \"seccompProfile\": \"RuntimeDefault\" }",
+    "default_value": "By default, seccomp profile is set to unconfined which means that no seccomp profiles are enabled. Internal Only - General",
+    "impact": "If the RuntimeDefault seccomp profile is too restrictive for you, you would have to create/manage your own Localhost seccomp profiles.",
+    "additional_information": "",
+    "references_text": "1. https://kubernetes.io/docs/tutorials/security/seccomp/ 2. https://cloud.google.com/kubernetes-engine/docs/concepts/seccomp-in-gke",
+    "references": [
+      "https://kubernetes.io/docs/tutorials/security/seccomp/",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/seccomp-in-gke"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.1.1",
+    "title": "Ensure Image Vulnerability Scanning is enabled",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Note: GCR is now deprecated, being superseded by Artifact Registry starting 15th May 2024. Runtime Vulnerability scanning is available via GKE Security Posture Scan images stored in Google Container Registry (GCR) or Artifact Registry (AR) for vulnerabilities.",
+    "rationale": "Vulnerabilities in software packages can be exploited by malicious users to obtain unauthorized access to local cloud resources. GCR Container Analysis API or Artifact Registry Container Scanning API allow images stored in GCR or AR respectively to be scanned for known vulnerabilities.",
+    "audit": "For Images Hosted in GCR: Using Google Cloud Console: 1. Go to GCR by visiting https://console.cloud.google.com/gcr 2. Select Settings and check if Vulnerability scanning is Enabled. Using Command Line: gcloud services list --enabled Ensure that the Container Registry API and Container Analysis API are listed in the output. For Images Hosted in AR: Internal Only - General Using Google Cloud Console: 1. Go to AR by visiting https://console.cloud.google.com/artifacts 2. Select Settings and check if Vulnerability scanning is Enabled. Using Command Line: gcloud services list --enabled Ensure that Container Scanning API and Artifact Registry API are listed in the output.",
+    "remediation": "For Images Hosted in GCR: Using Google Cloud Console 1. Go to GCR by visiting: https://console.cloud.google.com/gcr 2. Select Settings and, under the Vulnerability Scanning heading, click the TURN ON button. Using Command Line gcloud services enable containeranalysis.googleapis.com For Images Hosted in AR: Using Google Cloud Console 1. Go to GCR by visiting: https://console.cloud.google.com/artifacts 2. Select Settings and, under the Vulnerability Scanning heading, click the ENABLE button. Using Command Line Internal Only - General gcloud services enable containerscanning.googleapis.com",
+    "default_value": "By default, GCR Container Analysis and AR Container Scanning are disabled.",
+    "impact": "None.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/artifact-registry/docs/analysis 2. https://cloud.google.com/artifact-analysis/docs/os-overview 3. https://console.cloud.google.com/marketplace/product/google/containerregistry.g oogleapis.com 4. https://cloud.google.com/kubernetes-engine/docs/concepts/about-configuration- scanning 5. https://containersecurity.googleapis.com",
+    "references": [
+      "https://cloud.google.com/artifact-registry/docs/analysis",
+      "https://cloud.google.com/artifact-analysis/docs/os-overview",
+      "https://console.cloud.google.com/marketplace/product/google/containerregistry.g",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/about-configuration",
+      "https://containersecurity.googleapis.com"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.1.4",
+    "title": "Ensure only trusted container images are used",
+    "assessment": "Manual",
+    "profile": "• Level 2",
+    "description": "Use Binary Authorization to allowlist (whitelist) only approved container registries.",
+    "rationale": "Allowing unrestricted access to external container registries provides the opportunity for malicious or unapproved containers to be deployed into the cluster. Ensuring only trusted container images are used reduces this risk. Also see recommendation 5.10.4.",
+    "audit": "Using Google Cloud Console: Check that Binary Authorization is enabled for the GKE cluster: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. Click on the cluster and on the Details pane, ensure that Binary Authorization is set to 'Enabled'. Then assess the contents of the policy: 1. Go to Binary Authorization by visiting: https://console.cloud.google.com/security/binary-authorization 2. Ensure the project default rule is not set to 'Allow all images' under Policy deployment rules. 3. Review the list of 'Images exempt from policy' for unauthorized container registries. Using Command Line: Check that Binary Authorization is enabled for the GKE cluster: gcloud container clusters describe --zone -- format json | jq .binaryAuthorization This will return the following if Binary Authorization is enabled: Internal Only - General { \"enabled\": true } Then assess the contents of the policy: gcloud container binauthz policy export > current-policy.yaml Ensure that the current policy is not configured to allow all images (evaluationMode: ALWAYS_ALLOW). Review the list of admissionWhitelistPatterns for unauthorized container registries. cat current-policy.yaml admissionWhitelistPatterns: ... defaultAdmissionRule: evaluationMode: ALWAYS_ALLOW",
+    "remediation": "Using Google Cloud Console: 1. Go to Binary Authorization by visiting: https://console.cloud.google.com/security/binary-authorization 2. Enable Binary Authorization API (if disabled). 3. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 4. Select Kubernetes cluster for which Binary Authorization is disabled. 5. Within the Details pane, under the Security heading, click on the pencil icon called Edit binary authorization. 6. Ensure that Enable Binary Authorization is checked. 7. Click SAVE CHANGES. 8. Return to the Binary Authorization by visiting: https://console.cloud.google.com/security/binary-authorization. 9. Set an appropriate policy for the cluster and enter the approved container registries under Image paths. Using Command Line: Update the cluster to enable Binary Authorization: gcloud container cluster update --enable-binauthz Create a Binary Authorization Policy using the Binary Authorization Policy Reference: https://cloud.google.com/binary-authorization/docs/policy-yaml-reference for guidance. Import the policy file into Binary Authorization: gcloud container binauthz policy import",
+    "default_value": "By default, Binary Authorization is disabled along with container registry allowlisting. Internal Only - General",
+    "impact": "All container images to be deployed to the cluster must be hosted within an approved container image registry. If public registries are not on the allowlist, a process for bringing commonly used container images into an approved private registry and keeping them up to date will be required.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/binary-authorization/docs/policy-yaml-reference 2. https://cloud.google.com/binary-authorization/docs/setting-up",
+    "references": [
+      "https://cloud.google.com/binary-authorization/docs/policy-yaml-reference",
+      "https://cloud.google.com/binary-authorization/docs/setting-up"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.2.1",
+    "title": "Ensure GKE clusters are not running using the Compute  Engine default service account",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Create and use minimally privileged Service accounts to run GKE cluster nodes instead of using the Compute Engine default Service account. Unnecessary permissions could be abused in the case of a node compromise.",
+    "rationale": "A GCP service account (as distinct from a Kubernetes ServiceAccount) is an identity that an instance or an application can be used to run GCP API requests. This identity is used to identify virtual machine instances to other Google Cloud Platform services. By default, Kubernetes Engine nodes use the Compute Engine default service account. This account has broad access by default, as defined by access scopes, making it useful to a wide variety of applications on the VM, but it has more permissions than are required to run your Kubernetes Engine cluster. A minimally privileged service account should be created and used to run the Kubernetes Engine cluster instead of using the Compute Engine default service account, and create separate service accounts for each Kubernetes Workload (See recommendation 5.2.2). Kubernetes Engine requires, at a minimum, the node service account to have the monitoring.viewer, monitoring.metricWriter, and logging.logWriter roles. Additional roles may need to be added for the nodes to pull images from GCR.",
+    "audit": "Using Google Cloud Console: Internal Only - General 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Select the cluster under test and click on each Node pool to bring up the Node pool details page. Ensure that for each Node pool the Service account is not set to default under the Security heading. To check the permissions allocated to the service account are the minimum required for cluster operation: 1. Go to IAM by visiting https://console.cloud.google.com/iam-admin/iam 2. From the list of Service accounts, ensure each cluster Service account has only the following roles: • Logs Writer • Monitoring Metric Writer • Monitoring Viewer Using Command line: To check which Service account is set for an existing cluster, run the following command: gcloud container node-pools describe $NODE_POOL --cluster $CLUSTER_NAME -- zone $COMPUTE_ZONE --format json | jq '.config.serviceAccount' The output of the above command will return default if default Service account is used for Project access. To check that the permissions allocated to the service account are the minimum required for cluster operation: gcloud projects get-iam-policy \\ --flatten=\"bindings[].members\" \\ --format='table(bindings.role)' \\ --filter=\"bindings.members:\" Review the output to ensure that the service account only has the roles required to run the cluster: • roles/logging.logWriter • roles/monitoring.metricWriter • roles/monitoring.viewer",
+    "remediation": "Using Google Cloud Console: To create a minimally privileged service account: Internal Only - General 1. Go to Service Accounts by visiting: https://console.cloud.google.com/iam- admin/serviceaccounts. 2. Click on CREATE SERVICE ACCOUNT. 3. Enter Service Account Details. 4. Click CREATE AND CONTINUE. 5. Within Service Account permissions add the following roles: o Logs Writer. o Monitoring Metric Writer. o `Monitoring Viewer. 6. Click CONTINUE. 7. Grant users access to this service account and create keys as required. 8. Click DONE. To create a Node pool to use the Service account: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Click on the cluster name within which the Node pool will be launched. 3. Click on ADD NODE POOL. 4. Within the Node Pool details, select the Security subheading, and under `Identity defaults, select the minimally privileged service account from the Service Account drop-down. 5. Click `CREATE to launch the Node pool. Note: The workloads will need to be migrated to the new Node pool, and the old node pools that use the default service account should be deleted to complete the remediation. Using Command Line: To create a minimally privileged service account: gcloud iam service-accounts create --display-name \"GKE Node Service Account\" export NODE_SA_EMAIL=gcloud iam service-accounts list --format='value(email)' --filter='displayName:GKE Node Service Account' Grant the following roles to the service account: export PROJECT_ID=gcloud config get-value project gcloud projects add-iam-policy-binding --member serviceAccount: --role roles/monitoring.metricWriter gcloud projects add-iam-policy-binding --member serviceAccount: --role roles/monitoring.viewer gcloud projects add-iam-policy-binding --member serviceAccount: --role roles/logging.logWriter To create a new Node pool using the Service account, run the following command: Internal Only - General gcloud container node-pools create --service- account=@.iam.gserviceaccount.com-- cluster= --zone Note: The workloads will need to be migrated to the new Node pool, and the old node pools that use the default service account should be deleted to complete the remediation.",
+    "default_value": "By default, nodes use the Compute Engine default service account when you create a new cluster.",
+    "impact": "Instances are automatically granted the https://www.googleapis.com/auth/cloud- platform scope to allow full access to all Google Cloud APIs. This is so that the IAM permissions of the instance are completely determined by the IAM roles of the Service account. Thus if Kubernetes workloads were using cluster access scopes to perform actions using Google APIs, they may no longer be able to, if not permitted by the permissions of the Service account. To remediate, follow recommendation 5.2.2. The Service account roles listed here are the minimum required to run the cluster. Additional roles may be required to pull from a private instance of Google Container Registry (GCR).",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/compute/docs/access/service- accounts#compute_engine_default_service_account",
+    "references": [
+      "https://cloud.google.com/compute/docs/access/service"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.3.1",
+    "title": "Ensure Kubernetes Secrets are encrypted using keys  managed in Cloud KMS",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Encrypt Kubernetes secrets, stored in etcd, at the application-layer using a customer- managed key in Cloud KMS.",
+    "rationale": "By default, GKE encrypts customer content stored at rest, including Secrets. GKE handles and manages this default encryption for you without any additional action on your part. Application-layer Secrets Encryption provides an additional layer of security for sensitive data, such as user defined Secrets and Secrets required for the operation of the cluster, such as service account keys, which are all stored in etcd. Using this functionality, you can use a key, that you manage in Cloud KMS, to encrypt data at the application layer. This protects against attackers in the event that they manage to gain access to etcd.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on each cluster to bring up the Details pane, and ensure Application-layer Secrets Encryption is set to 'Enabled'. Using Command Line: gcloud container clusters describe $CLUSTER_NAME --zone $COMPUTE_ZONE -- format json | jq '.databaseEncryption' If configured correctly, the output from the command returns a response containing the following detail: Internal Only - General keyName=projects//locations//keyRings//c ryptoKeys/] state=ENCRYPTED { \"currentState\": \"CURRENT_STATE_ENCRYPTED\", \"keyName\": \"projects//locations/us- central1/keyRings//cryptoKeys/\", \"state\": \"ENCRYPTED\" }",
+    "remediation": "To enable Application-layer Secrets Encryption, several configuration items are required. These include: • A key ring • A key • A GKE service account with Cloud KMS CryptoKey Encrypter/Decrypter role Once these are created, Application-layer Secrets Encryption can be enabled on an existing or new cluster. Using Google Cloud Console: To create a key 1. Go to Cloud KMS by visiting https://console.cloud.google.com/security/kms. 2. Select CREATE KEY RING. 3. Enter a Key ring name and the region where the keys will be stored. 4. Click CREATE. 5. Enter a Key name and appropriate rotation period within the Create key pane. 6. Click CREATE. To enable on a new cluster 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Click CREATE CLUSTER, and choose the required cluster mode. 3. Within the Security heading, under CLUSTER, check Encrypt secrets at the application layer checkbox. 4. Select the kms key as the customer-managed key and, if prompted, grant permissions to the GKE Service account. 5. Click CREATE. To enable on an existing cluster 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. Internal Only - General 2. Select the cluster to be updated. 3. Under the Details pane, within the Security heading, click on the pencil named Application-layer secrets encryption. 4. Enable Encrypt secrets at the application layer and choose a kms key. 5. Click SAVE CHANGES. Using Command Line: To create a key: Create a key ring: gcloud kms keyrings create --location --project Create a key: gcloud kms keys create --location --keyring --purpose encryption --project Grant the Kubernetes Engine Service Agent service account the Cloud KMS CryptoKey Encrypter/Decrypter role: gcloud kms keys add-iam-policy-binding --location -- keyring --member serviceAccount: --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project To create a new cluster with Application-layer Secrets Encryption: gcloud container clusters create --cluster-version=latest -- zone --database-encryption-key projects//locations//keyRings//cryptoKey s/ --project To enable on an existing cluster: gcloud container clusters update --zone --database- encryption-key projects//locations//keyRings//cryptoKey s/ --project",
+    "default_value": "By default, Application-layer Secrets Encryption is disabled.",
+    "impact": "To use the Cloud KMS CryptoKey to protect etcd in the cluster, the 'Kubernetes Engine Service Agent' Service account must hold the 'Cloud KMS CryptoKey Encrypter/Decrypter' role.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets Internal Only - General",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.4.1",
+    "title": "Ensure the GKE Metadata Server is Enabled",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Running the GKE Metadata Server prevents workloads from accessing sensitive instance metadata and facilitates Workload Identity.",
+    "rationale": "Every node stores its metadata on a metadata server. Some of this metadata, such as kubelet credentials and the VM instance identity token, is sensitive and should not be exposed to a Kubernetes workload. Enabling the GKE Metadata server prevents pods (that are not running on the host network) from accessing this metadata and facilitates Workload Identity. When unspecified, the default setting allows running pods to have full access to the node's underlying metadata server.",
+    "audit": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the name of the cluster of interest and for each Node pool within the cluster, open the Details pane, and ensure that the GKE Metadata Server is set to Enabled. Using Command Line To check whether the GKE Metadata Server is enabled for each Node pool within a cluster, run the following command: Internal Only - General gcloud container clusters describe --zone -- format json | jq .nodePools[].config.workloadMetadataConfig This should return the following for each Node pool: { \"mode\": \"GKE_METADATA\" } Null ({ }) is returned if the GKE Metadata Server is not enabled.",
+    "remediation": "The GKE Metadata Server requires Workload Identity to be enabled on a cluster. Modify the cluster to enable Workload Identity and enable the GKE Metadata Server. Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, select the cluster for which Workload Identity is disabled. 3. Under the DETAILS pane, navigate down to the Security subsection. 4. Click on the pencil icon named Edit Workload Identity, click on Enable Workload Identity in the pop-up window, and select a workload pool from the drop-down box. By default, it will be the namespace of the Cloud project containing the cluster, for example: .svc.id.goog. 5. Click SAVE CHANGES and wait for the cluster to update. 6. Once the cluster has updated, select each Node pool within the cluster Details page. 7. For each Node pool, select EDIT within the Node pool details page. 8. Within the Edit node pool pane, check the Enable GKE Metadata Server checkbox. 9. Click SAVE. Using Command Line gcloud container clusters update --identity- namespace=.svc.id.goog Note that existing Node pools are unaffected. New Node pools default to --workload- metadata-from-node=GKE_METADATA_SERVER. To modify an existing Node pool to enable GKE Metadata Server: gcloud container node-pools update --cluster= --workload-metadata-from-node=GKE_METADATA_SERVER Workloads may need modification in order for them to use Workload Identity as described within: https://cloud.google.com/kubernetes-engine/docs/how-to/workload- identity.",
+    "default_value": "By default, running pods to have full access to the node's underlying metadata server. Internal Only - General",
+    "impact": "The GKE Metadata Server must be run when using Workload Identity. Because Workload Identity replaces the need to use Metadata Concealment, the two approaches are incompatible. When the GKE Metadata Server and Workload Identity are enabled, unless the Pod is running on the host network, Pods cannot use the the Compute Engine default service account. Workloads may need modification in order for them to use Workload Identity as described within: https://cloud.google.com/kubernetes-engine/docs/how-to/workload- identity.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster- metadata#concealment 2. https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity 3. https://cloud.google.com/kubernetes-engine/docs/concepts/workload-identity",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster",
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/workload-identity"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.5.1",
+    "title": "Ensure Container-Optimized OS (cos_containerd) is used  for GKE node images",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Use Container-Optimized OS (cos_containerd) as a managed, optimized and hardened base OS that limits the host's attack surface.",
+    "rationale": "COS is an operating system image for Compute Engine VMs optimized for running containers. With COS, the containers can be brought up on Google Cloud Platform quickly, efficiently, and securely. Using COS as the node image provides the following benefits: • Run containers out of the box: COS instances come pre-installed with the container runtime and cloud-init. With a COS instance, the container can be brought up at the same time as the VM is created, with no on-host setup required. • Smaller attack surface: COS has a smaller footprint, reducing the instance's potential attack surface. • Locked-down by default: COS instances include a locked-down firewall and other security settings by default.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. From the list of clusters, select the cluster under test. Internal Only - General 3. Under the 'Node pools' section, make sure that for each of the Node pools, 'Container-Optimized OS (cos_containerd)' is listed in the 'Image type' column. Using Command line: To check Node image type for an existing cluster's Node pool: gcloud container node-pools describe --cluster --zone --format json | jq '.config.imageType' The output of the above command returns COS, if COS is used for Node images.",
+    "remediation": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select the Kubernetes cluster which does not use COS. 3. Under the Node pools heading, select the Node Pool that requires alteration. 4. Click EDIT. 5. Under the Image Type heading click CHANGE. 6. From the pop-up menu select Container-optimised OS with containerd (cos_containerd) (default) and click CHANGE 7. Repeat for all non-compliant Node pools. Using Command Line: To set the node image to cos for an existing cluster's Node pool: gcloud container clusters upgrade --image-type cos_containerd --zone --node-pool",
+    "default_value": "Container-optimised OS with containerd (cos_containerd) (default) is the default option for a cluster node image.",
+    "impact": "If modifying an existing cluster's Node pool to run COS, the upgrade operation used is long-running and will block other operations on the cluster (including delete) until it has run to completion. COS nodes also provide an option with containerd as the main container runtime directly integrated with Kubernetes instead of docker. Thus, on these nodes, Docker cannot view or access containers or images managed by Kubernetes. Applications should not interact with Docker directly. For general troubleshooting or debugging, use crictl instead.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/concepts/using-containerd 2. https://cloud.google.com/kubernetes-engine/docs/concepts/node-images",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/using-containerd",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/node-images"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.5.2",
+    "title": "Ensure Node Auto-Repair is enabled for GKE nodes",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Nodes in a degraded state are an unknown quantity and so may pose a security risk.",
+    "rationale": "Kubernetes Engine's node auto-repair feature helps you keep the nodes in the cluster in a healthy, running state. When enabled, Kubernetes Engine makes periodic checks on the health state of each node in the cluster. If a node fails consecutive health checks over an extended time period, Kubernetes Engine initiates a repair process for that node.",
+    "audit": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, select the desired cluster. For each Node pool, view the Node pool Details pane and ensure that under the 'Management' heading, 'Auto- repair' is set to 'Enabled'. Using Command Line: To check the existence of node auto-repair for an existing cluster's node pool, run: gcloud container node-pools describe --cluster --zone --format json | jq '.management' Ensure the output of the above command has JSON key attribute autoRepair set to true: Internal Only - General { \"autoRepair\": true }",
+    "remediation": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. Select the Kubernetes cluster containing the node pool for which auto-repair is disabled. 3. Select the Node pool by clicking on the name of the pool. 4. Navigate to the Node pool details pane and click EDIT. 5. Under the Management heading, check the Enable auto-repair box. 6. Click SAVE. 7. Repeat steps 2-6 for every cluster and node pool with auto-upgrade disabled. Using Command Line To enable node auto-repair for an existing cluster's Node pool: gcloud container node-pools update --cluster --zone --enable-autorepair",
+    "default_value": "Node auto-repair is enabled by default.",
+    "impact": "If multiple nodes require repair, Kubernetes Engine might repair them in parallel. Kubernetes Engine limits number of repairs depending on the size of the cluster (bigger clusters have a higher limit) and the number of broken nodes in the cluster (limit decreases if many nodes are broken). Node auto-repair is not available on Alpha Clusters.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-repair",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-repair"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.5.3",
+    "title": "Ensure Node Auto-Upgrade is enabled for GKE nodes",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Node auto-upgrade keeps nodes at the current Kubernetes and OS security patch level to mitigate known vulnerabilities.",
+    "rationale": "Node auto-upgrade helps you keep the nodes in the cluster or node pool up to date with the latest stable patch version of Kubernetes as well as the underlying node operating system. Node auto-upgrade uses the same update mechanism as manual node upgrades. Node pools with node auto-upgrade enabled are automatically scheduled for upgrades when a new stable Kubernetes version becomes available. When the upgrade is performed, the Node pool is upgraded to match the current cluster master version. From a security perspective, this has the benefit of applying security updates automatically to the Kubernetes Engine when security fixes are released.",
+    "audit": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, select the desired cluster. For each Node pool, view the Node pool Details pane and ensure that under the 'Management' heading, 'Auto- upgrade' is set to 'Enabled'. Internal Only - General Using Command Line To check the existence of node auto-upgrade for an existing cluster's Node pool, run: gcloud container node-pools describe --cluster --zone --format json | jq '.management' Ensure the output of the above command has JSON key attribute autoUpgrade set to true: { \"autoUpgrade\": true } If node auto-upgrade is disabled, the output of the above command output will not contain the autoUpgrade entry.",
+    "remediation": "Using Google Cloud Console 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select the Kubernetes cluster containing the node pool for which auto-upgrade disabled. 3. Select the Node pool by clicking on the name of the pool. 4. Navigate to the Node pool details pane and click EDIT. 5. Under the Management heading, check the Enable auto-repair box. 6. Click SAVE. 7. Repeat steps 2-6 for every cluster and node pool with auto-upgrade disabled. Using Command Line To enable node auto-upgrade for an existing cluster's Node pool, run the following command: gcloud container node-pools update --cluster --zone --enable-autoupgrade",
+    "default_value": "Node auto-upgrade is enabled by default. Even if a cluster has been created with node auto-repair enabled, this only applies to the default Node pool. Subsequent node pools do not have node auto-upgrade enabled by default.",
+    "impact": "Enabling node auto-upgrade does not cause the nodes to upgrade immediately. Automatic upgrades occur at regular intervals at the discretion of the Kubernetes Engine team. To prevent upgrades occurring during a peak period for the cluster, a maintenance window should be defined. A maintenance window is a four-hour timeframe that can be chosen, during which automatic upgrades should occur. Upgrades can occur on any day of the week, and at any time within the timeframe. To prevent upgrades from occurring during certain dates, a maintenance exclusion should be defined. A maintenance exclusion can span multiple days.",
+    "additional_information": "Node auto-upgrades is not available for Alpha Clusters.",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/concepts/node-auto-upgrades 2. https://cloud.google.com/kubernetes-engine/docs/how-to/maintenance-windows- and-exclusions Internal Only - General",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/node-auto-upgrades",
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/maintenance-windows"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.5.5",
+    "title": "Ensure Shielded GKE Nodes are Enabled",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Shielded GKE Nodes provides verifiable integrity via secure boot, virtual trusted platform module (vTPM)-enabled measured boot, and integrity monitoring.",
+    "rationale": "Shielded GKE nodes protects clusters against boot- or kernel-level malware or rootkits which persist beyond infected OS. Shielded GKE nodes run firmware which is signed and verified using Google's Certificate Authority, ensuring that the nodes' firmware is unmodified and establishing the root of trust for Secure Boot. GKE node identity is strongly protected via virtual Trusted Platform Module (vTPM) and verified remotely by the master node before the node joins the cluster. Lastly, GKE node integrity (i.e., boot sequence and kernel) is measured and can be monitored and verified remotely.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. Select the cluster under test from the list of clusters, and ensure that Shielded GKE Nodes are 'Enabled' under the Details pane. Using Command Line: Run the following command: gcloud container clusters describe --format json | jq '.shieldedNodes' This will return the following if Shielded GKE Nodes are enabled: Internal Only - General { \"enabled\": true }",
+    "remediation": "Note: From version 1.18, clusters will have Shielded GKE nodes enabled by default. Using Google Cloud Console: To update an existing cluster to use Shielded GKE nodes: 1. Navigate to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select the cluster which for which Shielded GKE Nodes is to be enabled. 3. With in the Details pane, under the Security heading, click on the pencil icon named Edit Shields GKE nodes. 4. Check the box named Enable Shield GKE nodes. 5. Click SAVE CHANGES. Using Command Line: To migrate an existing cluster, the flag --enable-shielded-nodes needs to be specified in the cluster update command: gcloud container clusters update --zone -- enable-shielded-nodes",
+    "default_value": "Clusters will have Shielded GKE nodes enabled by default, as of version v1.18",
+    "impact": "After Shielded GKE Nodes is enabled in a cluster, any nodes created in a Node pool without Shielded GKE Nodes enabled, or created outside of any Node pool, aren't able to join the cluster. Shielded GKE Nodes can only be used with Container-Optimized OS (COS), COS with containerd, and Ubuntu node images.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.5.6",
+    "title": "Ensure Integrity Monitoring for Shielded GKE Nodes is  Enabled",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Enable Integrity Monitoring for Shielded GKE Nodes to be notified of inconsistencies during the node boot sequence.",
+    "rationale": "Integrity Monitoring provides active alerting for Shielded GKE nodes which allows administrators to respond to integrity failures and prevent compromised nodes from being deployed into the cluster.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the name of the cluster under test. 3. Open the Details pane for each Node pool within the cluster, and ensure that 'Integrity monitoring' is set to 'Enabled' under the Security heading. Using Command Line: To check if Integrity Monitoring is enabled for the Node pools in the cluster, run the following command for each Node pool: gcloud container node-pools describe --cluster --zone --format json | jq .config.shieldedInstanceConfig This will return the following, if Integrity Monitoring is enabled: { \"enableIntegrityMonitoring\": true }",
+    "remediation": "Once a Node pool is provisioned, it cannot be updated to enable Integrity Monitoring. New Node pools must be created within the cluster with Integrity Monitoring enabled. Using Google Cloud Console Internal Only - General 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the cluster requiring the update and click ADD NODE POOL. 3. Ensure that the 'Integrity monitoring' checkbox is checked under the 'Shielded options' Heading. 4. Click SAVE. Workloads from existing non-conforming Node pools will need to be migrated to the newly created Node pool, then delete non-conforming Node pools to complete the remediation Using Command Line To create a Node pool within the cluster with Integrity Monitoring enabled, run the following command: gcloud container node-pools create --cluster --zone --shielded-integrity-monitoring Workloads from existing non-conforming Node pools will need to be migrated to the newly created Node pool, then delete non-conforming Node pools to complete the remediation",
+    "default_value": "Integrity Monitoring is disabled by default on GKE clusters. Integrity Monitoring is enabled by default for Shielded GKE Nodes; however, if Secure Boot is enabled at creation time, Integrity Monitoring is disabled.",
+    "impact": "None.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes 2. https://cloud.google.com/compute/shielded-vm/docs/integrity-monitoring",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes",
+      "https://cloud.google.com/compute/shielded-vm/docs/integrity-monitoring"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.5.7",
+    "title": "Ensure Secure Boot for Shielded GKE Nodes is Enabled",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Enable Secure Boot for Shielded GKE Nodes to verify the digital signature of node boot components.",
+    "rationale": "An attacker may seek to alter boot components to persist malware or root kits during system initialisation. Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. From the list of clusters, click on the name of the cluster under test. 3. Open the Details pane for each Node pool within the cluster, and ensure that Secure boot is set to Enabled under the Security heading. Using Command Line: To check if Secure Boot is enabled for the Node pools in the cluster, run the following command for each Node pool: gcloud container node-pools describe --cluster --zone --format json | jq .config.shieldedInstanceConfig This will return the value below, if Secure Boot is enabled: Internal Only - General { \"enableSecureBoot\": true }",
+    "remediation": "Once a Node pool is provisioned, it cannot be updated to enable Secure Boot. New Node pools must be created within the cluster with Secure Boot enabled. Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the cluster requiring the update and click ADD NODE POOL. 3. Ensure that the Secure boot checkbox is checked under the Shielded options Heading. 4. Click SAVE. Workloads will need to be migrated from existing non-conforming Node pools to the newly created Node pool, then delete the non-conforming pools. Using Command Line: To create a Node pool within the cluster with Secure Boot enabled, run the following command: gcloud container node-pools create --cluster --zone --shielded-secure-boot Workloads will need to be migrated from existing non-conforming Node pools to the newly created Node pool, then delete the non-conforming pools.",
+    "default_value": "By default, Secure Boot is disabled in GKE clusters. By default, Secure Boot is disabled when Shielded GKE Nodes is enabled.",
+    "impact": "Secure Boot will not permit the use of third-party unsigned kernel modules.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke- nodes#secure_boot 2. https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster Internal Only - General",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke",
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.6.2",
+    "title": "Ensure use of VPC-native clusters",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Create Alias IPs for the node network CIDR range in order to subsequently configure IP-based policies and firewalling for pods. A cluster that uses Alias IPs is called a VPC- native cluster.",
+    "rationale": "Using Alias IPs has several benefits: • Pod IPs are reserved within the network ahead of time, which prevents conflict with other compute resources. • The networking layer can perform anti-spoofing checks to ensure that egress traffic is not sent with arbitrary source IPs. • Firewall controls for Pods can be applied separately from their nodes. • Alias IPs allow Pods to directly access hosted services without using a NAT gateway.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. From the list of clusters, click on the desired cluster to open the Details page. Under the 'Networking' section, make sure 'VPC-native traffic routing' is set to 'Enabled'. Using Command Line: To check Alias IP is enabled for an existing cluster, run the following command: Internal Only - General gcloud container clusters describe --zone -- format json | jq '.ipAllocationPolicy.useIpAliases' The output of the above command should return true, if VPC-native (using alias IP) is enabled. If VPC-native (using alias IP) is disabled, the above command will return null ({ }).",
+    "remediation": "Alias IPs cannot be enabled on an existing cluster. To create a new cluster using Alias IPs, follow the instructions below. Using Google Cloud Console: If using Standard configuration mode: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. Click CREATE CLUSTER, and select Standard configuration mode. 3. Configure your cluster as desired , then, click Networking under CLUSTER in the navigation pane. 4. In the 'VPC-native' section, leave 'Enable VPC-native (using alias IP)' selected 5. Click CREATE. If using Autopilot configuration mode: Note that this is VPC-native only and cannot be disable: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Click CREATE CLUSTER, and select Autopilot configuration mode. 3. Configure your cluster as required 4. Click CREATE. Using Command Line To enable Alias IP on a new cluster, run the following command: gcloud container clusters create --zone -- enable-ip-alias If using Autopilot configuration mode: gcloud container clusters create-auto --zone",
+    "default_value": "By default, VPC-native (using alias IP) is enabled when you create a new cluster in the Google Cloud Console, however this is disabled when creating a new cluster using the gcloud CLI, unless the --enable-ip-alias argument is specified.",
+    "impact": "You cannot currently migrate an existing cluster that uses routes for Pod routing to a cluster that uses Alias IPs. Cluster IPs for internal services remain only available from within the cluster. If you want to access a Kubernetes Service from within the VPC, but from outside of the cluster, use an internal load balancer.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips 2. https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips Internal Only - General",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.6.3",
+    "title": "Ensure Control Plane Authorized Networks is Enabled",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Enable Control Plane Authorized Networks to restrict access to the cluster's control plane to only an allowlist of authorized IPs.",
+    "rationale": "Authorized networks are a way of specifying a restricted range of IP addresses that are permitted to access your cluster's control plane. Kubernetes Engine uses both Transport Layer Security (TLS) and authentication to provide secure access to your cluster's control plane from the public internet. This provides you the flexibility to administer your cluster from anywhere; however, you might want to further restrict access to a set of IP addresses that you control. You can set this restriction by specifying an authorized network. Control Plane Authorized Networks blocks untrusted IP addresses. Google Cloud Platform IPs (such as traffic from Compute Engine VMs) can reach your master through HTTPS provided that they have the necessary Kubernetes credentials. Restricting access to an authorized network can provide additional security benefits for your container cluster, including: • Better protection from outsider attacks: Authorized networks provide an additional layer of security by limiting external, non-GCP access to a specific set of addresses you designate, such as those that originate from your premises. This helps protect access to your cluster in the case of a vulnerability in the cluster's authentication or authorization mechanism. • Better protection from insider attacks: Authorized networks help protect your cluster from accidental leaks of master certificates from your company's premises. Leaked certificates used from outside GCP and outside the authorized IP ranges (for example, from addresses outside your company) are still denied access.",
+    "audit": "Using Google Cloud Console: Internal Only - General 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the cluster to open the Details page and make sure 'Master authorized networks' is set to 'Enabled'. Using Command Line: To check Master Authorized Networks status for an existing cluster, run the following command; gcloud container clusters update $CLUSTER_NAME --zone $COMPUTE_ZONE --enable- master-authorized-networks The output should return { \"enabled\": true } if Control Plane Authorized Networks is enabled. If Master Authorized Networks is disabled, the above command will return null ({ }).",
+    "remediation": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Select Kubernetes clusters for which Control Plane Authorized Networks is disabled 3. Within the Details pane, under the Networking heading, click on the pencil icon named Edit control plane authorised networks. 4. Check the box next to Enable control plane authorised networks. 5. Click SAVE CHANGES. Using Command Line: To enable Control Plane Authorized Networks for an existing cluster, run the following command: gcloud container clusters update --zone -- enable-master-authorized-networks Along with this, you can list authorized networks using the --master-authorized- networks flag which contains a list of up to 20 external networks that are allowed to connect to your cluster's control plane through HTTPS. You provide these networks as a comma-separated list of addresses in CIDR notation (such as 90.90.100.0/24).",
+    "default_value": "By default, Control Plane Authorized Networks is disabled. Internal Only - General",
+    "impact": "When implementing Control Plane Authorized Networks, be careful to ensure all desired networks are on the allowlist to prevent inadvertently blocking external access to your cluster's control plane.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.6.4",
+    "title": "Ensure clusters are created with Private Endpoint Enabled  and Public Access Disabled",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Disable access to the Kubernetes API from outside the node network if it is not required.",
+    "rationale": "In a private cluster, the master node has two endpoints, a private and public endpoint. The private endpoint is the internal IP address of the master, behind an internal load balancer in the master's VPC network. Nodes communicate with the master using the private endpoint. The public endpoint enables the Kubernetes API to be accessed from outside the master's VPC network. Although Kubernetes API requires an authorized token to perform sensitive actions, a vulnerability could potentially expose the Kubernetes publically with unrestricted access. Additionally, an attacker may be able to identify the current cluster and Kubernetes API version and determine whether it is vulnerable to an attack. Unless required, disabling public endpoint will help prevent such threats, and require the attacker to be on the master's VPC network to perform any attack on the Kubernetes API.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Select the required cluster, and within the Details pane, make sure the 'Endpoint' does not have a public IP address. Using Command Line: Run this command: Internal Only - General gcloud container clusters describe --format json | jq '.privateClusterConfig.enablePrivateEndpoint' The output of the above command returns true if a Private Endpoint is enabled with Public Access disabled. For an additional check, the endpoint parameter can be queried with the following command: gcloud container clusters describe --format json | jq '.endpoint' The output of the above command returns a private IP address if Private Endpoint is enabled with Public Access disabled.",
+    "remediation": "Once a cluster is created without enabling Private Endpoint only, it cannot be remediated. Rather, the cluster must be recreated. Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Click CREATE CLUSTER, and choose CONFIGURE for the Standard mode cluster. 3. Configure the cluster as required then click Networking under CLUSTER in the navigation pane. 4. Under IPv4 network access, click the Private cluster radio button. 5. Uncheck the Access control plane using its external IP address checkbox. 6. In the Control plane IP range textbox, provide an IP range for the control plane. 7. Configure the other settings as required, and click CREATE. Using Command Line: Create a cluster with a Private Endpoint enabled and Public Access disabled by including the --enable-private-endpoint flag within the cluster create command: gcloud container clusters create --enable-private-endpoint Setting this flag also requires the setting of --enable-private-nodes, --enable-ip- alias and --master-ipv4-cidr=.",
+    "default_value": "By default, the Private Endpoint is disabled.",
+    "impact": "To enable a Private Endpoint, the cluster has to also be configured with private nodes, a private master IP range and IP aliasing enabled. If the Private Endpoint flag --enable-private-endpoint is passed to the gcloud CLI, or the external IP address undefined in the Google Cloud Console during cluster creation, then all access from a public IP address is prohibited.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters Internal Only - General",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.6.5",
+    "title": "Ensure clusters are created with Private Nodes",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Private Nodes are nodes with no public IP addresses. Disable public IP addresses for cluster nodes, so that they only have private IP addresses.",
+    "rationale": "Disabling public IP addresses on cluster nodes restricts access to only internal networks, forcing attackers to obtain local network access before attempting to compromise the underlying Kubernetes hosts.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select the desired cluster, and within the Details pane, make sure Private Clusters is set to Enabled. Using Command Line: Run this command: gcloud container clusters describe --format json | jq '.privateClusterConfig.enablePrivateNodes' The output of the above command returns true if Private Nodes is enabled.",
+    "remediation": "Once a cluster is created without enabling Private Nodes, it cannot be remediated. Rather the cluster must be recreated. Using Google Cloud Console: Internal Only - General 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Click CREATE CLUSTER. 3. Configure the cluster as required then click Networking under CLUSTER in the navigation pane. 4. Under IPv4 network access, click the Private cluster radio button. 5. Configure the other settings as required, and click CREATE. Using Command Line: To create a cluster with Private Nodes enabled, include the --enable-private-nodes flag within the cluster create command: gcloud container clusters create --enable-private-nodes Setting this flag also requires the setting of --enable-ip-alias and --master-ipv4- cidr=.",
+    "default_value": "By default, Private Nodes are disabled.",
+    "impact": "To enable Private Nodes, the cluster has to also be configured with a private master IP range and IP Aliasing enabled. Private Nodes do not have outbound access to the public internet. If you want to provide outbound Internet access for your private nodes, you can use Cloud NAT or you can manage your own NAT gateway. To access Google Cloud APIs and services from private nodes, Private Google Access needs to be set on Kubernetes Engine Cluster Subnets.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.6.7",
+    "title": "Ensure use of Google-managed SSL Certificates",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Encrypt traffic to HTTPS load balancers using Google-managed SSL certificates.",
+    "rationale": "Encrypting traffic between users and the Kubernetes workload is fundamental to protecting data sent over the web. Google-managed SSL Certificates are provisioned, renewed, and managed for domain names. This is only available for HTTPS load balancers created using Ingress Resources, and not TCP/UDP load balancers created using Service of type:LoadBalancer.",
+    "audit": "Using Command Line: Identify if there are any workloads exposed publicly using Services of type:LoadBalancer: kubectl get svc -A -o json | jq '.items[] | select(.spec.type==\"LoadBalancer\")' Consider using ingresses instead of these services in order to use Google managed SSL certificates. For the ingresses within the cluster, run the following command: kubectl get ingress -A -o json | jq .items[] | jq '{name: .metadata.name, annotations: .metadata.annotations, namespace: .metadata.namespace, status: .status}' The above command should return the name of the ingress, namespace, annotations and status. Check that the following annotation is present to ensure managed certificates are referenced. Internal Only - General \"annotations\": { ... \"networking.gke.io/managed-certificates\": \"\" }, For completeness, run the following command to ensure that the managed certificate resource exists: kubectl get managedcertificates -A The above command returns a list of managed certificates for which should exist within the same namespace as the ingress.",
+    "remediation": "If services of type:LoadBalancer are discovered, consider replacing the Service with an Ingress. To configure the Ingress and use Google-managed SSL certificates, follow the instructions as listed at: https://cloud.google.com/kubernetes-engine/docs/how- to/managed-certs.",
+    "default_value": "By default, Google-managed SSL Certificates are not created when an Ingress resource is defined.",
+    "impact": "Google-managed SSL Certificates are less flexible than certificates that are self obtained and managed. Managed certificates support a single, non-wildcard domain. Self-managed certificates can support wildcards and multiple subject alternative names (SANs).",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs 2. https://cloud.google.com/kubernetes-engine/docs/concepts/ingress",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs",
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/ingress"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.7.1",
+    "title": "Ensure Logging and Cloud Monitoring is Enabled",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Send logs and metrics to a remote aggregator to mitigate the risk of local tampering in the event of a breach.",
+    "rationale": "Exporting logs and metrics to a dedicated, persistent datastore such as Cloud Operations for GKE ensures availability of audit data following a cluster security event, and provides a central location for analysis of log and metric data collated from multiple sources.",
+    "audit": "Using Google Cloud Console: LOGGING AND CLOUD MONITORING SUPPORT (PREFERRED): 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the cluster of interest. 3. Under the details pane, within the Features section, ensure that Logging is Enabled. 4. Also ensure that Cloud Monitoring is Enabled LEGACY STACKDRIVER SUPPORT: This option cannot be check in the GCP console. Using Command Line: LOGGING AND CLOUD MONITORING SUPPORT (PREFERRED): Run the following commands: Internal Only - General gcloud container clusters describe --zone -- format json | jq '.loggingService' gcloud container clusters describe --zone -- format json | jq '.monitoringService' The output of the above commands should return logging.googleapis.com/kubernetes and monitoring.googleapis.com/kubernetes respectively if Logging and Cloud Monitoring is Enabled. LEGACY STACKDRIVER SUPPORT: Note: This functionality was decommissioned on 31st March 2021, kept here for posterity (see: https://cloud.google.com/stackdriver/docs/deprecations/legacy for more information) Both Logging and Monitoring support must be enabled. For Logging, run the following command: gcloud container clusters describe --zone -- format json | jq '.loggingService' The output should return logging.googleapis.com if Legacy Stackdriver Logging is Enabled. For Monitoring, run the following command: gcloud container clusters describe --zone -- format json | jq '.monitoringService' The output should return monitoring.googleapis.com if Legacy Stackdriver Monitoring is Enabled.",
+    "remediation": "Using Google Cloud Console: To enable Logging: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select the cluster for which Logging is disabled. 3. Under the details pane, within the Features section, click on the pencil icon named Edit logging. 4. Check the box next to Enable Logging. 5. In the drop-down Components box, select the components to be logged. 6. Click SAVE CHANGES, and wait for the cluster to update. To enable Cloud Monitoring: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select the cluster for which Logging is disabled. 3. Under the details pane, within the Features section, click on the pencil icon named Edit Cloud Monitoring. Internal Only - General 4. Check the box next to Enable Cloud Monitoring. 5. In the drop-down Components box, select the components to be logged. 6. Click SAVE CHANGES, and wait for the cluster to update. Using Command Line: To enable Logging for an existing cluster, run the following command: gcloud container clusters update --zone -- logging= See https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#--logging for a list of available components for logging. To enable Cloud Monitoring for an existing cluster, run the following command: gcloud container clusters update --zone -- monitoring= See https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#-- monitoring for a list of available components for Cloud Monitoring.",
+    "default_value": "Logging and Cloud Monitoring is enabled by default starting in GKE version 1.14; Legacy Logging and Monitoring support is enabled by default for earlier versions.",
+    "impact": "N/A",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/stackdriver/docs/solutions/gke/observing 2. https://cloud.google.com/stackdriver/docs/solutions/gke/managing-logs 3. https://cloud.google.com/stackdriver/docs/solutions/gke/installing 4. https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#-- logging 5. https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#-- monitoring",
+    "references": [
+      "https://cloud.google.com/stackdriver/docs/solutions/gke/observing",
+      "https://cloud.google.com/stackdriver/docs/solutions/gke/managing-logs",
+      "https://cloud.google.com/stackdriver/docs/solutions/gke/installing",
+      "https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.8.1",
+    "title": "Ensure authentication using Client Certificates is Disabled",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Disable Client Certificates, which require certificate rotation, for authentication. Instead, use another authentication method like OpenID Connect.",
+    "rationale": "With Client Certificate authentication, a client presents a certificate that the API server verifies with the specified Certificate Authority. In GKE, Client Certificates are signed by the cluster root Certificate Authority. When retrieved, the Client Certificate is only base64 encoded and not encrypted. GKE manages authentication via gcloud for you using the OpenID Connect token method, setting up the Kubernetes configuration, getting an access token, and keeping it up to date. This means Basic Authentication using static passwords and Client Certificate authentication, which both require additional management overhead of key management and rotation, are not necessary and should be disabled. When Client Certificate authentication is disabled, you will still be able to authenticate to the cluster with other authentication methods, such as OpenID Connect tokens. See also Recommendation 6.8.1 to disable authentication using static passwords, known as Basic Authentication.",
+    "audit": "The audit script for this recommendation utilizes 3 variables: $CLUSTER_NAME $COMPUTE_ZONE Please set these parameters on the system where you will be executing your gcloud audit script or command. Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. From the list of clusters, click on the desired cluster. On the Details pane, make sure 'Client certificate' is set to 'Disabled'. Internal Only - General Using Command line To check that the client certificate has not been issued, run the following command: gcloud container clusters describe $CLUSTER_NAME \\ --zone $COMPUTE_ZONE \\ --format json | jq '.masterAuth.clientKey' The output of the above command returns null ({ }) if the client certificate has not been issued for the cluster (Client Certificate authentication is disabled). Note. Depreciated as of v1.19. For Basic Authentication, Legacy authorization can be edited for standard clusters but cannot be edited in Autopilot clusters.",
+    "remediation": "Currently, there is no way to remove a client certificate from an existing cluster. Thus a new cluster must be created. Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. Click CREATE CLUSTER 3. Configure as required and the click on 'Availability, networking, security, and additional features' section 4. Ensure that the 'Issue a client certificate' checkbox is not ticked 5. Click CREATE. Using Command Line Create a new cluster without a Client Certificate: gcloud container clusters create [CLUSTER_NAME] \\ --no-issue-client-certificate",
+    "default_value": "Clusters created from GKE version 1.12 have Basic Authentication and Client Certificate issuance disabled by default.",
+    "impact": "Users will no longer be able to authenticate with the pre-provisioned x509 certificate. You will have to configure and use alternate authentication mechanisms, such as OpenID Connect tokens.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your- cluster#restrict_authn_methods Internal Only - General",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.8.3",
+    "title": "Ensure Legacy Authorization (ABAC) is Disabled",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Legacy Authorization, also known as Attribute-Based Access Control (ABAC) has been superseded by Role-Based Access Control (RBAC) and is not under active development. RBAC is the recommended way to manage permissions in Kubernetes.",
+    "rationale": "In Kubernetes, RBAC is used to grant permissions to resources at the cluster and namespace level. RBAC allows the definition of roles with rules containing a set of permissions, whilst the legacy authorizer (ABAC) in Kubernetes Engine grants broad, statically defined permissions. As RBAC provides significant security advantages over ABAC, it is recommended option for access control. Where possible, legacy authorization must be disabled for GKE clusters.",
+    "audit": "Using Google Cloud Console: 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. From the list of clusters, click on each cluster to open the Details pane, and make sure 'Legacy Authorization' is set to 'Disabled'. Using Command Line: To check Legacy Authorization status for an existing cluster, run the following command: gcloud container clusters describe --zone -- format json | jq '.legacyAbac' The output should return null ({}) if Legacy Authorization is Disabled. If Legacy Authorization is Enabled, the above command will return true value.",
+    "remediation": "Using Google Cloud Console: Internal Only - General 1. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 2. Select Kubernetes clusters for which Legacy Authorization is enabled. 3. Click EDIT. 4. Set 'Legacy Authorization' to 'Disabled'. 5. Click SAVE. Using Command Line: To disable Legacy Authorization for an existing cluster, run the following command: gcloud container clusters update --zone --no- enable-legacy-authorization",
+    "default_value": "Kubernetes Engine clusters running GKE version 1.8 and later disable the legacy authorization system by default, and thus role-based access control permissions take effect with no special action required.",
+    "impact": "Once the cluster has the legacy authorizer disabled, the user must be granted the ability to create authorization roles using RBAC to ensure that the role-based access control permissions take effect.",
+    "additional_information": "On clusters running GKE 1.6 or 1.7, Kubernetes Service accounts have full permissions on the Kubernetes API by default. To ensure that the role-based access control permissions take effect for a Kubernetes service account, the cluster must be created or updated with the option --no-enable-legacy-authorization. This requirement is removed for clusters running GKE version 1.8 or higher.",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access- control 2. https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your- cluster#leave_abac_disabled_default_for_110",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access",
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.10.1",
+    "title": "Ensure Kubernetes Web UI is Disabled",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Note: The Kubernetes web UI (Dashboard) does not have admin access by default in GKE 1.7 and higher. The Kubernetes web UI is disabled by default in GKE 1.10 and higher. In GKE 1.15 and higher, the Kubernetes web UI add-on KubernetesDashboard is no longer supported as a managed add-on. The Kubernetes Web UI (Dashboard) has been a historical source of vulnerability and should only be deployed when necessary.",
+    "rationale": "You should disable the Kubernetes Web UI (Dashboard) when running on Kubernetes Engine. The Kubernetes Web UI is backed by a highly privileged Kubernetes Service Account. The Google Cloud Console provides all the required functionality of the Kubernetes Web UI and leverages Cloud IAM to restrict user access to sensitive cluster controls and settings.",
+    "audit": "Using Google Cloud Console: Currently not possible, due to the add-on having been removed. Must use the command line. Using Command Line: Run the following command: gcloud container clusters describe --zone -- format json | jq '.addonsConfig.kubernetesDashboard' Ensure the output of the above command has JSON key attribute disabled set to true: Internal Only - General { \"disabled\": true }",
+    "remediation": "Using Google Cloud Console: Currently not possible, due to the add-on having been removed. Must use the command line. Using Command Line: To disable the Kubernetes Dashboard on an existing cluster, run the following command: gcloud container clusters update --zone --update- addons=KubernetesDashboard=DISABLED",
+    "default_value": "The Kubernetes web UI (Dashboard) does not have admin access by default in GKE 1.7 and higher. The Kubernetes web UI is disabled by default in GKE 1.10 and higher. In GKE 1.15 and higher, the Kubernetes web UI add-on KubernetesDashboard is no longer supported as a managed add-on.",
+    "impact": "Users will be required to manage cluster resources using the Google Cloud Console or the command line. These require appropriate permissions. To use the command line, this requires the installation of the command line client, kubectl, on the user's device (this is already included in Cloud Shell) and knowledge of command line operations.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your- cluster#disable_kubernetes_dashboard",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.10.2",
+    "title": "Ensure that Alpha clusters are not used for production  workloads",
+    "assessment": "Automated",
+    "profile": "• Level 1",
+    "description": "Alpha clusters are not covered by an SLA and are not production-ready.",
+    "rationale": "Alpha clusters are designed for early adopters to experiment with workloads that take advantage of new features before those features are production-ready. They have all Kubernetes API features enabled, but are not covered by the GKE SLA, do not receive security updates, have node auto-upgrade and node auto-repair disabled, and cannot be upgraded. They are also automatically deleted after 30 days.",
+    "audit": "The audit script for this recommendation utilizes 3 variables: $CLUSTER_NAME $COMPUTE_ZONE Please set these parameters on the system where you will be executing your gcloud audit script or command. Using Google Cloud Console 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/list 2. If a cluster appears under the 'Kubernetes alpha clusters' heading, it is an Alpha cluster. Using Command Line Run the command: gcloud container clusters describe $CLUSTER_NAME \\ --zone $COMPUTE-ZONE \\ --format json | jq '.enableKubernetesAlpha' The output of the above command will return true if it is an Alpha cluster.",
+    "remediation": "Alpha features cannot be disabled. To remediate, a new cluster must be created. Using Google Cloud Console Internal Only - General 1. Go to Kubernetes Engine by visiting https://console.cloud.google.com/kubernetes/ 2. Click CREATE CLUSTER, and choose \"SWITCH TO STANDARD CLUSTER\" in the upper right corner of the screen. 3. Under Features in the the CLUSTER section, \"Enable Kubernetes alpha features in this cluster\" will not be available by default and to use Kubernetes alpha features in this cluster, first disable release channels. Note: It will only be available if the cluster is created with a Static version for the Control plane version, along with both Automatically upgrade nodes to the next available version and Enable auto-repair being checked under the Node pool details for each node. 4. Configure the other settings as required and click CREATE. Using Command Line: Upon creating a new cluster gcloud container clusters create [CLUSTER_NAME] \\ --zone [COMPUTE_ZONE] Do not use the --enable-kubernetes-alpha argument.",
+    "default_value": "By default, Kubernetes Alpha features are disabled.",
+    "impact": "Users and workloads will not be able to take advantage of features included within Alpha clusters.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/kubernetes-engine/docs/concepts/alpha-clusters",
+    "references": [
+      "https://cloud.google.com/kubernetes-engine/docs/concepts/alpha-clusters"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  },
+  {
+    "section": "5 Section",
+    "id": "5.10.4",
+    "title": "Ensure use of Binary Authorization",
+    "assessment": "Automated",
+    "profile": "• Level 2",
+    "description": "Binary Authorization helps to protect supply-chain security by only allowing images with verifiable cryptographically signed metadata into the cluster.",
+    "rationale": "Binary Authorization provides software supply-chain security for images that are deployed to GKE from Google Container Registry (GCR) or another container image registry. Binary Authorization requires images to be signed by trusted authorities during the development process. These signatures are then validated at deployment time. By enforcing validation, tighter control over the container environment can be gained by ensuring only verified images are integrated into the build-and-release process.",
+    "audit": "Using Google Cloud Console: To check that Binary Authorization is enabled for the GKE cluster: 1. Go to the Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list 2. Select the cluster for which Binary Authorization is disabled. 3. Under the details pane, within the Security section, ensure that 'Binary Authorization' is set to 'Enabled'. Then, assess the contents of the policy: 4. Go to Binary Authorization by visiting: https://console.cloud.google.com/security/binary-authorization 5. Ensure a policy is defined and the project default rule is not configured to 'Allow all images'. Internal Only - General Using Command Line: To check that Binary Authorization is enabled for the GKE cluster: gcloud container clusters describe --zone -- format json | jq .binaryAuthorization The above command output will be the following if Binary Authorization is enabled: { \"enabled\": true } Then, assess the contents of the policy: gcloud container binauthz policy export > current-policy.yaml Ensure that the current policy is not configured to allow all images (evaluationMode: ALWAYS_ALLOW): cat current-policy.yaml ... defaultAdmissionRule: evaluationMode: ALWAYS_ALLOW",
+    "remediation": "Using Google Cloud Console 1. Go to Binary Authorization by visiting: https://console.cloud.google.com/security/binary-authorization. 2. Enable the Binary Authorization API (if disabled). 3. Create an appropriate policy for use with the cluster. See https://cloud.google.com/binary-authorization/docs/policy-yaml-reference for guidance. 4. Go to Kubernetes Engine by visiting: https://console.cloud.google.com/kubernetes/list. 5. Select the cluster for which Binary Authorization is disabled. 6. Under the details pane, within the Security section, click on the pencil icon named Edit Binary Authorization. 7. Check the box next to Enable Binary Authorization. 8. Choose Enforce policy and provide a directory for the policy to be used. 9. Click SAVE CHANGES. Using Command Line: Update the cluster to enable Binary Authorization: Internal Only - General gcloud container cluster update --zone -- binauthz-evaluation-mode= Example: gcloud container clusters update $CLUSTER_NAME --zone $COMPUTE_ZONE -- binauthz-evaluation-mode=PROJECT_SINGLETON_POLICY_ENFORCE See: https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#-- binauthz-evaluation-mode for more details around the evaluation modes available. Create a Binary Authorization Policy using the Binary Authorization Policy Reference: https://cloud.google.com/binary-authorization/docs/policy-yaml-reference for guidance. Import the policy file into Binary Authorization: gcloud container binauthz policy import",
+    "default_value": "By default, Binary Authorization is disabled.",
+    "impact": "Care must be taken when defining policy in order to prevent inadvertent denial of container image deployments. Depending on policy, attestations for existing container images running within the cluster may need to be created before those images are redeployed or pulled as part of the pod churn. To prevent key system images from being denied deployment, consider the use of global policy evaluation mode, which uses a global policy provided by Google and exempts a list of Google-provided system images from further policy evaluation.",
+    "additional_information": "",
+    "references_text": "1. https://cloud.google.com/binary-authorization/docs/setting-up 2. https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#-- binauthz-evaluation-mode",
+    "references": [
+      "https://cloud.google.com/binary-authorization/docs/setting-up",
+      "https://cloud.google.com/sdk/gcloud/reference/container/clusters/update#"
+    ],
+    "source": "CIS_Google_Kubernetes_Engine__GKE__Benchmark_v1_6_1_PDF.html"
+  }
+]

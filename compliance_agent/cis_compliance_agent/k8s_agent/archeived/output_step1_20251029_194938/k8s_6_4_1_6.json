@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.6",
+    "unique_id": "k8s_6_4_1_6",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root",
+    "input_row": {
+        "id": "4.1.6",
+        "unique_id": "k8s_6_4_1_6",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --kubeconfig kubelet.conf file ownership is set to root:root",
+        "description": "Ensure that the kubelet.conf file ownership is set to root:root.",
+        "rationale": "The kubelet.conf file is the kubeconfig file for the node, and controls various parameters that set the behavior and identity of the worker node. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Automated AAC auditing has been modified to allow CIS-CAT to input a variable for the <PATH>/<FILENAME> of the kubelet config file. Please set $kubelet_config=<PATH> based on the file location on your system for example: export kubelet_config=/etc/kubernetes/kubelet.conf To perform the audit manually: Run the below command (based on the file location on your system) on the each worker node. For example, stat -c %U %G /etc/kubernetes/kubelet.conf Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the each worker node. For example, chown root:root /etc/kubernetes/kubelet.conf Default Value: By default, kubelet.conf file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kubelet/",
+        "profile_applicability": "•  Level 1 - Worker Node •  Level 2 - Worker Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file ownership of the kubelet.conf file on each worker node (specifically, that it is owned by root:root).\n- The ownership of files on the node filesystem is not exposed via the Kubernetes API, kubectl, or any Kubernetes controller or resource.\n- The audit instructions require running OS-level commands (e.g., stat) directly on the node, which cannot be performed via Kubernetes APIs or kubectl.\n- Therefore, this check requires direct access to the node's operating system and cannot be automated via Kubernetes-native mechanisms.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes worker node.\n2. Identify the location of the kubelet.conf file (commonly /etc/kubernetes/kubelet.conf, but may vary).\n3. Run the following command to check file ownership:\n   ```\n   stat -c %U %G /etc/kubernetes/kubelet.conf\n   ```\n   (Replace the path if your kubelet.conf is in a different location.)\n4. Verify that the output shows both the user and group as root (i.e., output should be: root root).\n5. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/kubelet.conf\n   ```\n6. Repeat for all worker nodes in the cluster.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:11:08.917279",
+    "model": "gpt-4.1"
+}

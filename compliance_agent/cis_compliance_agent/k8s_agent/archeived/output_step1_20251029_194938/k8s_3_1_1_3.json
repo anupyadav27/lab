@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.3",
+    "unique_id": "k8s_3_1_1_3",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.3",
+        "unique_id": "k8s_3_1_1_3",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the controller manager pod specification file has permissions of 600 or more restrictive.",
+        "rationale": "The controller manager pod specification file controls various parameters that set the behavior of the Controller Manager on the master node. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/manifests/kube-controller-manager.yaml Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/manifests/kube-controller-manager.yaml Default Value: By default, the kube-controller-manager.yaml file has permissions of 640. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file system permissions (e.g., 600) on the kube-controller-manager pod specification file (typically /etc/kubernetes/manifests/kube-controller-manager.yaml) on the control plane node. Kubernetes APIs and kubectl do not expose host file system permissions for manifest files. This check requires direct OS-level access (SSH or similar) to the node to inspect file permissions, which is outside the scope of Kubernetes API or kubectl capabilities.\n\n---\n\n**MANUAL STEPS:**\n\n1. SSH into the Kubernetes control plane node where the kube-controller-manager runs.\n2. Locate the kube-controller-manager manifest file, typically at /etc/kubernetes/manifests/kube-controller-manager.yaml.\n3. Run the following command to check the file permissions:\n   ```\n   stat -c %a /etc/kubernetes/manifests/kube-controller-manager.yaml\n   ```\n4. Verify that the output is 600 or more restrictive (e.g., 600, 400, 440, etc.).\n5. Confirm that only the file owner (typically root) has write access, and no other users have write or read access beyond what is necessary.\n6. If the permissions are more permissive than 600 (e.g., 644, 664), remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/manifests/kube-controller-manager.yaml\n   ```\n7. Document the result for compliance evidence.",
+    "timestamp": "2025-10-29T20:42:34.202368",
+    "model": "gpt-4.1"
+}

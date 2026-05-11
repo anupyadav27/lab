@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.15",
+    "unique_id": "gcp_1_6_2_15",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure all groups in /etc/passwd exist in /etc/group",
+    "input_row": {
+        "id": "6.2.15",
+        "unique_id": "gcp_1_6_2_15",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure all groups in /etc/passwd exist in /etc/group",
+        "description": "Over time, system administration errors and changes can lead to groups being defined in /etc/passwd but not in /etc/group .",
+        "rationale": "Groups defined in the /etc/passwd file but not in the /etc/group file pose a threat to system security since group permissions are not properly managed.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash for i in $(cut -s -d: -f4 /etc/passwd | sort -u ); do grep -q \":$i:\" /etc/group if [ $? -ne 0 ]; then echo \"Group $i is referenced by /etc/passwd but does not exist in /etc/group\" fi done",
+        "remediation": "Analyze the output of the Audit step above and perform the appropriate action to correct any discrepancies found.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nGiven the nature of the control specified in the CIS Google Container Optimized OS Benchmark, this audit involves verifying the existence of groups in the `/etc/group` file which are referenced in the `/etc/passwd` file on the Google Container-Optimized OS instances. This process requires access to the OS-level configurations, which is typically achieved by executing scripts on the operating system itself. There is no specific GCP API or Google Cloud SDK method to check the content of OS files like `/etc/passwd` or `/etc/group`, hence this control cannot be automated through GCP's cloud-native tools. Therefore, this check necessitates a manual audit approach involving SSH access into each instance to run the provided script.\n\n**MANUAL STEPS:**\n\n1. **SSH into the Instance:**\n   - Use the Google Cloud Console or CLI to establish an SSH connection to each Container-Optimized OS instance.\n   - Command: `gcloud compute ssh <INSTANCE_NAME> --zone <ZONE_NAME>`\n\n2. **Run the Audit Script:**\n   - Copy and execute the following script within the SSH session to check for discrepancies:\n     ```bash\n     for i in $(cut -s -d: -f4 /etc/passwd | sort -u ); do\n       grep -q \":$i:\" /etc/group\n       if [ $? -ne 0 ]; then\n         echo \"Group $i is referenced by /etc/passwd but does not exist in /etc/group\"\n       fi\n     done\n     ```\n\n3. **Verify the Output:**\n   - Check the script output for any listed group IDs. The presence of output indicates missing group entries in the `/etc/group` file that are referenced in `/etc/passwd`.\n\n4. **Remediate if Necessary:**\n   - If discrepancies are found, appropriate actions should be taken to resolve them, which may involve adding the missing group entries to `/etc/group`.\n\n5. **Confirm Compliance:**\n   - The system is considered compliant when running the script yields no output, indicating all groups referenced in `/etc/passwd` are present in `/etc/group`.",
+    "timestamp": "2025-10-28T21:46:53.144498",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.6.2",
+    "unique_id": "k8s_5_1_6_2",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Create Pod Security Policies for your cluster",
+    "input_row": {
+        "id": "1.6.2",
+        "unique_id": "k8s_5_1_6_2",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Create Pod Security Policies for your cluster",
+        "description": "Create and enforce Pod Security Policies for your cluster.",
+        "rationale": "A Pod Security Policy is a cluster-level resource that controls the actions that a pod can perform and what it has the ability to access. The PodSecurityPolicy objects define a set of conditions that a pod must run with in order to be accepted into the system. Pod Security Policies are comprised of settings and strategies that control the security features a pod has access to and hence this must be used to control pod access permissions.",
+        "audit": "Run the below command and review the Pod Security Policies enforced on the cluster. kubectl get psp Ensure that these policies are configured as per your security requirements.",
+        "remediation": "Follow the documentation and create and enforce Pod Security Policies for your cluster. Additionally, you could refer the \"CIS Security Benchmark for Docker\" and follow the suggested Pod Security Policies for your environment. Impact: Pods must align with the Pod Security Policies enforced on the cluster. Default Value: By default, Pod Security Policies are not created. References: 1. https://kubernetes.io/docs/concepts/policy/pod-security-policy/ 2. https://benchmarks.cisecurity.org/downloads/browse/index.cfm?category=bench marks.servers.virtualization.docker  133 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "Pods must align with the Pod Security Policies enforced on the cluster. Default Value: By default, Pod Security Policies are not created.",
+        "references": "1. https://kubernetes.io/docs/concepts/policy/pod-security-policy/ 2. https://benchmarks.cisecurity.org/downloads/browse/index.cfm?category=bench marks.servers.virtualization.docker  133 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_policy_enforced\n\n**AUTOMATION DETAILS:**\n- Use the Kubernetes API or kubectl to enumerate PodSecurityPolicy (PSP) resources in the cluster.\n  - Command: kubectl get psp\n  - API: GET /apis/policy/v1beta1/podsecuritypolicies\n- For each PSP, retrieve and inspect the configuration to ensure that at least one PSP exists and is enforced via RBAC (i.e., bound to users/service accounts through RoleBindings or ClusterRoleBindings).\n  - Command: kubectl get clusterrolebindings,rolebindings --all-namespaces -o yaml | grep -i podsecuritypolicy\n- Validate that the PSPs are not just present but are referenced in RBAC bindings, indicating enforcement.\n- Pass Criteria:\n  - At least one PodSecurityPolicy resource exists in the cluster.\n  - There is at least one RoleBinding or ClusterRoleBinding that grants use of a PSP to users, groups, or service accounts.\n- Fail Criteria:\n  - No PodSecurityPolicy resources exist.\n  - No RoleBinding or ClusterRoleBinding grants use of any PSP (i.e., PSPs are not enforced).\n- (Optional for deeper security posture): Enumerate the PSPs and check for restrictive settings (e.g., privileged: false, hostPID/hostIPC/hostNetwork: false, etc.) to ensure they align with security best practices, though this is beyond the minimum requirement of \"enforced PSPs exist\".\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:49:51.130235",
+    "model": "gpt-4.1"
+}

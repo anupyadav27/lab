@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.1.2",
+    "unique_id": "gcp_1_4_1_1_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure Logging Service is Running",
+    "input_row": {
+        "id": "4.1.1.2",
+        "unique_id": "gcp_1_4_1_1_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure Logging Service is Running",
+        "description": "Some form of logging for the OS should be used. On COS Stackdriver-logging agent or fluent-bit logging agent are provided and can be activated simply by following the guides. It is not require to use these for logging but they are simple to set up and will work well.",
+        "rationale": "If no logging is running, their will be less of a trail for audit if things go wrong. It is a good practice to have logging enabled for better visibility.",
+        "audit": "This audit procedure is only if you are using one of the supporting logging services described. Stackdriver-Logging Agent Run the following command to verify stackdriver-logging is running: # systemctl status stackdriver-logging | grep Active Active: active (running) since <Day date time> Fluent-bit Logging Or if your system has fluent-bit, run the following command to verify fluent-bit is running: # systemctl status fluent-bit | grep Active Active: active (running) since <Day date time>",
+        "remediation": "This remediation is only if you want to use one of the supported logging services described. Stackdriver-logging Agent Run the following command to enable stackdriver-logging : # systemctl start stackdriver-logging Fluent-bit Logging Run the following command to enable fluent-bit : # systemctl start fluent-bit Works for Both Simply update the instance metadata to enable logging as follows: # gcloud compute instances add-metadata <instance-name> \\ --zone <compute-zone> \\ --metadata google-logging-enabled=true",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe audit control focuses on ensuring specific logging services (Stackdriver-logging Agent or fluent-bit) are running on Google Container-Optimized OS (COS) instances. The audit instructions require checking the status of services via `systemctl status`, which necessitates direct access to the operating system layer of the instance. This type of verification requires SSH access to the COS instance, thus making it suitable for a Manual audit approach.\n\n**MANUAL STEPS:**\n\n1. **Access the COS Instance:**\n   - Use SSH to access the COS instance. You can use the Google Cloud SDK (gcloud) command:\n     ```\n     gcloud compute ssh <instance-name> --zone <compute-zone>\n     ```\n\n2. **Check Stackdriver-Logging Agent Status:**\n   - Execute the following command to verify if the Stackdriver-logging agent is running:\n     ```\n     systemctl status stackdriver-logging | grep Active\n     ```\n   - **Expected Outcome:** The output should indicate `Active: active (running)`.\n\n3. **Check Fluent-bit Logging Agent Status (if used):**\n   - If fluent-bit is used, check its status with:\n     ```\n     systemctl status fluent-bit | grep Active\n     ```\n   - **Expected Outcome:** The output should also indicate `Active: active (running)`.\n\n4. **Confirm Compliance:**\n   - Ensure that at least one of the logging agents (Stackdriver-logging or fluent-bit) shows as active and running. If neither is active, compliance with the control is not met.\n\nThese verification steps are aimed at ensuring there is logging configured on COS instances, providing visibility and audit trails in case of issues. The manual intervention is necessary due to the level of access required and the lack of direct API configurations that expose the operational status of these OS-level services.",
+    "timestamp": "2025-10-28T21:29:56.972003",
+    "model": "gpt-4o"
+}

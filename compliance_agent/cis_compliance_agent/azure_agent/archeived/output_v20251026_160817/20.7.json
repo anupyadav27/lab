@@ -1,0 +1,17 @@
+{
+    "id": "20.7",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "20.7",
+        "unique_id": "20.7__ensure-that-endpoint-protection-for-all-virtual-machines-is-installed",
+        "title": "Ensure that Endpoint Protection for all Virtual Machines is installed",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Follow Microsoft Azure documentation to install endpoint protection from the security center. Alternatively, you can employ your own endpoint protection tool for your OS. Default Value: By default Endpoint Protection is disabled. References: 1. https://docs.microsoft.com/en-us/azure/security-center/security-center-install- endpoint-protection 2. https://docs.microsoft.com/en-us/azure/security/azure-security-antimalware 3. https://docs.microsoft.com/en-us/cli/azure/vm/extension?view=azure-cli- latest#az_vm_extension_list 4. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-endpoint- security#es-1-use-endpoint-detection-and-response-edr CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control requires the installation of Endpoint Protection on virtual machines. This can be checked via Azure Resource Manager APIs or the Azure CLI, as the presence of endpoint protection can be queried from the Azure Security Center and the relevant virtual machine extensions.\n- The reference materials provide CLI commands for listing VM extensions, which is indicative of automated capability.\n- Thus, the audit can be performed automatically through available Azure APIs.\n\n**PROGRAM NAME:** azure_vm_endpoint_protection_installed\n\n**AUTOMATION DETAILS:**\n- The program will utilize the Azure Resource Manager APIs and Azure CLI commands to verify endpoint protection installation on virtual machines.\n\n- **APIs/CLI Commands to Use:**\n  - Azure CLI command to list extensions on virtual machines:  \n    `az vm extension list --resource-group <resource_group_name> --vm-name <vm_name>`\n\n- **Resources to Enumerate:**\n  - Check all virtual machines in each subscription or resource group. \n  - Enumerate through each virtual machine to check the installed extensions for endpoint protection.\n\n- **Configuration Properties/Settings to Validate:**\n  - Identify if the endpoint protection extension (e.g., `Microsoft.Azure.Security.AzureSecurity` or `Microsoft.Azure.Security.AzureAntiMalware`) is listed among the installed extensions.\n    \n- **Pass/Fail Criteria:**\n  - **Pass:** The endpoint protection extension is installed and in the \"succeeded\" state on the virtual machine.\n  - **Fail:** The endpoint protection extension is not present, or its state is not \"succeeded\".\n\n- **Example API Endpoint or CLI Command:**\n  ```bash\n  az vm extension list --resource-group <resource_group_name> --vm-name <vm_name> --query \"[?contains(publisher, 'Microsoft.Azure.Security')].{Name:name, ProvisioningState:provisioningState}\"\n  ```\n\nThis will output the relevant extensions, allowing for a clear assessment of whether endpoint protection is correctly installed on the specified virtual machines."
+}

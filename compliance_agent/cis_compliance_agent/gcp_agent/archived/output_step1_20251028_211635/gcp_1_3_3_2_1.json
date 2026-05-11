@@ -1,0 +1,22 @@
+{
+    "control_id": "3.3.2.1",
+    "unique_id": "gcp_1_3_3_2_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure default deny firewall policy",
+    "input_row": {
+        "id": "3.3.2.1",
+        "unique_id": "gcp_1_3_3_2_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure default deny firewall policy",
+        "description": "A default deny all policy on connections ensures that any unconfigured network usage will be rejected.",
+        "rationale": "With a default accept policy the firewall will accept any packet that is not configured to be denied. It is easier to white list acceptable usage than to black list unacceptable usage.",
+        "audit": "Run the following command and verify that the policy for the INPUT , OUTPUT , and FORWARD chains is DROP or REJECT : # iptables -L Chain INPUT (policy DROP) Chain FORWARD (policy DROP) Chain OUTPUT (policy DROP)",
+        "remediation": "Run the following commands to implement a default DROP policy: # iptables -P INPUT DROP # iptables -P OUTPUT DROP # iptables -P FORWARD DROP Additional Information: Changing firewall settings while connected over network can result in being locked out of the system. Remediation will only affect the active system firewall, be sure to configure the default policy in your firewall management to apply on boot as well.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control \"Ensure default deny firewall policy\" is focused on verifying the behavior of iptables on Google Container-Optimized OS (COS) instances. This involves inspecting the policies for the INPUT, OUTPUT, and FORWARD chains on the firewall to ensure they are set to DROP or REJECT. The audit involves executing a command within the operating system environment of the instance to check the iptables configurations, which implies that SSH access to the instance is necessary.\n\n- ✓ Does it require SSH/RDP to instances? → Manual\n- ✓ Is it about application code, OS configs, or visual review? → Manual\n- The audit command provided (\"# iptables -L\") indicates the need for direct interaction with a running system, which cannot be achieved through GCP APIs or CLI remotely.\n- This is an OS-level check which requires verification via interaction with the OS itself, thus making it suitable for a manual approach.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Establish an SSH connection to the Container-Optimized OS instance using Google Cloud Console or a terminal with secure access credentials.\n\n2. **Inspect iptables Configuration:**\n   - Execute the following command to list the iptables rules and verify the default policy:\n     ```bash\n     iptables -L\n     ```\n\n3. **Validate Configuration:**\n   - Review the output for the policy settings of the INPUT, OUTPUT, and FORWARD chains.\n   - Ensure each chain's default policy is set to DROP or REJECT.\n   - Expected secure configuration example:\n     ```\n     Chain INPUT (policy DROP)\n     Chain FORWARD (policy DROP)\n     Chain OUTPUT (policy DROP)\n     ```\n\n4. **Confirm Compliance:**\n   - If all chains are set to DROP or REJECT, the instance is compliant with the control.\n   - Note any discrepancies and address by configuring the iptables rules accordingly if compliance is not met.",
+    "timestamp": "2025-10-28T21:28:57.468371",
+    "model": "gpt-4o"
+}

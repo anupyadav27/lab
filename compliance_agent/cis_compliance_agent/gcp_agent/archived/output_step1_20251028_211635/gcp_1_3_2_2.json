@@ -1,0 +1,22 @@
+{
+    "control_id": "3.2.2",
+    "unique_id": "gcp_1_3_2_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure ICMP redirects are not accepted",
+    "input_row": {
+        "id": "3.2.2",
+        "unique_id": "gcp_1_3_2_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure ICMP redirects are not accepted",
+        "description": "ICMP redirect messages are packets that convey routing information and tell your host (acting as a router) to send packets via an alternate path. It is a way of allowing an outside routing device to update your system routing tables. By setting net.ipv4.conf.all.accept_redirects and net.ipv6.conf.all.accept_redirects to 0, the system will not accept any ICMP redirect messages, and therefore, won't allow outsiders to update the system's routing tables.",
+        "rationale": "Attackers could use bogus ICMP redirect messages to maliciously alter the system routing tables and get them to send packets to incorrect networks and allow your system packets to be captured.",
+        "audit": "Run the following commands and verify output matches: # sysctl net.ipv4.conf.all.accept_redirects net.ipv4.conf.all.accept_redirects = 0 # sysctl net.ipv4.conf.default.accept_redirects net.ipv4.conf.default.accept_redirects = 0 # sysctl net.ipv6.conf.all.accept_redirects net.ipv6.conf.all.accept_redirects = 0 # sysctl net.ipv6.conf.default.accept_redirects net.ipv6.conf.default.accept_redirects = 0",
+        "remediation": "Run the following commands to set the active kernel parameters: # sysctl -w net.ipv4.conf.all.accept_redirects=0 # sysctl -w net.ipv4.conf.default.accept_redirects=0 # sysctl -w net.ipv6.conf.all.accept_redirects=0 # sysctl -w net.ipv6.conf.default.accept_redirects=0 # sysctl -w net.ipv4.route.flush=1 # sysctl -w net.ipv6.route.flush=1 /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control \"Ensure ICMP redirects are not accepted\" pertains to checking OS-level kernel parameters on instances running Google Container Optimized OS. The `audit` field specifies running `sysctl` commands to verify kernel settings related to ICMP redirects. Since these commands need to be executed on the instance directly, this task requires manual SSH access to the virtual machines running Container Optimized OS.\n\nThis control does not involve configuration settings directly manageable or exposed through GCP APIs, Google Cloud SDK (gcloud), or GCP CLI. It is focused on operating system settings that pertain to network stack configurations, which must be queried at the instance level. Given these details, automation through GCP APIs is not feasible.\n\n**MANUAL STEPS:**\n1. **SSH into the Instance:**\n   - Use SSH to connect to the Google Container Optimized OS instance. This typically requires enabling SSH either through the Google Cloud Console or using the gcloud command-line tool.\n   \n2. **Verify ICMP Redirects Settings:**\n   - Execute the following commands on the instance to check the ICMP redirect settings:\n     ```\n     sysctl net.ipv4.conf.all.accept_redirects\n     sysctl net.ipv4.conf.default.accept_redirects\n     sysctl net.ipv6.conf.all.accept_redirects\n     sysctl net.ipv6.conf.default.accept_redirects\n     ```\n     \n3. **Expected Secure Configuration:**\n   - Ensure that the output of each command reads as follows:\n     ```\n     net.ipv4.conf.all.accept_redirects = 0\n     net.ipv4.conf.default.accept_redirects = 0\n     net.ipv6.conf.all.accept_redirects = 0\n     net.ipv6.conf.default.accept_redirects = 0\n     ```\n\n4. **Confirm Compliance:**\n   - Confirm that each listed parameter is set to `0`, indicating that ICMP redirect messages are not accepted. If any setting does not meet this expectation, it indicates non-compliance with the benchmark.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:25:46.219255",
+    "model": "gpt-4o"
+}

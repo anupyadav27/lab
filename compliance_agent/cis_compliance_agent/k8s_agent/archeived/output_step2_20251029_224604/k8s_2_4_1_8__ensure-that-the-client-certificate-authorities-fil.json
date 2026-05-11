@@ -1,0 +1,25 @@
+{
+    "control_id": "4.1.8",
+    "unique_id": "k8s_2_4_1_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the client certificate authorities file ownership is set to root:root",
+    "input_row": {
+        "id": "4.1.8",
+        "unique_id": "k8s_2_4_1_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the client certificate authorities file ownership is set to root:root",
+        "description": "Ensure that the certificate authorities file ownership is set to root:root.",
+        "rationale": "The certificate authorities file controls the authorities used to validate API requests. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the following command: ps -ef | grep kubelet Find the file specified by the --client-ca-file argument. Run the following command: stat -c %U:%G <filename> Verify that the ownership is set to root:root.",
+        "remediation": "Run the following command to modify the ownership of the --client-ca-file. chown root:root <filename> Default Value: By default no --client-ca-file is specified. References: 1. https://kubernetes.io/docs/admin/authentication/#x509-client-certs",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/authentication/#x509-client-certs"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file ownership (root:root) of the client certificate authorities file specified by the kubelet's --client-ca-file argument.\n- File ownership (user:group) on the host filesystem is not exposed via the Kubernetes API, kubelet API, or any kubectl command.\n- This check requires access to the underlying node OS to inspect file permissions, which is not possible via Kubernetes APIs or kubectl.\n- Therefore, this control requires a Manual audit approach.\n\n**MANUAL STEPS:**\n1. On each Kubernetes worker node, identify the process arguments for the kubelet service to determine the path to the client certificate authorities file:\n   - Run: `ps -ef | grep kubelet`\n   - Look for the `--client-ca-file` argument and note the file path.\n2. For each identified file, check the file ownership:\n   - Run: `stat -c %U:%G <path-to-client-ca-file>`\n3. Verify that the output shows `root:root` as the owner and group.\n4. If the file is not owned by root:root, remediate by running: `chown root:root <path-to-client-ca-file>`\n5. Confirm compliance by ensuring all relevant files on all worker nodes are owned by root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:29:33.588328",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Manual is correct. The file ownership and permissions on the host filesystem are not exposed via Kubernetes APIs, kubelet API, or any kubectl command. Therefore, this check requires direct access to the underlying node OS, making it necessary to perform a manual audit.\n\n**TECHNICAL ACCURACY:** 9\n\n- The manual steps provided are technically accurate and complete. The use of `ps -ef | grep kubelet` to identify the kubelet process arguments is appropriate for determining the path to the client certificate authorities file. The `stat -c %U:%G <path-to-client-ca-file>` command is correctly used to check file ownership. The remediation step using `chown root:root <path-to-client-ca-file>` is also correct.\n- The program name is not specified in the assessment, but the steps are clear and descriptive about what is being checked.\n\n**IMPROVEMENTS:**\n\n- The assessment could include a note on ensuring that the kubelet service is restarted after changing file ownership to ensure the changes take effect.\n- Consideration for automating the collection of kubelet arguments across nodes using a script could be suggested, even though the final ownership check remains manual.\n- The assessment could benefit from a more structured program name, such as `k8s_kubelet_client_ca_file_ownership_check`, to maintain consistency and clarity.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded and aligns with current Kubernetes capabilities and limitations regarding file system access.\n\n**FINAL RECOMMENDATION:** Keep as-is\n\n- The manual approach is justified given the current limitations of Kubernetes APIs and CLI tools in accessing host filesystem details. The assessment is technically sound and complete, with minor improvements suggested for clarity and potential automation of initial data collection.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:17:11.921385"
+}

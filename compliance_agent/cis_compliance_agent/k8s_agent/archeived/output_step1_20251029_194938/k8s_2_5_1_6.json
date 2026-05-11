@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.6",
+    "unique_id": "k8s_2_5_1_6",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that Service Account Tokens are only mounted where necessary",
+    "input_row": {
+        "id": "5.1.6",
+        "unique_id": "k8s_2_5_1_6",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that Service Account Tokens are only mounted where necessary",
+        "description": "Service accounts tokens should not be mounted in pods except where the workload running in the pod explicitly needs to communicate with the API server",
+        "rationale": "Mounting service account tokens inside pods can provide an avenue for privilege escalation attacks where an attacker is able to compromise a single pod in the cluster. Avoiding mounting these tokens removes this attack avenue. Impact: Pods mounted without service account tokens will not be able to communicate with the API server, except where the resource is available to unauthenticated principals.",
+        "audit": "Review pod and service account objects in the cluster and ensure that the option below is set, unless the resource explicitly requires this access. automountServiceAccountToken: false",
+        "remediation": "Modify the definition of pods and service accounts which do not need to mount service account tokens to disable it. Default Value: By default, all pods get a service account token mounted in them. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods mounted without service account tokens will not be able to communicate with the API server, except where the resource is available to unauthenticated principals.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_service_account_token_automount_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ServiceAccounts and Pods in all namespaces using the Kubernetes API or kubectl.\n- For each ServiceAccount, check the value of the spec.automountServiceAccountToken field.\n- For each Pod, check the value of the spec.automountServiceAccountToken field.\n- Identify Pods and ServiceAccounts where automountServiceAccountToken is not explicitly set to false and where the workload does not require API server access.\n- Pass Criteria: All Pods and ServiceAccounts that do not require API server access have automountServiceAccountToken: false set either at the Pod or ServiceAccount level.\n- Example kubectl commands:\n  - List all ServiceAccounts and check their automount setting:\n    ```\n    kubectl get serviceaccounts --all-namespaces -o json | jq '.items[] | {namespace: .metadata.namespace, name: .metadata.name, automount: .automountServiceAccountToken}'\n    ```\n  - List all Pods and check their automount setting:\n    ```\n    kubectl get pods --all-namespaces -o json | jq '.items[] | {namespace: .metadata.namespace, name: .metadata.name, automount: .spec.automountServiceAccountToken, serviceAccount: .spec.serviceAccountName}'\n    ```\n- The program should flag any Pod or ServiceAccount where automountServiceAccountToken is not set to false, except for those workloads that explicitly require API server access (which may require annotation or allow-listing by workload name for exceptions).\n- The check is fully automatable as all relevant fields are exposed via the Kubernetes API.",
+    "timestamp": "2025-10-29T20:35:12.812146",
+    "model": "gpt-4.1"
+}

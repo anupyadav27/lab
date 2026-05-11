@@ -1,0 +1,30 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_etcd_backup_configured",
+    "k8s_secret_backup_policy_configured",
+    "k8s_pod_persistent_volume_backup_configured"
+  ],
+  "changes_made": [
+    "Changed k8s_secret_backup_policy_enabled to k8s_secret_backup_policy_configured for consistency",
+    "Removed k8s_ingress_controller_backup_configured as it does not directly relate to data protection or backup in the context of PCI DSS 3.1.2"
+  ],
+  "review_notes": "The functions generally map well to the PCI DSS control 3.1.2, which focuses on data protection and backup strategies. However, the inclusion of ingress controller backup is not directly relevant to data protection in the context of this control. Naming conventions were mostly followed, but a minor change was made for consistency.",
+  "agreement_with_step1": false,
+  "technical_concerns": [
+    "Ingress controller backup is not directly related to data protection or backup strategies as per PCI DSS 3.1.2."
+  ],
+  "naming_improvements": [
+    "Ensure consistent use of 'configured' instead of 'enabled' for backup policies to align with naming conventions."
+  ],
+  "control_id": "3.1.2",
+  "title": "Requirement 3.1.2",
+  "step1_functions": [
+    "k8s_etcd_backup_configured",
+    "k8s_secret_backup_policy_enabled",
+    "k8s_pod_persistent_volume_backup_configured",
+    "k8s_ingress_controller_backup_configured"
+  ],
+  "step1_reasoning": "The PCI DSS control 3.1.2 focuses on ensuring data protection through lifecycle management and backup strategies. In Kubernetes, this can be mapped to ensuring that etcd, which stores cluster state and secrets, is backed up properly. Additionally, secrets and persistent volumes used by pods should have backup policies in place to ensure data recovery. Ingress controllers, which manage external access, should also have backup configurations to maintain availability and security settings."
+}

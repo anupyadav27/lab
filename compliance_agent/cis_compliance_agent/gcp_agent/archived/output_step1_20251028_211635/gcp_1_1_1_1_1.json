@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.1.1",
+    "unique_id": "gcp_1_1_1_1_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure mounting of udf filesystems is disabled",
+    "input_row": {
+        "id": "1.1.1.1",
+        "unique_id": "gcp_1_1_1_1_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure mounting of udf filesystems is disabled",
+        "description": "The udf filesystem type is the universal disk format used to implement ISO/IEC 13346 and ECMA-167 specifications. This is an open vendor filesystem type for data storage on a broad range of media. This filesystem type is necessary to support writing DVDs and newer optical disc formats.",
+        "rationale": "Removing support for unneeded filesystem types reduces the local attack surface of the system. If this filesystem type is not needed, disable it.",
+        "audit": "Run the following commands and verify the output is as indicated: # modprobe -n -v udf install /bin/true # lsmod | grep udf <No output>",
+        "remediation": "Edit or create a file in the /etc/modprobe.d/ directory ending in .conf Example: vim /etc/modprobe.d/udf.conf and add the following line: install udf /bin/true Run the following command to unload the udf module: # rmmod udf",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control is about ensuring that the mounting of udf filesystems is disabled on Container-Optimized OS instances, which requires checking OS-level configurations. Since this involves verifying kernel module settings (`lsmod` command) and configuration files (`/etc/modprobe.d/`), it necessitates SSH access to instances to inspect the machine's configuration directly.\n\n**MANUAL STEPS:**\n1. **Connect to the Container-Optimized OS Instance:**\n   - Use SSH to connect to each GCP Virtual Machine instance running Container-Optimized OS.\n   - Command: `gcloud compute ssh INSTANCE_NAME --zone ZONE`\n\n2. **Check if the UDF Filesystem Module is Configured:**\n   - Execute the command: `modprobe -n -v udf`.\n   - Verify the output should be `install /bin/true` indicating the module is disabled.\n\n3. **Check if the UDF Filesystem Module is Loaded:**\n   - Run the command: `lsmod | grep udf`.\n   - Ensure there is no output, indicating the `udf` module is not loaded.\n\n4. **Validate Configuration File:**\n   - Open the configuration file (or create if it doesn't exist): `/etc/modprobe.d/udf.conf`.\n   - Verify that it contains the line: `install udf /bin/true`.\n\n5. **Ensure Compliance:**\n   - Confirm that all steps indicate the `udf` filesystem is disabled and not loaded.\n   - Document compliance for each instance checked. \n\nThe reliance on SSH inspection and command execution on the instance level makes this a manual audit approach. There are no GCP APIs or SDK methods to automate these checks directly at the OS module level.",
+    "timestamp": "2025-10-28T21:16:47.557218",
+    "model": "gpt-4o"
+}

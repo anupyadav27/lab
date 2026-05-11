@@ -1,0 +1,22 @@
+{
+    "control_id": "1.4.2",
+    "unique_id": "k8s_4_1_4_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --bind-address argument is set to 127.0.0.1",
+    "input_row": {
+        "id": "1.4.2",
+        "unique_id": "k8s_4_1_4_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --bind-address argument is set to 127.0.0.1",
+        "description": "Do not bind the scheduler service to non-loopback insecure addresses.",
+        "rationale": "The Scheduler API service which runs on port 10251/TCP by default is used for health and metrics information and is available without authentication or encryption. As such it should only be bound to a localhost interface, to minimize the cluster's attack surface Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-scheduler Verify that the --bind-address argument is set to 127.0.0.1",
+        "remediation": "Edit the Scheduler pod specification file /etc/kubernetes/manifests/kube- scheduler.yaml on the Control Plane node and ensure the correct value for the -- bind-address parameter Default Value: By default, the --bind-address parameter is set to 0.0.0.0 References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- scheduler/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- scheduler/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_scheduler_bind_address_localhost_enforced\n\n**AUTOMATION DETAILS:**\n- Query the kube-scheduler static Pod manifest, typically located at /etc/kubernetes/manifests/kube-scheduler.yaml, using the Kubernetes API (via kubectl get pod -n kube-system -o yaml or by accessing the file if running as a static Pod).\n- Parse the command or args section of the kube-scheduler Pod spec to identify the --bind-address flag.\n- Validate that the --bind-address flag is explicitly set to 127.0.0.1.\n- Pass Criteria: The kube-scheduler container command or args includes --bind-address=127.0.0.1.\n- Fail Criteria: The --bind-address flag is missing, set to 0.0.0.0, or set to any value other than 127.0.0.1.\n- Example kubectl command:\n  ```\n  kubectl -n kube-system get pod -l component=kube-scheduler -o jsonpath=\"{.items[*].spec.containers[*].command}\"\n  ```\n  or, for static Pods (if not managed by kubelet as a managed Pod), inspect the manifest directly (requires host access, but CSPM tools can collect this via DaemonSets or privileged access).\n- Automation can be performed by CSPM agents or Kubernetes controllers that have access to the manifest or can query the running Pod spec.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:20:49.821390",
+    "model": "gpt-4.1"
+}

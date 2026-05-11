@@ -1,0 +1,33 @@
+{
+    "control_id": "1.1.18",
+    "unique_id": "k8s_6_1_1_18",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the controller-manager.conf file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.18",
+        "unique_id": "k8s_6_1_1_18",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the controller-manager.conf file ownership is set to root:root",
+        "description": "Ensure that the controller-manager.conf file ownership is set to root:root.",
+        "rationale": "The controller-manager.conf file is the kubeconfig file for the Controller Manager. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G /etc/kubernetes/controller-manager.conf Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root /etc/kubernetes/controller-manager.conf Default Value: By default, controller-manager.conf file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager/",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership of /etc/kubernetes/controller-manager.conf on the control plane node. File ownership (root:root) is an OS-level property and is not exposed via the Kubernetes API, kubectl, or any Kubernetes controller configuration that can be queried remotely. The audit procedure specifically instructs running the stat command directly on the node, confirming that this check requires in-guest OS access.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Run the following command to check the ownership of the controller-manager.conf file (adjust the path if your configuration uses a different location):\n   ```\n   stat -c %U:%G /etc/kubernetes/controller-manager.conf\n   ```\n3. Verify that the output is:\n   ```\n   root:root\n   ```\n4. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/controller-manager.conf\n   ```\n5. Confirm compliance by re-running the stat command and verifying the correct ownership.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:00:11.695041",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this audit approach as Manual is correct. The file ownership of `/etc/kubernetes/controller-manager.conf` is an OS-level property that is not exposed via Kubernetes APIs, kubectl, or any Kubernetes CLI commands. Therefore, it requires direct access to the node's file system, which justifies the manual approach.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and complete. The use of the `stat` command to check file ownership is appropriate, and the remediation step using `chown` is correct.\n- The program name is not explicitly provided, but the description is clear and descriptive about what is being checked.\n\n**IMPROVEMENTS:**\n- The assessment could include a note on ensuring that SSH access to nodes is secured and audited, as this is a critical aspect of maintaining the security posture when performing manual checks.\n- Consider documenting the process for environments where SSH access might be restricted, such as using automation tools to perform these checks in a controlled manner.\n- A better program name suggestion could be `k8s_control_plane_controller_manager_conf_ownership_check` to clearly indicate the specific file and ownership check being performed.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-aligned with the requirements of the control and accurately reflects the necessary steps to verify compliance. The manual approach is justified given the nature of the check.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is. The assessment is accurate and the manual approach is appropriate for this control. The steps are clear and provide a comprehensive method to verify and remediate the file ownership setting.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:56:39.708409",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Manual\n\n**JUSTIFICATION:**\nBoth AI opinions agree that this control requires a manual approach due to the nature of the check, which involves verifying file ownership at the OS level. The ownership of the `controller-manager.conf` file is not accessible via Kubernetes APIs or CLI commands, necessitating direct access to the control plane node. Therefore, a manual inspection is the only feasible method to ensure compliance.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Run the following command to check the ownership of the controller-manager.conf file (adjust the path if your configuration uses a different location):\n   ```\n   stat -c %U:%G /etc/kubernetes/controller-manager.conf\n   ```\n3. Verify that the output is:\n   ```\n   root:root\n   ```\n4. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/controller-manager.conf\n   ```\n5. Confirm compliance by re-running the stat command and verifying the correct ownership.\n\n**WHY NOT AUTOMATED:**\nThis check cannot be automated via Kubernetes APIs because file ownership is an operating system-level property that is not exposed through Kubernetes resources or commands.\n\n---\n\n**DISAGREEMENTS RESOLVED:**\nThere were no disagreements between the two AI opinions; both concurred on the manual approach being necessary due to the limitations of Kubernetes API access for this specific check.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "final_approach": "Manual",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T03:43:08.457808"
+    }
+}

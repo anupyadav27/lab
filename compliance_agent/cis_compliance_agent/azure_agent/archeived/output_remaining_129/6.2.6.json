@@ -1,0 +1,17 @@
+{
+    "id": "6.2.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.6",
+        "unique_id": "aks_6.2.6__ensure-no-duplicate-group-names-exist",
+        "title": "Ensure no duplicate group names exist",
+        "description": "Although the groupadd program will not let you create a duplicate group name, it is possible for an administrator to manually edit the /etc/group file and change the group name.",
+        "rationale": "If a group is assigned a duplicate group name, it will create and have access to files with the first GID for that group in /etc/group . Effectively, the GID is shared, which is a security problem.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash cut -d: -f1 /etc/group | sort | uniq -d | while read -r x; do echo \"Duplicate group name ${x} in /etc/group\" done",
+        "remediation": "Based on the results of the audit script, establish unique names for the user groups. File group ownerships will automatically reflect the change as long as the groups have unique GIDs. References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access Kubernetes Nodes:**\n   - Use Azure CLI or portal to get the credentials for your AKS cluster by running: \n     ```\n     az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>\n     ```\n   - SSH into any of the nodes in your AKS cluster. You can get the node's IP from the Azure portal under \"Kubernetes services\" > \"Kubernetes cluster\".\n\n2. **Check the /etc/group File:**\n   - Once you are SSH'd into a node, check the `/etc/group` file for duplicate groups. You can do this by running the audit script mentioned in the control:\n     ```bash\n     cut -d: -f1 /etc/group | sort | uniq -d\n     ```\n   - This command extracts the group names from the `/etc/group` file, sorts them, and identifies any duplicates.\n\n3. **Verify the Results:**\n   - If the output of the command returns any group names, it indicates that duplicates exist.\n\n4. **Correcting Duplicate Group Names:**\n   - If duplicates are found, take note of the names and their respective GIDs. Establish unique names for the groups in line with the remediation guidance. \n   - You can rename groups using commands like `groupmod` (ensure to verify if there are dependencies on those groups before renaming to avoid disruption).\n\n5. **Compliance Confirmation:**\n   - A compliant state is confirmed when the command returns no duplicate group names. Document findings for audit trails. \n\nBy following these steps, you will be able to manually verify compliance with the control to ensure no duplicate group names exist within your AKS cluster."
+}

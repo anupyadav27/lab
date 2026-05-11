@@ -1,0 +1,22 @@
+{
+    "control_id": "1.6.7",
+    "unique_id": "k8s_5_1_6_7",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Apply Security Context to Your Pods and Containers",
+    "input_row": {
+        "id": "1.6.7",
+        "unique_id": "k8s_5_1_6_7",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Apply Security Context to Your Pods and Containers",
+        "description": "Apply Security Context to Your Pods and Containers",
+        "rationale": "A security context defines the operating system security settings (uid, gid, capabilities, SELinux role, etc..) applied to a container. When designing your containers and pods, make sure that you configure the security context for your pods, containers, and volumes. A security context is a property defined in the deployment yaml. It controls the security parameters that will be assigned to the pod/container/volume. There are two levels of security context: pod level security context, and container level security context.",
+        "audit": "Review the pod definitions in your cluster and verify that you have security contexts defined as appropriate.",
+        "remediation": "Follow the Kubernetes documentation and apply security contexts to your pods. For a suggested list of security contexts, you may refer to the CIS Security Benchmark for Docker Containers. Impact: If you incorrectly apply security contexts, you may have trouble running the pods. Default Value: By default, no security contexts are automatically applied to pods. References: 1. https://kubernetes.io/docs/concepts/policy/security-context/ 2. https://learn.cisecurity.org/benchmarks",
+        "profile_applicability": "•  Level 2",
+        "impact": "If you incorrectly apply security contexts, you may have trouble running the pods. Default Value: By default, no security contexts are automatically applied to pods.",
+        "references": "1. https://kubernetes.io/docs/concepts/policy/security-context/ 2. https://learn.cisecurity.org/benchmarks"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_and_container_security_context_configured\n\n**AUTOMATION DETAILS:**\n- Enumerate all Pod resources in all namespaces using the Kubernetes API (e.g., via kubectl get pods --all-namespaces -o json or the /api/v1/pods endpoint).\n- For each Pod, check for the presence of the .spec.securityContext field at the Pod level.\n- For each container (including initContainers) within each Pod, check for the presence of the .securityContext field at the container level.\n- Pass Criteria:\n  - Pod is compliant if either:\n    - The Pod spec defines a non-null .spec.securityContext, OR\n    - Every container (including initContainers) within the Pod defines a non-null .securityContext.\n- Fail Criteria:\n  - Pod is non-compliant if neither the Pod nor any of its containers (including initContainers) define a securityContext.\n- The check should report all non-compliant Pods, including their namespace and name, and specify whether the missing securityContext is at the Pod or container level.\n- Example kubectl command for manual spot-checking:\n  - kubectl get pods --all-namespaces -o json | jq '.items[] | select((.spec.securityContext == null) and (all(.spec.containers[]; .securityContext == null)) and (all(.spec.initContainers[]?; .securityContext == null))) | {namespace: .metadata.namespace, name: .metadata.name}'\n- This check can be fully automated via Kubernetes API without requiring human judgment or in-guest OS access.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:50:38.859605",
+    "model": "gpt-4.1"
+}

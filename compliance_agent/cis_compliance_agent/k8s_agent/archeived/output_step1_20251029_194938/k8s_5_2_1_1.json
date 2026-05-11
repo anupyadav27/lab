@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.1",
+    "unique_id": "k8s_5_2_1_1",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --allow-privileged argument is set to false",
+    "input_row": {
+        "id": "2.1.1",
+        "unique_id": "k8s_5_2_1_1",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --allow-privileged argument is set to false",
+        "description": "Do not allow privileged containers.",
+        "rationale": "The privileged container has all the system capabilities, and it also lifts all the limitations enforced by the device cgroup controller. In other words, the container can then do almost everything that the host can do. This flag exists to allow special use-cases, like running Docker within Docker and hence should be avoided for production workloads.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --allow-privileged argument is set to false.",
+        "remediation": "Edit the /etc/kubernetes/config file on each node and set the KUBE_ALLOW_PRIV parameter to \"--allow-privileged=false\": KUBE_ALLOW_PRIV=\"--allow-privileged=false\" Based on your system, restart the kubelet service. For example: systemctl restart kubelet.service Impact: You will not be able to run any privileged containers.  147 | P a g e Note: A number of components used by Kubernetes clusters currently make use of privileged containers (e.g. Container Network Interface plugins). Care should be taken in ensuring that the use of such plugins is minimized and in particular any use of privileged containers outside of the kube-system namespace should be scrutinized. Where possible, review the rights required by such plugins to determine if a more fine grained permission set can be applied. Default Value: By default, privileged containers are not allowed. References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/user-guide/security-context/",
+        "profile_applicability": "•  Level 1",
+        "impact": "You will not be able to run any privileged containers.  147 | P a g e Note: A number of components used by Kubernetes clusters currently make use of privileged containers (e.g. Container Network Interface plugins). Care should be taken in ensuring that the use of such plugins is minimized and in particular any use of privileged containers outside of the kube-system namespace should be scrutinized. Where possible, review the rights required by such plugins to determine if a more fine grained permission set can be applied. Default Value: By default, privileged containers are not allowed.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/user-guide/security-context/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the kubelet process argument --allow-privileged on each node.\n- This flag is set as a process argument or via a node-local config file (e.g., /etc/kubernetes/config or systemd unit).\n- The Kubernetes API and kubectl do NOT expose the kubelet process arguments or node-local config files.\n- The audit procedure explicitly instructs to run a process listing (ps -ef | grep kubelet) on each node, which requires OS-level access.\n- There is no Kubernetes API or kubectl command that can directly retrieve the value of --allow-privileged for each kubelet instance.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes node in the cluster.\n2. Run the following command to list the kubelet process and its arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Examine the output for the presence of the --allow-privileged argument.\n4. Confirm that --allow-privileged is either not present (default is false) or explicitly set to --allow-privileged=false.\n5. If --allow-privileged=true is present, the node is non-compliant.\n6. Repeat for all nodes in the cluster to ensure compliance cluster-wide.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:50:59.463960",
+    "model": "gpt-4.1"
+}

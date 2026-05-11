@@ -1,0 +1,33 @@
+{
+    "control_id": "1.4.6",
+    "unique_id": "k8s_5_1_4_6",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the scheduler file ownership is set to root:root",
+    "input_row": {
+        "id": "1.4.6",
+        "unique_id": "k8s_5_1_4_6",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the scheduler file ownership is set to root:root",
+        "description": "Ensure that the scheduler file ownership is set to root:root.",
+        "rationale": "The scheduler file controls various parameters that set the behavior of the kube- scheduler service in the master node. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root.",
+        "audit": "Run the below command (based on the file location on your system) on the master node. For example, stat -c %U:%G /etc/kubernetes/scheduler Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the master node. For example, chown root:root /etc/kubernetes/scheduler Impact: None Default Value: By default, scheduler file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kube-scheduler/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, scheduler file ownership is set to root:root.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-scheduler/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires checking the file ownership of the kube-scheduler configuration file on the master node's filesystem (e.g., /etc/kubernetes/scheduler).\n- Kubernetes APIs and kubectl do not expose underlying host file ownership or permissions.\n- The audit procedure explicitly instructs to use OS-level commands (e.g., stat) on the node.\n- This check cannot be performed via Kubernetes API, kubectl, or any controller/state config.\n- Therefore, this is a Manual control.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes master node where the kube-scheduler runs.\n2. Identify the kube-scheduler configuration file path (commonly /etc/kubernetes/scheduler or as specified by the --config flag in the kube-scheduler manifest).\n3. Run the following command to check file ownership:\n   ```\n   stat -c %U:%G /etc/kubernetes/scheduler\n   ```\n   (Replace the path with the actual scheduler config file path if different.)\n4. Verify that the output is:\n   ```\n   root:root\n   ```\n5. Confirm compliance if the file is owned by root user and root group. If not, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/scheduler\n   ```\n6. Repeat for all master nodes in the cluster.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:46:43.431013",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this control as Manual is correct. Kubernetes APIs and kubectl do not provide mechanisms to check or modify file ownership on the host filesystem. This is inherently an OS-level concern that requires direct access to the node's filesystem, typically via SSH, to execute commands like `stat` or `chown`.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps outlined are technically accurate and provide a clear procedure for verifying and remediating the file ownership of the kube-scheduler configuration file. The use of `stat` to check ownership and `chown` to remediate is appropriate.\n- The program naming convention is not explicitly mentioned, but the steps are descriptive and clear regarding the security check being performed.\n\n**IMPROVEMENTS:**\n- The assessment could benefit from a more explicit mention of the need to verify the actual path to the kube-scheduler configuration file, as it may vary based on the deployment method (e.g., static pod, systemd service).\n- Consider adding a note on checking the kube-scheduler manifest for the `--config` flag to determine the correct configuration file path.\n- While the manual steps are comprehensive, a brief mention of potential automation tools or scripts that could assist in this process (e.g., Ansible, Chef) might be beneficial for larger environments.\n\n**CONFIDENCE:** HIGH\n- Given the nature of the control and the limitations of Kubernetes APIs in accessing host-level file permissions, the assessment is accurate and well-founded.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is. The manual approach is justified, and the steps are clear and actionable. The assessment accurately reflects the limitations of Kubernetes tools in addressing this control, and no reclassification is necessary.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T01:14:54.423235",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Manual\n\n**JUSTIFICATION:**\nBoth AI opinions unanimously agree that this control requires a manual approach due to the necessity of checking file ownership on the host filesystem, which cannot be accessed via Kubernetes APIs or kubectl. The audit steps explicitly involve OS-level commands that must be executed directly on the master node, confirming that automation is not feasible.\n\n**CONFIDENCE:** HIGH\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes master node where the kube-scheduler runs.\n2. Identify the kube-scheduler configuration file path (commonly /etc/kubernetes/scheduler or as specified by the --config flag in the kube-scheduler manifest).\n3. Run the following command to check file ownership:\n   ```\n   stat -c %U:%G /etc/kubernetes/scheduler\n   ```\n   (Replace the path with the actual scheduler config file path if different.)\n4. Verify that the output is:\n   ```\n   root:root\n   ```\n5. Confirm compliance if the file is owned by root user and root group. If not, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/scheduler\n   ```\n6. Repeat for all master nodes in the cluster.\n\n**WHY NOT AUTOMATED:**\nThis control cannot be automated via Kubernetes APIs because it involves checking and modifying file ownership on the host filesystem, which is outside the scope of Kubernetes' management capabilities.\n\n**DISAGREEMENTS RESOLVED:**\nThere were no disagreements between the two AI opinions; both aligned on the necessity of a manual approach based on the technical requirements of the control.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "final_approach": "Manual",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T03:49:00.798595"
+    }
+}

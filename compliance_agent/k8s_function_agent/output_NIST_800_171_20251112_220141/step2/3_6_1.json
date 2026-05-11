@@ -1,0 +1,29 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_admission_controller_security_policy_enabled"
+  ],
+  "changes_made": [
+    "Changed k8s_audit_logging_enabled to k8s_apiserver_audit_logging_enabled for specificity",
+    "Changed k8s_audit_log_retention_configured to k8s_apiserver_audit_log_retention_configured for specificity"
+  ],
+  "review_notes": "The functions are generally well-aligned with the NIST 800-171 control 3.6.1, focusing on incident handling capabilities. However, the audit-related functions should be more specific to the API server context, as audit logging is primarily configured there. The naming conventions are mostly followed, but slight adjustments were made for clarity and specificity.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Use 'apiserver' instead of 'audit' for functions related to audit logging to specify the resource more clearly"
+  ],
+  "control_id": "3_6_1",
+  "title": "3_6_1: 3.6.1 Establish an operational incident-handling capability for organizational systems that includes preparation, detection, analysis, containment, recovery, and user response activities",
+  "step1_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_admission_controller_security_policy_enabled"
+  ],
+  "step1_reasoning": "The NIST 800-171 control 3.6.1 focuses on establishing an incident-handling capability, which includes preparation, detection, analysis, containment, recovery, and user response activities. In Kubernetes, this can be mapped to ensuring comprehensive audit logging (for detection and analysis), enforcing network policies to contain incidents, and using admission controllers to prevent misconfigurations. Audit logs provide a trail for incident detection and analysis, while network policies can help contain potential breaches. Admission controllers can enforce security policies to prevent incidents."
+}

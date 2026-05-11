@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.6",
+    "unique_id": "gcp_1_5_1_6",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH X11 forwarding is disabled",
+    "input_row": {
+        "id": "5.1.6",
+        "unique_id": "gcp_1_5_1_6",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH X11 forwarding is disabled",
+        "description": "The X11Forwarding parameter provides the ability to tunnel X11 traffic through the connection to enable remote graphic connections.",
+        "rationale": "Disable X11 forwarding unless there is an operational requirement to use X11 applications directly. There is a small risk that the remote X11 servers of users who are logged in via SSH with X11 forwarding could be compromised by other users on the X11 server. Note that even if X11 forwarding is disabled, users can always install their own forwarders.",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep x11forwarding X11Forwarding no",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: X11Forwarding no",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control in question is concerned with ensuring SSH X11 forwarding is disabled on instances running Container-Optimized OS. The audit step involves running a command directly on the instance to check the `sshd` configuration, which cannot be performed using GCP APIs or the Google Cloud SDK (gcloud) commands. This requires verifying the configuration at the OS level, thus requiring SSH access to the instance itself.\n\n**MANUAL STEPS:**\n1. **Access the VM Instance:**\n   - Use SSH to connect to the GCP VM instance running Container-Optimized OS.\n\n2. **Verify SSH Configuration:**\n   - Run the command: `sshd -T | grep x11forwarding`\n   - Check that the output matches: `X11Forwarding no`\n\n3. **Expected Secure Configuration:**\n   - Ensure that the `X11Forwarding` parameter is set to `no` in the SSH configuration.\n\n4. **Confirm Compliance:**\n   - If the output of the command confirms that `X11Forwarding` is set to `no`, then the instance is compliant with the control.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThis approach ensures that human judgment is applied to accurately verify the SSH configuration on the specific instances, as current GCP APIs and tools do not provide direct checks for this OS-level configuration setting.",
+    "timestamp": "2025-10-28T21:33:11.268489",
+    "model": "gpt-4o"
+}

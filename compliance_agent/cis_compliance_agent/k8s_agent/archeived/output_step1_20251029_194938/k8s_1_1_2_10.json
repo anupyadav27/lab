@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.10",
+    "unique_id": "k8s_1_1_2_10",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the admission control plugin AlwaysAdmit is not set",
+    "input_row": {
+        "id": "1.2.10",
+        "unique_id": "k8s_1_1_2_10",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the admission control plugin AlwaysAdmit is not set",
+        "description": "Do not allow all requests.",
+        "rationale": "Setting admission control plugin AlwaysAdmit allows all requests and do not filter any requests. The AlwaysAdmit admission controller was deprecated in Kubernetes v1.13. Its behavior was equivalent to turning off all admission controllers. Impact: Only requests explicitly allowed by the admissions control plugins would be served.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that if the --enable-admission-plugins argument is set, its value does not include AlwaysAdmit.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and either remove the --enable-admission- plugins parameter, or set it to a value that does not include AlwaysAdmit. Default Value: AlwaysAdmit is not in the list of default admission plugins. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#alwaysadmit",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Only requests explicitly allowed by the admissions control plugins would be served.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#alwaysadmit"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_alwaysadmit_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the kube-system namespace as a static Pod (e.g., /etc/kubernetes/manifests/kube-apiserver.yaml or via `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml`).\n- Inspect the command-line arguments for the kube-apiserver container, specifically the `--enable-admission-plugins` and `--disable-admission-plugins` flags.\n- Validate that `AlwaysAdmit` is NOT present in the `--enable-admission-plugins` list.\n- Pass Criteria: The `--enable-admission-plugins` argument does NOT include `AlwaysAdmit` (or the flag is absent, which is also compliant since AlwaysAdmit is not enabled by default).\n- Fail Criteria: The `--enable-admission-plugins` argument includes `AlwaysAdmit`.\n- Example kubectl command:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n- Alternatively, if running as a static Pod, inspect the manifest file directly (if accessible via automation).\n- The check is fully automatable as the admission plugins are specified in the kube-apiserver container args, which are exposed via the Kubernetes API.",
+    "timestamp": "2025-10-29T19:55:00.316829",
+    "model": "gpt-4.1"
+}

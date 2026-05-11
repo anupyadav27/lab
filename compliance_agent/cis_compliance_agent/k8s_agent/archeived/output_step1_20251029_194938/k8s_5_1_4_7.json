@@ -1,0 +1,22 @@
+{
+    "control_id": "1.4.7",
+    "unique_id": "k8s_5_1_4_7",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the etcd.conf file permissions are set to 644 or more restrictive",
+    "input_row": {
+        "id": "1.4.7",
+        "unique_id": "k8s_5_1_4_7",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the etcd.conf file permissions are set to 644 or more restrictive",
+        "description": "Ensure that the etcd.conf file has permissions of 644 or more restrictive.",
+        "rationale": "The etcd.conf file controls various parameters that set the behavior of the etcd service in the master node. etcd is a highly-available key value store which Kubernetes uses for persistent storage of all of its REST API object. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system.",
+        "audit": "Run the below command (based on the file location on your system) on the master node. For example, stat -c %a /etc/etcd/etcd.conf Verify that the permissions are 644 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the master node. For example, chmod 644 /etc/etcd/etcd.conf Impact: None Default Value: By default, etcd.conf file has permissions of 644. References: 1. https://coreos.com/etcd  101 | P a g e 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, etcd.conf file has permissions of 644.",
+        "references": "1. https://coreos.com/etcd  101 | P a g e 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file permissions of /etc/etcd/etcd.conf on the master node's underlying operating system. Kubernetes APIs and kubectl do not expose host-level file permissions or allow querying of in-guest OS file modes. The audit procedure explicitly requires running a shell command (stat -c %a /etc/etcd/etcd.conf) directly on the node, which is outside the scope of Kubernetes API or kubectl capabilities.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes master node where etcd is running.\n2. Run the following command to check the permissions of the etcd.conf file:\n   ```\n   stat -c %a /etc/etcd/etcd.conf\n   ```\n3. Verify that the output is 644 or a more restrictive value (e.g., 640, 600).\n4. Confirm compliance if the permissions are 644 or more restrictive; otherwise, remediate by running:\n   ```\n   chmod 644 /etc/etcd/etcd.conf\n   ```\n5. Document the result for compliance reporting.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:46:51.758342",
+    "model": "gpt-4.1"
+}

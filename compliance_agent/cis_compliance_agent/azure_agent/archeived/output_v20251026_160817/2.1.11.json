@@ -1,0 +1,17 @@
+{
+    "id": "2.1.11",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.1.11",
+        "unique_id": "2.1.11__ensure-incoming-client-certificates-are-enabled-and-required-(if-in-use)",
+        "title": "Ensure incoming client certificates are enabled and required (if in use)",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Login to Azure Portal using https://portal.azure.com 2. Go to App Services 3. Click on each App 4. Under the Settings section, Click on Configuration, then General settings 5. Set the option Client certificate mode located under Incoming client certificates to Require Remediate from Azure CLI To set Incoming client certificates value for an existing app, run the following command: az webapp update --resource-group <RESOURCE_GROUP_NAME> --name <APP_NAME> -- set clientCertEnabled=true Default Value: By default, incoming client certificates are disabled. References: 1. https://docs.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- identity-management#im-4-authenticate-server-and-services 2. https://learn.microsoft.com/en-us/azure/app-service/app-service-web-configure- tls-mutual-auth 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/powershell/module/az.websites/get-azwebapp CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control primarily involves the setting of client certificate requirements for Azure App Services, which can be verified via Azure APIs and CLI commands as indicated in the remediation section. It does not require human judgment or access to nodes, thus making it suitable for an automated approach.\n\n**PROGRAM NAME:** azure_appservice_incoming_client_certificates_enabled_required\n\n**AUTOMATION DETAILS:**\nThe automated program would check the following:\n\n- Use Azure Resource Manager APIs or Azure CLI commands to access App Service configurations.\n- Enumerate resources under Azure App Services within specified subscriptions or resource groups.\n- Validate the property related to incoming client certificates; specifically, check if `clientCertEnabled` is set to `true`.\n\n**Azure CLI command for checking configuration:**\n```sh\naz webapp show --resource-group <RESOURCE_GROUP_NAME> --name <APP_NAME>\n```\n\n**Expected configuration property to validate:**\n- Ensure the `clientCertEnabled` property is set to `true`.\n\n**Clear Pass/Fail criteria:**\n- **Pass:** `clientCertEnabled` is `true`, which indicates client certificates are required.\n- **Fail:** `clientCertEnabled` is not `true` (either `false` or the property is not defined).\n\n**Example API endpoint to check configuration:**\n- Use the REST API endpoint:\n```\nGET https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.Web/sites/{app-name}?api-version=2021-02-01\n```\n- Look for the JSON response to ensure the value of `clientCertEnabled` is true."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.25",
+    "unique_id": "k8s_2_1_2_25",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --client-ca-file argument is set as appropriate",
+    "input_row": {
+        "id": "1.2.25",
+        "unique_id": "k8s_2_1_2_25",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --client-ca-file argument is set as appropriate",
+        "description": "Setup TLS connection on the API server.",
+        "rationale": "API server communication contains sensitive parameters that should remain encrypted in transit. Configure the API server to serve only HTTPS traffic. If --client-ca-file argument is set, any request presenting a client certificate signed by one of the authorities in the client-ca-file is authenticated with an identity corresponding to the CommonName of the client certificate. Impact: TLS and client certificate authentication must be configured for your Kubernetes cluster deployment.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --client-ca-file argument exists and it is set as appropriate.",
+        "remediation": "Follow the Kubernetes documentation and set up the TLS connection on the apiserver. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the master node and set the client certificate authority file. --client-ca-file=<path/to/client-ca-file> Default Value: By default, --client-ca-file argument is not set. References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kelseyhightower/docker-kubernetes-tls-guide",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "TLS and client certificate authentication must be configured for your Kubernetes cluster deployment.",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kelseyhightower/docker-kubernetes-tls-guide"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_client_ca_file_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located at /etc/kubernetes/manifests/kube-apiserver.yaml, using the Kubernetes API (if running as a static Pod) or via kubectl.\n- Use the following command to retrieve the kube-apiserver Pod spec:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o yaml\n  ```\n  or, if static Pods are not managed by the kubelet API, fetch the manifest file directly (requires host access, but in managed clusters, this is often exposed via the API).\n- Parse the command line arguments (spec.containers[].command or spec.containers[].args) for the presence of the --client-ca-file flag.\n- Validate that:\n  - The --client-ca-file argument is present.\n  - The value is a valid file path (non-empty).\n- Pass Criteria: The kube-apiserver is running with the --client-ca-file argument set to a valid path.\n- Fail Criteria: The --client-ca-file argument is missing or set to an empty value.\n- Optional: If possible, further validate that the referenced file exists and is a valid CA bundle (requires host access; not always possible via API).\n- Example check logic:\n  - For each kube-apiserver Pod/container, extract the command/args.\n  - Confirm --client-ca-file is present and non-empty.\n  - Report Pass/Fail for each instance.",
+    "timestamp": "2025-10-29T20:23:13.932059",
+    "model": "gpt-4.1"
+}

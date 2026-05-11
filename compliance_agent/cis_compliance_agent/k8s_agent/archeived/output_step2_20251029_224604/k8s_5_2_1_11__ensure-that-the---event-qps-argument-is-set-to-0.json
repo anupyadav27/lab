@@ -1,0 +1,25 @@
+{
+    "control_id": "2.1.11",
+    "unique_id": "k8s_5_2_1_11",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --event-qps argument is set to 0",
+    "input_row": {
+        "id": "2.1.11",
+        "unique_id": "k8s_5_2_1_11",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --event-qps argument is set to 0",
+        "description": "Do not limit event creation.",
+        "rationale": "It is important to capture all events and not restrict event creation. Events are an important source of security information and analytics that ensure that your environment is consistently monitored using the event data.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that --event-qps argument exists and is set to 0.",
+        "remediation": "Edit the /etc/kubernetes/kubelet file on each node and set the KUBELET_ARGS parameter to \"--event-qps=0\": KUBELET_ARGS=\"--event-qps=0\" Based on your system, restart the kubelet service. For example: systemctl restart kubelet.service Impact: You might need to scale up your event storage and processing capabilitles. Default Value: By default, --event-qps argument is set to 5. References: 1. https://kubernetes.io/docs/admin/kubelet/   167 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "You might need to scale up your event storage and processing capabilitles. Default Value: By default, --event-qps argument is set to 5.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/   167 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the kubelet process flag --event-qps on each node.\n- This flag is set at the process level and is not exposed via the Kubernetes API, kubelet API, or through kubectl.\n- The audit procedure explicitly instructs to use OS-level process inspection (ps -ef | grep kubelet) or to check node configuration files.\n- There is no Kubernetes API or kubectl command that can directly retrieve the kubelet process arguments or the value of --event-qps across all nodes.\n- Therefore, this check requires host-level access and cannot be fully automated via Kubernetes-native APIs.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes node in the cluster.\n2. Run the following command to list the kubelet process and its arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Examine the output to locate the --event-qps argument.\n4. Verify that --event-qps=0 is present in the kubelet process arguments.\n5. Alternatively, check the kubelet configuration file (commonly /etc/kubernetes/kubelet or the systemd service file) for the --event-qps setting.\n6. Confirm that the value is set to 0.\n7. If the argument is missing or set to a value other than 0, this is non-compliant.\n8. Repeat these steps for every node in the cluster to ensure cluster-wide compliance.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:52:48.163963",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Manual is correct. The --event-qps argument is a kubelet process-level configuration and is not exposed via Kubernetes APIs or accessible through kubectl. Therefore, it requires host-level access to verify, which justifies the manual approach.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps outlined are technically accurate and provide a clear method to verify the --event-qps setting. The use of `ps -ef | grep kubelet` is appropriate for inspecting process arguments. Additionally, checking configuration files like `/etc/kubernetes/kubelet` or the systemd service file is a valid approach.\n- The program name convention is not explicitly mentioned in the assessment, but the steps are descriptive and clear about what is being checked.\n\n**IMPROVEMENTS:**\n- The assessment could benefit from a more structured program name, such as `k8s_kubelet_event_qps_check`, to align with naming conventions and improve clarity.\n- Consider adding a step to document findings for each node to ensure a comprehensive audit trail.\n- It might be beneficial to mention the possibility of using configuration management tools (e.g., Ansible, Puppet) to automate the SSH and command execution steps, even though the core check remains manual.\n\n**CONFIDENCE:** HIGH\n- Given the nature of the control and the limitations of Kubernetes APIs in accessing process-level configurations, the assessment is well-founded. The manual steps are accurate and complete.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is, with a suggestion to enhance documentation practices and consider naming conventions for clarity. The manual approach is justified, and the technical execution is sound.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:55:23.934615"
+}

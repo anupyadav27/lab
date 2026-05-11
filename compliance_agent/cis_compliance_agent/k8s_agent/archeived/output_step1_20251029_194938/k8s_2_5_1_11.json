@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.11",
+    "unique_id": "k8s_2_5_1_11",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Minimize access to the approval sub-resource of certificatesigningrequests objects",
+    "input_row": {
+        "id": "5.1.11",
+        "unique_id": "k8s_2_5_1_11",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Minimize access to the approval sub-resource of certificatesigningrequests objects",
+        "description": "Users with access to the update the approval sub-resource of CertificateSigningRequests objects can approve new client certificates for the Kubernetes API effectively allowing them to create new high-privileged user accounts. This can allow for privilege escalation to full cluster administrator, depending on users configured in the cluster",
+        "rationale": "The ability to update certificate signing requests should be limited.",
+        "audit": "Review the users who have access to update the approval sub-resource of CertificateSigningRequests objects in the Kubernetes API.",
+        "remediation": "Where possible, remove access to the approval sub-resource of CertificateSigningRequests objects. References: 1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#csrs-and- certificate-issuing",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "",
+        "references": "1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#csrs-and- certificate-issuing"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_csr_approval_subresource_access_restricted\n\n**AUTOMATION DETAILS:**\n\n- **Kubernetes API calls or kubectl SDK methods to use:**\n  - Use `kubectl get clusterrole,role -o yaml` and `kubectl get clusterrolebinding,rolebinding -o yaml` to enumerate all RBAC roles and bindings.\n  - Specifically, search for RBAC rules that grant `update` or `*` verbs on the `certificatesigningrequests/approval` subresource.\n\n- **Kubernetes CLI commands (if applicable):**\n  - To list all roles/clusterroles with access to the approval subresource:\n    ```\n    kubectl get clusterrole,role -o json | jq '.items[] | select(.rules[]? | (.resources[]? == \"certificatesigningrequests/approval\") and (.verbs[]? == \"update\" or .verbs[]? == \"*\")) | .metadata.name'\n    ```\n  - To identify which users/groups/serviceaccounts are bound to these roles:\n    ```\n    kubectl get clusterrolebinding,rolebinding -o json | jq '.items[] | select(.roleRef.name == \"<role_with_approval_access>\") | .subjects[]'\n    ```\n\n- **Specific resources to enumerate:**\n  - All ClusterRoles and Roles for rules on `certificatesigningrequests/approval` with `update` or `*` verb.\n  - All ClusterRoleBindings and RoleBindings that bind these roles to users, groups, or service accounts.\n\n- **Exact configuration properties/settings to validate:**\n  - The presence of RBAC rules granting `update` (or `*`) on the `certificatesigningrequests/approval` subresource.\n  - The list of subjects (users, groups, service accounts) who are granted these permissions.\n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** Only explicitly authorized, minimal set of trusted users/groups/service accounts have `update` access to the `certificatesigningrequests/approval` subresource.\n  - **Fail:** Any untrusted, unnecessary, or overly broad (e.g., `system:authenticated`, `system:serviceaccounts`, or wildcard `*`) subjects have `update` or `*` access to the `certificatesigningrequests/approval` subresource.\n\n- **Example:**\n  - If a ClusterRole named `csr-approver` has:\n    ```yaml\n    rules:\n    - apiGroups: [\"certificates.k8s.io\"]\n      resources: [\"certificatesigningrequests/approval\"]\n      verbs: [\"update\"]\n    ```\n    and is bound to a user or group, the program will flag all such bindings for review.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:36:51.590985",
+    "model": "gpt-4.1"
+}

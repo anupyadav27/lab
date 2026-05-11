@@ -1,0 +1,4300 @@
+{
+  "provider": "aws",
+  "generated_at": "2025-09-24T16:40:31.975431Z",
+  "source_taxonomy": "subcategories_taxonomy_clean_2025-09-11T17-30-20.json",
+  "source_assertions": "assertions_pack_final_2025-09-11T18-41-14_enhanced.json",
+  "total_checks": 203,
+  "matrix": {
+    "identity_access.authentication": [
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": {
+          "min_authn_factors_required": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.strong_authn_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.service_authn_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.legacy_authn_disabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.session_timeout_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_enforcement",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaRequired"
+          ],
+          "predicate": "mfaRequired === true",
+          "paths_doc": [
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.mfa_devices",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices"
+          ],
+          "predicate": "Array.isArray(mfaDevices) && mfaDevices.length >= 1",
+          "paths_doc": [
+            "IAM:ListMFADevices"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_authentication",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authentication.group_mfa_enforced"
+      }
+    ],
+    "identity_access.authorization": [
+      {
+        "service": "iam",
+        "resource": "iam.policy",
+        "resource_type": "iam.policy",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_policy",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.permission_boundaries_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.permission_boundaries_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.permission_boundaries_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.permission_boundaries_enforced"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.permission_boundaries_enforced"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.permission_boundaries_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.policy",
+        "resource_type": "iam.policy",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_policy",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.resource_policies_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.resource_policies_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.resource_policies_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.resource_policies_configured"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.resource_policies_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.resource_policies_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.policy",
+        "resource_type": "iam.policy",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_policy",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.conditional_access_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.conditional_access_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.conditional_access_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "attachedPolicies",
+            "inlinePolicies"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListAttachedUserPolicies",
+            "IAM:ListUserPolicies"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.conditional_access_enabled"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.conditional_access_enabled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_authorization",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.authorization.conditional_access_enabled"
+      }
+    ],
+    "identity_access.federation": [
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.external_idp_configured"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.external_idp_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.external_idp_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.external_idp_configured"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.trust_relationships_managed"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.trust_relationships_managed"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.trust_relationships_managed"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.trust_relationships_managed"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.cross_account_access_controlled"
+      },
+      {
+        "service": "directoryservice",
+        "resource": "directoryservice.directory",
+        "resource_type": "directoryservice.directory",
+        "adapter": "aws.directoryservice.directoryservice_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_directoryservice_directory",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "DIRECTORYSERVICE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.cross_account_access_controlled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.identity_pool",
+        "resource_type": "cognito.identity_pool",
+        "adapter": "aws.cognito.cognito_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_identity_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.cross_account_access_controlled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_federation",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.federation.cross_account_access_controlled"
+      }
+    ],
+    "identity_access.mfa": [
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user,standard]"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.enforced_for_privileged_users"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user,standard]"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.enforced_for_privileged_users"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user,standard]"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.enforced_for_privileged_users"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user,standard]"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.enforced_for_privileged_users"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.backup_methods_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.backup_methods_configured"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.backup_methods_configured"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.backup_methods_configured"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user]"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.hardware_tokens_required_for_privileged"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user]"
+        },
+        "signal": {
+          "fields": [
+            "mfaDevices",
+            "mfaRequired"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:ListMFADevices",
+            "IAM:GetAccountSummary"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.hardware_tokens_required_for_privileged"
+      },
+      {
+        "service": "identity_center",
+        "resource": "identity_center.permission_set",
+        "resource_type": "identity_center.permission_set",
+        "adapter": "aws.identity_center.identity_center_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_identity_center_permission_set",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user]"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IDENTITY_CENTER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.hardware_tokens_required_for_privileged"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_mfa",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": {
+          "privilege_threshold": "enum[admin,power_user]"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.mfa.hardware_tokens_required_for_privileged"
+      }
+    ],
+    "identity_access.session_management": [
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.session_duration_limited"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.session_duration_limited"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.session_duration_limited"
+      },
+      {
+        "service": "sts",
+        "resource": "sts.session",
+        "resource_type": "sts.session",
+        "adapter": "aws.sts.sts_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_sts_session",
+        "params": {
+          "max_session_duration_minutes": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "STS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.session_duration_limited"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.temporary_credentials_controlled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.temporary_credentials_controlled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.temporary_credentials_controlled"
+      },
+      {
+        "service": "sts",
+        "resource": "sts.session",
+        "resource_type": "sts.session",
+        "adapter": "aws.sts.sts_session_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_sts_session",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "STS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.session_management.temporary_credentials_controlled"
+      }
+    ],
+    "identity_access.passwordless_authn": [
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.fido2_required_for_admins"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.fido2_required_for_admins"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.workload_identity_enabled"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.workload_identity_enabled"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "evaluation_interval_minutes": 5
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.cae_enforced"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": {
+          "evaluation_interval_minutes": 5
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.cae_enforced"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "min_hardware_factors": 1
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.hardware_tokens_required"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": {
+          "min_hardware_factors": 1
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.hardware_tokens_required"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.biometric_verification"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.biometric_verification"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.zero_trust_verification"
+      },
+      {
+        "service": "cognito",
+        "resource": "cognito.user_pool",
+        "resource_type": "cognito.user_pool",
+        "adapter": "aws.cognito.cognito_passwordless_authn",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cognito_user_pool",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "COGNITO:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.passwordless_authn.zero_trust_verification"
+      }
+    ],
+    "identity_access.break_glass": [
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "max_emergency_accounts": 3
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.break_glass.emergency_accounts_restricted"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "max_emergency_accounts": 3
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.break_glass.emergency_accounts_restricted"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.break_glass.paw_workstations_isolated"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.break_glass.paw_workstations_isolated"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "log_query"
+        },
+        "assertion_id": "identity_access.break_glass.break_glass_monitoring"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "log_query"
+        },
+        "assertion_id": "identity_access.break_glass.break_glass_monitoring"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "review_hours": 24
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "log_query"
+        },
+        "assertion_id": "identity_access.break_glass.emergency_access_review"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "review_hours": 24
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "log_query"
+        },
+        "assertion_id": "identity_access.break_glass.emergency_access_review"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": {
+          "max_duration_hours": 4
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.break_glass.just_in_time_access"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_break_glass",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": {
+          "max_duration_hours": 4
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.break_glass.just_in_time_access"
+      }
+    ],
+    "identity_access.least_privilege": [
+      {
+        "service": "iam",
+        "resource": "iam.policy",
+        "resource_type": "iam.policy",
+        "adapter": "aws.iam.iam_least_privilege",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_policy",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.least_privilege.excess_permissions_restricted"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.user",
+        "resource_type": "iam.user",
+        "adapter": "aws.iam.iam_least_privilege",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_user",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.least_privilege.excess_permissions_restricted"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.role",
+        "resource_type": "iam.role",
+        "adapter": "aws.iam.iam_least_privilege",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_role",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.least_privilege.excess_permissions_restricted"
+      },
+      {
+        "service": "iam",
+        "resource": "iam.group",
+        "resource_type": "iam.group",
+        "adapter": "aws.iam.iam_least_privilege",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_iam_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "IAM:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.least_privilege.excess_permissions_restricted"
+      },
+      {
+        "service": "accessanalyzer",
+        "resource": "accessanalyzer.analyzer",
+        "resource_type": "accessanalyzer.analyzer",
+        "adapter": "aws.accessanalyzer.accessanalyzer_least_privilege",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_accessanalyzer_analyzer",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "ACCESSANALYZER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "identity_access.least_privilege.excess_permissions_restricted"
+      }
+    ],
+    "data_protection_storage.data_classification": [
+      {
+        "service": "s3",
+        "resource": "s3.bucket",
+        "resource_type": "s3.bucket",
+        "adapter": "aws.s3.s3_data_classification",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_s3_bucket",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "S3:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.data_classification.sensitivity_labels_applied"
+      },
+      {
+        "service": "macie",
+        "resource": "macie.session",
+        "resource_type": "macie.session",
+        "adapter": "aws.macie.macie_data_classification",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_macie_session",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "MACIE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.data_classification.sensitivity_labels_applied"
+      },
+      {
+        "service": "s3",
+        "resource": "s3.bucket",
+        "resource_type": "s3.bucket",
+        "adapter": "aws.s3.s3_data_classification",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_s3_bucket",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "S3:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.data_classification.automatic_classification_enabled"
+      },
+      {
+        "service": "macie",
+        "resource": "macie.session",
+        "resource_type": "macie.session",
+        "adapter": "aws.macie.macie_data_classification",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_macie_session",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "MACIE:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.data_classification.automatic_classification_enabled"
+      }
+    ],
+    "data_protection_storage.backup_recovery": [
+      {
+        "service": "backup",
+        "resource": "backup.plan",
+        "resource_type": "backup.plan",
+        "adapter": "aws.backup.backup_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_backup_plan",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "BACKUP:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_encryption_enabled"
+      },
+      {
+        "service": "backup",
+        "resource": "backup.vault",
+        "resource_type": "backup.vault",
+        "adapter": "aws.backup.backup_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_backup_vault",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "BACKUP:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_encryption_enabled"
+      },
+      {
+        "service": "rds",
+        "resource": "rds.db_instance",
+        "resource_type": "rds.db_instance",
+        "adapter": "aws.rds.rds_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_rds_db_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "backupRetentionPeriod",
+            "backupWindow"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "RDS:DescribeDBInstances"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_encryption_enabled"
+      },
+      {
+        "service": "rds",
+        "resource": "rds.db_cluster",
+        "resource_type": "rds.db_cluster",
+        "adapter": "aws.rds.rds_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_rds_db_cluster",
+        "params": null,
+        "signal": {
+          "fields": [
+            "backupRetentionPeriod",
+            "backupWindow"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "RDS:DescribeDBInstances"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_encryption_enabled"
+      },
+      {
+        "service": "ebs",
+        "resource": "ebs.snapshot",
+        "resource_type": "ebs.snapshot",
+        "adapter": "aws.ebs.ebs_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ebs_snapshot",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EBS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_encryption_enabled"
+      },
+      {
+        "service": "backup",
+        "resource": "backup.plan",
+        "resource_type": "backup.plan",
+        "adapter": "aws.backup.backup_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_backup_plan",
+        "params": {
+          "retention_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "BACKUP:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_retention_configured"
+      },
+      {
+        "service": "backup",
+        "resource": "backup.vault",
+        "resource_type": "backup.vault",
+        "adapter": "aws.backup.backup_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_backup_vault",
+        "params": {
+          "retention_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "BACKUP:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_retention_configured"
+      },
+      {
+        "service": "rds",
+        "resource": "rds.db_instance",
+        "resource_type": "rds.db_instance",
+        "adapter": "aws.rds.rds_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_rds_db_instance",
+        "params": {
+          "retention_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "backupRetentionPeriod",
+            "backupWindow"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "RDS:DescribeDBInstances"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_retention_configured"
+      },
+      {
+        "service": "rds",
+        "resource": "rds.db_cluster",
+        "resource_type": "rds.db_cluster",
+        "adapter": "aws.rds.rds_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_rds_db_cluster",
+        "params": {
+          "retention_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "backupRetentionPeriod",
+            "backupWindow"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "RDS:DescribeDBInstances"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_retention_configured"
+      },
+      {
+        "service": "ebs",
+        "resource": "ebs.snapshot",
+        "resource_type": "ebs.snapshot",
+        "adapter": "aws.ebs.ebs_backup_recovery",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ebs_snapshot",
+        "params": {
+          "retention_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EBS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "data_protection_storage.backup_recovery.backup_retention_configured"
+      }
+    ],
+    "compute_host_security.endpoint_protection": [
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_endpoint_protection",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.endpoint_protection.antimalware_enabled"
+      },
+      {
+        "service": "guardduty",
+        "resource": "guardduty.detector",
+        "resource_type": "guardduty.detector",
+        "adapter": "aws.guardduty.guardduty_endpoint_protection",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_guardduty_detector",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "GUARDDUTY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.endpoint_protection.antimalware_enabled"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_endpoint_protection",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.endpoint_protection.intrusion_detection_enabled"
+      },
+      {
+        "service": "guardduty",
+        "resource": "guardduty.detector",
+        "resource_type": "guardduty.detector",
+        "adapter": "aws.guardduty.guardduty_endpoint_protection",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_guardduty_detector",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "GUARDDUTY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.endpoint_protection.intrusion_detection_enabled"
+      }
+    ],
+    "compute_host_security.vulnerability_management": [
+      {
+        "service": "inspector",
+        "resource": "inspector.assessment",
+        "resource_type": "inspector.assessment",
+        "adapter": "aws.inspector.inspector_vulnerability_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_inspector_assessment",
+        "params": {
+          "scan_frequency_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "INSPECTOR:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.vulnerability_management.scanning_enabled"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_vulnerability_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": {
+          "scan_frequency_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.vulnerability_management.scanning_enabled"
+      },
+      {
+        "service": "ecr",
+        "resource": "ecr.repository",
+        "resource_type": "ecr.repository",
+        "adapter": "aws.ecr.ecr_vulnerability_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ecr_repository",
+        "params": {
+          "scan_frequency_days": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "ECR:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.vulnerability_management.scanning_enabled"
+      },
+      {
+        "service": "inspector",
+        "resource": "inspector.assessment",
+        "resource_type": "inspector.assessment",
+        "adapter": "aws.inspector.inspector_vulnerability_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_inspector_assessment",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "INSPECTOR:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.vulnerability_management.remediation_tracked"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_vulnerability_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.vulnerability_management.remediation_tracked"
+      },
+      {
+        "service": "ecr",
+        "resource": "ecr.repository",
+        "resource_type": "ecr.repository",
+        "adapter": "aws.ecr.ecr_vulnerability_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ecr_repository",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "ECR:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.vulnerability_management.remediation_tracked"
+      }
+    ],
+    "compute_host_security.instance_lifecycle": [
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_instance_lifecycle",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.instance_lifecycle.unused_instances_removed"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.image",
+        "resource_type": "ec2.image",
+        "adapter": "aws.ec2.ec2_instance_lifecycle",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_image",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.instance_lifecycle.unused_instances_removed"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.volume",
+        "resource_type": "ec2.volume",
+        "adapter": "aws.ec2.ec2_instance_lifecycle",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_volume",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.instance_lifecycle.unused_instances_removed"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_instance_lifecycle",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": {
+          "max_age_days": "integer",
+          "exemption_tags": "array"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.instance_lifecycle.unused_instances_removed"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.image",
+        "resource_type": "ec2.image",
+        "adapter": "aws.ec2.ec2_instance_lifecycle",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_image",
+        "params": {
+          "max_age_days": "integer",
+          "exemption_tags": "array"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.instance_lifecycle.unused_instances_removed"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.volume",
+        "resource_type": "ec2.volume",
+        "adapter": "aws.ec2.ec2_instance_lifecycle",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_volume",
+        "params": {
+          "max_age_days": "integer",
+          "exemption_tags": "array"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "compute_host_security.instance_lifecycle.unused_instances_removed"
+      }
+    ],
+    "containers_kubernetes.logging": [
+      {
+        "service": "eks",
+        "resource": "eks.cluster",
+        "resource_type": "eks.cluster",
+        "adapter": "aws.eks.eks_logging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_eks_cluster",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EKS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "containers_kubernetes.logging.logging_enabled"
+      },
+      {
+        "service": "cloudwatch",
+        "resource": "cloudwatch.log_group",
+        "resource_type": "cloudwatch.log_group",
+        "adapter": "aws.cloudwatch.cloudwatch_logging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_cloudwatch_log_group",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "CLOUDWATCH:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "containers_kubernetes.logging.logging_enabled"
+      }
+    ],
+    "serverless_paas.function_security": [
+      {
+        "service": "lambda",
+        "resource": "lambda.function",
+        "resource_type": "lambda.function",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_function",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.runtime_security_enabled"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.layer",
+        "resource_type": "lambda.layer",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_layer",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.runtime_security_enabled"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.function",
+        "resource_type": "lambda.function",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_function",
+        "params": {
+          "max_execution_timeout_seconds": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.execution_timeout_configured"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.layer",
+        "resource_type": "lambda.layer",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_layer",
+        "params": {
+          "max_execution_timeout_seconds": "integer"
+        },
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.execution_timeout_configured"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.function",
+        "resource_type": "lambda.function",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_function",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.memory_limits_enforced"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.layer",
+        "resource_type": "lambda.layer",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_layer",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.memory_limits_enforced"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.function",
+        "resource_type": "lambda.function",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_function",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.public_access_restricted"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.layer",
+        "resource_type": "lambda.layer",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_layer",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.public_access_restricted"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.function",
+        "resource_type": "lambda.function",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_function",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.active_roles_required"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.layer",
+        "resource_type": "lambda.layer",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_layer",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.active_roles_required"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.function",
+        "resource_type": "lambda.function",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_function",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.runtime_version_current"
+      },
+      {
+        "service": "lambda",
+        "resource": "lambda.layer",
+        "resource_type": "lambda.layer",
+        "adapter": "aws.lambda.lambda_function_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_layer",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.function_security.runtime_version_current"
+      }
+    ],
+    "serverless_paas.api_security": [
+      {
+        "service": "apigateway",
+        "resource": "apigateway.api",
+        "resource_type": "apigateway.api",
+        "adapter": "aws.apigateway.apigateway_api_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_apigateway_api",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "APIGATEWAY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.api_security.rate_limiting_enabled"
+      },
+      {
+        "service": "apigateway",
+        "resource": "apigateway.stage",
+        "resource_type": "apigateway.stage",
+        "adapter": "aws.apigateway.apigateway_api_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_apigateway_stage",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "APIGATEWAY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.api_security.rate_limiting_enabled"
+      },
+      {
+        "service": "apigateway",
+        "resource": "apigateway.api",
+        "resource_type": "apigateway.api",
+        "adapter": "aws.apigateway.apigateway_api_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_apigateway_api",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "APIGATEWAY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.api_security.authentication_required"
+      },
+      {
+        "service": "apigateway",
+        "resource": "apigateway.stage",
+        "resource_type": "apigateway.stage",
+        "adapter": "aws.apigateway.apigateway_api_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_apigateway_stage",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "APIGATEWAY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.api_security.authentication_required"
+      },
+      {
+        "service": "apigateway",
+        "resource": "apigateway.api",
+        "resource_type": "apigateway.api",
+        "adapter": "aws.apigateway.apigateway_api_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_apigateway_api",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "APIGATEWAY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.api_security.input_validation_enabled"
+      },
+      {
+        "service": "apigateway",
+        "resource": "apigateway.stage",
+        "resource_type": "apigateway.stage",
+        "adapter": "aws.apigateway.apigateway_api_security",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_apigateway_stage",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "APIGATEWAY:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.api_security.input_validation_enabled"
+      }
+    ],
+    "serverless_paas.secret_management": [
+      {
+        "service": "lambda",
+        "resource": "lambda.function",
+        "resource_type": "lambda.function",
+        "adapter": "aws.lambda.lambda_secret_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_lambda_function",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "LAMBDA:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.secret_management.environment_variables_encrypted"
+      },
+      {
+        "service": "secretsmanager",
+        "resource": "secretsmanager.secret",
+        "resource_type": "secretsmanager.secret",
+        "adapter": "aws.secretsmanager.secretsmanager_secret_management",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_secretsmanager_secret",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "SECRETSMANAGER:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "serverless_paas.secret_management.environment_variables_encrypted"
+      }
+    ],
+    "governance_compliance.tagging": [
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_services_tagged"
+      },
+      {
+        "service": "s3",
+        "resource": "s3.bucket",
+        "resource_type": "s3.bucket",
+        "adapter": "aws.s3.s3_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_s3_bucket",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "S3:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_services_tagged"
+      },
+      {
+        "service": "rds",
+        "resource": "rds.db_instance",
+        "resource_type": "rds.db_instance",
+        "adapter": "aws.rds.rds_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_rds_db_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "RDS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_services_tagged"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_clusters_tagged"
+      },
+      {
+        "service": "s3",
+        "resource": "s3.bucket",
+        "resource_type": "s3.bucket",
+        "adapter": "aws.s3.s3_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_s3_bucket",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "S3:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_clusters_tagged"
+      },
+      {
+        "service": "rds",
+        "resource": "rds.db_instance",
+        "resource_type": "rds.db_instance",
+        "adapter": "aws.rds.rds_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_rds_db_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "RDS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_clusters_tagged"
+      },
+      {
+        "service": "ec2",
+        "resource": "ec2.instance",
+        "resource_type": "ec2.instance",
+        "adapter": "aws.ec2.ec2_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_ec2_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "EC2:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_task_definitions_tagged"
+      },
+      {
+        "service": "s3",
+        "resource": "s3.bucket",
+        "resource_type": "s3.bucket",
+        "adapter": "aws.s3.s3_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_s3_bucket",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "S3:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_task_definitions_tagged"
+      },
+      {
+        "service": "rds",
+        "resource": "rds.db_instance",
+        "resource_type": "rds.db_instance",
+        "adapter": "aws.rds.rds_tagging",
+        "coverage_tier": "core",
+        "not_applicable_when": "no_rds_db_instance",
+        "params": null,
+        "signal": {
+          "fields": [
+            "compliant"
+          ],
+          "predicate": "compliant === true",
+          "paths_doc": [
+            "RDS:Describe* or Get*"
+          ],
+          "evidence_type": "config_read"
+        },
+        "assertion_id": "governance_compliance.tagging.ecs_task_definitions_tagged"
+      }
+    ]
+  }
+}

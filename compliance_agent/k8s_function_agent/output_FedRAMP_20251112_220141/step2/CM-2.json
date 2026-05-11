@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_etcd_encryption_enabled",
+    "k8s_apiserver_audit_logging_enabled"
+  ],
+  "changes_made": [
+    "Changed k8s_audit_logging_enabled to k8s_apiserver_audit_logging_enabled for specificity and consistency"
+  ],
+  "review_notes": "The functions generally map well to Kubernetes security controls relevant to maintaining a secure baseline configuration as per FedRAMP CM-2. The naming conventions are mostly followed, but the audit logging function needed refinement for clarity and specificity. The change ensures it aligns with the API server's audit logging capabilities.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Ensure all audit-related functions specify the resource they pertain to, such as 'apiserver' for audit logging."
+  ],
+  "control_id": "CM-2",
+  "title": "Baseline Configuration",
+  "step1_functions": [
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_etcd_encryption_enabled",
+    "k8s_audit_logging_enabled"
+  ],
+  "step1_reasoning": "The FedRAMP CM-2 control focuses on maintaining a secure baseline configuration, which can be mapped to several Kubernetes security practices. Ensuring least privilege through RBAC aligns with maintaining secure access configurations. NetworkPolicies with default deny rules help establish a secure network baseline. Enabling etcd encryption ensures data at rest is protected, contributing to a secure configuration baseline. Audit logging ensures that changes to configurations are tracked, aligning with maintaining a baseline configuration."
+}

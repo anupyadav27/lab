@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.21",
+    "unique_id": "k8s_5_1_1_21",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --token-auth-file parameter is not set",
+    "input_row": {
+        "id": "1.1.21",
+        "unique_id": "k8s_5_1_1_21",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --token-auth-file parameter is not set",
+        "description": "Do not use token based authentication.",
+        "rationale": "The token-based authentication utilizes static tokens to authenticate requests to the apiserver. The tokens are stored in clear-text in a file on the apiserver, and cannot be revoked or rotated without restarting the apiserver. Hence, do not use static token-based authentication.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --token-auth-file argument does not exist.",
+        "remediation": "Follow the documentation and configure alternate mechanisms for authentication. Then, edit the /etc/kubernetes/apiserver file on the master node and remove the \"--token- auth-file=<filename>\" argument from the KUBE_API_ARGS parameter. Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: You will have to configure and use alternate authentication mechanisms such as certificates. Static token based authentication could not be used. Default Value: By default, --token-auth-file argument is not set. References: 1. https://kubernetes.io/docs/admin/authentication/#static-token-file  53 | P a g e 2. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1",
+        "impact": "You will have to configure and use alternate authentication mechanisms such as certificates. Static token based authentication could not be used. Default Value: By default, --token-auth-file argument is not set.",
+        "references": "1. https://kubernetes.io/docs/admin/authentication/#static-token-file  53 | P a g e 2. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification that the kube-apiserver process is not started with the --token-auth-file argument.\n- This flag is set as a command-line argument to the kube-apiserver binary, typically managed via systemd unit files, static pod manifests, or other host-level configuration files.\n- Kubernetes APIs and kubectl do NOT expose the full process command-line arguments or the presence/absence of --token-auth-file for the kube-apiserver.\n- The audit procedure in the CIS benchmark explicitly instructs to run a process listing (ps -ef | grep kube-apiserver) on the master node, which requires OS-level access.\n- There is no Kubernetes-native API or kubectl command to directly retrieve or validate the presence of this flag.\n- Therefore, this check requires host-level access and cannot be fully automated via Kubernetes APIs.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane (master) node.\n2. Run the following command to list the kube-apiserver process and its arguments:\n   ```\n   ps -ef | grep kube-apiserver\n   ```\n3. Examine the output for the presence of the --token-auth-file argument.\n4. **Expected secure configuration:** The --token-auth-file argument should NOT be present in the kube-apiserver process command line.\n5. If the argument is absent, the control passes. If present, remove the argument from the kube-apiserver configuration and restart the service as per remediation guidance.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:41:56.601004",
+    "model": "gpt-4.1"
+}

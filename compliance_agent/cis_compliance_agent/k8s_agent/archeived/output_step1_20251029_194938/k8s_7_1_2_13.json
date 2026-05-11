@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.13",
+    "unique_id": "k8s_7_1_2_13",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the admission control plugin ServiceAccount is set",
+    "input_row": {
+        "id": "1.2.13",
+        "unique_id": "k8s_7_1_2_13",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the admission control plugin ServiceAccount is set",
+        "description": "Automate service accounts management.",
+        "rationale": "When you create a pod, if you do not specify a service account, it is automatically assigned the default service account in the same namespace. You should create your own service account and let the API server manage its security tokens. Impact: None.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --disable-admission-plugins argument is set to a value that does not includes ServiceAccount.",
+        "remediation": "Follow the documentation and create ServiceAccount objects as per your environment. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the master node and ensure that the --disable-admission-plugins parameter is set to a value that does not include ServiceAccount. Default Value: By default, ServiceAccount is set. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#serviceaccount 3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "None.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#serviceaccount 3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_serviceaccount_admission_plugin_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to ensure the ServiceAccount admission control plugin is enabled.\n- Specifically, check that the --disable-admission-plugins flag does NOT include \"ServiceAccount\".\n- This can be automated by:\n  - Retrieving the kube-apiserver manifest (commonly at /etc/kubernetes/manifests/kube-apiserver.yaml) via Kubernetes API if running as a static pod, or by querying the running pod/container spec if managed by a higher-level orchestrator.\n  - Alternatively, use kubectl to get the kube-apiserver pod in the kube-system namespace:\n    ```\n    kubectl -n kube-system get pods -l component=kube-apiserver -o yaml\n    ```\n    and inspect the command/args section for the presence and value of --disable-admission-plugins.\n- Pass Criteria:\n  - The --disable-admission-plugins flag is either absent or, if present, does NOT list \"ServiceAccount\".\n- Fail Criteria:\n  - The --disable-admission-plugins flag is present and includes \"ServiceAccount\".\n- Example check (pseudocode):\n  - Parse the kube-apiserver command line arguments.\n  - If \"--disable-admission-plugins\" is set, split its value by commas and ensure \"ServiceAccount\" is NOT present.\n- This check can be performed without host/OS access by querying the pod spec via the Kubernetes API, making it fully automatable.",
+    "timestamp": "2025-10-29T22:27:10.863165",
+    "model": "gpt-4.1"
+}

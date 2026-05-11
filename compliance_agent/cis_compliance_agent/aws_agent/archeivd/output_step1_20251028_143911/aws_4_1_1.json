@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1",
+    "unique_id": "aws_4_1_1",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+    "title": "AWS Storage Backups",
+    "input_row": {
+        "id": "1.1",
+        "unique_id": "aws_4_1_1",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "title": "AWS Storage Backups",
+        "description": "AWS Storage Backups is a managed AWS Service that establishes high resiliency to your cloud resources. AWS Storage Backups are like making extra copies of your important stuff on Amazon's computers. It is an excellent strategy to ensure that the data and resources you use remain available in the event of unrecoverable damage or loss to your resources.",
+        "rationale": "AWS Backups enable you to back up and restore all data lost during the attack,While AWS Storage Backups provide a level of security, there are numerous methods to fortify your backups, ensuring the protection of your data and services.",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** aws_backup_service_backup_plans_configured\n\n**AUTOMATION DETAILS:** \nTo verify the compliance of AWS Storage Backups, the following automated checks can be implemented using AWS APIs and the boto3 SDK:\n\n1. **AWS API Calls:**\n   - Utilize the `boto3` client for the AWS Backup service.\n   - Use the `list_backup_plans` and `get_backup_plan` APIs to list and retrieve details of backup plans within the account.\n   - Use `list_backup_vaults` to verify the existence and accessibility of backup vaults.\n\n2. **Resources to Enumerate:**\n   - Enumerate through all AWS Regions to ensure that backup plans are configured regionally if applicable.\n   - Enumerate backup plans and backup vaults within each account and in each region.\n\n3. **Configuration Properties/Settings to Validate:**\n   - Check that each backup plan is active and properly configured.\n   - Validate that the backup plans include scheduled backup rules.\n   - Verify that backup plans are funded to ensure proper retention and compliance with data protection policies.\n\n4. **Pass/Fail Criteria:**\n   - **Pass**: The AWS Backup service has at least one active and properly configured backup plan with schedules and defined retention settings.\n   - **Fail**: No active backup plans or improperly configured backup plans without schedules or retention settings.\n\nBy implementing these checks, organizations can ensure that their AWS Storage Backup service is correctly configured to provide high resiliency and data protection in compliance with CIS AWS Storage Services standards.",
+    "timestamp": "2025-10-28T15:21:38.928617",
+    "model": "gpt-4o"
+}

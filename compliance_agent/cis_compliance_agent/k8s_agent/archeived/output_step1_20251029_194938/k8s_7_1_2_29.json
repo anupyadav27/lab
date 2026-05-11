@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.29",
+    "unique_id": "k8s_7_1_2_29",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that encryption providers are appropriately configured",
+    "input_row": {
+        "id": "1.2.29",
+        "unique_id": "k8s_7_1_2_29",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that encryption providers are appropriately configured",
+        "description": "Where etcd encryption is used, appropriate providers should be configured.",
+        "rationale": "Where etcd encryption is used, it is important to ensure that the appropriate set of encryption providers is used. Currently, the aescbc, kms and secretbox are likely to be appropriate options. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Get the EncryptionConfig file set for --encryption-provider-config argument. Verify that aescbc, kms or secretbox is set as the encryption provider for all the desired resources.",
+        "remediation": "Follow the Kubernetes documentation and configure a EncryptionConfig file. In this file, choose aescbc, kms or secretbox as the encryption provider. Default Value: By default, no encryption provider is set. References: 1. https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/ 2. https://acotten.com/post/kube17-security 3. https://kubernetes.io/docs/admin/kube-apiserver/ 4. https://github.com/kubernetes/features/issues/92 5. https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#providers",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/ 2. https://acotten.com/post/kube17-security 3. https://kubernetes.io/docs/admin/kube-apiserver/ 4. https://github.com/kubernetes/features/issues/92 5. https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#providers"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_etcd_encryption_provider_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to determine if the `--encryption-provider-config` flag is set.\n- Retrieve the referenced EncryptionConfig file path from the kube-apiserver manifest (typically located at `/etc/kubernetes/manifests/kube-apiserver.yaml` or via the Pod spec if running as a static pod).\n- Parse the EncryptionConfig file to enumerate the configured encryption providers for each resource.\n- Validate that at least one of the following encryption providers is used for all desired resources: `aescbc`, `kms`, or `secretbox`.\n- Pass Criteria:\n  - The `--encryption-provider-config` flag is present in the kube-apiserver configuration.\n  - The EncryptionConfig file specifies `aescbc`, `kms`, or `secretbox` as the encryption provider for all resources that require encryption.\n- Fail Criteria:\n  - The `--encryption-provider-config` flag is missing.\n  - The EncryptionConfig file is missing, malformed, or does not specify one of the required providers (`aescbc`, `kms`, `secretbox`) for all resources.\n- Example kubectl/automation steps:\n  1. Use `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml` to locate the running kube-apiserver pod and its command line arguments.\n  2. Extract the value of `--encryption-provider-config`.\n  3. Access and parse the EncryptionConfig file (may require hostPath or privileged access if not mounted into the pod).\n  4. Confirm that the providers for each resource are set to `aescbc`, `kms`, or `secretbox`.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:30:07.810249",
+    "model": "gpt-4.1"
+}

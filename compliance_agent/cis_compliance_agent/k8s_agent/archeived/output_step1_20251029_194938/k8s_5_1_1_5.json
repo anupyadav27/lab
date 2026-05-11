@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.5",
+    "unique_id": "k8s_5_1_1_5",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --kubelet-https argument is set to true",
+    "input_row": {
+        "id": "1.1.5",
+        "unique_id": "k8s_5_1_1_5",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --kubelet-https argument is set to true",
+        "description": "Use https for kubelet connections.",
+        "rationale": "Connections from apiserver to kubelets could potentially carry sensitive data such as secrets and keys. It is thus important to use in-transit encryption for any communication between the apiserver and kubelets.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --kubelet-https argument either does not exist or is set to true.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and remove the --kubelet- https argument from the KUBE_API_ARGS parameter. Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: You require TLS to be configured on apiserver as well as kubelets. Default Value: By default, kubelet connections are over https. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/   21 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "You require TLS to be configured on apiserver as well as kubelets. Default Value: By default, kubelet connections are over https.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/   21 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_kubelet_https_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify the presence and value of the `--kubelet-https` flag.\n- This can be done by:\n  - Inspecting the kube-apiserver Pod spec if running as a static Pod (common in kubeadm and managed clusters):  \n    ```\n    kubectl -n kube-system get pod -l component=kube-apiserver -o json | jq '.items[].spec.containers[].command'\n    ```\n    or\n    ```\n    kubectl -n kube-system describe pod <kube-apiserver-pod> | grep -- --kubelet-https\n    ```\n  - If the flag is present, ensure it is set to `true`.\n  - If the flag is absent, confirm that the default behavior is HTTPS (which it is for all supported Kubernetes versions).\n- Pass Criteria:\n  - The `--kubelet-https` flag is either not set (default is secure), or explicitly set to `true`.\n- Fail Criteria:\n  - The `--kubelet-https` flag is set to `false`, or kube-apiserver is configured to use HTTP for kubelet connections.\n- Note: If running kube-apiserver as a systemd service or via another process manager, the same check applies to the process arguments, which can be retrieved via the Kubernetes API if the process is managed as a Pod, or may require host access otherwise. For most modern Kubernetes installations, the static Pod manifest is accessible via the Kubernetes API.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:38:41.460589",
+    "model": "gpt-4.1"
+}

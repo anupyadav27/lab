@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.3",
+    "unique_id": "gcp_1_5_1_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on SSH public host key files are configured",
+    "input_row": {
+        "id": "5.1.3",
+        "unique_id": "gcp_1_5_1_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on SSH public host key files are configured",
+        "description": "An SSH public key is one of two files used in SSH public key authentication. In this authentication method, a public key is a key that can be used for verifying digital signatures generated using a corresponding private key. Only a public key that corresponds to a private key will be able to authenticate successfully.",
+        "rationale": "If a public host key file is modified by an unauthorized user, the SSH service may be compromised.",
+        "audit": "Run the following command and verify Access does not grant write or execute permissions to group or other for all returned files # find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec stat {} \\; File: ‘/etc/ssh/ssh_host_rsa_key.pub’ Size: 382             Blocks: 8          IO Block: 4096   regular file Device: ca01h/51713d    Inode: 8631758     Links: 1 Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root) Access: 2018-10-22 18:24:56.861750616 +0000 Modify: 2018-10-22 18:24:56.861750616 +0000 Change: 2018-10-22 18:24:56.881750616 +0000 Birth: - File: ‘/etc/ssh/ssh_host_ecdsa_key.pub’ Size: 162             Blocks: 8          IO Block: 4096   regular file Device: ca01h/51713d    Inode: 8631761     Links: 1 Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root) Access: 2018-10-22 18:24:56.897750616 +0000 Modify: 2018-10-22 18:24:56.897750616 +0000 Change: 2018-10-22 18:24:56.917750616 +0000 Birth: - File: ‘/etc/ssh/ssh_host_ed25519_key.pub’ Size: 82              Blocks: 8          IO Block: 4096   regular file Device: ca01h/51713d    Inode: 8631763     Links: 1 Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root) Access: 2018-10-22 18:24:56.945750616 +0000 Modify: 2018-10-22 18:24:56.945750616 +0000 Change: 2018-10-22 18:24:56.961750616 +0000 Birth: -",
+        "remediation": "Run the following commands to set permissions and ownership on the SSH host public key files # find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chmod 0644 {} \\; #find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chown root:root {} \\;",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis compliance control relates to the permissions on SSH public host key files on an operating system, specifically for Google Container-Optimized OS. The control's main concern is with file permissions on the operating system level, which typically requires access to the instance itself to verify. Since GCP APIs, Google Cloud SDK, or GCP CLI commands do not provide means to remotely verify file permissions on a VM's OS, this check inherently requires manual intervention or configuration management tools that can inspect file permissions directly on instances. Therefore, the audit approach is Manual.\n\n**MANUAL STEPS:**\n1. **SSH into the Instance:**\n   - Log in to the GCP Console.\n   - Navigate to the Compute Engine section.\n   - Identify the instance running Container-Optimized OS and establish an SSH connection.\n\n2. **Verify File Permissions:**\n   - Execute the command: `find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec stat {} \\;`.\n   - Review the output for each file returned by the above command.\n\n3. **Check Access Permissions:**\n   - Ensure that the file permissions are set to `0644` (`-rw-r--r--`).\n   - The files should belong to `root:root` ownership (Uid: `0`/root, Gid: `0`/root).\n\n4. **Confirm Secure Configuration:**\n   - Verify that no group or other users have write or execute permissions on these files.\n\nBy manually following these steps, you can confirm that the SSH public host key files are configured securely to prevent unauthorized modifications, thus maintaining the SSH service's integrity on your Container-Optimized OS instance.",
+    "timestamp": "2025-10-28T21:32:11.773475",
+    "model": "gpt-4o"
+}

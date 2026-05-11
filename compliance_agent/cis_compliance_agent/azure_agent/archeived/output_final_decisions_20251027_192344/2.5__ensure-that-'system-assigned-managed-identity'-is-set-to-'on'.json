@@ -1,0 +1,40 @@
+{
+    "unique_id": "2.5__ensure-that-'system-assigned-managed-identity'-is-set-to-'on'",
+    "control_id": "2.5",
+    "source": "1. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-managed- identity",
+    "input_row": {
+        "id": "2.5",
+        "unique_id": "2.5__ensure-that-'system-assigned-managed-identity'-is-set-to-'on'",
+        "title": "Ensure that 'System Assigned Managed Identity' is set to 'On'",
+        "description": " rep...\"",
+        "rationale": "System Assigned Managed Identities provide the Azure Cache for Redis instance with a unique account like a service principle but automatically assigned and managed by Azure. These identities are unique to the resource instance they are created for, and removed when the resource is deleted.",
+        "audit": "The System Assigned Managed Identity is authenticated with Entra ID, and allows for privileges required for the instance of Azure Cache for Redis to be granted or restricted using Azure Role Based Access Control (RBAC). Additionally, the managed identity provides a means for the Azure Cache for Redis instance to authenticate without storing credentials in code.",
+        "remediation": "From Azure Portal 1. Search for and open the Azure Cache for Redis service 2. For each instance, repeat the remaining steps 3. Click on the name of the instance 4. In the blade menu on the left, under Settings, click on Identity 5. Under the System assigned tab, ensure that Status is set to On. If Yes is selected and Object (principal) ID is populated, the configuration for that instance is compliant.",
+        "impact": "From Azure Portal 1. Search for and open the Azure Cache for Redis service 2. For each instance, repeat the remaining steps 3. Click on the name of the instance 4. In the blade menu on the left, under Settings, click on Identity 5. Under the System assigned tab, toggle the status to On 6. Click the Save button 7. In the pop-up dialog titled Enable system assigned managed identity that appears after clicking save, click the Yes button. Default Value: By default, System Assigned Managed Identity of Off. References: 1. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-managed- identity",
+        "reference": "",
+        "source": "1. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-managed- identity",
+        "null": [
+            "CIS_MICROSOFT_AZURE_DATABASE_SERVICES_BENCHMARK_V1.0.0_updated_20250825_190935.json"
+        ]
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_redis_system_assigned_identity_enabled\n\n**AUTOMATION DETAILS:**\n- The automated program would check the status of the System Assigned Managed Identity for Azure Cache for Redis instances.\n- Use the Azure Resource Manager (ARM) APIs to query properties or utilize the Azure CLI to verify the managed identity settings.\n- The specific API endpoint for querying the managed identity status is:\n  ```\n  GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{cacheName}?api-version=2021-04-01\n  ```\n- The parameters that need to be replaced are:\n  - `{subscriptionId}`: Your Azure subscription ID.\n  - `{resourceGroupName}`: The name of the resource group containing the Redis Cache instance.\n  - `{cacheName}`: The name of your Azure Cache for Redis instance.\n- The properties to validate are found within the `identity` section of the response. Specifically, check if:\n  - `type` is equal to `SystemAssigned`.\n  - `principalId` is not null.\n- **Pass/Fail criteria**:\n  - **Pass**: If `type` is equal to `SystemAssigned` and `principalId` has a value (indicating that System Assigned Managed Identity is enabled).\n  - **Fail**: If `principalId` is null or `type` is not equal to `SystemAssigned`, indicating that the System Assigned Managed Identity is not enabled."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. The status of System Assigned Managed Identity for Azure Cache for Redis can indeed be checked using Azure APIs or CLI, making automation feasible. The use of ARM APIs is appropriate for this task.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details are largely accurate. The specified API endpoint and the parameters to replace are correct. The logic for checking the `type` and `principalId` in the `identity` section is valid for determining if the System Assigned Managed Identity is enabled.\n- The program name `azure_redis_system_assigned_identity_enabled` follows a logical naming convention, but it could be more descriptive by including the specific action or check being performed, such as `azure_redis_check_system_assigned_identity`.\n\n**IMPROVEMENTS:**\n- The program name could be improved for clarity and consistency. Consider using a more descriptive name like `azure_redis_check_system_assigned_identity`.\n- Ensure that the API version used (`2021-04-01`) is the latest and most appropriate for the task, as API versions can affect the availability of certain properties.\n- Include error handling and logging in the automation script to manage API call failures or unexpected responses.\n- Consider adding a check for the existence of the `identity` section itself, as its absence would also indicate that the managed identity is not enabled.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded and technically sound. The use of ARM APIs for this audit task is appropriate, and the logic for determining pass/fail criteria is correctly implemented.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the program name for better clarity and consistency. Ensure the API version is the latest and include error handling in the automation script. These improvements will enhance the robustness and maintainability of the audit process.",
+        "reviewed_at": "2025-10-26T15:42:19.033377"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** Both AI opinions agree that the audit approach can be automated using Azure Resource Manager APIs. The necessary properties to check for the System Assigned Managed Identity are exposed through the standard Azure resource APIs, making automation feasible. The use of ARM APIs to query the identity status is technically accurate and efficient for compliance checks.\n\n**CONFIDENCE:** HIGH\n\n--- IF AUTOMATED ---\n\n**PROGRAM NAME:** \nazure_redis_check_system_assigned_identity\n\n**AUTOMATION DETAILS:**\n- Azure Resource/Service: Azure Cache for Redis\n- API/CLI Method: Use the Azure Resource Manager API with the endpoint `GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{cacheName}?api-version=2021-04-01`\n- Properties to Check: Check the `identity` section in the response, specifically `type` should be `SystemAssigned` and `principalId` should be populated.\n- Pass Criteria: `type` is `SystemAssigned` and `principalId` is not null.\n- Fail Criteria: `type` is not `SystemAssigned` or `principalId` is null.\n\n**DISAGREEMENTS RESOLVED:** There were no significant disagreements between the AI opinions; both supported the automated approach. The second opinion suggested a more descriptive program name, which has been adopted.\n\n**SOURCE:** 1. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-managed-identity",
+        "decided_at": "2025-10-27T14:43:56.126871"
+    },
+    "metadata": {
+        "reviewed_file": "2.5__ensure-that-'system-assigned-managed-identity'-is-set-to-'on'.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

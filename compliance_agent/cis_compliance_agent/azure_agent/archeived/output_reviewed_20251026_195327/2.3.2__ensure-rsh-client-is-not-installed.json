@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.3.2__ensure-rsh-client-is-not-installed",
+    "control_id": "2.3.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH into the AKS nodes:**\n   - Use an SSH client to connect to the AKS node. You can find the command to SSH into Azure Kubernetes Service (AKS) nodes in the Azure portal under the Kubernetes cluster's settings.\n\n2. **Check for the rsh package installation:**\n   - Run the command: `rpm -q rsh` to query if the 'rsh' package is installed on the node.\n\n3. **Verify the output:**\n   - If the output states that 'rsh is not installed', the configuration is secure.\n   - If the output indicates that 'rsh is installed', it indicates a violation.\n\n4. **Review installed packages:**\n   - For further verification, you may run `dnf list installed` or `rpm -qa | grep rsh` to see all related packages and confirm information about 'rsh', 'rcp', and 'rlogin'.\n\n5. **Confirm compliance:**\n   - If the 'rsh' client is absent on the node, you can confirm compliance. If present, document your findings for remediation.\n\nMake sure to log the findings and follow up with the appropriate remediation steps as needed based on the audit outcome."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The current classification as a manual approach is partially justified. While SSH into the AKS nodes and manually checking for the 'rsh' package is a valid method, this task can be automated using Azure capabilities.\n- **Azure APIs/CLI Capabilities:** Azure Monitor and Azure Policy can be leveraged for automation. Azure Policy can be used to create a custom policy to check for the presence of the 'rsh' package on AKS nodes. Additionally, Azure CLI or Azure PowerShell scripts can be used to automate the SSH and package verification process.\n\n**TECHNICAL ACCURACY:** 6\n\n- **Automation Details:** The assessment lacks automation details. It does not mention any Azure-native tools or scripts that could be used to automate the process.\n- **Manual Steps Accuracy:** The manual steps are technically correct but could be more efficient. The steps assume direct SSH access to AKS nodes, which may not always be feasible or secure.\n- **Program Naming Convention:** The assessment does not provide any program name following the convention. This aspect is not applicable here as no automation script or program is mentioned.\n\n**IMPROVEMENTS:**\n\n- **Automation Suggestions:** Implement an Azure Policy to audit the presence of the 'rsh' package across AKS nodes. Use Azure CLI or PowerShell scripts to automate the SSH and package check process.\n- **Security Considerations:** Direct SSH access to AKS nodes should be minimized. Consider using Azure Bastion or Just-In-Time VM access to enhance security.\n- **Alternative Approach:** Use Azure Security Center to create a custom recommendation for monitoring the presence of the 'rsh' package on AKS nodes.\n\n**CONFIDENCE:** MEDIUM\n\n- The assessment is technically accurate for a manual approach but lacks consideration of Azure's automation capabilities. The confidence level is medium due to the potential for automation that was not explored.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modify the Approach:** Suggest integrating Azure Policy and Azure CLI/PowerShell scripts to automate the compliance check. This will reduce manual effort and improve efficiency.\n- **Re-classify:** Consider re-classifying the approach as Automated, given the potential for automation using Azure-native tools.",
+        "reviewed_at": "2025-10-26T16:48:11.078099"
+    },
+    "input_row": {
+        "id": "2.3.2",
+        "unique_id": "2.3.2__ensure-rsh-client-is-not-installed",
+        "title": "Ensure rsh client is not installed",
+        "description": "The rsh package contains the client commands for the rsh services.",
+        "rationale": "These legacy clients contain numerous security exposures and have been replaced with the more secure SSH package. Even if the server is removed, it is best to ensure the clients are also removed to prevent users from inadvertently attempting to use these commands and therefore exposing their credentials. Note that removing the rsh package removes the clients for rsh , rcp and rlogin . Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "audit": "Run the following command to verify that the rsh package is not installed: # rpm -q rsh package rsh is not installed",
+        "remediation": "Run the following command to remove the rsh package: # dnf remove rsh References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "2.3.2__ensure-rsh-client-is-not-installed.json",
+        "review_version": "1.0"
+    }
+}

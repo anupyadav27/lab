@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2",
+    "unique_id": "aws_7_2_2",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure configuring Security Groups",
+    "input_row": {
+        "id": "2.2",
+        "unique_id": "aws_7_2_2",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure configuring Security Groups",
+        "description": "Security groups are your first line of defense for the EC2 instance. A security group is a firewall that controls inbound and outbound traffic.",
+        "rationale": "Security groups play a critical role in maintaining the security of your AWS resources. It is advisable to restrict traffic to only what is necessary for accessing your instance, thereby minimizing potential security risks.",
+        "audit": "Open traffic for SSH, HTTP, and HTTPS. Make sure to allow traffic from anywhere, unless you will be accessing the instance from a secure workstation or server with a static IP address.",
+        "remediation": "",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThe review of the control \"Ensure configuring Security Groups\" from the CIS AWS Storage Services Benchmark indicates that this control is focused on verifying the configuration of Security Groups, which is a standard AWS service property related to VPC and EC2 instances. This is a technical check that involves examining network rules, specifically for open traffic configurations related to SSH, HTTP, and HTTPS. Since the AWS APIs expose security group configurations, this control can be automated.\n\n**PROGRAM NAME:** aws_ec2_security_group_open_traffic_check\n\n**AUTOMATION DETAILS:**\n\nTo automate the audit of security group configurations, the program would:\n\n- Utilize the `boto3` SDK for AWS to interact with the EC2 service.\n- Use `boto3` EC2 client method `describe_security_groups()` to retrieve security group configurations.\n- Enumerate each security group and examine the `IpPermissions` attribute to check for:\n  - Inbound rules that allow open access (0.0.0.0/0) for ports typically associated with SSH (22), HTTP (80), and HTTPS (443).\n- Validate the configuration to ensure that none of the security groups have broad open access unless justified by the organization’s policies.\n- Pass/Fail criteria:\n  - **Pass:** If the security groups restrict access to specific IP ranges rather than allowing 0.0.0.0/0 for sensitive ports.\n  - **Fail:** If any security group rules allow open access to the world for SSH, HTTP, or HTTPS.\n  \nThis method ensures that the security configurations of EC2 instances are compliant with best practices by limiting broad access that could lead to potential security risks.",
+    "timestamp": "2025-10-28T16:08:32.874611",
+    "model": "gpt-4o"
+}

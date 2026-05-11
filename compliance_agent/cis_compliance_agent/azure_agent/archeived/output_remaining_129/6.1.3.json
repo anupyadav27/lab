@@ -1,0 +1,17 @@
+{
+    "id": "6.1.3",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "input_row": {
+        "id": "6.1.3",
+        "unique_id": "row155_6.1.3__ensure-permissions-on-/etc/group-are-configured",
+        "title": "Ensure permissions on /etc/group are configured",
+        "description": " Uid is 0/root and Gi...\"",
+        "rationale": "The /etc/group file contains a list of all the valid groups defined in the system. The command below allows read/write access for root and read access for everyone else.",
+        "audit": "The /etc/group file needs to be protected from unauthorized changes by non-privileged users, but needs to be readable as this information is used with many non-privileged programs.",
+        "remediation": "Run the following command to verify /etc/group is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/group /etc/group 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/group: # chmod u-x,go-wx /etc/group # chown root:root /etc/group Default Value: /etc/group 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH into the Azure VM** (if applicable) hosting the Linux environment where the `/etc/group` file is located.\n   - Use an SSH client to connect to the VM with appropriate credentials.\n   \n2. **Check the permissions and ownership of the `/etc/group` file:**\n   - Run the command: `stat -c \"%n %a %u/%U %g/%G\" /etc/group`\n   \n3. **Verify the output:**\n   - The output should show that the permissions are set to `644` (owner can read/write, everyone else can read).\n   - The user ID (`uid`) should be `0` (for root) and the group ID (`gid`) should also be `0` (for root).\n   \n4. **Confirm compliance:**\n   - If the permissions or ownership differ from what is expected, remediate by running the following commands:\n     - `chmod u-x,go-wx /etc/group` to restrict permissions.\n     - `chown root:root /etc/group` to set the appropriate ownership.\n\n5. **Document the findings:**\n   - Record the current permissions and ownership along with any actions taken to correct deviations.\n\nThis approach ensures that the permissions on the `/etc/group` file are verified according to standard compliance requirements."
+}

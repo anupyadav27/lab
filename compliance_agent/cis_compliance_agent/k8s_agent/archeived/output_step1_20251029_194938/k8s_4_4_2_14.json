@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.14",
+    "unique_id": "k8s_4_4_2_14",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --seccomp-default parameter is set to true",
+    "input_row": {
+        "id": "4.2.14",
+        "unique_id": "k8s_4_4_2_14",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --seccomp-default parameter is set to true",
+        "description": "Ensure that the Kubelet enforces the use of the RuntimeDefault seccomp profile",
+        "rationale": "By default, Kubernetes disables the seccomp profile which ships with most container runtimes. Setting this parameter will ensure workloads running on the node are protected by the runtime's seccomp profile. Impact: Setting this will remove some rights from pods running on the node.",
+        "audit": "Review the Kubelet's start-up parameters for the value of --seccomp-default, and check the Kubelet configuration file for the seccompDefault . If neither of these values is set, then the seccomp profile is not in use.",
+        "remediation": "Set the parameter, either via the --seccomp-default command line parameter or the seccompDefault configuration file setting. Default Value: By default the seccomp profile is not enabled. References: 1. https://kubernetes.io/docs/tutorials/security/seccomp/#enable-the-use-of- runtimedefault-as-the-default-seccomp-profile-for-all-workloads",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "Setting this will remove some rights from pods running on the node.",
+        "references": "1. https://kubernetes.io/docs/tutorials/security/seccomp/#enable-the-use-of- runtimedefault-as-the-default-seccomp-profile-for-all-workloads"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_seccomp_default_profile_enabled\n\n**AUTOMATION DETAILS:**\n- Query the Kubelet configuration on each worker node to verify that the seccomp default profile is enabled.\n- Specifically, check for either:\n  - The presence of the `--seccomp-default=true` flag in the Kubelet process arguments, OR\n  - The `seccompDefault: true` setting in the Kubelet configuration file (typically `/var/lib/kubelet/config.yaml`).\n- This can be automated by:\n  - Using `kubectl get node` to enumerate all nodes.\n  - For each node, use `kubectl describe node <node-name>` to check for the `kubelet` process configuration if exposed via node annotations (rare).\n  - More reliably, use a DaemonSet to run an inspection pod on each node that reads the Kubelet config file (`/var/lib/kubelet/config.yaml`) and/or inspects the running process arguments for `--seccomp-default=true`.\n  - Alternatively, if your environment exposes Kubelet config via the Node API (as in some managed Kubernetes distributions), query the `KubeletConfiguration` custom resource or node annotation.\n- **Pass Criteria:** At least one of the following is true for every node:\n  - The Kubelet is started with `--seccomp-default=true`\n  - The Kubelet config file contains `seccompDefault: true`\n- **Fail Criteria:** If neither the flag nor the config file setting is present or set to `false` on any node.\n- **Example CLI commands:**\n  - To check via SSH (if allowed): `ps aux | grep kubelet` and `cat /var/lib/kubelet/config.yaml`\n  - To automate in-cluster: Deploy a privileged DaemonSet that checks these settings and reports compliance status per node.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:29:06.037849",
+    "model": "gpt-4.1"
+}

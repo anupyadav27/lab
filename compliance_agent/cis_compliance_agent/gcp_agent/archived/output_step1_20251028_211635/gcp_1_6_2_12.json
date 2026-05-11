@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.12",
+    "unique_id": "gcp_1_6_2_12",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure no users have .netrc files",
+    "input_row": {
+        "id": "6.2.12",
+        "unique_id": "gcp_1_6_2_12",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure no users have .netrc files",
+        "description": "The .netrc file contains data for logging into a remote host for file transfers via FTP.",
+        "rationale": "The .netrc file presents a significant security risk since it stores passwords in unencrypted form. Even if FTP is disabled, user accounts may have brought over .netrc files from other systems which could pose a risk to those systems.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'\"$(which nologin)\"'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do if [ ! -d \"$dir\" ]; then echo \"The home directory ($dir) of user $user does not exist.\" else if [ ! -h \"$dir/.netrc\" -a -f \"$dir/.netrc\" ]; then echo \".netrc file $dir/.netrc exists\" fi fi done",
+        "remediation": "Making global modifications to users' files without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user .netrc files and determine the action to be taken in accordance with site policy. Additional Information: On some distributions the /sbin/nologin should be replaced with /usr/sbin/nologin.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control requires manual intervention because it involves checking the presence of `.netrc` files on server instances, which is an OS-level security check on Google Compute Engine instances running Container Optimized OS. This check is not directly verifiable through GCP APIs, the Google Cloud SDK (gcloud), or the GCP CLI because it requires access to the file system of the instances to verify the existence of `.netrc` files. Such checks necessitate SSH access to the instances, making this control inherently manual.\n\n**MANUAL STEPS:**\n\n1. **Access the Compute Engine instances:**\n   - Use SSH to log into each relevant Google Compute Engine instance running Container Optimized OS.\n\n2. **Locate User Directories:**\n   - Run the provided script or similar command (`grep`, `awk`, and `bash` loop) to identify user home directories on each instance.\n   - Command example:\n     ```bash\n     grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"$(which nologin)\" && $7 != \"/bin/false\") { print $1 \" \" $6 }'\n     ```\n\n3. **Check for .netrc Files:**\n   - Execute a check within each identified user home directory for the existence of `.netrc` files.\n   - Command example:\n     ```bash\n     if [ ! -d \"$dir\" ]; then\n       echo \"The home directory ($dir) of user $user does not exist.\"\n     else\n       if [ ! -h \"$dir/.netrc\" -a -f \"$dir/.netrc\" ]; then\n         echo \".netrc file $dir/.netrc exists\"\n       fi\n     fi\n     ```\n\n4. **Verify Expected Secure Configuration:**\n   - Ensure the output indicates no `.netrc` files are present. If any `.netrc` files are found, document their location and follow up for their removal according to the organization’s policy.\n\n5. **Establish Monitoring Policy:**\n   - Verify that there's a policy in place to periodically monitor for `.netrc` files, alerting administrators should any be created or modified.\n\n**NOTE:** Direct interaction with the instance OS file system is required as part of the audit process, highlighting the need for manual intervention.",
+    "timestamp": "2025-10-28T21:45:55.245598",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.7",
+    "unique_id": "gcp_1_5_1_7",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH MaxAuthTries is set to 4 or less",
+    "input_row": {
+        "id": "5.1.7",
+        "unique_id": "gcp_1_5_1_7",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH MaxAuthTries is set to 4 or less",
+        "description": "The MaxAuthTries parameter specifies the maximum number of authentication attempts permitted per connection. When the login failure count reaches half the number, error messages will be written to the journald logs detailing the login failure.",
+        "rationale": "Setting the MaxAuthTries parameter to a low number will minimize the risk of successful brute force attacks to the SSH server. While the recommended setting is 4, set the number based on site policy.",
+        "audit": "Run the following command and verify that output MaxAuthTries is 4 or less: # sshd -T | grep maxauthtries MaxAuthTries 4",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: MaxAuthTries 4 Default Value: MaxAuthTries 6",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe audit control for ensuring that the SSH MaxAuthTries parameter is set to 4 or less requires examination of the SSH configuration on each relevant instance running Container Optimized OS. Since this involves operating system-level configurations, it cannot be fully verified using GCP APIs or automated tooling without direct access to the SSH configuration files on each instance. This check requires SSH access to the instances to obtain and verify the current settings in the `/etc/ssh/sshd_config` file.\n\nThe audit field provides a Linux command (`sshd -T | grep maxauthtries`) to verify the setting, which further indicates the need for direct access to the instance's command line. Such checks are typically performed manually since GCP APIs focus on managing GCP's cloud infrastructure and do not provide insights into internal OS configurations directly.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to connect to each relevant instance running Container Optimized OS. \n     For example, use the command: `gcloud compute ssh INSTANCE_NAME --zone=ZONE`.\n\n2. **Verify SSH Configuration:**\n   - Run the command: `sudo sshd -T | grep maxauthtries`.\n   - This command prints the current MaxAuthTries setting to the console.\n\n3. **Validate the Setting:**\n   - Confirm that the output of the previous step indicates `MaxAuthTries 4` or a lower value.\n\n4. **Expected Secure Configuration:**\n   - The secure configuration is having `MaxAuthTries` set to 4 or less in the `sshd` configuration.\n\n5. **Confirm Compliance:**\n   - If the setting is found to be compliant (MaxAuthTries is 4 or less), the instance complies with the benchmark recommendation.\n   - If not, the remediation step should be followed to adjust the setting in `/etc/ssh/sshd_config`, and the SSH daemon should be restarted to apply changes.",
+    "timestamp": "2025-10-28T21:33:25.897793",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.11",
+    "unique_id": "gcp_1_6_2_11",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure no users have .forward files",
+    "input_row": {
+        "id": "6.2.11",
+        "unique_id": "gcp_1_6_2_11",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure no users have .forward files",
+        "description": "The .forward file specifies an email address to forward the user's mail to.",
+        "rationale": "Use of the .forward file poses a security risk in that sensitive data may be inadvertently transferred outside the organization. The .forward file also poses a risk as it can be used to execute commands that may perform unintended actions.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'\"$(which nologin)\"'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do if [ ! -d \"$dir\" ]; then echo \"The home directory ($dir) of user $user does not exist.\" else if [ ! -h \"$dir/.forward\" -a -f \"$dir/.forward\" ]; then echo \".forward file $dir/.forward exists\" fi fi done",
+        "remediation": "Making global modifications to users' files without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user .forward files and determine the action to be taken in accordance with site policy. Additional Information: On some distributions the /sbin/nologin should be replaced with /usr/sbin/nologin.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control involves checking for the existence of `.forward` files in user directories on systems using Container-Optimized OS (COS). Since this task requires looking into the filesystem of GCP instances and executing a script to verify the presence of these files, it necessitates manual intervention. SSH access is required to perform these checks directly on the instances where COS is deployed. Furthermore, the audit process described does not mention any specific GCP APIs, Google Cloud SDK (gcloud) commands, or management interfaces within GCP that offer a way to perform this check programmatically.\n\n**MANUAL STEPS:**\n\n1. **Access Instances:**\n   - SSH into each GCP VM instance where Container-Optimized OS is deployed.\n\n2. **Execute File Check Script:**\n   - Run the provided script on each instance to check for the presence of `.forward` files in user directories:\n     ```bash\n     #!/bin/bash\n     grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'$(which nologin)'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do\n         if [ ! -d \"$dir\" ]; then\n             echo \"The home directory ($dir) of user $user does not exist.\"\n         else\n             if [ ! -h \"$dir/.forward\" -a -f \"$dir/.forward\" ]; then\n                 echo \".forward file $dir/.forward exists\"\n             fi\n         fi\n     done\n     ```\n\n3. **Verify Results:**\n   - Review the output of the script. If it returns any lines indicating that `.forward` files exist, those need to be addressed as per organizational policy.\n\n4. **Confirm Compliance:**\n   - Ensure that no results are returned from the script for complete compliance. If `.forward` files exist, further investigation or deletion might be needed based on your security policies.\n\n5. **Document Findings:**\n   - Record the presence or absence of `.forward` files and take necessary actions according to the organization’s policy on file forwarding.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThe provided script and manual validation process are necessary for this compliance check due to the lack of API-level access to user-specific filesystem configurations on COS.",
+    "timestamp": "2025-10-28T21:45:31.833436",
+    "model": "gpt-4o"
+}

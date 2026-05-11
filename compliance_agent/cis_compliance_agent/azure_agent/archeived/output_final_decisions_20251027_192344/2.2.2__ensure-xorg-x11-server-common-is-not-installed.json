@@ -1,0 +1,37 @@
+{
+    "unique_id": "2.2.2__ensure-xorg-x11-server-common-is-not-installed",
+    "control_id": "2.2.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.2",
+        "unique_id": "2.2.2__ensure-xorg-x11-server-common-is-not-installed",
+        "title": "Ensure xorg-x11-server-common is not installed",
+        "description": "The X Window System provides a Graphical User Interface (GUI) where users can have multiple windows in which to run programs and various add on. The X Windows system is typically used on workstations where users login, but not on servers where users typically do not login.",
+        "rationale": "Unless your organization specifically requires graphical login access via X Windows, remove it to reduce the potential attack surface. Impact: Many Linux systems run applications which require a Java runtime. Some Linux Java packages have a dependency on specific X Windows xorg-x11-fonts. One workaround to avoid this dependency is to use the \"headless\" Java packages for your specific Java runtime.",
+        "audit": "Run the following command to Verify X Windows Server is not installed. # rpm -q xorg-x11-server-common package xorg-x11-server-common is not installed",
+        "remediation": "Run the following command to remove the X Windows Server packages: # dnf remove xorg-x11-server-common References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Many Linux systems run applications which require a Java runtime. Some Linux Java packages have a dependency on specific X Windows xorg-x11-fonts. One workaround to avoid this dependency is to use the \"headless\" Java packages for your specific Java runtime.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal**: Navigate to [Azure Portal](https://portal.azure.com) and log in with your credentials.\n2. **Locate the Virtual Machine**: Go to \"Virtual Machines\" in the left-hand navigation pane. Select the virtual machine (VM) that you want to check.\n3. **SSH into the VM**: Use SSH to connect to the VM. You may use the Azure Cloud Shell or your preferred terminal if the VM is accessible over the internet with SSH.\n4. **Check for X Windows Server Installation**:\n   - Run the command: `rpm -q xorg-x11-server-common`\n   - This command will check if the package `xorg-x11-server-common` is installed.\n5. **Verify the Output**: \n   - If the output states that the package is not installed, then it meets the compliance requirement.\n   - If the package is installed, proceed to the next step for remediation.\n6. **Remediation (if needed)**:\n   - To remove the package, run the command: `dnf remove xorg-x11-server-common`\n7. **Expected Secure Configuration**: The `xorg-x11-server-common` package should not be installed on the VM.\n8. **Confirm Compliance**: Repeat the check after any remediation to ensure that the package is indeed removed and that the VM conforms to the compliance requirement."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** DISAGREE\n\n- The classification as \"Manual\" is not entirely correct. While the manual steps are valid, this check can be automated using Azure capabilities. Specifically, Azure Automation or Azure CLI can be used to execute scripts that SSH into VMs and check for the presence of specific packages. Additionally, Azure Policy can be leveraged to enforce compliance by checking for the installation of specific packages across VMs.\n\n**TECHNICAL ACCURACY:** 6\n\n- The manual steps provided are technically correct and would effectively determine the presence of the `xorg-x11-server-common` package on a VM. However, the steps are incomplete in terms of leveraging Azure's capabilities for automation.\n- The program name convention is not applicable here as this is a manual process description rather than a script or program.\n\n**IMPROVEMENTS:**\n\n- **Automation Potential:** Utilize Azure Automation or Azure CLI to automate the SSH process and package check. This could be achieved by scripting the SSH connection and package verification using tools like Azure Runbooks or custom scripts executed via Azure CLI.\n  \n- **Azure Policy:** Consider using Azure Policy to audit and enforce compliance across all VMs. A custom policy can be created to check for the presence of the `xorg-x11-server-common` package and ensure it is not installed.\n\n- **Security Considerations:** Ensure that SSH access to VMs is secure and that any scripts used for automation are executed in a secure environment, such as Azure Automation with managed identities.\n\n- **Documentation:** Provide documentation or links to Azure resources that explain how to set up and use Azure Automation or Azure Policy for this purpose.\n\n**CONFIDENCE:** MEDIUM\n\n- While the manual steps are accurate, the lack of consideration for automation using Azure's capabilities reduces confidence in the assessment's completeness.\n\n**FINAL RECOMMENDATION:** Modify\n\n- Re-classify the audit approach to \"Automated\" by incorporating Azure Automation or Azure CLI for checking the package installation. Additionally, consider implementing an Azure Policy for continuous compliance monitoring.\n- Provide guidance on setting up these automated checks and policies to ensure a comprehensive and scalable compliance solution.",
+        "reviewed_at": "2025-10-26T16:38:29.298142"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nThe task of verifying and removing the `xorg-x11-server-common` package can be automated using Azure Automation or Azure CLI. Azure provides capabilities to execute scripts on VMs, which can be leveraged to check for the presence of specific packages. The second AI opinion correctly identifies the potential for automation, which aligns with Azure's capabilities to manage and enforce compliance across VMs.\n\n**CONFIDENCE:** HIGH\n\n**PROGRAM NAME:** \nazure_automation_vm_check_xorg_package\n\n**AUTOMATION DETAILS:**\n- Azure Resource/Service: Virtual Machines\n- API/CLI Method: Azure Automation Runbooks or Azure CLI with SSH\n- Properties to Check: Presence of `xorg-x11-server-common` package via `rpm -q xorg-x11-server-common`\n- Pass Criteria: Output indicates the package is not installed\n- Fail Criteria: Output indicates the package is installed\n\n**DISAGREEMENTS RESOLVED:**\nThe first AI suggested a manual approach, but the second AI highlighted the automation potential, which is feasible given Azure's capabilities to automate such checks. The decision to automate is based on the ability to use Azure Automation to execute scripts across VMs, ensuring compliance efficiently.\n\n**SOURCE:** CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+        "decided_at": "2025-10-27T14:17:51.091534"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.2__ensure-xorg-x11-server-common-is-not-installed.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

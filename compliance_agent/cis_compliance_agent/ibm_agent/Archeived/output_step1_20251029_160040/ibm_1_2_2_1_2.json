@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2.1.2",
+    "unique_id": "ibm_1_2_2_1_2",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure Block Storage is encrypted with BYOK",
+    "input_row": {
+        "id": "2.2.1.2",
+        "unique_id": "ibm_1_2_2_1_2",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure Block Storage is encrypted with BYOK",
+        "description": "By default, IBM Cloud Block Storage provides provider-managed encryption for all data. For enhanced security, customers can bring their own encryption keys and manage them through IBM Key Management Service – Key Protect . The customer can chose to use BYOK instead of provider-managed keys for enhanced security",
+        "rationale": "When it comes to encryption of data at rest in IBM Cloud, the best practice is to allow customers to manage customer root keys(CRK) that are used to protect customer data stored in data and storage services in IBM Cloud. Bring your Own Key(BYOK) allows customers to ensure no one outside of their organization has access to the root key and and with the support of BYOK, customers can manage the lifecycle of their customer root keys where they can create, rotate, delete those keys. This provides a significant level of control where those CRKs are managed by the customer, which in turn increases both security control as well as meet relevant compliance requirements. These CRKs can be used in turn to protect the data encryption keys used to encrypt the data.",
+        "audit": "You can use the IBM Cloud Block Storage configuration properties to verify whether a Cloud Object Storage bucket is enabled to use Key Protect. From Console, Navigate to your Cloud Object Storage instance: 1. In the IBM Cloud console, go to Menu icon > VPC Infrastructure > Storage > Block storage volumes. A list of all block storage volumes displays. 2. For each of the volumes listed, ensure the encryption field pointing to \"Key Protect\"",
+        "remediation": "You will not be able to add Key Protect as the key management service once data is already written to a Cloud Block Storage Volume. In order to ensure that objects are encrypted using Key Protect keys you will need to create a new Cloud Block Storage volume, set it to use Key Protect key management service and then upload/copy the existing objects to this new volume. Default Value: Provider Managed References: 1. https://cloud.ibm.com/vpc-ext",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://cloud.ibm.com/vpc-ext"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control \"Ensure Block Storage is encrypted with BYOK\" can be verified using IBM Cloud APIs and IBM Cloud CLI commands. The audit process involves checking if Block Storage is using Key Protect for encryption, which is a standard IBM Cloud service property related to encryption. This kind of configuration is accessible through IBM Cloud APIs, and the IBM Cloud CLI can be used to query the encryption settings of the block storage volumes.\n\n**PROGRAM NAME:** ibm_block_storage_volume_byok_encryption_enabled\n\n**AUTOMATION DETAILS:**\n- Use the IBM Cloud CLI to list all block storage volumes and their encryption configurations.\n- Execute the command `ibmcloud is volumes` to enumerate all block storage volumes in the account.\n- For each volume, use the IBM Cloud CLI or API call to check the encryption status:\n  - Command example: `ibmcloud is volume <volume_ID> --output JSON` to retrieve the full JSON configuration, including encryption details.\n- Validate if the encryption field indicates the use of \"Key Protect,\" confirming that BYOK is enabled.\n- Pass Criteria: The encryption method should explicitly indicate \"Key Protect\" is being used.\n- Fail Criteria: If \"Key Protect\" is not being used for encryption, the configuration does not comply.\n- This process should be run across all regions and accounts where IBM Cloud Block Storage is deployed to ensure comprehensive compliance coverage.\n\n**SOURCE:** CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "timestamp": "2025-10-29T16:04:24.836309",
+    "model": "gpt-4o"
+}

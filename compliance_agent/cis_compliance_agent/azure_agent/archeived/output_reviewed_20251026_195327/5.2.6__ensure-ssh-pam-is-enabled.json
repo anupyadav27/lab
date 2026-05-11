@@ -1,0 +1,31 @@
+{
+    "unique_id": "5.2.6__ensure-ssh-pam-is-enabled",
+    "control_id": "5.2.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the VM via SSH:** \n   - Use an SSH client to connect to the VM running the AKS (Azure Kubernetes Service) whose SSH PAM configuration you wish to verify.\n   - Command: `ssh username@vm_ip_address`\n   \n2. **Verify the UsePAM setting:**\n   - Run the following command to check the PAM configuration:\n     ```bash\n     sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep -i usepam\n     ```\n   \n3. **Check the configuration files:**\n   - To ensure no configurations disable UsePAM, execute:\n     ```bash\n     grep -Pis '^\\h*UsePAM\\h+\"?no\"?\\b' /etc/ssh/sshd_config /etc/ssh/ssh_config.d/*.conf\n     ```\n   \n4. **Expected secure configuration:**\n   - The output from the first command should confirm `usepam yes`.\n   - The second command should return nothing, indicating that no configuration files contain `UsePAM no`.\n\n5. **Confirm compliance:**\n   - If the above checks pass, it indicates that PAM is enabled, which is compliant with the control. If `usepam yes` is not present or if any files return `UsePAM no`, document these findings for remediation."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The manual approach is valid for verifying SSH PAM configurations directly on the VM. However, this could potentially be automated using Azure Automation or Azure CLI scripts that can remotely execute these checks on VMs.\n- **Azure APIs/CLI Capabilities:** While Azure does not directly expose SSH configuration settings via its APIs or CLI, you can use Azure Automation Runbooks or Azure CLI to execute scripts on VMs. This would allow for an automated approach to check the SSH configuration across multiple VMs in a scalable manner.\n\n**TECHNICAL ACCURACY:** 7\n\n- **Automation Details:** The manual steps provided are technically correct for checking the SSH PAM configuration. However, the approach lacks scalability and efficiency for environments with multiple VMs.\n- **Manual Steps Accuracy:** The steps are accurate for verifying the UsePAM setting. The command to check for `UsePAM no` is well-constructed to ensure no misconfigurations are present.\n- **Program Naming Convention:** The assessment does not include a specific program name following the convention. This is not directly applicable here, but if a script or automation was developed, it should follow a naming convention like `azure_vm_ssh_pam_check`.\n\n**IMPROVEMENTS:**\n\n- **Automation Potential:** Consider developing a script or Azure Automation Runbook to automate these checks across all VMs in an Azure subscription. This could involve using Azure CLI or Azure PowerShell to execute the necessary commands on each VM.\n- **Scalability:** The current manual approach is not scalable for large environments. Implementing an automated solution would improve efficiency and reduce the potential for human error.\n- **Documentation:** Include guidance on how to remediate non-compliance, such as steps to enable PAM if it is disabled.\n\n**CONFIDENCE:** MEDIUM\n\n- The assessment is technically accurate for a manual approach, but there is room for improvement in terms of automation and scalability. The reliance on manual checks limits the confidence in environments with a large number of VMs.\n\n**FINAL RECOMMENDATION:**\n\n- **Modify:** Suggest developing an automated solution using Azure Automation or Azure CLI to perform these checks across multiple VMs. This would involve creating a script that can be executed remotely to check and report on the SSH PAM configuration. This modification would enhance the efficiency and scalability of the compliance audit process.",
+        "reviewed_at": "2025-10-26T16:33:39.466795"
+    },
+    "input_row": {
+        "id": "5.2.6",
+        "unique_id": "5.2.6__ensure-ssh-pam-is-enabled",
+        "title": "Ensure SSH PAM is enabled",
+        "description": "The UsePAM directive enables the Pluggable Authentication Module (PAM) interface. If set to yes this will enable PAM authentication using ChallengeResponseAuthentication and PasswordAuthentication directives in addition to PAM account and session module processing for all authentication types.",
+        "rationale": "When usePAM is set to yes, PAM runs through account and session types properly. This is important if you want to restrict access to services based off of IP, time or other factors of the account. Additionally, you can make sure users inherit certain environment variables on login or disallow access to the server",
+        "audit": "Run the following command: # sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep -i usepam Verify the output matches: usepam yes Run the following command: # grep -Pis '^\\h*UsePAM\\h+\"?no\"?\\b' /etc/ssh/sshd_config /etc/ssh/ssh_config.d/*.conf Nothing should be returned. Note: If Include locations besides, or in addition to /etc/ssh/sshd_config.d/*.conf are used in your environment, those locations should be checked for the correct configuration as well.",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter above any Include entries as follows: UsePAM yes Note: First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a file in Include location. References: 1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "5.2.6__ensure-ssh-pam-is-enabled.json",
+        "review_version": "1.0"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "2.7",
+    "unique_id": "aws_1_2_7",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "title": "Ensure Passwords are Regularly Rotated",
+    "input_row": {
+        "id": "2.7",
+        "unique_id": "aws_1_2_7",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+        "title": "Ensure Passwords are Regularly Rotated",
+        "description": "Regularly rotating your Aurora passwords is critical to access management, contributing to maintaining system security. The database password can be rotated in Amazon Aurora, but the access keys refer to the rotation of AWS IAM User access keys.",
+        "rationale": "Updating your password is critical to access AWS resources. This also ensures that your account is being kept safe from a potential threat. Impact: Having the passwords updated frequently allows only the authorized individual to access the AWS resources.",
+        "audit": "1. Sign in to AWS Management Console • If you do not already have an AWS account, you will need to create one at https://aws.amazon.com. 2. Navigate to Amazon RDS Dashboard • Navigate to the RDS service once logged in to the AWS Management Console. You can find this under the Database category. 3. Choose your Aurora DB instance • In the RDS Dashboard, click on Databases, and then click on the name of your Aurora DB instance. 4. Modify the instance • Click Modify. • In the Settings section, enter a new password in the Master password and Confirm password fields. 5. Apply the changes  • Scroll to the bottom and choose when to apply the changes. You can apply them immediately or schedule them for the next maintenance window. • Then, click Continue and Modify DB Instance. Note : Changing the master password will reboot the DB instance if you apply the change immediately.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Having the passwords updated frequently allows only the authorized individual to access the AWS resources.",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The CIS control concerns the regular rotation of Amazon Aurora (RDS) master user/database-level passwords.\n- The audit steps require navigating through the AWS Console to change the password.\n- AWS APIs (boto3, AWS CLI) can retrieve the current master user name or identifier, but they do NOT expose the timestamp of last password change nor the actual master password or its rotation status. There is no API or property to programmatically determine when the Aurora database password was last rotated.\n- This is a limitation of AWS: password rotation for DB master users is an administrative process, not an auditable configuration property.\n- Therefore, evaluation of password age and rotation status must be performed manually, based on operational procedures, change management records, or through enforced organizational policy.\n\n**MANUAL STEPS:**  \n1. Sign in to the AWS Management Console.\n2. Navigate to the RDS service under the Database category.\n3. In the RDS Dashboard, select \"Databases,\" then click on the name of your Aurora DB instance.\n4. Review the \"Configuration\" tab for the master user name; note that the password itself is never shown or auditable.\n5. Click \"Modify\" to change the master user password.  \n   a. Enter a new password for the master user.  \n   b. Choose to apply the change immediately or during the next maintenance window.\n6. Track the date/time of this change via operational change records, ticketing systems, or internal documentation.\n7. Ensure you have a documented process or evidence for regular (e.g., every 90 days) password rotation for the Aurora DB master user.\n8. Confirm compliance by checking these records and verifying that the password was changed within the defined policy threshold.\n\n**SOURCE:** CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "timestamp": "2025-10-29T19:00:50.010239",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,33 @@
+{
+    "control_id": "5.1.11",
+    "unique_id": "k8s_1_5_1_11",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Minimize access to the approval sub-resource of certificatesigningrequests objects",
+    "input_row": {
+        "id": "5.1.11",
+        "unique_id": "k8s_1_5_1_11",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Minimize access to the approval sub-resource of certificatesigningrequests objects",
+        "description": "Users with access to the update the approval sub-resource of certificateaigningrequest objects can approve new client certificates for the Kubernetes API effectively allowing them to create new high-privileged user accounts. This can allow for privilege escalation to full cluster administrator, depending on users configured in the cluster",
+        "rationale": "The ability to update certificate signing requests should be limited.",
+        "audit": "Review the users who have access to update the approval sub-resource of certificatesigningrequest objects in the Kubernetes API.",
+        "remediation": "Where possible, remove access to the approval sub-resource of certificatesigningrequest objects. References: 1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#csrs-and- certificate-issuing",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "",
+        "references": "1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#csrs-and- certificate-issuing"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_csr_approval_subresource_update_restricted\n\n**AUTOMATION DETAILS:**\n- Query all ClusterRole and Role objects in the cluster using the Kubernetes API or kubectl.\n  - Command: kubectl get clusterrole,role -o yaml\n- For each ClusterRole and Role, inspect the rules for permissions on the resource certificatesigningrequests/approval with the verb update.\n  - Specifically, look for:\n    - apiGroups: [\"certificates.k8s.io\"]\n    - resources: [\"certificatesigningrequests/approval\"]\n    - verbs: [\"update\"] (or [\"*\"])\n- Enumerate all ClusterRoleBindings and RoleBindings to determine which users, groups, or service accounts are bound to these roles.\n  - Command: kubectl get clusterrolebinding,rolebinding -o yaml\n- Output a list of all subjects (users, groups, service accounts) that have update access to the approval subresource of certificatesigningrequests.\n- **Pass Criteria:** Only explicitly authorized and minimal set of trusted users/groups/service accounts have update access to certificatesigningrequests/approval.\n- **Fail Criteria:** Any untrusted, unnecessary, or overly broad (e.g., system:authenticated, system:serviceaccounts, or wildcard subjects) have update access to certificatesigningrequests/approval.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:09:33.879262",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification as Automated is correct. This control can be effectively audited using Kubernetes APIs and kubectl commands, which allows for programmatic querying and analysis of role and role binding configurations.\n- Kubernetes CLI commands and APIs are suitable for this task, as they provide the necessary access to inspect roles and bindings.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details are technically accurate. The use of `kubectl get clusterrole,role -o yaml` and `kubectl get clusterrolebinding,rolebinding -o yaml` is appropriate for retrieving the necessary configuration data.\n- The method of inspecting rules for the specific API group, resource, and verb is correct.\n- The program name `k8s_rbac_csr_approval_subresource_update_restricted` is descriptive and follows a logical naming convention, though it could be slightly more concise.\n- The only minor point is the lack of explicit mention of handling potential large outputs or performance considerations when querying large clusters.\n\n**IMPROVEMENTS:**\n- Consider adding a step to handle large output data, such as using `kubectl` with `--chunk-size` or filtering results to improve performance in large clusters.\n- The program name could be slightly improved for brevity and clarity, such as `k8s_rbac_csr_approval_access_check`.\n- Ensure the script or automation tool handles edge cases, such as roles with wildcard verbs or resources, which might require additional logic to parse correctly.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded with appropriate use of Kubernetes capabilities, and the automation details are technically sound.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is with a minor suggestion to consider performance optimizations for large clusters and a slightly refined program name for clarity.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:26:42.095755",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nBoth AI opinions agree that this control can be effectively audited using automated methods via Kubernetes APIs and kubectl commands. The audit steps outlined in the compliance control data can be executed programmatically, allowing for efficient and accurate assessment of role and role binding configurations. The proposed program name is appropriate and follows a logical naming convention.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nk8s_rbac_csr_approval_subresource_update_restricted\n\n**AUTOMATION DETAILS:**\n- Kubernetes Resource/Service: Role and ClusterRole\n- API/CLI Method: kubectl get clusterrole,role -o yaml; kubectl get clusterrolebinding,rolebinding -o yaml\n- Properties to Check: \n  - apiGroups: [\"certificates.k8s.io\"]\n  - resources: [\"certificatesigningrequests/approval\"]\n  - verbs: [\"update\"] (or [\"*\"])\n- Pass Criteria: Only explicitly authorized and minimal set of trusted users/groups/service accounts have update access to certificatesigningrequests/approval.\n- Fail Criteria: Any untrusted, unnecessary, or overly broad subjects (e.g., system:authenticated, system:serviceaccounts, or wildcard subjects) have update access to certificatesigningrequests/approval.",
+        "final_approach": "Automated",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T02:48:40.820814"
+    }
+}

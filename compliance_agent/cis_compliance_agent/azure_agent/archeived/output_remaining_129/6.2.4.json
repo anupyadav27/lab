@@ -1,0 +1,17 @@
+{
+    "id": "6.2.4",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.4",
+        "unique_id": "aks_6.2.4__ensure-no-duplicate-gids-exist",
+        "title": "Ensure no duplicate GIDs exist",
+        "description": "Although the groupadd program will not let you create a duplicate Group ID (GID), it is possible for an administrator to manually edit the /etc/group file and change the GID field.",
+        "rationale": "User groups must be assigned unique GIDs for accountability and to ensure appropriate access protections.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash cut -d: -f3 /etc/group | sort | uniq -d | while read x ; do echo \"Duplicate GID ($x) in /etc/group\" done",
+        "remediation": "Based on the results of the audit script, establish unique GIDs and review all files owned by the shared GID to determine which group they are supposed to belong to. References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5 Additional Information: You can also use the grpck command to check for other inconsistencies in the /etc/group file.",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5 Additional Information: You can also use the grpck command to check for other inconsistencies in the /etc/group file.",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal:**\n   - Navigate to your Azure subscription and locate the Azure Kubernetes Service (AKS) resource you want to evaluate.\n\n2. **Connect to AKS cluster:**\n   - Use the Azure CLI or Azure Cloud Shell to connect to your AKS cluster. Command: \n   ```bash\n   az aks get-credentials --resource-group <your_resource_group> --name <your_aks_cluster>\n   ```\n\n3. **SSH into the nodes:**\n   - Run the following command to access a node in your AKS cluster:\n   ```bash\n   az vm ssh --resource-group <your_resource_group> --name <your_node_name>\n   ```\n   (Replace `<your_node_name>` with the actual node name you want to check.)\n\n4. **Verify GIDs:**\n   - Execute the audit script by running the following commands:\n   ```bash\n   cut -d: -f3 /etc/group | sort | uniq -d | while read x ; do echo \"Duplicate GID ($x) in /etc/group\" done\n   ```\n   - Review the output for any duplicate GIDs.\n\n5. **Evaluate any results:**\n   - If duplicates are found, you will see messages indicating the duplicate GIDs. Take note of these groups and their corresponding GIDs.\n\n6. **Establish unique GIDs:**\n   - For any duplicates found, review all files owned by the shared GID to determine which group they are supposed to belong to. This includes checking file permissions and group ownership using the command: \n   ```bash\n   ls -l <file_or_directory>\n   ```\n   (Replace `<file_or_directory>` with the actual file or directory path.)\n\n7. **Confirm compliance:** \n   - Ensure that all GIDs are unique and that files are owned by the appropriate groups. Document any changes made during this process for compliance records."
+}

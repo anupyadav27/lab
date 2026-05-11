@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress"
+  ],
+  "changes_made": [
+    "Changed k8s_audit_logging_enabled to k8s_apiserver_audit_logging_enabled for specificity"
+  ],
+  "review_notes": "The functions generally map well to Kubernetes security controls related to monitoring and logging network activities. However, the function 'k8s_audit_logging_enabled' should be more specific to indicate that it pertains to the API server, hence the change to 'k8s_apiserver_audit_logging_enabled'. The other functions are well-named and consistent with Kubernetes terminology.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Use 'apiserver' instead of 'audit' for resource name in audit logging function for clarity"
+  ],
+  "control_id": "Your Data-1",
+  "title": "Learn what is happening on your network",
+  "step1_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress"
+  ],
+  "step1_reasoning": "The control 'Learn what is happening on your network' is about monitoring and logging network activities, which maps to Kubernetes audit logging and network policies. Kubernetes audit logging can be configured to capture API server activities, similar to cloud logging services. NetworkPolicies can be used to restrict and monitor network traffic within the cluster, similar to VPC flow logs."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "4.3.1",
+    "unique_id": "k8s_3_4_3_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the kube-proxy metrics service is bound to localhost",
+    "input_row": {
+        "id": "4.3.1",
+        "unique_id": "k8s_3_4_3_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the kube-proxy metrics service is bound to localhost",
+        "description": "Do not bind the kube-proxy metrics port to non-loopback addresses.",
+        "rationale": "kube-proxy has two APIs which provided access to information about the service and can be bound to network ports. The metrics API service includes endpoints (/metrics and /configz) which disclose information about the configuration and operation of kube-proxy. These endpoints should not be exposed to untrusted networks as they do not support encryption or authentication to restrict access to the data they provide. Impact: 3rd party services which try to access metrics or configuration information related to kube-proxy will require access to the localhost interface of the node.",
+        "audit": "review the start-up flags provided to kube proxy ps -ef | grep -i kube-proxy Ensure that the --metrics-bind-address parameter is not set to a value other than 127.0.0.1. From the output of this command gather the location specified in the -- config parameter. Review any file stored at that location and ensure that it does not specify a value other than 127.0.0.1 for metricsBindAddress.",
+        "remediation": "Modify or remove any values which bind the metrics service to a non-localhost address Default Value: The default value is 127.0.0.1:10249 References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "3rd party services which try to access metrics or configuration information related to kube-proxy will require access to the localhost interface of the node.",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kube_proxy_metrics_bind_address_localhost\n\n**AUTOMATION DETAILS:**\n- Enumerate all kube-proxy pods or nodes running kube-proxy (depending on deployment method: DaemonSet, static pod, or systemd service).\n- For each kube-proxy instance:\n  - If deployed as a DaemonSet (common in managed clusters):\n    - Use kubectl to get the DaemonSet spec:  \n      `kubectl -n kube-system get daemonset kube-proxy -o yaml`\n    - Inspect the command/args in the DaemonSet's PodSpec for the `--metrics-bind-address` flag.\n    - Confirm the value is set to `127.0.0.1:10249` or another localhost address (127.0.0.1).\n    - If a config file is referenced via `--config`, extract the ConfigMap or mounted file:\n      - Identify the config file path from the args (e.g., `/var/lib/kube-proxy/config.conf`).\n      - If mounted from a ConfigMap, use:\n        `kubectl -n kube-system get configmap <name> -o yaml`\n      - Inspect the `metricsBindAddress` field in the config file; ensure it is set to `127.0.0.1:10249` or another localhost address.\n  - If running as a static pod or systemd service (less common in managed clusters):\n    - Use `kubectl get pods -A -o wide | grep kube-proxy` to locate pods.\n    - For static pods, check the manifest in `/etc/kubernetes/manifests/` (requires host access; if not available, mark as not verifiable).\n    - For systemd, this typically requires host access and would be marked Manual if not exposed via Kubernetes API.\n- **Pass Criteria:** All kube-proxy instances have `--metrics-bind-address` set to `127.0.0.1:<port>` (default 10249), or the `metricsBindAddress` field in the config file is set to a localhost address.\n- **Fail Criteria:** Any kube-proxy instance binds metrics to a non-localhost address (e.g., `0.0.0.0`, external IP, or `::`).\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T21:01:23.184364",
+    "model": "gpt-4.1"
+}

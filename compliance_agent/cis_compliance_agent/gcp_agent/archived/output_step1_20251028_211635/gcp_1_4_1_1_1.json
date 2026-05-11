@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.1.1",
+    "unique_id": "gcp_1_4_1_1_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure correct container image is set for stackdriver logging agent",
+    "input_row": {
+        "id": "4.1.1.1",
+        "unique_id": "gcp_1_4_1_1_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure correct container image is set for stackdriver logging agent",
+        "description": "stackdriver-logging service runs stackdriver container image to export logs to Cloud Logging. Note: This recommendation is not applicable for COS images using Fluent-bit as it isn't containerized.",
+        "rationale": "If the logging agent is not set correctly, the logs cannot be exported to Cloud Logging.",
+        "audit": "Verify LOGGING_AGENT_DOCKER_IMAGE is set to a correct stackdriver container image. Use the following command to verify: # grep LOGGING_AGENT_DOCKER_IMAGE /etc/stackdriver/env_vars LOGGING_AGENT_DOCKER_IMAGE=\"gcr.io/stackdriver-agents/stackdriver-logging- agent:<version>\"",
+        "remediation": "Edit the LOGGING_AGENT_DOCKER_IMAGE variable in the /etc/stackdriver/env_vars file to set the correct logging agent. Run the following command to restart stackdriver-logging service : # systemctl restart stackdriver-logging /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control requires verifying the environment variable `LOGGING_AGENT_DOCKER_IMAGE` on the Container-Optimized OS (COS) instances, which involves accessing the file system to check the content of `/etc/stackdriver/env_vars`. This specific task cannot be performed directly via GCP APIs, the Google Cloud SDK, or CLI, as it requires SSH access to the instance to inspect the OS level configuration files. Thus, it necessitates a manual audit approach.\n\n**MANUAL STEPS:**\n1. SSH into the Container-Optimized OS instance where the stackdriver-logging service is running.\n2. Use the command `grep LOGGING_AGENT_DOCKER_IMAGE /etc/stackdriver/env_vars` to inspect the configuration.\n3. Verify that the `LOGGING_AGENT_DOCKER_IMAGE` is correctly set to `\"gcr.io/stackdriver-agents/stackdriver-logging-agent:<version>\"`.\n4. Ensure that the version of the image specified matches the recommended or latest version provided by Google for stackdriver logging.\n5. Confirm compliance by ensuring the variable is correctly set, which ensures logs are exported to Cloud Logging.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nSince this check requires operating system file access and modification which are outside the scope of GCP API queries, it fits under manual verification.",
+    "timestamp": "2025-10-28T21:29:44.249129",
+    "model": "gpt-4o"
+}

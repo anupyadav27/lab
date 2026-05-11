@@ -1,0 +1,22 @@
+{
+    "control_id": "1.3.1",
+    "unique_id": "k8s_6_1_3_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --terminated-pod-gc-threshold argument is set as appropriate",
+    "input_row": {
+        "id": "1.3.1",
+        "unique_id": "k8s_6_1_3_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --terminated-pod-gc-threshold argument is set as appropriate",
+        "description": "Activate garbage collector on pod termination, as appropriate.",
+        "rationale": "Garbage collection is important to ensure sufficient resource availability and avoiding degraded performance and availability. In the worst case, the system might crash or just be unusable for a long period of time. The current setting for garbage collection is 12,500 terminated pods which might be too high for your system to sustain. Based on your system resources and tests, choose an appropriate threshold value to activate garbage collection. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-controller-manager Verify that the --terminated-pod-gc-threshold argument is set as appropriate.",
+        "remediation": "Edit the Controller Manager pod specification file /etc/kubernetes/manifests/kube- controller-manager.yaml on the Control Plane node and set the --terminated-pod-gc- threshold to an appropriate threshold, for example: --terminated-pod-gc-threshold=10 Default Value: By default, --terminated-pod-gc-threshold is set to 12500. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager/ 2. https://github.com/kubernetes/kubernetes/issues/28484",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager/ 2. https://github.com/kubernetes/kubernetes/issues/28484"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_controller_manager_terminated_pod_gc_threshold_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-controller-manager configuration to verify the presence and value of the --terminated-pod-gc-threshold argument.\n- If running as a static pod (common in kubeadm and managed clusters), retrieve the Pod manifest from /etc/kubernetes/manifests/kube-controller-manager.yaml using kubectl or by mounting the file in a DaemonSet for read-only inspection.\n- Alternatively, use kubectl get pods -n kube-system -o yaml | grep -A10 kube-controller-manager to locate the running controller manager pod and inspect its command/args.\n- Specifically, check for the --terminated-pod-gc-threshold flag and confirm it is set to a value appropriate for the environment (i.e., not left at the default of 12500 unless justified).\n- Pass Criteria: The --terminated-pod-gc-threshold argument is explicitly set and its value is less than or equal to the organization’s defined threshold (commonly recommended to be much lower than 12500, e.g., 10–1000 depending on workload).\n- Fail Criteria: The argument is missing, or set to the default (12500), or set to a value not aligned with organizational policy.\n- Example kubectl command for static pod clusters:\n  ```\n  kubectl -n kube-system get pod -l component=kube-controller-manager -o jsonpath=\"{.items[*].spec.containers[*].command}\"\n  ```\n  or, if using args:\n  ```\n  kubectl -n kube-system get pod -l component=kube-controller-manager -o jsonpath=\"{.items[*].spec.containers[*].args}\"\n  ```\n- For clusters where the controller manager is not a pod (rare), direct file inspection or process argument parsing may be required, but in most modern Kubernetes distributions, this is accessible via the Kubernetes API.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:06:31.879717",
+    "model": "gpt-4.1"
+}

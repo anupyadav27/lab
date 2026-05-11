@@ -1,0 +1,17 @@
+{
+    "id": "6.2.15",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.15",
+        "unique_id": "6.2.15__ensure-no-users-have-.netrc-files",
+        "title": "Ensure no users have .netrc files",
+        "description": "The .netrc file contains data for logging into a remote host for file transfers via FTP.",
+        "rationale": "The .netrc file presents a significant security risk since it stores passwords in unencrypted form. Even if FTP is disabled, user accounts may have brought over .netrc files from other systems which could pose a risk to those systems.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $1 \" \" $6 }' /etc/passwd | while read -r user dir; do if [ -d \"$dir\" ]; then file=\"$dir/.netrc\" if [ ! -h \"$file\" ] && [ -f \"$file\" ]; then echo \"User: \\\"$user\\\" file: \\\"$file\\\" exists\" fi fi done",
+        "remediation": "Making global modifications to users' files without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user .netrc files and determine the action to be taken in accordance with site policy. The following script will remove .netrc files from interactive users' home directories #!/bin/bash awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $6 }'  /etc/passwd | while read -r dir; do if [ -d \"$dir\" ]; then file=\"$dir/.netrc\" [ ! -h \"$file\" ] && [ -f \"$file\" ] && rm -f \"$file\" fi done References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect to your Azure Kubernetes Service (AKS):**\n   - Open Azure Cloud Shell or connect to the AKS cluster via SSH.\n\n2. **Check for .netrc files:**\n   - Run the following command in the shell:\n     ```bash\n     awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\\\/usr)?\\\\/sbin\\\\/nologin(\\\\/)?$/ && $7!~/(\\\\/usr)?\\\\/bin\\\\/false(\\\\/)?$/) { print $1 \\\" \\\" $6 }' /etc/passwd | while read -r user dir; do if [ -d \\\"$dir\\\" ]; then file=\\\"$dir/.netrc\\\" if [ ! -h \\\"$file\\\" ] && [ -f \\\"$file\\\" ]; then echo \\\"User: \\\\\\\"$user\\\\\\\" file: \\\\\\\"$file\\\\\\\" exists\\\" fi fi done\n     ```\n\n3. **What to verify/validate:**\n   - Look for any output from the command that indicates a user has a .netrc file in their home directory.\n\n4. **Expected secure configuration:**\n   - No output should be returned, meaning no user should have a .netrc file in their home directory.\n\n5. **How to confirm compliance:**\n   - If no users are reported with .netrc files, the control is compliant. If there are users listed, identify them and take appropriate action according to your organization's security policy."
+}

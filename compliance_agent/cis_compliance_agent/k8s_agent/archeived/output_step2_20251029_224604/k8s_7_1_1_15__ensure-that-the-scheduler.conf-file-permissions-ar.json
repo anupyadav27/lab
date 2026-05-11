@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.15",
+    "unique_id": "k8s_7_1_1_15",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the scheduler.conf file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.15",
+        "unique_id": "k8s_7_1_1_15",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the scheduler.conf file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the scheduler.conf file has permissions of 600 or more restrictive.",
+        "rationale": "The scheduler.conf file is the kubeconfig file for the Scheduler. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the following command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/scheduler.conf Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/scheduler.conf Default Value: By default, scheduler.conf has permissions of 640. References: 1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verifying the file permissions of the scheduler.conf file on the control plane node's underlying filesystem. Kubernetes APIs and kubectl do not expose host-level file permissions for configuration files such as /etc/kubernetes/scheduler.conf. The audit procedure explicitly requires running OS-level commands (e.g., stat, ls) directly on the node, which cannot be performed via Kubernetes API or kubectl. Therefore, this check cannot be automated through Kubernetes-native interfaces and requires manual verification.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Locate the scheduler.conf file (commonly at /etc/kubernetes/scheduler.conf).\n3. Run the following command to check file permissions:\n   ```\n   stat -c %a /etc/kubernetes/scheduler.conf\n   ```\n   or\n   ```\n   ls -l /etc/kubernetes/scheduler.conf\n   ```\n4. Verify that the permissions are set to 600 or more restrictive (i.e., only the file owner has read and write permissions, and no permissions are granted to group or others).\n5. If the permissions are more permissive than 600 (e.g., 640, 644), remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/scheduler.conf\n   ```\n6. Confirm compliance by re-running the stat or ls command and ensuring the output reflects 600 permissions.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:24:12.412787",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Manual is correct. The Kubernetes API and `kubectl` do not provide direct access to host-level file permissions. The verification of file permissions such as those for `/etc/kubernetes/scheduler.conf` requires direct access to the underlying filesystem, which necessitates OS-level commands executed on the node itself. Therefore, this check cannot be automated through Kubernetes-native interfaces.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and complete. The use of `stat` and `ls` commands is appropriate for checking file permissions. The remediation step using `chmod 600` is also correct. The instructions are clear and follow standard practices for verifying and setting file permissions.\n- The program name convention is not explicitly mentioned in the assessment, but the description is clear and descriptive regarding what is being checked.\n\n**IMPROVEMENTS:**\n- The assessment could include a brief explanation of why file permissions are important for security, providing context for the control.\n- A suggestion for a program name could be `k8s_scheduler_conf_file_permissions_check`, which is descriptive and follows a convention that indicates the service, resource, and specific security check.\n- Consideration of automating the SSH process using configuration management tools like Ansible could be mentioned, although it still requires manual intervention to set up.\n\n**CONFIDENCE:** HIGH\n- The assessment is thorough and accurately reflects the limitations of Kubernetes APIs in this context. The manual steps are well-documented and follow best practices.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is. The manual approach is justified given the current capabilities of Kubernetes APIs and `kubectl`. The assessment is technically sound and provides clear instructions for compliance verification.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:10:27.691008"
+}

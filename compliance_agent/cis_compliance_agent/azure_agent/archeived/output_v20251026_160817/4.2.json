@@ -1,0 +1,17 @@
+{
+    "id": "4.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "4.2",
+        "unique_id": "4.2__ensure-logrotate-is-configured",
+        "title": "Ensure logrotate is configured",
+        "description": "The system includes the capability of rotating log files regularly to avoid filling up the system with logs or making the logs unmanageably large. The file /etc/logrotate.d/syslog is the configuration file used to rotate log files created by syslog or rsyslog.",
+        "rationale": "By keeping the log files smaller and more manageable, a system administrator can easily archive these files to another system and spend less time looking through inordinately large log files.",
+        "audit": "Review /etc/logrotate.conf and /etc/logrotate.d/* and verify logs are rotated according to site policy.",
+        "remediation": "Edit /etc/logrotate.conf and /etc/logrotate.d/* to ensure logs are rotated according to site policy. References: 1. NIST SP 800-53 Rev. 5: AU-8 Additional Information: If no maxage setting is set for logrotate a situation can occur where logrotate is interrupted and fails to delete rotated log files. It is recommended to set this to a value greater than the longest any log file should exist on your system to ensure that any such log file is removed but standard rotation settings are not overridden.",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AU-8 Additional Information: If no maxage setting is set for logrotate a situation can occur where logrotate is interrupted and fails to delete rotated log files. It is recommended to set this to a value greater than the longest any log file should exist on your system to ensure that any such log file is removed but standard rotation settings are not overridden.",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Step 1:** Access the Azure portal and navigate to the Azure Kubernetes Service (AKS) cluster.\n   - **Path:** Go to \"Kubernetes services\" and select your AKS cluster.\n   \n2. **Step 2:** SSH into the AKS cluster or use Azure Cloud Shell to access the nodes.\n   - **Command:** Use the SSH command to connect to one of the node instances (ensure you know the node IP and have the necessary credentials).\n   \n3. **Step 3:** Verify the logrotate configuration files.\n   - **Command:** Check the configuration by running `cat /etc/logrotate.conf` and `cat /etc/logrotate.d/*` on the node.\n   \n4. **Step 4:** Validate the configuration settings against your organization's logging policies.\n   - **Expected Configuration:** Ensure that the log rotation settings match the security and operational requirements laid out in your site policy, particularly looking for parameters such as `maxage`, `rotate`, and `compress`.\n   \n5. **Step 5:** Confirm that logs are rotated as expected without excessive accumulation, in line with your established policies.\n   - **Confirmation:** Document the current log configuration and compare it to the site policy for compliance verification. Check that there are no settings that could lead to log files being retained longer than allowed.\n\nBy following these steps, you will ensure that the logrotate is configured properly on the AKS nodes, maintaining compliance with best practices as indicated in the control."
+}

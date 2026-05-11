@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.17",
+    "unique_id": "k8s_5_1_1_17",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+    "input_row": {
+        "id": "1.1.17",
+        "unique_id": "k8s_5_1_1_17",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+        "description": "Retain the logs for at least 30 days or as appropriate.",
+        "rationale": "Retaining logs for at least 30 days ensures that you can go back in time and investigate or correlate any events. Set your audit log retention period to 30 days or as per your business requirements.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --audit-log-maxage argument is set to 30 or as appropriate.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_API_ARGS parameter to \"--audit-log-maxage=30\": KUBE_API_ARGS=\"--audit-log-maxage=30\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: None Default Value: By default, auditing is not enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/  45 | P a g e 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, auditing is not enabled.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/  45 | P a g e 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_maxage_configured\n\n**AUTOMATION DETAILS:**\n- The program will verify that the kube-apiserver process is running with the --audit-log-maxage flag set to 30 or higher.\n- This can be checked by inspecting the kube-apiserver Pod specification if running as a static Pod (common in kubeadm and managed Kubernetes distributions), or by querying the process arguments directly if running as a systemd service.\n- For clusters using static Pods (most modern Kubernetes setups):\n  - Use kubectl to retrieve the kube-apiserver Pod manifest:\n    - Command: kubectl -n kube-system get pod -l component=kube-apiserver -o json\n    - Parse the .spec.containers[].command or .spec.containers[].args array for the presence of --audit-log-maxage\n    - Validate that --audit-log-maxage is set to 30 or greater\n- For clusters using systemd services (rare in modern production, but possible in legacy setups):\n  - This check would require host-level access, but in most enterprise environments, the static Pod manifest is available via the Kubernetes API.\n- Pass Criteria:\n  - The kube-apiserver is running with the --audit-log-maxage flag set to a value of 30 or higher.\n- Fail Criteria:\n  - The --audit-log-maxage flag is missing, or set to a value less than 30.\n- Example check (static Pod):\n  - kubectl -n kube-system get pod -l component=kube-apiserver -o json | jq '.items[].spec.containers[].command'\n  - Confirm presence of --audit-log-maxage=30 or higher.\n- This check is fully automatable via the Kubernetes API and does not require manual/host-level inspection in standard deployments.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:41:03.753617",
+    "model": "gpt-4.1"
+}

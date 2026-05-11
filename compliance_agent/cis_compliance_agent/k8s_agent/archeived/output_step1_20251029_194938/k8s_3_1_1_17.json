@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.17",
+    "unique_id": "k8s_3_1_1_17",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the controller-manager.conf file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.17",
+        "unique_id": "k8s_3_1_1_17",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the controller-manager.conf file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the controller-manager.conf file has permissions of 600 or more restrictive.",
+        "rationale": "The controller-manager.conf file is the kubeconfig file for the Controller Manager. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the following command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/controller-manager.conf Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/controller-manager.conf Default Value: By default, controller-manager.conf has permissions of 640. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the file permissions of /etc/kubernetes/controller-manager.conf on the Control Plane node.\n- This file's permissions are set at the OS level and are not exposed via the Kubernetes API, kubectl, or any Kubernetes controller configuration that can be queried remotely.\n- The audit procedure explicitly instructs running a shell command (stat) on the node itself, indicating the need for direct host/OS access.\n- Kubernetes APIs and kubectl do not provide a method to retrieve or verify file permissions on the host filesystem.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes Control Plane node where the kube-controller-manager runs.\n2. Run the following command to check the permissions of the controller-manager.conf file (adjust the path if your configuration uses a different location):\n   ```\n   stat -c %a /etc/kubernetes/controller-manager.conf\n   ```\n3. Review the output. The expected secure configuration is `600` or more restrictive (e.g., `400` or `000`).\n4. Confirm compliance: If the output is `600` or lower (more restrictive), the control passes. If it is higher (e.g., `640`, `644`), the control fails and remediation is required.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:44:50.498222",
+    "model": "gpt-4.1"
+}

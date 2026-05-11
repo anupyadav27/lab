@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled",
+    "k8s_apiserver_anonymous_auth_disabled"
+  ],
+  "changes_made": [
+    "Changed k8s_service_type_loadbalancer_restricted to k8s_service_loadbalancer_exposure_restricted for clarity"
+  ],
+  "review_notes": "The functions generally map well to the SOC2 control CC6.6, focusing on logical access security measures. The naming conventions are mostly followed, but the function for restricting LoadBalancer services could be more descriptive. The technical accuracy is sound, with functions addressing ingress restrictions, TLS for ingress, and API server authentication.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider using 'k8s_service_loadbalancer_exposure_restricted' for clarity and consistency with naming conventions."
+  ],
+  "control_id": "cc_6_6",
+  "title": "CC6.6 The entity implements logical access security measures to protect against threats from sources outside its system boundaries",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled",
+    "k8s_apiserver_anonymous_auth_disabled"
+  ],
+  "step1_reasoning": "The SOC2 control CC6.6 focuses on implementing logical access security measures to protect against external threats. In Kubernetes, this can be mapped to network security and access control measures. NetworkPolicies can be used to restrict ingress traffic by default, ensuring that only explicitly allowed traffic is permitted. Services of type LoadBalancer should be restricted to prevent unnecessary exposure to the internet. TLS should be enabled for Ingress resources to secure data in transit. Additionally, disabling anonymous authentication on the API server helps prevent unauthorized access."
+}

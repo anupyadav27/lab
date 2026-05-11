@@ -1,0 +1,22 @@
+{
+    "control_id": "4.4.2",
+    "unique_id": "gcp_2_4_4_2",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Consider external secret storage",
+    "input_row": {
+        "id": "4.4.2",
+        "unique_id": "gcp_2_4_4_2",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Consider external secret storage",
+        "description": "Consider the use of an external secrets storage and management system instead of using Kubernetes Secrets directly, if more complex secret management is required. Ensure the solution requires authentication to access secrets, has auditing of access to and use of secrets, and encrypts secrets. Some solutions also make it easier to rotate secrets.",
+        "rationale": "Kubernetes supports secrets as first-class objects, but care needs to be taken to ensure that access to secrets is carefully limited. Using an external secrets provider can ease the management of access to secrets, especially where secrests are used across both Kubernetes and non-Kubernetes environments. Impact: None",
+        "audit": "Review your secrets management implementation.",
+        "remediation": "Refer to the secrets management options offered by the cloud service provider or a third-party secrets management solution. Default Value: By default, no external secret management is configured. References: 1. https://kubernetes.io/docs/concepts/configuration/secret/ 2. https://cloud.google.com/secret-manager/docs/overview",
+        "profile_applicability": "•  Level 2",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/configuration/secret/ 2. https://cloud.google.com/secret-manager/docs/overview"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control \"Consider external secret storage\" recommends considering an external secret management solution instead of using Kubernetes Secrets directly, especially for complex secret management needs. The audit field specifies \"Review your secrets management implementation.\" This indicates a need for human judgment to assess whether an appropriate external secret management solution is in use and properly configured. This assessment involves aspects beyond technical checks, such as evaluating if the secrets management system meets organizational requirements, which is not fully verifiable through GCP APIs or CLI commands.\n\n**MANUAL STEPS:**\n\n1. **Review Your Current K8s Secret Management Approach:**\n   - Navigate to the Google Cloud Console and access your Kubernetes Engine resources.\n   - Identify how secrets are currently being handled within your Kubernetes clusters.\n   - Check if secrets are being stored and managed using Kubernetes Secrets or with an external secret management solution.\n\n2. **Assess External Secret Management Solution:**\n   - If using an external solution, verify that it requires authentication to access secrets.\n   - Confirm that the solution implements auditing of access to and usage of secrets.\n   - Check that the system supports encryption of secrets and that proper encryption practices are in place.\n\n3. **Evaluate the Efficacy of Secret Management:**\n   - Ensure that the secret management solution allows for easy rotation of secrets.\n   - Assess the interoperability of the secret management solution across both Kubernetes and non-Kubernetes environments.\n\n4. **Verify Compliance with Recommendations:**\n   - Compare your implementation against best practices outlined in sources such as the Kubernetes Secret documentation and the Google Cloud Secret Manager overview.\n   - Ensure that the use of secrets aligns with the rationale provided, focusing on limited access and management ease.\n\n5. **Expected Configuration:**\n   - For organizations with complex secret management needs, confirm that an external secret management solution is in place and meets the necessary security requirements.\n   - Validate that the solution integrates smoothly with your existing processes and infrastructure.\n\n**SOURCE:** CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF\n\n**CRITICAL CONSIDERATION:**\nThis control requires analysis and judgment on how secrets are managed within an organization, which goes beyond what can be automatically checked via scripts or API calls. Therefore, a manual audit is most appropriate.",
+    "timestamp": "2025-10-28T21:56:17.709068",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "20.5",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "20.5",
+        "unique_id": "20.5__ensure-that-'enable-data-access-authentication-mode'-is-'checked'",
+        "title": "Ensure that 'Enable Data Access Authentication Mode' is 'Checked'",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "Based on the details provided in the control, there are several fields that are empty, specifically \"description,\" \"rationale,\" \"audit,\" \"remediation,\" \"impact,\" and \"reference.\" In this case, we have to infer possible API interactions based on the control's stated purpose to ensure that 'Enable Data Access Authentication Mode' is set to 'Checked.'\n\nGiven that this control pertains to checking the configuration of Azure services, it is reasonable to assume that the enabling of data access authentication could be associated with services like Azure SQL Database or Cosmos DB, where access control methods are critical for security. These configurations typically can be queried using Azure APIs.\n\n### AUDIT APPROACH: Automated\n\n### PROGRAM NAME:\nazure_sql_database_data_access_authentication_enabled\n\n### AUTOMATION DETAILS:\n1. **APIs Used**:\n   - Azure Resource Manager REST API for Azure SQL Database.\n   - Azure CLI commands to query SQL Database properties.\n\n2. **Specific Resources to Enumerate**:\n   - Azure SQL Databases within specific subscriptions and resource groups.\n\n3. **Exact Configuration Properties/Settings to Validate**:\n   - Validate that the `enableDataAccessAuthenticationMode` property is set to true or 'Checked'.\n\n4. **Pass/Fail Criteria**:\n   - **Pass**: The `enableDataAccessAuthenticationMode` property is set to true/checked.\n   - **Fail**: The property is set to false/unchecked or not defined.\n\n5. **Example API Endpoint or CLI Command**:\n   - Using Azure CLI:\n     ```bash\n     az sql db show --resource-group <resource-group-name> --server <server-name> --name <database-name> --query \"enableDataAccessAuthenticationMode\"\n     ```\n   - This command will return the value of the `enableDataAccessAuthenticationMode` setting for the specified database.\n\nThis structured approach enables automated verification of whether the 'Enable Data Access Authentication Mode' is properly configured according to security best practices."
+}

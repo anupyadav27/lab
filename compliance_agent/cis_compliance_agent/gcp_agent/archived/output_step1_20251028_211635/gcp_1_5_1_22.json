@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.22",
+    "unique_id": "gcp_1_5_1_22",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH MaxSessions is set to 4 or less",
+    "input_row": {
+        "id": "5.1.22",
+        "unique_id": "gcp_1_5_1_22",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH MaxSessions is set to 4 or less",
+        "description": "The MaxSessions parameter specifies the maximum number of open sessions permitted from a given connection.",
+        "rationale": "To protect a system from denial of service due to a large number of concurrent sessions, use the rate limiting function of MaxSessions to protect availability of sshd logins and prevent overwhelming the daemon.",
+        "audit": "Run the following command and verify that output MaxSessions is 4 or less, or matches site policy: # sshd -T | grep -i maxsessions # maxsessions 4",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: MaxSessions 4",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis compliance control, \"Ensure SSH MaxSessions is set to 4 or less,\" requires verifying an OS-level configuration on a Google Container Optimized OS (COS) instance. The audit involves checking the SSH configuration file (`/etc/ssh/sshd_config`) for the `MaxSessions` parameter. This kind of check is at the operating system level and relies on gaining SSH access to the individual instances to examine and modify the SSH configurations, which GCP APIs do not expose. Thus, the audit of this control necessitates human intervention and SSH access.\n\n**MANUAL STEPS:**\n\n1. **SSH into the Instance:**\n   - Access the GCP Console and navigate to the \"Compute Engine\" section.\n   - Locate the specific VM instance running COS and use the SSH button in the console to connect to it.\n\n2. **Verify SSH Configuration File:**\n   - Execute the command: `sshd -T | grep -i maxsessions`\n   - Inspect the output to ensure that `maxsessions` is set to 4 or less.\n   - Example Expected Output: `maxsessions 4`\n\n3. **Secure Configuration:**\n   - If the `MaxSessions` parameter is not set to 4 or lower, elevate privileges and edit the `/etc/ssh/sshd_config` file.\n   - Set the line `MaxSessions 4`. Save the file and restart the SSH service using `sudo systemctl restart sshd`.\n\n4. **Confirm Compliance:**\n   - Re-run the verification command to confirm that the changes have been applied correctly.\n   - Ensure no deviations in settings after configuration adjustments.\n\n**NOTE:** This check cannot be automated via GCP APIs, Google Cloud SDK (gcloud), or GCP CLI, as it requires checking the instance's SSH configuration file directly. Therefore, it remains a manual process to ensure compliance accurately.",
+    "timestamp": "2025-10-28T21:37:03.313775",
+    "model": "gpt-4o"
+}

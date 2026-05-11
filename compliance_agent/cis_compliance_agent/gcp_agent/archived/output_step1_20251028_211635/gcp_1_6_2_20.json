@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.20",
+    "unique_id": "gcp_1_6_2_20",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure shadow group is empty",
+    "input_row": {
+        "id": "6.2.20",
+        "unique_id": "gcp_1_6_2_20",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure shadow group is empty",
+        "description": "The shadow group allows system programs which require access the ability to read the /etc/shadow file. No users should be assigned to the shadow group.",
+        "rationale": "Any users assigned to the shadow group would be granted read access to the /etc/shadow file. If attackers can gain read access to the /etc/shadow file, they can easily run a password cracking program against the hashed passwords to break them. Other security information that is stored in the /etc/shadow file (such as expiration) could also be useful to subvert additional user accounts.",
+        "audit": "Run the following commands and verify no results are returned: # grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group # awk -F: '($4 == \"<shadow-gid>\") { print }' /etc/passwd",
+        "remediation": "Remove all users from the shadow group, and change the primary group of any users with shadow as their primary group.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control involves verifying that the shadow group on a system does not have any users assigned to it. Since this requires inspecting the contents of the `/etc/group` and `/etc/passwd` files on individual systems and these files are not accessible via GCP APIs or the gcloud SDK/CLI, the audit must be performed manually.\n\n**MANUAL STEPS:**\n\n1. **Access the Target Instance:**\n   - SSH into the Container-Optimized OS instance that needs auditing.\n\n2. **Verify the Shadow Group:**\n   - Run the following command to check the `/etc/group` file for any users in the shadow group:\n     ```bash\n     sudo grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group\n     ```\n     - **What to verify:** Confirm that no output is returned from the command.\n     - **Expected Secure Configuration:** The shadow group should be empty, so no users should appear in the command output.\n\n3. **Check for Users with Shadow as Primary Group:**\n   - Run the command:\n     ```bash\n     sudo awk -F: '($4 == \"<shadow-gid>\") { print }' /etc/passwd\n     ```\n     - **What to verify:** Ensure that no entries are printed, indicating that no user's primary group is the shadow group.\n     - **Expected Secure Configuration:** There should be no output, implying no users have shadow as their primary group.\n\n4. **Confirm Compliance:**\n   - If both commands return no results, the compliance check is passed. If any users are returned by these commands, you must remove them from the shadow group and/or change their primary group to maintain compliance.",
+    "timestamp": "2025-10-28T21:48:05.750944",
+    "model": "gpt-4o"
+}

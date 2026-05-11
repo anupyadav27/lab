@@ -1,0 +1,22 @@
+{
+    "control_id": "3.11",
+    "unique_id": "aws_5_3_11",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Ensure Amazon ECS clusters are tagged",
+    "input_row": {
+        "id": "3.11",
+        "unique_id": "aws_5_3_11",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Ensure Amazon ECS clusters are tagged",
+        "description": "Ensure all Amazon ECS clusters have resource tags to facilitate asset management, tracking, and compliance.",
+        "rationale": "Consistent tagging supports compliance and helps identify unauthorized or misconfigured resources. Impact: There is minimal administrative overhead associated with implementing and maintaining resource tags.",
+        "audit": "From Console: 1. Login to the ECS console using https://console.aws.amazon.com/ecs/. 2. In the left panel, click Clusters. 3. Click the name of a cluster. 4. Click Tags. 5. Ensure at least one tag is listed that does not begin with aws:. Tags prefixed with aws: are AWS-managed. 6. Repeat steps 1-5 for each ECS cluster. From Command Line: Run the following command to list clusters: aws ecs list-clusters Run the following command to view the tags for a cluster: aws ecs list-tags-for-resource --resource-arn <service-arn> Ensure that tags are returned that do not begin with aws:. Tags prefixed with aws: are AWS-managed. Repeat for each cluster.",
+        "remediation": "From Console: 1. Login to the ECS console using https://console.aws.amazon.com/ecs/. 2. In the left panel, click Clusters. 3. Click the name of a cluster. 4. Click Tags. 5. Click Manage tags. 6. Click Add tag. 7. Provide a Key and optional Value for the tag. 8. Click Save. 9. Repeat steps 1-8 for each ECS cluster requiring remediation. Default Value: By default, Amazon ECS clusters have only AWS-managed tags. References: 1. https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-using- tags.html 2. https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/list- clusters.html 3. https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/list- tags-for-resource.html",
+        "profile_applicability": "•  Level 1",
+        "impact": "There is minimal administrative overhead associated with implementing and maintaining resource tags.",
+        "references": "1. https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-using- tags.html 2. https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/list- clusters.html 3. https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/list- tags-for-resource.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit instructions provide specific AWS CLI commands (`aws ecs list-clusters` and `aws ecs list-tags-for-resource`) to check if all Amazon ECS clusters have resource tags. This indicates that the necessary information is accessible via AWS APIs.\n- The checks required to determine the presence of tags are standard AWS service properties that can be accessed programmatically.\n- Both boto3 SDK and AWS CLI have the necessary functionalities to list ECS clusters and their respective tags.\n- This control does not require any manual intervention that involves visual inspection or human judgment beyond verifying tags which is API accessible.\n\n**PROGRAM NAME:** aws_ecs_cluster_resource_tagging_compliance\n\n**AUTOMATION DETAILS:**\n- Use `boto3` to list all ECS clusters with `boto3.client('ecs').list_clusters()`.\n- For each cluster, retrieve the tags using `boto3.client('ecs').list_tags_for_resource(ResourceArn=cluster_arn)`.\n- Validate that each cluster has at least one tag that does not start with the prefix `aws:`, which indicates a non-AWS-managed tag.\n- Pass criteria: Every ECS cluster must have at least one custom tag. Clusters with only AWS-managed tags (tags that start with `aws:`) should be flagged as non-compliant.\n- Summarize findings for all ECS clusters within the account and regions where checks were conducted.",
+    "timestamp": "2025-10-28T15:40:57.220722",
+    "model": "gpt-4o"
+}

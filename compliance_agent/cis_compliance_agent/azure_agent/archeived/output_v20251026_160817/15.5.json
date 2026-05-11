@@ -1,0 +1,17 @@
+{
+    "id": "15.5",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "15.5",
+        "unique_id": "15.5__ensure-public-network-access-is-disabled-for-batch-accounts",
+        "title": "Ensure public network access is disabled for Batch accounts",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediation Procedure 1. Login to https://portal.azure.com 2. For each Batch Account, click on the Batch account name 3. Navigate to the Settings drop-down, then click Networking. 4. Under the Public access tab, ensure that Public Network Access is set to Disabled. 5. Click Save Repeat for each Batch account in scope. Remediate from Azure CLI az batch account update \\ --name <account-name> \\ --resource-group <rg-name> \\ --public-network-access Disabled Remediate from PowerShell Update-AzBatchAccount -Name <account-name> -ResourceGroupName <rg-name> - PublicNetworkAccess Disabled Default Value: Public network access is enabled by default for new Batch accounts. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/baselines/batch- security-baseline#ns-4 2. https://learn.microsoft.com/en-us/azure/batch/private-connectivity CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control can be fully verified via Azure Resource Manager APIs/CLI/SDK/PowerShell, as indicated by the remediation instructions which provide commands for Azure CLI and PowerShell.\n- The property being audited (public network access) is a standard Azure resource property, confirming it can be queried through APIs.\n\n**PROGRAM NAME:** azure_batch_account_public_network_access_disabled\n\n**AUTOMATION DETAILS:**\nThe automated program would check:\n- Utilizes Azure Resource Manager (ARM) APIs or Azure CLI commands to validate configurations.\n- Enumerate Batch accounts within the relevant subscriptions and resource groups.\n- The specific configuration property to validate is `publicNetworkAccess` for each Batch account.\n- **Pass/Fail criteria:** \n  - Pass: `publicNetworkAccess` is set to `Disabled`.\n  - Fail: `publicNetworkAccess` is set to `Enabled`.\n- Example CLI command to check the configuration:\n  ```\n  az batch account show --name <account-name> --resource-group <rg-name> --query \"publicNetworkAccess\"\n  ```\n- The expected return value for compliance is `Disabled`."
+}

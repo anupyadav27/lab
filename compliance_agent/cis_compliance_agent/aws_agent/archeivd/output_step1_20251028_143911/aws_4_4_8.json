@@ -1,0 +1,22 @@
+{
+    "control_id": "4.8",
+    "unique_id": "aws_4_4_8",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+    "title": "Ensure exporting cache to S3",
+    "input_row": {
+        "id": "4.8",
+        "unique_id": "aws_4_4_8",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "title": "Ensure exporting cache to S3",
+        "description": "The S3 bucket we created earlier will store the files generated at this mount point.",
+        "rationale": "The rationale behind using the S3 bucket to store files generated at the mount point is to ensure scalable, durable, and cost-effective storage for your data. By exporting files to S3, you benefit from its high availability and robust data management features, which enhances data security and accessibility. This approach also optimizes storage resource utilization and simplifies data backup and retrieval processes.",
+        "audit": "We can export the files that were created to the S3 bucket using the following steps: 1. Create a file on the FSx mount point: 2. Run the command: sudo touch efx.txt  3. Now run the command: sudo lsm hsm_archive efx.txt  4. Now check your S3 bucket that was created earlier.",
+        "remediation": "References: 1. https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/backups- exporting.html",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/backups- exporting.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control \"Ensure exporting cache to S3\" as described requires manual interaction and verification steps that involve creating a file on an FSx mount point and verifying its export to an S3 bucket. This specific control is not directly checkable through AWS APIs because it involves interaction with an FSx file system using the command \"lsm hsm_archive efx.txt\" and then manually verifying the presence of the file in an S3 bucket. \n\nThese steps are not about querying a standard AWS service property that can be verified via boto3 or AWS CLI. Instead, this control involves filesystem-level operations and manual verification that requires SSH access and potentially using specific software tools or commands (like `lsm`) which are not standard AWS CLI or boto3 operations.\n\n**MANUAL STEPS:**\n\n1. **Verify FSx Mount Point:**\n   - Access the relevant FSx file system via SSH.\n   - Ensure the FSx file system is correctly mounted on the instance you are auditing.\n\n2. **Create a Test File:**\n   - Navigate to the FSx mounted directory.\n   - Create a test file using the command: `sudo touch efx.txt`.\n\n3. **Export the File:**\n   - Run the command: `sudo lsm hsm_archive efx.txt` to trigger the export operation to the configured S3 bucket.\n\n4. **Check S3 Bucket:**\n   - Log into the AWS Management Console and navigate to the S3 service.\n   - Locate the S3 bucket that was configured for exporting.\n   - Confirm that the file `efx.txt` appears in the bucket.\n\n5. **Expected Secure Configuration:**\n   - The file should be visible in the S3 bucket, confirming that the cache is being successfully exported.\n\n6. **Confirm Compliance:**\n   - Ensure that the exported file is intact and accessible in the S3 bucket, confirming successful automation of cache export.",
+    "timestamp": "2025-10-28T15:30:08.721581",
+    "model": "gpt-4o"
+}

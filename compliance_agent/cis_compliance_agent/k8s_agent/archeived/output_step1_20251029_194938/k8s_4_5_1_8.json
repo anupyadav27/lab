@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.8",
+    "unique_id": "k8s_4_5_1_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+    "input_row": {
+        "id": "5.1.8",
+        "unique_id": "k8s_4_5_1_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+        "description": "Cluster roles and roles with the impersonate, bind or escalate permissions should not be granted unless strictly required. Each of these permissions allow a particular subject to escalate their privileges beyond those explicitly granted by cluster administrators",
+        "rationale": "The impersonate privilege allows a subject to impersonate other users gaining their rights to the cluster. The bind privilege allows the subject to add a binding to a cluster role or role which escalates their effective permissions in the cluster. The escalate privilege allows a subject to modify cluster roles to which they are bound, increasing their rights to that level. Each of these permissions has the potential to allow for privilege escalation to cluster- admin level. Impact: There are some cases where these permissions are required for cluster service operation, and care should be taken before removing these permissions from system service accounts.",
+        "audit": "Review the users who have access to cluster roles or roles which provide the impersonate, bind, or escalate privileges.",
+        "remediation": "Where possible, remove the impersonate, bind, and escalate rights from subjects. Default Value: In a default kubeadm cluster, the system:masters group and clusterrole-aggregation- controller service account have access to the escalate privilege. The system:masters group also has access to bind and impersonate. References: 1. https://raesene.github.io/blog/2020/12/12/Escalating_Away/ 2. https://raesene.github.io/blog/2021/01/16/Getting-Into-A-Bind-with-Kubernetes/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "There are some cases where these permissions are required for cluster service operation, and care should be taken before removing these permissions from system service accounts.",
+        "references": "1. https://raesene.github.io/blog/2020/12/12/Escalating_Away/ 2. https://raesene.github.io/blog/2021/01/16/Getting-Into-A-Bind-with-Kubernetes/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_escalation_permissions_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRole and Role objects in the cluster using the Kubernetes API or kubectl:\n  - `kubectl get clusterroles -o yaml`\n  - `kubectl get roles --all-namespaces -o yaml`\n- For each ClusterRole and Role, inspect the `rules` field for the following escalation verbs and resources:\n  - `verbs`: Look for `[\"escalate\"]`, `[\"bind\"]`, or `[\"impersonate\"]`\n  - `resources`: Look for `[\"roles\"]`, `[\"clusterroles\"]`, `[\"rolebindings\"]`, `[\"clusterrolebindings\"]`, or `[\"users\"]`\n- Identify all RoleBindings and ClusterRoleBindings that grant these roles to users, groups, or service accounts:\n  - `kubectl get clusterrolebindings -o yaml`\n  - `kubectl get rolebindings --all-namespaces -o yaml`\n- For each binding, extract the `subjects` and determine which users, groups, or service accounts are granted roles with escalation permissions.\n- Exclude system accounts/groups that are required for cluster operation (e.g., `system:masters`, `clusterrole-aggregation-controller`), but flag all other subjects for review.\n- **Pass Criteria:** No non-system users, groups, or service accounts are granted ClusterRoles or Roles with `escalate`, `bind`, or `impersonate` permissions.\n- **Fail Criteria:** Any non-system user, group, or service account is bound to a role or clusterrole with `escalate`, `bind`, or `impersonate` permissions.\n- Optionally, output a report listing all subjects with escalation permissions and the roles/clusterroles granting them.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:31:18.565464",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.22",
+    "unique_id": "k8s_4_1_2_22",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --service-account-key-file argument is set as appropriate",
+    "input_row": {
+        "id": "1.2.22",
+        "unique_id": "k8s_4_1_2_22",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --service-account-key-file argument is set as appropriate",
+        "description": "Explicitly set a service account public key file for service accounts on the apiserver.",
+        "rationale": "By default, if no --service-account-key-file is specified to the apiserver, it uses the private key from the TLS serving certificate to verify service account tokens. To ensure that the keys for service account tokens could be rotated as needed, a separate public/private key pair should be used for signing service account tokens. Hence, the public key should be specified to the apiserver with --service-account-key-file. Impact: The corresponding private key must be provided to the controller manager. You would need to securely maintain the key file and rotate the keys based on your organization's key rotation policy.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --service-account-key-file argument exists and is set as appropriate.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --service-account-key- file parameter to the public key file for service accounts: --service-account-key-file=<filename> Default Value: By default, --service-account-key-file argument is not set. References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/24167",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "The corresponding private key must be provided to the controller manager. You would need to securely maintain the key file and rotate the keys based on your organization's key rotation policy.",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/24167"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_service_account_key_file_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify that the --service-account-key-file argument is explicitly set.\n- For clusters using static pods (most kubeadm and many managed clusters), inspect the kube-apiserver manifest file, typically located at /etc/kubernetes/manifests/kube-apiserver.yaml.\n- Use the Kubernetes API to retrieve the Pod specification for kube-apiserver in the kube-system namespace (if self-hosted), or access the file directly if running outside Kubernetes.\n- Specifically, check the command or args section of the kube-apiserver container for the presence of the --service-account-key-file flag and ensure it points to a valid file path.\n- Pass Criteria: The --service-account-key-file argument is present and references a non-empty file path.\n- Example kubectl command for self-hosted control planes:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n  or\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o json | jq -r '.items[].spec.containers[].command[]' | grep -- --service-account-key-file\n  ```\n- For static pod setups, programmatically parse /etc/kubernetes/manifests/kube-apiserver.yaml and check for the --service-account-key-file argument in the command or args list.\n- Fail Criteria: The --service-account-key-file argument is missing or empty, or the value is not set as appropriate (e.g., left blank or points to a non-existent file).\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:17:27.848604",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,20 @@
+{
+    "id": "6.1.4",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+    "input_row": {
+        "id": "6.1.4",
+        "unique_id": "6.1.4__ensure-permissions-on-/etc/group--are-configured",
+        "title": "Ensure permissions on /etc/group- are configured",
+        "description": " Uid is 0/root and G...\"",
+        "rationale": "The /etc/group- file contains a backup list of all the valid groups defined in the system.",
+        "audit": "It is critical to ensure that the /etc/group- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command to verify /etc/group- is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/group- /etc/group- 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/group-: # chmod u-x,go-wx /etc/group- # chown root:root /etc/group- Default Value: /etc/group- 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "null": [
+            "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure portal**\n   - Navigate to the resource group that contains the virtual machines (VMs) associated with your Azure resources.\n   \n2. **Connect to the Azure VM** \n   - Use SSH to access the VM. You will need the appropriate credentials to connect. The command for this could be:\n     ```\n     ssh username@<vm-ip-address>\n     ```\n\n3. **Check the Permissions on /etc/group-** \n   - Once logged in, you will need to run the following command to check the permissions of `/etc/group-`:\n     ```\n     stat -Lc \"%n %a %u/%U %g/%G\" /etc/group-\n     ```\n\n4. **Validate the Output** \n   - You should verify the output:\n     - Ensure that the file permissions are `644` or more restrictive.\n     - Confirm that the UID (user ID) is `0/root` and the GID (group ID) is `0/root`.\n\n5. **Expected Secure Configuration** \n   - The expected output should be:\n     ```\n     /etc/group- 644 0/root 0/root\n     ```\n\n6. **Confirm Compliance** \n   - If the permissions are not as expected, apply the necessary remediation by executing:\n     ```\n     chmod u-x,go-wx /etc/group-\n     chown root:root /etc/group-\n     ```\n\nBy following these steps, you will ensure the permissions on `/etc/group-` are configured correctly in accordance with NIST SP 800-53 Rev. 5: AC-3, MP-2."
+}

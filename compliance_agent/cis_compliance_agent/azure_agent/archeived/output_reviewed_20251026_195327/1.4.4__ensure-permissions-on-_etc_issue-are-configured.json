@@ -1,0 +1,31 @@
+{
+    "unique_id": "1.4.4__ensure-permissions-on-_etc_issue-are-configured",
+    "control_id": "1.4.4",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal:**\n   - Log into the Azure portal at https://portal.azure.com.\n\n2. **Navigate to the Kubernetes Cluster:**\n   - Find the Kubernetes service (AKS) within your Azure resources.\n   - Select the specific AKS cluster where the Linux nodes are running.\n\n3. **SSH into the Kubernetes Node:**\n   - Use SSH to connect to one of the nodes in the AKS cluster. You may need the SSH key that was created during the setup.\n   - Example command: `ssh azureuser@<node-ip-address>`.\n\n4. **Check Permissions on /etc/issue:**\n   - Once logged into the node, run the following command in the terminal: `stat /etc/issue`.\n   - Verify the output to ensure the following:\n     - Uid and Gid are both 0 (root).\n     - Access shows as 644 (-rw-r--r--).\n\n5. **Expected Secure Configuration:**\n   - The expected UID and GID should both be `0/root`, and the access permissions should be `644`.\n\n6. **Confirm Compliance:**\n   - If the permissions are properly configured, log the successful compliance for this control.\n   - If the permissions are not configured as expected, remedial action must be taken as per the remediation steps provided in the control documentation.\n\nThis step-by-step guide ensures that you validate the proper configuration of the `/etc/issue` file securely and maintains compliance with best practices."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** DISAGREE\n\n- The classification of the audit approach as \"Manual\" is not entirely correct. While the manual steps provided are valid, this check can be automated using Azure CLI or PowerShell scripts. Azure provides capabilities to interact with AKS nodes programmatically, which can be leveraged to automate the verification of file permissions.\n- Specifically, Azure CLI can be used to execute commands on AKS nodes using `az aks nodepool list` to get node details and `az vm run-command invoke` to execute shell commands remotely on the nodes. This can automate the process of checking file permissions on `/etc/issue`.\n\n**TECHNICAL ACCURACY:** 6\n\n- The manual steps are technically correct but lack efficiency and scalability, especially for environments with multiple nodes or clusters.\n- The steps do not consider using Azure's native tools for automation, which could streamline the process and reduce human error.\n- The program name convention is not applicable here as the assessment does not involve a specific script or program.\n\n**IMPROVEMENTS:**\n\n- **Automation:** Implement a script using Azure CLI or PowerShell to automate the SSH connection and permission check. This can be scheduled to run periodically, ensuring continuous compliance.\n- **Scalability:** Consider the scalability of the solution. Manual checks are not feasible for large-scale environments.\n- **Security Considerations:** Ensure that SSH keys are managed securely and that the principle of least privilege is applied when accessing nodes.\n- **Documentation:** Include a section on how to set up the automation, including prerequisites like Azure CLI installation and necessary permissions.\n\n**CONFIDENCE:** MEDIUM\n\n- While the manual steps are accurate, the lack of automation consideration reduces confidence in the assessment's efficiency and scalability.\n\n**FINAL RECOMMENDATION:**\n\n- **Re-classify:** The audit should be re-classified as \"Automated\" with a focus on leveraging Azure CLI or PowerShell for checking file permissions on AKS nodes. This will enhance efficiency, reduce human error, and ensure scalability.\n- **Modify:** Update the assessment to include automated steps using Azure CLI or PowerShell, and provide guidance on setting up and executing these scripts.",
+        "reviewed_at": "2025-10-26T14:26:19.730787"
+    },
+    "input_row": {
+        "id": "1.4.4",
+        "unique_id": "1.4.4__ensure-permissions-on-/etc/issue-are-configured",
+        "title": "Ensure permissions on /etc/issue are configured",
+        "description": "The contents of the /etc/issue file are displayed to users prior to login for local terminals.",
+        "rationale": "If the /etc/issue file does not have the correct ownership it could be modified by unauthorized users with incorrect or misleading information.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/issue Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set permissions on /etc/issue : # chown root:root /etc/issue # chmod u-x,go-wx /etc/issue References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "1.4.4.json",
+        "review_version": "1.0"
+    }
+}

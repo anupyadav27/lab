@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.15",
+    "unique_id": "k8s_6_1_1_15",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the scheduler.conf file permissions are set to 644 or more restrictive",
+    "input_row": {
+        "id": "1.1.15",
+        "unique_id": "k8s_6_1_1_15",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the scheduler.conf file permissions are set to 644 or more restrictive",
+        "description": "Ensure that the scheduler.conf file has permissions of 644 or more restrictive.",
+        "rationale": "The scheduler.conf file is the kubeconfig file for the Scheduler. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the following command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/scheduler.conf Verify that the permissions are 644 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 644 /etc/kubernetes/scheduler.conf Default Value: By default, scheduler.conf has permissions of 640. References: 1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file permissions of /etc/kubernetes/scheduler.conf on the control plane node.\n- The permissions of files on the host OS (such as scheduler.conf) are not exposed via the Kubernetes API, kubectl, or any Kubernetes-native resource or controller configuration.\n- The audit procedure explicitly requires running a Linux stat command on the node filesystem, which is not accessible via Kubernetes APIs or kubectl.\n- Therefore, this check requires direct OS-level access (SSH or equivalent) to the control plane node.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where the kube-scheduler runs.\n2. Run the following command to check the permissions of the scheduler.conf file:\n   ```\n   stat -c %a /etc/kubernetes/scheduler.conf\n   ```\n3. Verify that the output is 644 or more restrictive (acceptable values: 600, 640, 644, etc.; values above 644 are non-compliant).\n4. If the permissions are more permissive than 644 (e.g., 666, 777), remediate by running:\n   ```\n   chmod 644 /etc/kubernetes/scheduler.conf\n   ```\n5. Confirm compliance by re-running the stat command and ensuring the permissions are 644 or more restrictive.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T21:59:31.362373",
+    "model": "gpt-4.1"
+}

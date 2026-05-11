@@ -1,0 +1,17 @@
+{
+    "id": "5.1.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.1.2",
+        "unique_id": "5.1.2__ensure-permissions-on-/etc/crontab-are-configured",
+        "title": "Ensure permissions on /etc/crontab are configured",
+        "description": "The /etc/crontab file is used by cron to control its own jobs. The commands in this item make sure that root is the user and group owner of the file and that only the owner can access the file.",
+        "rationale": "This file contains information on what system jobs are run by cron. Write access to these files could provide unprivileged users with the ability to elevate their privileges. Read access to these files could provide users with the ability to gain insight on system jobs that run on the system and could provide them a way to gain unauthorized privileged access.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access does not grant permissions to group or other : # stat /etc/crontab Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set ownership and permissions on /etc/crontab : # chown root:root /etc/crontab # chmod og-rwx /etc/crontab References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access SSH on the relevant node**:\n   - Open a terminal/SSH client and connect to the Azure VM hosting the Kubernetes nodes.\n   - Command: `ssh <username>@<node_ip_address>`\n\n2. **Verify permissions on the /etc/crontab file**:\n   - Execute the command: `stat /etc/crontab`\n\n3. **What to verify/validate**:\n   - Ensure the output indicates that the 'Uid' and 'Gid' are both '0/root'.\n   - Ensure the 'Access' permissions show `-rw-------`.\n\n4. **Expected secure configuration**:\n   - Ownership should be set to `root:root`.\n   - Access should be `0600` (`-rw-------`), meaning only the root user can read or write to the file.\n\n5. **How to confirm compliance**:\n   - If the output matches the expected values (Uid: 0, Gid: 0, Access: 0600), the compliance is confirmed; if not, remediation steps need to be executed."
+}

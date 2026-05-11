@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.4",
+    "unique_id": "gcp_1_1_1_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure nosuid option set on /tmp partition",
+    "input_row": {
+        "id": "1.1.4",
+        "unique_id": "gcp_1_1_1_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure nosuid option set on /tmp partition",
+        "description": "The nosuid mount option specifies that the filesystem cannot contain setuid files.",
+        "rationale": "Since the /tmp filesystem is only intended for temporary file storage, set this option to ensure that users cannot create setuid files in /tmp .",
+        "audit": "Verify that the nosuid option is set if a /tmp partition exists Run the following command and verify that nothing is returned: # mount | grep -E '\\s/tmp\\s' | grep -v nosuid",
+        "remediation": "Run the following command to remount /tmp : # mount -o remount,nosuid /tmp /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:** \n\nThe control involves verifying the `nosuid` mount option on the `/tmp` partition, a file system-level configuration. This type of check requires direct access to the instance to inspect the current mount options. Since the audit description specifies using the `mount` command to check configurations, this implies that you need SSH access to the instance to perform these verifications. There are no GCP APIs or `gcloud` commands that can directly verify mount options on a specific instance's filesystem. Therefore, this control must be checked manually.\n\n**MANUAL STEPS:**\n\n1. Access the GCP VM instance running Container Optimized OS where you need to verify the `/tmp` partition configuration. You will need SSH access to the instance.\n   - Use the GCP Console or `gcloud compute ssh` command to connect to the instance.\n\n2. Verify the `/tmp` partition's mount options.\n   - Run the command: `mount | grep -E '\\s/tmp\\s' | grep -v nosuid`\n   - This command checks the currently mounted filesystems for the `/tmp` partition and looks for the absence of the `nosuid` option.\n\n3. Confirm compliance:\n   - If no output is returned from the command above, it indicates that the `nosuid` option is set correctly on the `/tmp` partition, and the instance is in compliance.\n   - If any output is returned, it indicates that the `nosuid` option is not set, and remediation is required.\n\n4. Expected secure configuration:\n   - The `/tmp` partition should be mounted with the `nosuid` option. This prevents the execution of set-user-identifier or set-group-identifier bits within this partition.\n\n5. If remediation is required, you can remount `/tmp` with the appropriate options using: `mount -o remount,nosuid /tmp`. Note that since /etc is stateless, the change will not persist after a reboot and needs to be performed again as required.",
+    "timestamp": "2025-10-28T21:17:38.589824",
+    "model": "gpt-4o"
+}

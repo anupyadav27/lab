@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.12",
+    "unique_id": "gcp_1_1_1_12",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure noexec option set on /dev/shm partition",
+    "input_row": {
+        "id": "1.1.12",
+        "unique_id": "gcp_1_1_1_12",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure noexec option set on /dev/shm partition",
+        "description": "The noexec mount option specifies that the filesystem cannot contain executable binaries.",
+        "rationale": "Setting this option on a file system prevents users from executing programs from shared memory. This deters users from introducing potentially malicious software on the system.",
+        "audit": "Verify that the noexec option is set if a /dev/shm partition exists. Run the following command and verify that nothing is returned: # mount | grep -E '\\s/dev/shm\\s' | grep -v noexec",
+        "remediation": "Run the following command to remount /dev/shm: # mount -o remount,noexec /dev/shm /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control requires verification of the mount options on a specific file system, specifically to check if the \"noexec\" option is set on the `/dev/shm` partition. The audit process involves executing shell commands directly on the operating system to verify these configurations. This type of check is not exposed via GCP APIs or the Google Cloud SDK, as it requires inspecting the operating system's current state on a specific instance.\n\n**MANUAL STEPS:**\n\n1. **SSH into the Instance:**\n   - Use the Google Cloud Console or `gcloud compute ssh` command to access the virtual machine running Container-Optimized OS.\n\n2. **Verify Mount Options for /dev/shm:**\n   - Run the following command to check the mount options for the `/dev/shm` partition:\n     ```bash\n     mount | grep -E '\\s/dev/shm\\s' | grep -v noexec\n     ```\n   - Ensure that the output of the command is empty, indicating that there are no partitions with `/dev/shm` mounted without the `noexec` option.\n\n3. **Expected Secure Configuration:**\n   - The `/dev/shm` partition should have the `noexec` option set. If the command returns any output, it indicates that the `noexec` option is missing, and remediation is necessary.\n\n4. **Remediation:**\n   - If `/dev/shm` lacks the `noexec` option, apply the following command to remount `/dev/shm` with `noexec`:\n     ```bash\n     sudo mount -o remount,noexec /dev/shm\n     ```\n   - Note: Since Container-Optimized OS is stateless, these changes will not persist after a reboot and will need to be reapplied.\n\nBy following these manual steps, the compliance of this control can be accurately assessed. The operating system does not provide ways to automate this specific check via GCP APIs, hence manual verification is required.",
+    "timestamp": "2025-10-28T21:19:57.010865",
+    "model": "gpt-4o"
+}

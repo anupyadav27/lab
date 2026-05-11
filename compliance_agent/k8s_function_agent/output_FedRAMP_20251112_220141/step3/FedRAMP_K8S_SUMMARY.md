@@ -1,0 +1,270 @@
+# K8s Function Generation Summary - FedRAMP
+Generated: 2025-11-13 00:06:55
+
+## Statistics
+- Total controls processed: 410
+- Approved: 0
+- Approved with changes: 121
+- Rejected: 1
+- Not applicable: 288
+- Errors: 0
+- Total K8s functions generated: 424
+- Unique K8s functions: 214
+
+## K8s Functions by Category
+
+### ADMISSION
+- k8s_admission_automatic_patch_management
+- k8s_admission_controller_audit_logging_enabled
+- k8s_admission_controller_auto_patch_updates_enabled
+- k8s_admission_controller_automatic_patch_management
+- k8s_admission_controller_change_audit_enabled
+- k8s_admission_controller_change_control_enabled
+- k8s_admission_controller_change_validation_enabled
+- k8s_admission_controller_changes_monitored
+- k8s_admission_controller_cryptography_policy_enforced
+- k8s_admission_controller_exec_deny
+- k8s_admission_controller_image_scan_on_admission
+- k8s_admission_controller_image_vulnerability_scan_enforced
+- k8s_admission_controller_insider_threat_policies_enabled
+- k8s_admission_controller_logging_enabled
+- k8s_admission_controller_pod_security_enabled
+- k8s_admission_controller_policy_changes_monitored
+- k8s_admission_controller_privileged_access_deny
+- k8s_admission_controller_security_alerts_enabled
+- k8s_admission_controller_security_incident_detection
+- k8s_admission_controller_security_monitoring_enabled
+- k8s_admission_controller_security_policies_enabled
+- k8s_admission_controller_security_policy_enabled
+- k8s_admission_controller_software_whitelist_enabled
+- k8s_admission_controller_unauthorized_change_prevention
+- k8s_admission_controller_vulnerability_policy_enforced
+- k8s_admission_controller_vulnerability_scan_on_admission
+- k8s_admission_dynamic_reconfiguration_enabled
+- k8s_admission_security_event_alerting_configured
+- k8s_admission_security_event_monitoring_enabled
+- k8s_admission_security_incident_alerting_enabled
+- k8s_admission_traffic_monitoring_enforced
+- k8s_admission_unauthorized_component_detection
+- k8s_admission_unauthorized_service_detection
+- k8s_admission_webhook_alerting_enabled
+- k8s_admission_webhook_configured
+
+### APISERVER
+- k8s_apiserver_audit_log_file_validation_enabled
+- k8s_apiserver_audit_logging_enabled
+- k8s_apiserver_authentication_enabled
+- k8s_apiserver_authorization_mode_rbac
+- k8s_apiserver_auto_upgrade_configured
+- k8s_apiserver_automatic_upgrade_enabled
+- k8s_apiserver_client_cert_authentication_enabled
+- k8s_apiserver_ddos_protection_configured
+- k8s_apiserver_encryption_at_rest_enabled
+- k8s_apiserver_high_availability_configured
+- k8s_apiserver_https_only
+- k8s_apiserver_monitoring_enabled
+- k8s_apiserver_tls_authentication_enabled
+- k8s_apiserver_tls_enabled
+- k8s_apiserver_webhook_change_notification_enabled
+
+### AUDIT
+- k8s_audit_anomaly_detection_configured
+- k8s_audit_change_logging_enabled
+- k8s_audit_configuration_change_logging_enabled
+- k8s_audit_detect_anomalous_access_patterns
+- k8s_audit_incident_detection_enabled
+- k8s_audit_incident_response_logging_enabled
+- k8s_audit_incident_response_plan_configured
+- k8s_audit_ingress_controller_changes_logged
+- k8s_audit_insider_threat_detection_enabled
+- k8s_audit_log_access_control_enforced
+- k8s_audit_log_access_restricted_to_privileged_users
+- k8s_audit_log_alerting_configured
+- k8s_audit_log_alerts_configured
+- k8s_audit_log_analysis_mechanism
+- k8s_audit_log_correlation_enabled
+- k8s_audit_log_encryption_enabled
+- k8s_audit_log_file_integrity_validation_enabled
+- k8s_audit_log_flaw_remediation_tracking
+- k8s_audit_log_integrity_protected
+- k8s_audit_log_integrity_validation_enabled
+- k8s_audit_log_integrity_verification_enabled
+- k8s_audit_log_protection_mechanism_configured
+- k8s_audit_log_retention_configured
+- k8s_audit_log_review_scheduled
+- k8s_audit_log_storage_separation
+- k8s_audit_log_time_correlation_enabled
+- k8s_audit_log_timestamps_configured
+- k8s_audit_log_tls_encryption_enabled
+- k8s_audit_logging_enabled
+- k8s_audit_logs_stored_externally
+- k8s_audit_network_traffic_anomalies_logged
+- k8s_audit_networkpolicy_changes_logged
+- k8s_audit_node_lifecycle_events_logged
+- k8s_audit_pod_creation_deletion_logged
+- k8s_audit_policy_captures_all_requests
+- k8s_audit_policy_captures_metadata
+- k8s_audit_policy_captures_privileged_user_actions
+- k8s_audit_policy_metadata_capture
+- k8s_audit_policy_metadata_capture_enabled
+- k8s_audit_policy_metadata_captured
+- k8s_audit_policy_real_time_analysis_enabled
+- k8s_audit_privileged_user_actions_logged
+- k8s_audit_traffic_analysis_enabled
+- k8s_audit_unauthorized_change_detection_enabled
+- k8s_audit_unauthorized_component_logging
+- k8s_audit_unauthorized_service_access
+- k8s_audit_user_activity_monitoring
+- k8s_audit_vulnerability_scan_results_logged
+
+### CLUSTER
+- k8s_cluster_automatic_backup_configured
+- k8s_cluster_autoscaler_enabled
+- k8s_cluster_multi_region_deployment_configured
+
+### CONFIGMAP
+- k8s_configmap_previous_versions_retained
+
+### DEPLOYMENT
+- k8s_deployment_replicas_configured
+
+### ETCD
+- k8s_etcd_backup_and_restore_tested
+- k8s_etcd_backup_configured
+- k8s_etcd_backup_integrity_tested
+- k8s_etcd_backup_reliability_tested
+- k8s_etcd_backup_restoration_tested
+- k8s_etcd_backup_schedule_configured
+- k8s_etcd_backup_separation_configured
+- k8s_etcd_backup_to_remote_storage
+- k8s_etcd_disaster_recovery_plan_defined
+- k8s_etcd_disaster_recovery_plan_tested
+- k8s_etcd_encryption_at_rest_enabled
+- k8s_etcd_encryption_enabled
+- k8s_etcd_tls_enabled
+
+### IMAGE
+- k8s_image_pull_policy_always
+- k8s_image_scan_on_admission
+- k8s_image_vulnerability_scanning_enabled
+
+### INGRESS
+- k8s_ingress_controller_authentication_enabled
+- k8s_ingress_tls_enabled
+
+### MONITORING
+- k8s_monitoring_alerts_configured
+
+### NAMESPACE
+- k8s_namespace_resource_quota_configured
+
+### NETWORKPOLICY
+- k8s_networkpolicy_anomaly_detection_enabled
+- k8s_networkpolicy_change_audit_enabled
+- k8s_networkpolicy_changes_monitored
+- k8s_networkpolicy_critical_asset_protection
+- k8s_networkpolicy_default_deny_egress
+- k8s_networkpolicy_default_deny_ingress
+- k8s_networkpolicy_default_deny_unauthorized_services
+- k8s_networkpolicy_default_deny_with_exceptions
+- k8s_networkpolicy_dynamic_update_on_threat_detection
+- k8s_networkpolicy_intrusion_detection_enabled
+- k8s_networkpolicy_monitoring_enabled
+- k8s_networkpolicy_no_public_ingress
+- k8s_networkpolicy_periodic_review
+- k8s_networkpolicy_rate_limiting_enabled
+- k8s_networkpolicy_restrict_egress_to_trusted
+- k8s_networkpolicy_tls_encryption_enabled
+- k8s_networkpolicy_tls_inspection_enabled
+- k8s_networkpolicy_traffic_monitoring_enabled
+
+### NODE
+- k8s_node_automatic_upgrade_enabled
+
+### PERSISTENTVOLUME
+- k8s_persistentvolume_backup_enabled
+- k8s_persistentvolume_snapshot_enabled
+
+### POD
+- k8s_pod_backup_policy_defined
+- k8s_pod_backup_restoration_tested
+- k8s_pod_backup_strategy_defined
+- k8s_pod_critical_asset_labeling
+- k8s_pod_disruption_budget_configured
+- k8s_pod_horizontal_autoscaler_enabled
+- k8s_pod_security_context_host_network_disabled
+- k8s_pod_security_least_functionality_enforced
+- k8s_pod_security_monitoring_enabled
+- k8s_pod_security_standard_exec_disabled
+- k8s_pod_security_standard_restricted
+
+### PODDISRUPTIONBUDGET
+- k8s_poddisruptionbudget_configured
+
+### PV
+- k8s_pv_backup_enabled
+- k8s_pv_snapshot_enabled
+
+### RBAC
+- k8s_rbac_audit_changes_by_authorized_users
+- k8s_rbac_audit_log_viewer_role_configured
+- k8s_rbac_audit_role_binding_changes
+- k8s_rbac_audit_service_account_usage
+- k8s_rbac_change_control_enforced
+- k8s_rbac_configuration_change_audit_enabled
+- k8s_rbac_critical_asset_access_control
+- k8s_rbac_disable_high_risk_user_access
+- k8s_rbac_dynamic_access_revocation_on_incident
+- k8s_rbac_emergency_access_audit
+- k8s_rbac_individual_user_roles_configured
+- k8s_rbac_least_privilege_enforcement
+- k8s_rbac_minimal_privileges_assigned
+- k8s_rbac_monitor_service_account_usage
+- k8s_rbac_no_anonymous_access
+- k8s_rbac_no_cluster_admin_binding
+- k8s_rbac_no_shared_service_accounts
+- k8s_rbac_oidc_authentication_configured
+- k8s_rbac_privileged_user_monitoring_enabled
+- k8s_rbac_prohibit_unauthorized_config_changes
+- k8s_rbac_role_binding_least_privilege
+- k8s_rbac_role_binding_scope_limited
+- k8s_rbac_rolebinding_inactive_disabled
+- k8s_rbac_roles_periodic_review
+- k8s_rbac_separation_of_duties_enforced
+- k8s_rbac_service_account_access_revocation
+- k8s_rbac_service_account_activity_logging_enabled
+- k8s_rbac_service_account_expiry_enforced
+- k8s_rbac_service_account_inactive_deletion_enabled
+- k8s_rbac_service_account_inactive_disabled
+- k8s_rbac_service_account_token_automount_disabled
+- k8s_rbac_service_account_token_expiration_configured
+- k8s_rbac_service_account_token_rotation_enabled
+- k8s_rbac_service_account_usage_conditions_defined
+- k8s_rbac_service_account_usage_review
+- k8s_rbac_temporary_access_restriction
+- k8s_rbac_unauthorized_component_access_prevention
+- k8s_rbac_unused_service_account_cleanup
+- k8s_rbac_user_access_review
+- k8s_rbac_user_account_inactive_disabled
+
+### SECRET
+- k8s_secret_backup_configured
+- k8s_secret_backup_to_remote_storage
+- k8s_secret_encryption_at_rest_enabled
+- k8s_secret_external_manager_configured
+- k8s_secret_key_rotation_policy_defined
+- k8s_secret_no_unencrypted_static_authenticators
+
+### SERVICE
+- k8s_service_mesh_mtls_enabled
+- k8s_service_mesh_security_alerts_enabled
+- k8s_service_mesh_security_incident_monitoring
+- k8s_service_mesh_tls_enforced
+- k8s_service_mesh_tls_termination_inspection_enabled
+- k8s_service_mesh_traffic_control_enabled
+- k8s_service_mesh_traffic_monitoring_enabled
+- k8s_service_type_loadbalancer_restricted
+- k8s_service_type_not_nodeport
+
+### STATEFULSET
+- k8s_statefulset_replicas_configured

@@ -1,0 +1,31 @@
+{
+    "unique_id": "6.1.3__ensure-permissions-on-_etc_group-are-configured",
+    "control_id": "6.1.3",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal:**\n   - Navigate to the Azure Portal and log in with your credentials.\n\n2. **Navigate to the Relevant Virtual Machine:**\n   - Go to the \"Virtual machines\" section in the left-hand menu.\n   - Identify and select the virtual machine you want to check (this VM must have access to its operating system).\n\n3. **Access the VM via SSH:**\n   - Click on \"Connect\" and choose \"SSH\" to access the virtual machine.\n   - Use the provided command or Jupyter Notebooks to establish an SSH connection.\n\n4. **Verify Permissions on /etc/group:**\n   - Run the command: `stat -Lc \"%n %a %u/%U %g/%G\" /etc/group`\n   - This command will display the current permissions, owner (Uid), and group (Gid) of the `/etc/group` file.\n\n5. **Check Permissions and Ownership:**\n   - Ensure the output shows permissions set to \"644\", the owner as \"0/root\", and the group as \"0/root\".\n\n6. **Expected Secure Configuration:**\n   - Permissions: `644`\n   - Owner: `0/root`\n   - Group: `0/root`\n\n7. **Confirm Compliance:**\n   - If the permissions are set correctly, document this as compliant.\n   - If there are discrepancies, apply the remediation steps as outlined in the control. \n\nNote: Make sure to log the findings and any changes made during this manual verification for compliance tracking."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The classification as \"Manual\" is partially correct. While the manual steps are valid, this task can also be automated using Azure CLI or PowerShell scripts. Azure provides capabilities to execute scripts on VMs using the Azure CLI or Azure PowerShell, which can automate the verification of file permissions.\n- **Azure API/CLI Capabilities:** Azure allows the execution of custom scripts on virtual machines using the Azure CLI (`az vm run-command invoke`) or Azure PowerShell (`Invoke-AzVMRunCommand`). These tools can be used to automate the checking of file permissions on a VM, making the process more efficient and less error-prone.\n\n**TECHNICAL ACCURACY:** 7\n\n- **Automation Details:** The assessment lacks details on potential automation. It should mention the possibility of using Azure CLI or PowerShell for script execution.\n- **Manual Steps Accuracy:** The manual steps are accurate and provide a clear guide for checking the permissions on `/etc/group`. However, they do not mention logging out of the SSH session, which is a best practice.\n- **Program Naming Convention:** The assessment does not provide a program name following the convention. If automation were considered, a name like `azure_vm_check_permissions` would be appropriate.\n\n**IMPROVEMENTS:**\n\n- **Automation Suggestion:** Include a section on automating the verification process using Azure CLI or PowerShell. For example, using `az vm run-command invoke` to execute a script that checks permissions on `/etc/group`.\n- **Logging and Documentation:** Emphasize the importance of logging all findings and actions taken during the audit process for compliance tracking.\n- **Security Considerations:** Mention the need to ensure secure SSH practices, such as using key-based authentication and logging out after the session.\n\n**CONFIDENCE:** MEDIUM\n\n- While the manual steps are accurate, the lack of consideration for automation options reduces confidence in the assessment's completeness.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modify:** Include automation options using Azure CLI or PowerShell to check file permissions on VMs. This will enhance the efficiency and reliability of the compliance audit process.\n- **Re-classify:** Consider re-classifying the approach to \"Automated\" with a manual verification option, as the task can be efficiently automated using Azure's capabilities.",
+        "reviewed_at": "2025-10-26T16:25:00.387982"
+    },
+    "input_row": {
+        "id": "6.1.3",
+        "unique_id": "6.1.3__ensure-permissions-on-/etc/group-are-configured",
+        "title": "Ensure permissions on /etc/group are configured",
+        "description": " Uid is 0/root and Gi...\"",
+        "rationale": "The /etc/group file contains a list of all the valid groups defined in the system. The command below allows read/write access for root and read access for everyone else.",
+        "audit": "The /etc/group file needs to be protected from unauthorized changes by non-privileged users, but needs to be readable as this information is used with many non-privileged programs.",
+        "remediation": "Run the following command to verify /etc/group is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/group /etc/group 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/group: # chmod u-x,go-wx /etc/group # chown root:root /etc/group Default Value: /etc/group 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2"
+    },
+    "metadata": {
+        "original_file": "6.1.3__ensure-permissions-on-_etc_group-are-configured.json",
+        "review_version": "1.0"
+    }
+}

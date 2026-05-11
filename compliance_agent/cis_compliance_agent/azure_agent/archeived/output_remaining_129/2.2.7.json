@@ -1,0 +1,17 @@
+{
+    "id": "2.2.7",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.7",
+        "unique_id": "aks_2.2.7__ensure-ftp-client-is-not-installed",
+        "title": "Ensure FTP client is not installed",
+        "description": "FTP (File Transfer Protocol) is a traditional and widely used standard tool for transferring files between a server and clients over a network, especially where no authentication is necessary (permits anonymous users to connect to a server).",
+        "rationale": "FTP does not protect the confidentiality of data or authentication credentials. It is recommended SFTP be used if file transfer is required. Unless there is a need to run the system as a FTP server (for example, to allow anonymous downloads), it is recommended that the package be removed to reduce the potential attack surface.",
+        "audit": "Run the following command to verify ftp is not installed: # rpm -q ftp package ftp is not installed",
+        "remediation": "Run the following command to remove ftp: # dnf remove ftp References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal**: Log in to the Azure Portal.\n2. **Navigate to the Kubernetes Service**: Go to the \"Kubernetes services\" section in the left navigation pane and select the relevant AKS cluster.\n3. **Connect to the AKS Cluster**: Use Azure CLI or Azure Cloud Shell to connect to your AKS cluster via SSH. Execute the command:\n   ```bash\n   az aks get-credentials --resource-group <your-resource-group> --name <your-aks-cluster-name>\n   ```\n4. **Verify FTP Installation**: Once connected to a node in the AKS cluster, check if the FTP client is installed by executing:\n   ```bash\n   rpm -q ftp\n   ```\n5. **Expected Secure Configuration**: If the result of the command shows that the package `ftp` is not installed, the system is compliant with this control.\n6. **Confirm Compliance**: Document the outcome of the command. If FTP is installed, further action is required to remove it to ensure compliance. If it's not installed, you can confirm that the control is satisfied."
+}

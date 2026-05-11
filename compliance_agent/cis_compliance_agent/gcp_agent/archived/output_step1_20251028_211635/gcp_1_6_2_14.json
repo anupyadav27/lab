@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.14",
+    "unique_id": "gcp_1_6_2_14",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure no users have .rhosts files",
+    "input_row": {
+        "id": "6.2.14",
+        "unique_id": "gcp_1_6_2_14",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure no users have .rhosts files",
+        "description": "While no .rhosts files are shipped by default, users can easily create them.",
+        "rationale": "This action is only meaningful if .rhosts support is permitted in the file /etc/pam.conf . Even though the .rhosts files are ineffective if support is disabled in /etc/pam.conf , they may have been brought over from other systems and could contain information useful to an attacker for those other systems.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'\"$(which nologin)\"'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do if [ ! -d \"$dir\" ]; then echo \"The home directory ($dir) of user $user does not exist.\" else for file in $dir/.rhosts; do if [ ! -h \"$file\" -a -f \"$file\" ]; then echo \".rhosts file in $dir\" fi done fi done",
+        "remediation": "Making global modifications to users' files without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user .rhosts files and determine the action to be taken in accordance with site policy. Additional Information: On some distributions the /sbin/nologin should be replaced with /usr/sbin/nologin.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control in question, \"Ensure no users have .rhosts files,\" focuses on verifying the absence of .rhosts files across user directories on an operating system basis, specifically for Google Container-Optimized OS. The checking of .rhosts files is OS-level and requires direct access to file systems to search for these files. This type of check typically involves running a script or command locally on the instance, which corresponds to a manual review process requiring SSH access to the instances.\n\nSince neither the Google Cloud SDK (gcloud) nor GCP APIs provide a way to remotely enumerate file-level configurations or content like the presence of .rhosts files directly from the GCP interface, the audit cannot be automated using standard GCP tools. The process outlined in the audit field involves executing a script that searches for .rhosts files in user directories, a task that fundamentally requires manual execution on each VM instance.\n\n**MANUAL STEPS:**\n1. **SSH Access to Instance:** Log into each Container-Optimized OS instance via SSH.\n2. **Script Execution:** Execute the provided shell script to check for the presence of .rhosts files in user home directories.\n   ```bash\n   #!/bin/bash\n   grep -E -v '^(root|halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'$(which nologin)'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do\n     if [ ! -d \"$dir\" ]; then\n       echo \"The home directory ($dir) of user $user does not exist.\"\n     else\n       for file in $dir/.rhosts; do\n         if [ ! -h \"$file\" -a -f \"$file\" ]; then\n           echo \".rhosts file in $dir\"\n         fi\n       done\n     fi\n   done\n   ```\n3. **Verification and Validation:**\n   - Verify that there is no output from the script indicating the presence of .rhosts files.\n   - In case any .rhosts file is found, document its location and the respective user.\n4. **Confirm Compliance:** Ensure no .rhosts files were reported by the script across all instances.\n\nSince this control demands file inspection within instances and potentially requires coordination with site policy as indicated in the remediation steps (i.e., adjusting user home directories responsibly), it necessitates manual verification.",
+    "timestamp": "2025-10-28T21:46:39.401827",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.3.4",
+    "unique_id": "k8s_4_1_3_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --service-account-private-key-file argument is set as appropriate",
+    "input_row": {
+        "id": "1.3.4",
+        "unique_id": "k8s_4_1_3_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --service-account-private-key-file argument is set as appropriate",
+        "description": "Explicitly set a service account private key file for service accounts on the controller manager.",
+        "rationale": "To ensure that keys for service account tokens can be rotated as needed, a separate public/private key pair should be used for signing service account tokens. The private key should be specified to the controller manager with --service-account-private- key-file as appropriate. Impact: You would need to securely maintain the key file and rotate the keys based on your organization's key rotation policy.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-controller-manager Verify that the --service-account-private-key-file argument is set as appropriate.",
+        "remediation": "Edit the Controller Manager pod specification file /etc/kubernetes/manifests/kube- controller-manager.yaml on the Control Plane node and set the --service- account-private-key-file parameter to the private key file for service accounts. --service-account-private-key-file=<filename> Default Value: By default, --service-account-private-key-file it not set. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "You would need to securely maintain the key file and rotate the keys based on your organization's key rotation policy.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_controller_manager_service_account_private_key_file_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-controller-manager Pod specification, typically located in the static Pod manifest at /etc/kubernetes/manifests/kube-controller-manager.yaml, or via the Kubernetes API if the controller manager is deployed as a Pod.\n- Use kubectl to retrieve the kube-controller-manager Pod spec:\n  - Command: kubectl -n kube-system get pod -l component=kube-controller-manager -o yaml\n  - Alternatively, directly inspect the static Pod manifest file if running outside the cluster.\n- Parse the command or args field of the kube-controller-manager container to check for the presence of the --service-account-private-key-file flag.\n- Validate that the --service-account-private-key-file argument is set and points to a valid file path (not empty or missing).\n- Pass Criteria: The kube-controller-manager must include the --service-account-private-key-file flag with a non-empty value.\n- Fail Criteria: The flag is missing or set to an empty value.\n- Example check (pseudo-code):\n  - For each kube-controller-manager Pod/container:\n    - If \"--service-account-private-key-file\" exists in args/command and value is not empty → PASS\n    - Else → FAIL\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:19:57.054945",
+    "model": "gpt-4.1"
+}

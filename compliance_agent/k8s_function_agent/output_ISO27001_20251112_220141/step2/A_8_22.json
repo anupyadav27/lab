@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_namespace_isolation",
+    "k8s_service_type_not_nodeport"
+  ],
+  "changes_made": [
+    "Renamed k8s_networkpolicy_isolation_between_namespaces to k8s_networkpolicy_namespace_isolation for clarity and consistency"
+  ],
+  "review_notes": "The functions are generally well-aligned with the ISO27001 control A.8.22 on network segregation. NetworkPolicies are correctly used to enforce ingress and egress restrictions, and the avoidance of NodePort services is a valid consideration for network exposure. The naming convention was slightly adjusted for better clarity and consistency.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Simplified k8s_networkpolicy_isolation_between_namespaces to k8s_networkpolicy_namespace_isolation"
+  ],
+  "control_id": "A.8.22",
+  "title": "Segregation of Networks",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_isolation_between_namespaces",
+    "k8s_service_type_not_nodeport"
+  ],
+  "step1_reasoning": "The ISO27001 control A.8.22 focuses on the segregation of networks, which in Kubernetes can be addressed through NetworkPolicies to control ingress and egress traffic, ensuring that only necessary communication paths are allowed. Additionally, ensuring that services are not exposed unnecessarily (e.g., avoiding NodePort) contributes to network segregation. Implementing default deny policies and ensuring isolation between namespaces are key strategies in Kubernetes to achieve network segregation."
+}

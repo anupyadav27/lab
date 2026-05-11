@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_admission_controller_software_whitelist_enabled",
+    "k8s_audit_software_installation_logging_enabled",
+    "k8s_admission_controller_restrict_user_installed_software"
+  ],
+  "changes_made": [
+    "Renamed 'k8s_pod_security_policy_restrict_user_installed_software' to 'k8s_admission_controller_restrict_user_installed_software' for better alignment with current K8s capabilities."
+  ],
+  "review_notes": "The control is applicable to Kubernetes as it involves controlling and monitoring software installations, which can be managed using admission controllers and audit logging. The original function names mostly follow the naming conventions, but 'k8s_pod_security_policy_restrict_user_installed_software' was updated to reflect the deprecation of PodSecurityPolicy in favor of admission controllers.",
+  "agreement_with_step1": true,
+  "technical_concerns": [
+    "PodSecurityPolicy is deprecated and should not be used in new implementations. Admission controllers are the recommended approach."
+  ],
+  "naming_improvements": [
+    "Use 'admission_controller' instead of 'pod_security_policy' to reflect current Kubernetes practices."
+  ],
+  "control_id": "3_4_9",
+  "title": "3_4_9: 3.4.9 Control and monitor user-installed software",
+  "step1_functions": [
+    "k8s_admission_controller_software_whitelist_enabled",
+    "k8s_audit_software_installation_logging_enabled",
+    "k8s_pod_security_policy_restrict_user_installed_software"
+  ],
+  "step1_reasoning": "The control '3.4.9 Control and monitor user-installed software' is about ensuring that software installations are controlled and monitored. In a Kubernetes environment, this can be achieved by using admission controllers to enforce software whitelisting policies, ensuring that only approved software can be deployed. Additionally, enabling audit logging for software installations can help monitor changes. Pod Security Policies (or Pod Security Standards) can be used to restrict the installation of unauthorized software by limiting capabilities and enforcing security contexts."
+}

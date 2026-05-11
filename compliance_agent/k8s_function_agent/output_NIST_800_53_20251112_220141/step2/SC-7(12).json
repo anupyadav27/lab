@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_host_network_disabled",
+    "k8s_service_type_not_nodeport"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions provided are generally well-aligned with the NIST SC-7(12) control for boundary protection. They correctly map to Kubernetes security features that help enforce boundary protection. However, the function 'k8s_service_type_not_nodeport' could be improved for clarity and consistency with naming conventions.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider renaming 'k8s_service_type_not_nodeport' to 'k8s_service_nodeport_disabled' for better clarity and alignment with the pattern of indicating a specific action or restriction."
+  ],
+  "control_id": "SC-7(12)",
+  "title": "Boundary Protection - Boundary protection | host - based protection implement [ assignment",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_host_network_disabled",
+    "k8s_service_type_not_nodeport"
+  ],
+  "step1_reasoning": "The control SC-7(12) focuses on boundary protection, which in Kubernetes can be mapped to network security and pod security configurations. NetworkPolicies can be used to enforce ingress and egress restrictions, ensuring that pods cannot communicate with unauthorized external networks. Disabling host networking for pods and avoiding NodePort services further restricts unnecessary exposure of the cluster to external networks."
+}

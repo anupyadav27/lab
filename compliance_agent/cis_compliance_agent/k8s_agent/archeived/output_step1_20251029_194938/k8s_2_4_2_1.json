@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.1",
+    "unique_id": "k8s_2_4_2_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --anonymous-auth argument is set to false",
+    "input_row": {
+        "id": "4.2.1",
+        "unique_id": "k8s_2_4_2_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --anonymous-auth argument is set to false",
+        "description": "Disable anonymous requests to the Kubelet server.",
+        "rationale": "When enabled, requests that are not rejected by other configured authentication methods are treated as anonymous requests. These requests are then served by the Kubelet server. You should rely on authentication to authorize access and disallow anonymous requests. Impact: Anonymous requests will be rejected.",
+        "audit": "If using a Kubelet configuration file, check that there is an entry for authentication: anonymous: enabled set to false. Run the following command on each node: ps -ef | grep kubelet Verify that the --anonymous-auth argument is set to false. This executable argument may be omitted, provided there is a corresponding entry set to false in the Kubelet config file.",
+        "remediation": "If using a Kubelet config file, edit the file to set authentication: anonymous: enabled to false. If using executable arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. --anonymous-auth=false Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, anonymous access is enabled. References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "Anonymous requests will be rejected.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_anonymous_auth_disabled\n\n**AUTOMATION DETAILS:**\n- Enumerate all nodes in the cluster.\n- For each node, determine the Kubelet configuration source:\n  - If using a Kubelet configuration file (commonly referenced via the --config flag in the Kubelet systemd unit or manifest), retrieve the file (typically located at /var/lib/kubelet/config.yaml or similar).\n    - Parse the configuration file and verify that under the authentication section, anonymous.enabled is set to false:\n      - Example YAML:\n        ```yaml\n        authentication:\n          anonymous:\n            enabled: false\n        ```\n    - Pass if anonymous.enabled is explicitly set to false.\n  - If using command-line flags (visible via the Kubelet process arguments):\n    - Use `kubectl get nodes -o wide` to get node names and SSH or DaemonSet to run `ps -ef | grep kubelet` on each node.\n    - Check that the --anonymous-auth flag is present and set to false (`--anonymous-auth=false`), or absent (if the config file disables anonymous auth).\n    - Pass if --anonymous-auth is set to false or omitted when the config file disables anonymous auth.\n- Pass/Fail Criteria:\n  - Pass: anonymous authentication is disabled on all Kubelets (either via config file or command-line flag).\n  - Fail: any Kubelet allows anonymous authentication (anonymous.enabled: true or --anonymous-auth=true or missing/ambiguous setting).\n- Note: This check requires access to node-level Kubelet configuration, which may be retrieved via DaemonSet or node management tooling, as Kubernetes API does not directly expose Kubelet process arguments or config files. However, this can be fully automated using standard Kubernetes patterns (e.g., privileged DaemonSet to read config files or process args).",
+    "timestamp": "2025-10-29T20:30:03.573417",
+    "model": "gpt-4.1"
+}

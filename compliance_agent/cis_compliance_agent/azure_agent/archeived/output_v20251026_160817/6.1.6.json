@@ -1,0 +1,20 @@
+{
+    "id": "6.1.6",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "input_row": {
+        "id": "6.1.6",
+        "unique_id": "6.1.6__ensure-permissions-on-/etc/shadow--are-configured",
+        "title": "Ensure permissions on /etc/shadow- are configured",
+        "description": " Gid is 0/root and Access is 0400 or more restric...\"",
+        "rationale": "The /etc/shadow- file is used to store backup information about user accounts that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "audit": "It is critical to ensure that the /etc/shadow- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command and verify Uid is 0/root, Gid is 0/root and Access is 0400 or more restrictive: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/shadow- /etc/shadow 400 0/root 0/root-",
+        "impact": "Run the following commands to set owner, group, and permissions on /etc/shadow-: # chown root:root /etc/shadow- # chmod u-wx,go-rwx /etc/shadow- Default Value: /etc/shadow 400 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "null": [
+            "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH or Remote Connect**:\n   - Gain SSH access to the Azure VM that hosts the Linux environment containing the `/etc/shadow-` file.\n\n2. **Verify File Properties**:\n   - Execute the following command:\n     ```bash\n     stat -Lc \"%n %a %u/%U %g/%G\" /etc/shadow-\n     ```\n   - This command retrieves the file name, permissions, user ID, and group ID for `/etc/shadow-`.\n\n3. **Validation**:\n   - Check the output of the command to ensure:\n     - Uid is `0` (root)\n     - Gid is `0` (root)\n     - Access permissions are `0400` or more restrictive.\n\n4. **Expected Secure Configuration**:\n   - The expected output should confirm:\n     - The owner is `root` (UID 0),\n     - The group is `root` (GID 0),\n     - The access permissions are `400` or more restrictive (e.g., `400`, `440`, etc.).\n\n5. **Confirm Compliance**:\n   - If the output matches the expected values, the compliance check is successful. If the values do not match, further action is needed to remediate the permissions. \n\nBy performing these steps, you ensure that the configuration of the `/etc/shadow-` file is compliant with NIST guidelines for security best practices."
+}

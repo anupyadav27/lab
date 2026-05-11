@@ -1,0 +1,17 @@
+{
+    "id": "1.3.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "1.3.1",
+        "unique_id": "1.3.1__ensure-core-dump-storage-is-disabled",
+        "title": "Ensure core dump storage is disabled",
+        "description": "A core dump is the memory of an executable program. It is generally used to determine why a program aborted. It can also be used to glean confidential information from a core file.",
+        "rationale": "A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems.",
+        "audit": "Run the following command to verify Storage is set to none in /etc/systemd/coredump.conf: # grep -i '^\\s*storage\\s*=\\s*none' /etc/systemd/coredump.conf Storage=none",
+        "remediation": "Edit /etc/systemd/coredump.conf and edit or add the following line: Storage=none References: 1. https://www.freedesktop.org/software/systemd/man/coredump.conf.html 2. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. https://www.freedesktop.org/software/systemd/man/coredump.conf.html 2. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH into the AKS cluster nodes:**\n   - Use Azure CLI to get the credentials and SSH into one of the nodes.\n   - Command: `az aks get-credentials --resource-group <ResourceGroupName> --name <AKSClusterName>`\n   - Then SSH into the node: `ssh <user>@<node-ip>`\n\n2. **Locate the coredump configuration file:**\n   - Navigate to the configuration file using the command line.\n   - Command: `cat /etc/systemd/coredump.conf`\n\n3. **Verify the storage setting:**\n   - Check the output for the `Storage` option.\n   - You should see `Storage=none`.\n\n4. **Expected secure configuration:**\n   - The secure configuration should have `Storage=none`, which disables core dump storage and prevents sensitive data exposure.\n\n5. **Confirm compliance:**\n   - If the `Storage` option is set to `none`, the configuration is compliant. If it is set to any other value, it is non-compliant and requires remediation. Document the findings accordingly."
+}

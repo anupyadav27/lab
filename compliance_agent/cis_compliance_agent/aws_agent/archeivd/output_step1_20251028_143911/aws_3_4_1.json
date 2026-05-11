@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1",
+    "unique_id": "aws_3_4_1",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure Administrators of WorkDocs is defined using IAM",
+    "input_row": {
+        "id": "4.1",
+        "unique_id": "aws_3_4_1",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure Administrators of WorkDocs is defined using IAM",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Perform the following to create an IAM group and assign the Amazon WorkDocs Full Access policy to it: From the Console: 1. Log in to the IAM console at https://console.aws.amazon.com/iam/. 2. In the left pane, click Groups and then click Create New Group. 3. In the Group Name box, type the name of the group and then click Next Step. 4. In the list of policies, select the check box for AmazonWorkDocsFullAccess 5. Click Next Step. 6. Click Create Group Perform the following to add a user to a Amazon WorkDocs Full Access group: 1. Log in to the the IAM console at https://console.aws.amazon.com/iam/. 2. In the left pane, click Groups 3. Select the group you created above 4. Click Add Users To Group 5. Select the users to be added to the group 6. Click Add Users Default Value: By default, IAM users and roles don't have permission to create or modify Amazon WorkDocs resources. References: 1. https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces- access-control.html 2. https://docs.aws.amazon.com/workspaces/latest/adminguide/manage- workspaces-users.html 3. https://docs.aws.amazon.com/workdocs/latest/adminguide/security_iam_id- based-policy-examples.html CIS Controls:",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThis control can be audited through AWS APIs since it involves checking IAM configurations related to Amazon WorkDocs access. IAM configurations are accessible via the AWS CLI and boto3 SDK, which allow for querying policies and group membership.\n\n**PROGRAM NAME:** aws_iam_group_workdocs_admins_configured\n\n**AUTOMATION DETAILS:**\n\nTo automate the verification of this control, the program would perform the following checks:\n\n1. **Enumerate IAM Groups:**\n   - Use the boto3 SDK method `list_groups()` to obtain a list of all IAM groups in the AWS account.\n\n2. **Check Group Policy Attachments:**\n   - For each IAM group listed, use `list_attached_group_policies()` to check if the group has the `AmazonWorkDocsFullAccess` policy attached.\n\n3. **Verify Group Membership:**\n   - For any group identified with the `AmazonWorkDocsFullAccess` policy, use `list_group_users()` to enumerate users assigned to the group.\n\n4. **Pass/Fail Criteria:**\n   - **Pass:** At least one IAM group is configured with the `AmazonWorkDocsFullAccess` policy, and it has administrators assigned.\n   - **Fail:** No IAM group with the `AmazonWorkDocsFullAccess` policy exists, or such a group exists but has no users assigned.\n\nBy leveraging AWS IAM APIs, this control can be efficiently checked across multiple AWS accounts and regions if needed, ensuring that the necessary permissions are appropriately assigned to manage Amazon WorkDocs capabilities.",
+    "timestamp": "2025-10-28T15:18:25.422433",
+    "model": "gpt-4o"
+}

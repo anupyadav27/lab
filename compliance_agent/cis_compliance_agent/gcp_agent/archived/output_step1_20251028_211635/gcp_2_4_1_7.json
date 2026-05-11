@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.7",
+    "unique_id": "gcp_2_4_1_7",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+    "input_row": {
+        "id": "4.1.7",
+        "unique_id": "gcp_2_4_1_7",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Limit use of the Bind, Impersonate and Escalate permissions in the Kubernetes cluster",
+        "description": "Cluster roles and roles with the impersonate, bind or escalate permissions should not be granted unless strictly required. Each of these permissions allow a particular subject to escalate their privileges beyond those explicitly granted by cluster administrators",
+        "rationale": "The impersonate privilege allows a subject to impersonate other users gaining their rights to the cluster. The bind privilege allows the subject to add a binding to a cluster role or role which escalates their effective permissions in the cluster. The escalate privilege allows a subject to modify cluster roles to which they are bound, increasing their rights to that level. Each of these permissions has the potential to allow for privilege escalation to cluster- admin level. Impact: There are some cases where these permissions are required for cluster service operation, and care should be taken before removing these permissions from system service accounts.",
+        "audit": "Review the users who have access to cluster roles or roles which provide the impersonate, bind or escalate privileges.",
+        "remediation": "Where possible, remove the impersonate, bind and escalate rights from subjects. Default Value: In a default kubeadm cluster, the system:masters group and clusterrole-aggregation- controller service account have access to the escalate privilege. The system:masters group also has access to bind and impersonate. References: 1. https://www.impidio.com/blog/kubernetes-rbac-security-pitfalls 2. https://raesene.github.io/blog/2020/12/12/Escalating_Away/ 3. https://raesene.github.io/blog/2021/01/16/Getting-Into-A-Bind-with-Kubernetes/",
+        "profile_applicability": "•  Level 1",
+        "impact": "There are some cases where these permissions are required for cluster service operation, and care should be taken before removing these permissions from system service accounts.",
+        "references": "1. https://www.impidio.com/blog/kubernetes-rbac-security-pitfalls 2. https://raesene.github.io/blog/2020/12/12/Escalating_Away/ 3. https://raesene.github.io/blog/2021/01/16/Getting-Into-A-Bind-with-Kubernetes/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe audit approach for this control can be automated. The control focuses on reviewing Kubernetes roles and permissions, specifically checking who has the \"bind\", \"impersonate\", or \"escalate\" privileges within a GKE cluster. These are standard permissions that can be queried using the Kubernetes API, and, by extension, through Google Cloud's SDK and command-line tools. The rationale and audit steps allude to the capability of checking these through programmatic means, making this suitable for automation.\n\n**PROGRAM NAME:** gcp_gke_cluster_roles_privilege_restriction\n\n**AUTOMATION DETAILS:**\nTo automate this check, the program would:\n- Use the `kubectl` command-line tool (or equivalent in Google Cloud SDK) to query all roles and cluster roles associated with the GKE cluster.\n- Specifically, use the `kubectl get roles,clusterroles -o yaml` or `kubectl get roles,clusterroles -o json` to extract permissions data.\n- Parse through the output to identify and list roles that include the \"bind\", \"impersonate\", and \"escalate\" permissions.\n- Enumerate users or service accounts bound to these roles using `kubectl get rolebindings,clusterrolebindings -o yaml` or relevant commands.\n- Ensure that only the intended system service accounts (like `system:masters` or cluster-role-aggregation-controller) have these privileges.\n- Pass criteria: Only predefined system accounts have these roles. Fail criteria: Other non-system accounts have these privileges.\n\nUsing these steps, the implementation would programmatically verify whether the roles associated with these sensitive permissions are limited only to essential accounts as per best practices described in the CIS benchmark.",
+    "timestamp": "2025-10-28T21:53:56.889385",
+    "model": "gpt-4o"
+}

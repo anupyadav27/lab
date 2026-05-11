@@ -1,0 +1,22 @@
+{
+    "control_id": "3.3.3",
+    "unique_id": "gcp_1_3_3_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure iptables is installed",
+    "input_row": {
+        "id": "3.3.3",
+        "unique_id": "gcp_1_3_3_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure iptables is installed",
+        "description": "iptables allows configuration of the IPv4 and IPv6 tables in the linux kernel and the rules stored within them. Most firewall configuration utilities operate as a front end to iptables.",
+        "rationale": "iptables is required for firewall management and configuration.",
+        "audit": "Run the following command and verify iptables is installed: grep '\\\"name\\\": \\\"iptables\\\"' /etc/cos-package-info.json \"name\": \"iptables\"",
+        "remediation": "Update to an OS image that includes the iptables package.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe requirement to ensure that `iptables` is installed on Container-Optimized OS (COS) implies checking individual instance configurations, specifically a file located on those instances (`/etc/cos-package-info.json`). This involves accessing the instance's file system, which cannot be thoroughly checked using GCP APIs or the Google Cloud SDK. Therefore, this control necessitates a manual audit approach because:\n\n- Checking the presence of `iptables` involves accessing the operating system's package information file directly, which requires SSH access to the instance.\n- There are no GCP APIs or CLI commands available that check the package installations or configurations on a VM instance's operating system.\n- The audit step provided does not reference any GCP API or SDK method and involves a direct system-level command execution.\n  \n**MANUAL STEPS:**\n\n1. **Access the instance:**\n   - Use SSH to connect to the Google Cloud VM instance running Container-Optimized OS where the firewall configuration is critical.\n\n2. **Verify `iptables` installation:**\n   - Execute the command on the instance to check for `iptables`:  \n     ```bash\n     grep \"\\\"name\\\": \\\"iptables\\\"\" /etc/cos-package-info.json\n     ```\n     \n3. **Validation:**\n   - Inspect the output for the presence of the `\"name\": \"iptables\"` string within the `/etc/cos-package-info.json` file.\n   - **Expected Result:** The output should display `\"name\": \"iptables\"`, indicating that `iptables` is installed.\n\n4. **Confirm Compliance:**\n   - If `iptables` is confirmed to be installed as per the command output, the instance complies with the control requirement.\n   - If not installed, update the OS or follow the remediation steps to ensure compliance.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:29:34.978549",
+    "model": "gpt-4o"
+}

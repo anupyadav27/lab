@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.1",
+    "unique_id": "k8s_2_5_3_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the CNI in use supports Network Policies",
+    "input_row": {
+        "id": "5.3.1",
+        "unique_id": "k8s_2_5_3_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the CNI in use supports Network Policies",
+        "description": "There are a variety of CNI plugins available for Kubernetes. If the CNI in use does not support Network Policies it may not be possible to effectively restrict traffic in the cluster.",
+        "rationale": "Kubernetes network policies are enforced by the CNI plugin in use. As such it is important to ensure that the CNI plugin supports both Ingress and Egress network policies. Impact: None",
+        "audit": "Review the documentation of CNI plugin in use by the cluster, and confirm that it supports Ingress and Egress network policies.",
+        "remediation": "If the CNI plugin in use does not support network policies, consideration should be given to making use of a different plugin, or finding an alternate mechanism for restricting traffic in the Kubernetes cluster. Default Value: This will depend on the CNI plugin in use. References: 1. https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage- net/network-plugins/ Additional Information: One example here is Flannel (https://github.com/coreos/flannel) which does not support Network policy unless Calico is also in use.",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage- net/network-plugins/ Additional Information: One example here is Flannel (https://github.com/coreos/flannel) which does not support Network policy unless Calico is also in use."
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires determining whether the CNI plugin in use supports both Ingress and Egress Network Policies. Kubernetes does not expose the CNI plugin type or its capabilities via the Kubernetes API or kubectl. There is no standard Kubernetes resource or API field that directly indicates which CNI is installed or whether it supports network policies. This information typically requires reviewing cluster deployment manifests, node configurations, or documentation—none of which are available via standard Kubernetes API queries. Therefore, this check cannot be fully automated using Kubernetes-native tooling.\n\n**MANUAL STEPS:**\n1. Identify the CNI plugin in use:\n   - Review the cluster deployment documentation or infrastructure-as-code (IaC) scripts.\n   - Alternatively, inspect the kubelet or kube-controller-manager startup arguments for references to the CNI plugin directory or configuration file (commonly located at `/etc/cni/net.d/` on nodes).\n   - You may also check the running Pods in the `kube-system` namespace for CNI-related DaemonSets (e.g., `calico-node`, `weave-net`, `flannel`, etc.) using:\n     ```\n     kubectl get pods -n kube-system\n     ```\n2. Determine the CNI plugin version and configuration:\n   - Review the CNI plugin documentation or the image tags used in the DaemonSet/Pod definitions to determine the exact version.\n3. Confirm network policy support:\n   - Consult the official documentation for the identified CNI plugin to verify support for both Ingress and Egress Network Policies.\n   - Ensure that the deployed version of the CNI plugin supports the required network policy features.\n4. Document your findings:\n   - Record the CNI plugin name, version, and a reference to documentation confirming network policy support.\n   - If the plugin does not support network policies, recommend remediation as per the CIS guidance.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:40:48.765050",
+    "model": "gpt-4.1"
+}

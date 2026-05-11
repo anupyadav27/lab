@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.18",
+    "unique_id": "k8s_5_1_1_18",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate",
+    "input_row": {
+        "id": "1.1.18",
+        "unique_id": "k8s_5_1_1_18",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate",
+        "description": "Retain 10 or an appropriate number of old log files.",
+        "rationale": "Kubernetes automatically rotates the log files. Retaining old log files ensures that you would have sufficient log data available for carrying out any investigation or correlation. For example, if you have set file size of 100 MB and the number of old log files to keep as 10, you would approximate have 1 GB of log data that you could potentially use for your analysis.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --audit-log-maxbackup argument is set to 10 or as appropriate.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_API_ARGS parameter to \"--audit-log-maxbackup=10\": KUBE_API_ARGS=\"--audit-log-maxbackup=10\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: None Default Value: By default, auditing is not enabled.   47 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, auditing is not enabled.   47 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_maxbackup_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver process configuration to verify the presence and value of the --audit-log-maxbackup flag.\n- Use the Kubernetes API (if kube-apiserver is managed as a Pod/Deployment/Static Pod) to inspect the command line arguments of the kube-apiserver container.\n    - Command: kubectl -n kube-system get pod -l component=kube-apiserver -o json\n    - Parse the .spec.containers[].command or .spec.containers[].args array for the --audit-log-maxbackup argument.\n- Alternatively, if kube-apiserver is not deployed as a Pod (rare in modern clusters), this check would require host-level access, but for most managed or kubeadm clusters, the API exposes this.\n- Pass Criteria: The --audit-log-maxbackup flag is present and set to 10 or a value appropriate for the organization’s retention policy (minimum recommended: 10).\n- Fail Criteria: The --audit-log-maxbackup flag is missing or set to less than 10.\n- Example check logic:\n    - For each kube-apiserver Pod/container, extract the value of --audit-log-maxbackup.\n    - Confirm the value is >= 10 (or as defined by organizational policy).\n    - Report Pass if all instances comply; otherwise, report Fail.",
+    "timestamp": "2025-10-29T21:41:15.407977",
+    "model": "gpt-4.1"
+}

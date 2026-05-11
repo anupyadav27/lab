@@ -1,0 +1,29 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_networkpolicy_monitoring_enabled",
+    "k8s_ingress_logging_enabled"
+  ],
+  "changes_made": [
+    "Removed k8s_service_mesh_traffic_monitoring_enabled as it is not a standard K8s resource and may not be applicable in all environments"
+  ],
+  "review_notes": "The control is applicable to Kubernetes as it involves monitoring communications to detect attacks. The functions mostly map well to K8s security features, but 'k8s_service_mesh_traffic_monitoring_enabled' is not universally applicable as service meshes are not a native K8s feature and depend on additional tools like Istio or Linkerd. The other functions are well-named and follow conventions.",
+  "agreement_with_step1": false,
+  "technical_concerns": [
+    "Service mesh monitoring is not a native Kubernetes feature and requires additional tools."
+  ],
+  "naming_improvements": [
+    "Consider specifying the type of logging in 'k8s_audit_logging_enabled' to 'k8s_apiserver_audit_logging_enabled' for clarity."
+  ],
+  "control_id": "3_14_6",
+  "title": "3_14_6: 3.14.6 Monitor organizational systems, including inbound and outbound communications traffic, to detect attacks and indicators of potential attacks",
+  "step1_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_networkpolicy_monitoring_enabled",
+    "k8s_service_mesh_traffic_monitoring_enabled",
+    "k8s_ingress_logging_enabled"
+  ],
+  "step1_reasoning": "The control requires monitoring of inbound and outbound communications to detect attacks. In Kubernetes, this can be achieved through enabling audit logging to capture API interactions, using NetworkPolicies to monitor and control traffic flow, leveraging service mesh capabilities for traffic monitoring, and ensuring that ingress controllers have logging enabled to capture access details. These functions collectively help in detecting potential attacks and monitoring communications."
+}

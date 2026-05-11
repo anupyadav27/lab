@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.16",
+    "unique_id": "gcp_1_6_2_16",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure no duplicate UIDs exist",
+    "input_row": {
+        "id": "6.2.16",
+        "unique_id": "gcp_1_6_2_16",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure no duplicate UIDs exist",
+        "description": "Although the useradd program will not let you create a duplicate User ID (UID), it is possible for an administrator to manually edit the /etc/passwd file and change the UID field.",
+        "rationale": "Users must be assigned unique UIDs for accountability and to ensure appropriate access protections.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash cut -f3 -d\":\" /etc/passwd | sort -n | uniq -c | while read x ; do [ -z \"$x\" ] && break set - $x if [ $1 -gt 1 ]; then users=$(awk -F: '($3 == n) { print $1 }' n=$2 /etc/passwd | xargs) echo \"Duplicate UID ($2): $users\" fi done",
+        "remediation": "Based on the results of the audit script, establish unique UIDs and review all files owned by the shared UIDs to determine which UID they are supposed to belong to.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- This control is focused on checking for duplicate UIDs within the `/etc/passwd` file of an instance running Container-Optimized OS (COS).\n- The check involves reading and parsing the local file system of the instance, which is not accessible through GCP APIs or Google Cloud SDK (gcloud).\n- This requires SSH access to the instance to run the provided bash script directly, indicating a need for manual interaction.\n- There is no indication that GCP services or APIs can directly perform this check across instances without such access.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - SSH into the Google Cloud VM instance running Container-Optimized OS.\n   - Example: `gcloud compute ssh [INSTANCE_NAME] --zone [ZONE]`\n\n2. **Run the Audit Script:**\n   - Execute the provided shell script to check for duplicate UIDs in the `/etc/passwd` file.\n   ```bash\n   #!/bin/bash\n   cut -f3 -d\":\" /etc/passwd | sort -n | uniq -c | while read x ; do\n       [ -z \"$x\" ] && break\n       set - $x\n       if [ $1 -gt 1 ]; then\n           users=$(awk -F: '($3 == n) { print $1 }' n=$2 /etc/passwd | xargs)\n           echo \"Duplicate UID ($2): $users\"\n       fi\n   done\n   ```\n\n3. **Verify Output:**\n   - Ensure no output is returned from the script. If results are shown, it means duplicate UIDs exist.\n   - Example of non-compliant output: `Duplicate UID (1001): user1 user2`\n\n4. **Remediation:**\n   - If duplicates are found, manually edit the `/etc/passwd` file to assign unique UIDs to each user.\n   - Review ownership of files for each affected user and reassign appropriately.\n\n5. **Confirm Compliance:**\n   - Re-run the audit script to verify that no duplicate UIDs are present post-remediation.\n\nBy following these steps, you ensure that UIDs are unique, preserving accountability and access protections as required by this control.",
+    "timestamp": "2025-10-28T21:47:09.220663",
+    "model": "gpt-4o"
+}

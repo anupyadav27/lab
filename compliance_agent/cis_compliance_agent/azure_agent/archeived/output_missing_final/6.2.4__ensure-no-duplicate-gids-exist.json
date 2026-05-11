@@ -1,0 +1,17 @@
+{
+    "id": "6.2.4",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.4",
+        "unique_id": "6.2.4__ensure-no-duplicate-gids-exist",
+        "title": "Ensure no duplicate GIDs exist",
+        "description": "Although the groupadd program will not let you create a duplicate Group ID (GID), it is possible for an administrator to manually edit the /etc/group file and change the GID field.",
+        "rationale": "User groups must be assigned unique GIDs for accountability and to ensure appropriate access protections.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash cut -d: -f3 /etc/group | sort | uniq -d | while read x ; do echo \"Duplicate GID ($x) in /etc/group\" done",
+        "remediation": "Based on the results of the audit script, establish unique GIDs and review all files owned by the shared GID to determine which group they are supposed to belong to. References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5 Additional Information: You can also use the grpck command to check for other inconsistencies in the /etc/group file.",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5 Additional Information: You can also use the grpck command to check for other inconsistencies in the /etc/group file.",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access Kubernetes Nodes:** \n   - Use SSH to log into your AKS cluster nodes.\n   - You can obtain the node's SSH credentials and IP addresses from the Azure portal under the AKS resource.\n\n2. **Check for Duplicate GIDs:**\n   - Open a terminal session and run the following command:\n     ```bash\n     cut -d: -f3 /etc/group | sort | uniq -d\n     ```\n\n3. **What to Verify/Validate:**\n   - Inspect the output of the command. If there are any duplicate GIDs listed, this indicates a compliance issue.\n\n4. **Expected Secure Configuration:**\n   - There should be no output from the command above. A secure configuration means each group ID is unique within the `/etc/group` file.\n\n5. **How to Confirm Compliance:**\n   - If the command returns no results, the system is compliant. If duplicates are found, document the GIDs that need attention and follow the remediation process to establish unique GIDs accordingly."
+}

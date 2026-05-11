@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.7",
+    "unique_id": "k8s_5_1_1_7",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --insecure-port argument is set to 0",
+    "input_row": {
+        "id": "1.1.7",
+        "unique_id": "k8s_5_1_1_7",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --insecure-port argument is set to 0",
+        "description": "Do not bind to insecure port.",
+        "rationale": "Setting up the apiserver to serve on an insecure port would allow unauthenticated and unencrypted access to your master node. It is assumed that firewall rules are set up such that this port is not reachable from outside of the cluster. But, as a defense in depth measure, you should not use an insecure port.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --insecure-port argument is set to 0.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set --insecure-port=0 in the KUBE_API_PORT parameter. Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: All components that use the API must connect via the secured port, authenticate themselves, and be authorized to use the API. This includes: • kube-controller-manager • kube-proxy • kube-scheduler • kubelets   25 | P a g e Default Value: By default, the insecure port is set to 8080. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1",
+        "impact": "All components that use the API must connect via the secured port, authenticate themselves, and be authorized to use the API. This includes: • kube-controller-manager • kube-proxy • kube-scheduler • kubelets   25 | P a g e Default Value: By default, the insecure port is set to 8080.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the kube-apiserver process flag --insecure-port=0.\n- This flag is set as a process argument or in a static pod manifest on the control plane node.\n- Kubernetes APIs (including kubectl) do NOT expose the process arguments or static pod manifest content of the kube-apiserver directly.\n- The audit instructions specify running ps -ef | grep kube-apiserver on the master node, which requires OS-level access.\n- There is no Kubernetes-native API or kubectl command to retrieve the running process flags of the kube-apiserver from within the cluster.\n- Therefore, this check requires host-level access and cannot be fully automated via Kubernetes APIs.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane (master) node.\n2. Run the following command to list the kube-apiserver process and its arguments:\n   ```\n   ps -ef | grep kube-apiserver\n   ```\n3. Review the command line arguments for the kube-apiserver process.\n4. Confirm that the --insecure-port argument is explicitly set to 0 (i.e., --insecure-port=0).\n5. If the argument is missing or set to any value other than 0, this is a finding.\n6. Alternatively, if kube-apiserver is deployed as a static pod, review the manifest file (commonly at /etc/kubernetes/manifests/kube-apiserver.yaml) and ensure --insecure-port=0 is present in the command section.\n7. Document compliance status for each control plane node.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:39:09.011361",
+    "model": "gpt-4.1"
+}

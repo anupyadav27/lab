@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.6",
+    "unique_id": "k8s_1_1_2_6",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+    "input_row": {
+        "id": "1.2.6",
+        "unique_id": "k8s_1_1_2_6",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+        "description": "Do not always authorize all requests.",
+        "rationale": "The API Server, can be configured to allow all requests. This mode should not be used on any production cluster. Impact: Only authorized requests will be served.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --authorization-mode argument exists and is not set to AlwaysAllow.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --authorization-mode parameter to values other than AlwaysAllow. One such example could be as below. --authorization-mode=RBAC Default Value: By default, AlwaysAllow is not enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Only authorized requests will be served.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_authorization_mode_always_allow_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify the value of the --authorization-mode flag.\n- If running kube-apiserver as a static Pod (common in kubeadm and managed clusters), use:\n  - `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml` to locate the Pod spec.\n  - Inspect the `spec.containers[].command` or `spec.containers[].args` fields for the presence of the `--authorization-mode` argument.\n- Alternatively, check the contents of `/etc/kubernetes/manifests/kube-apiserver.yaml` if accessible via Kubernetes API (e.g., via hostPath mounts in privileged DaemonSets).\n- Pass Criteria: The `--authorization-mode` flag exists and does NOT include `AlwaysAllow` as a value. Acceptable values include `RBAC`, `Node`, `Webhook`, or combinations thereof, but NOT `AlwaysAllow`.\n- Fail Criteria: The `--authorization-mode` flag is set to or includes `AlwaysAllow`.\n- Example kubectl command:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n  or\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].args}'\n  ```\n  Then, parse the output to ensure `--authorization-mode` does not contain `AlwaysAllow`.",
+    "timestamp": "2025-10-29T19:54:16.788332",
+    "model": "gpt-4.1"
+}

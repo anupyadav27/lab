@@ -1,0 +1,17 @@
+{
+    "id": "15.1",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "15.1",
+        "unique_id": "15.1__ensure-batch-account-is-set-to-use-customer-managed-keys-to-encrypt-data",
+        "title": "Ensure Batch account is set to use customer-managed keys to encrypt data",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Login to Azure Portal using https://portal.azure.com 2. Navigate to Batch accounts For each Batch account 1. Under the Settings section, click on Encryption 2. Select the Customer-managed key radio button 3. Use either Enter key URI or Select from key vault to select and set the encryption key. Remediate from Azure CLI # Link CMK to Batch account az batch account set \\ --resource-group <resource_group_name> \\ --name <batch_account_name> \\ --encryption-key-identifier https://<keyvault_name>.vault.azure.net/keys/<key_name>/<Version> Remediate from PowerShell Set-AzBatchAccount -ResourceGroupName <resource_group_name> -AccountName <batch_account_name> ` -KeyVaultReferenceId \"/subscriptions/<subscription_ID>/resourceGroups/<resource_group_name>/provid ers/Microsoft.KeyVault/vaults/<keyvault_name>\" ` -KeyVaultReferenceUrl \"https://<keyvault_name>.vault.azure.net/keys/<key_name>\" Default Value: Azure Batch accounts uses Microsoft-managed keys (service-managed encryption) for data at rest by default. References: 1. https://learn.microsoft.com/en-us/azure/batch/batch-customer-managed-key CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit field is empty, but the provided remediation includes Azure CLI commands indicating that the control can be programmatically verified.\n- Encryption settings for Azure Batch accounts, such as whether they use customer-managed keys, can be checked using Azure APIs.\n- The control describes standard settings regarding encryption that are managed through Azure, confirming the automation capability.\n\n**PROGRAM NAME:** azure_batch_account_customer_managed_keys_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n- Use the Azure CLI command `az batch account show` to retrieve the properties of Batch accounts in a resource group.\n- Enumerate Batch accounts across subscriptions and resource groups.\n- Validate the setting for `encryption.keySource`, checking whether it is set to `Microsoft.Keyvault`. \n- Pass/Fail criteria:\n  - Pass: `encryption.keySource` is `Microsoft.Keyvault` (indicating customer-managed keys are enabled).\n  - Fail: `encryption.keySource` is `Microsoft.Storage` or not set (indicating that Microsoft-managed keys are in use).\n\nExample Azure CLI command:\n```bash\naz batch account show --resource-group <resource_group_name> --name <batch_account_name> --query \"encryption.keySource\"\n```"
+}

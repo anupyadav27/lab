@@ -1,0 +1,22 @@
+{
+    "control_id": "5.10",
+    "unique_id": "aws_5_5_10",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Enable storage bucket access logging",
+    "input_row": {
+        "id": "5.10",
+        "unique_id": "aws_5_5_10",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Enable storage bucket access logging",
+        "description": "Access logging provides detailed records for the requests that are made to this bucket. This information can include the request type, the resources that are specified in the request, and the time and date that the request was processed. Access logs are useful for many applications.",
+        "rationale": "Access log information is useful in security and access audits.",
+        "audit": "From the Console: 1. Login to AWS Console using https://console.aws.amazon.com 2. Click All services, click Lightsail under Compute. 3. This will open up the Lightsail console. 4. Select Storage. 5. All Lightsail buckets are listed here. 6. Click on a bucket name 7. Click Logging. 8. Confirm that Access logging is set to active. If it is set to inactive refer to the remediation below.",
+        "remediation": "From the Console: 1. Login to AWS Console using https://console.aws.amazon.com 2. Click All services, click Lightsail under Compute. 3. This will open up the Lightsail console. 4. Select Storage. 5. All Lightsail buckets are listed here. 6. Click on a bucket name 7. Click Logging. 8. Click on the X next to Access logging is inactive 9. Select a different bucket specific to store the logging information. 10. Note the path or create a path that matches your organization style. 11. Click save 12. Click OK 13. Repeat steps 6-12 for all Lightsail buckets. References: 1. https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail- enabling-bucket-access-logs",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail- enabling-bucket-access-logs"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control to ensure \"Enable storage bucket access logging\" in Amazon Lightsail can be audited programmatically. This is a standard AWS service configuration related to logging for storage buckets. AWS APIs, specifically using the `boto3` SDK, can interact with Lightsail resources to check the logging configuration. Since enabling and verifying logging configurations (even though the example uses the AWS Console) are accessible via AWS APIs, this control fits the automated approach.\n\n**PROGRAM NAME:** aws_lightsail_bucket_access_logging_enabled\n\n**AUTOMATION DETAILS:**\n- **API Call:** Use the `boto3` SDK to interact with the Lightsail service. Specifically, the `boto3.client('lightsail')` can be used to describe bucket logging configurations.\n- **Methods/Commands:**\n  - Use `boto3.client('lightsail').get_bucket_logging(bucketName='your-bucket-name')` to check if logging is enabled for each Lightsail bucket.\n- **Resources to Enumerate:** \n  - List all Lightsail buckets within the account/region using `boto3.client('lightsail').list_buckets()`.\n- **Configuration Properties to Validate:**\n  - Check if the `loggingEnabled` property is set to `True`.\n- **Pass/Fail Criteria:**\n  - **Pass:** The `loggingEnabled` flag must be set to `True` for each bucket.\n  - **Fail:** If the `loggingEnabled` flag is `False` or not set.\n- **Expected Values:** Logging must be explicitly enabled and actively recording logs to another specified bucket.\n\nThis automated approach leverages existing AWS services and ensures compliance with the CIS Benchmark by validating that all storage buckets in Amazon Lightsail have access logging configured correctly.",
+    "timestamp": "2025-10-28T15:43:19.060294",
+    "model": "gpt-4o"
+}

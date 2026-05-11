@@ -1,0 +1,20 @@
+{
+    "id": "2.1",
+    "source": "1. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-identity- management 2. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-azure- active-directory-for-authentication",
+    "input_row": {
+        "id": "2.1",
+        "unique_id": "2.1__ensure-'microsoft-entra-authentication'-is-'enabled'",
+        "title": "Ensure 'Microsoft Entra Authentication' is 'Enabled'",
+        "description": " rep...\"",
+        "rationale": "Ensuring that Microsoft Entra Authentication is ‘Enabled’ provides a natively integrated use of identities already defined with Microsoft Entra ID.",
+        "audit": "The use of a centralized Identity and Access Management (IAM) solution such as Microsoft Entra ID is highly recommended for all activity related to Identity, Authentication, Authorization, and Accountability. Decentralized IAM – such as local authentication methods – may present additional vulnerability and introduce avoidable administrative complexity. Impact: Free tiers exist for the licensing of Microsoft Entra ID if required.",
+        "remediation": "From Azure Portal 1. Search for and open the Azure Cache for Redis service 2. For each instance, repeat the remaining steps 3. Click on the name of the instance 4. In the blade menu on the left, click on Authentication 5. Review the checkbox next to Enable Microsoft Entra Authentication If the checkbox is Checked, the configuration for that instance is compliant.",
+        "impact": "From Azure Portal 1. Search for and open the Azure Cache for Redis service 2. For each instance, repeat the remaining steps 3. Click on the name of the instance 4. In the blade menu on the left, click on Authentication 5. Check the checkbox next to Enable Microsoft Entra Authentication Default Value: By default, Microsoft Entra Authentication is Checked during setup. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-identity- management 2. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-azure- active-directory-for-authentication",
+        "reference": "Free tiers exist for the licensing of Microsoft Entra ID if required.",
+        "source": "1. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-identity- management 2. https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-azure- active-directory-for-authentication",
+        "null": [
+            "CIS_MICROSOFT_AZURE_DATABASE_SERVICES_BENCHMARK_V1.0.0_updated_20250825_190935.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The description and rationale indicate that enabling Microsoft Entra Authentication is a configuration setting within the Azure Cache for Redis service.\n- The audit suggests using centralized IAM solutions like Microsoft Entra ID, which is a standard capability within Azure.\n- There are no indications that this requires visual inspection or SSH access.\n- The specific configuration can likely be queried via Azure APIs, as it is related to Authentication settings for a supported Azure resource.\n\n**PROGRAM NAME:** azure_redis_authentication_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n- Utilize Azure Resource Manager (ARM) APIs or Azure CLI commands to query Redis Cache configurations.\n- Enumerate all Azure Cache for Redis instances in the relevant subscriptions/resource groups.\n- Validate the configuration property related to Microsoft Entra Authentication.\n- Check the property \"Microsoft Entra Authentication Enabled\" for each Redis instance.\n\n**Pass/Fail criteria:**\n- **Pass**: The setting for \"Microsoft Entra Authentication\" is true (enabled) for each instance.\n- **Fail**: The setting is false (not enabled) for any instance.\n\n**Example API endpoint or CLI command:**\n- Azure CLI command to check the authentication status:\n  ```\n  az redis show --name <redis-instance-name> --resource-group <resource-group-name> --query \"enableEntraAuthentication\"\n  ```\nThe expected value for compliance is `true`. If the result is `false`, then that instance is non-compliant."
+}

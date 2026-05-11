@@ -1,0 +1,17 @@
+{
+    "id": "2.2.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.6",
+        "unique_id": "2.2.6__ensure-a-dns-server-is-not-installed",
+        "title": "Ensure a dns server is not installed",
+        "description": "The Domain Name System (DNS) is a hierarchical naming system that maps names to IP addresses for computers, services and other resources connected to a network.",
+        "rationale": "Unless a system is specifically designated to act as a DNS server, it is recommended that the package be removed to reduce the potential attack surface.",
+        "audit": "Run one of the following commands to verify bind is not installed: # rpm -q bind package bind is not installed",
+        "remediation": "Run the following command to remove bind: # dnf remove bind References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal**: Log in to the Azure Portal and navigate to your Azure Kubernetes Service (AKS) cluster.\n2. **Connect to the cluster**: Use the command `az aks get-credentials --resource-group <your-resource-group> --name <your-aks-cluster>` to connect the Kubernetes context to your local machine.\n3. **SSH access**: If your AKS nodes are accessible via SSH, proceed to connect to one of the nodes using SSH with the command: `ssh <username>@<node-ip-address>`.\n4. **Check for DNS server installation**: Once connected via SSH, run the command `rpm -q bind` to check if the `bind` DNS server package is installed.\n5. **Evaluate the result**: \n   - If the output shows `package bind is not installed`, it indicates compliance with the control.\n   - If the output shows that the package is installed, the system is non-compliant.\n6. **Expected secure configuration**: The `bind` DNS package should not be installed on the AKS nodes unless designated as a DNS server.\n7. **Confirm compliance**: Document the findings. If the package is not installed, note that the control is compliant. If it is installed, initiate remediation steps to remove the package."
+}

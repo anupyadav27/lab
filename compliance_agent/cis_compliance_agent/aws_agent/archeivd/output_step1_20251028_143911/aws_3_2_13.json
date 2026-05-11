@@ -1,0 +1,22 @@
+{
+    "control_id": "2.13",
+    "unique_id": "aws_3_2_13",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure Workspaces images are not older than 90 days.",
+    "input_row": {
+        "id": "2.13",
+        "unique_id": "aws_3_2_13",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure Workspaces images are not older than 90 days.",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nGiven that the control is to ensure that Amazon WorkSpaces images are not older than 90 days, it is feasible to automate this verification by leveraging AWS APIs. The AWS SDK, especially boto3 for Python, provides the capability to list WorkSpaces images and retrieve their creation dates, which can be programmatically compared to determine if the image is outdated beyond 90 days. Here’s how I determined the suitability for automation:\n\n- **AWS APIs and boto3 Capability:** The AWS WorkSpaces API provides methods such as `describe_workspace_images()` to obtain metadata about WorkSpaces images, including their creation dates. This means we can programmatically calculate the age of each image.\n\n- **AWS CLI Availability:** Similarly, the AWS CLI can retrieve this information using commands like `aws workspaces describe-workspace-images`, which also returns details that include creation dates.\n\n- **Standard AWS Service Properties:** The age of an AWS WorkSpaces image is a directly queryable attribute through available AWS service methods, making it fit for automated checks.\n\n- **No Need for Manual Intervention:** This verification does not require SSH/RDP access, application-level configuration checks, or human judgment. It purely involves comparing date properties, which aligns with criteria for automated processes.\n\n**PROGRAM NAME:** aws_workspaces_image_age_compliance_check\n\n**AUTOMATION DETAILS:**\n\nThe automated program would execute the following steps:\n\n1. **Enumerate WorkSpaces Images:** Use the AWS SDK method `boto3.client('workspaces').describe_workspace_images()` to fetch all existing WorkSpaces images in the account.\n\n2. **Retrieve Dates:** Extract the `CreationTime` attribute from each image's metadata.\n\n3. **Calculate Image Age:** Compare each image's creation time against the current date to determine if it is older than 90 days.\n\n4. **Pass/Fail Criteria:**\n   - **Pass:** If all WorkSpaces images are 90 days old or newer.\n   - **Fail:** If any image is found to be older than 90 days, indicating non-compliance.\n\nThus, this fully automated approach provides an efficient mechanism to ensure compliance with the control stipulated in the CIS benchmark.",
+    "timestamp": "2025-10-28T15:17:10.771060",
+    "model": "gpt-4o"
+}

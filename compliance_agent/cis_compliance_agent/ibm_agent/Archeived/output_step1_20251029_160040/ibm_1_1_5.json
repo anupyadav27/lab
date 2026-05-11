@@ -1,0 +1,22 @@
+{
+    "control_id": "1.5",
+    "unique_id": "ibm_1_1_5",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure no owner account API key exists",
+    "input_row": {
+        "id": "1.5",
+        "unique_id": "ibm_1_1_5",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure no owner account API key exists",
+        "description": "API keys by definition allow access to your account and resources in your account. The API key inherits all assigned access for the user identity for which it is created, therefore an API key created by an account owner has account-owner level access to resources in the account.",
+        "rationale": "In accordance with the practice of granting least privilege, API keys should not be created by an account owner because of the level of privilege automatically granted to account-owner created API keys. Impact: The API key inherits all assigned access for the user identity for which it is created, therefore an API key created by an account owner has account-owner level access to resources in the account.",
+        "audit": "To check for the existence of an API key created by the account owner, complete the following steps. 1. Login as the account owner at cloud.ibm.com 2. Click Manage -> Access (IAM) 3. Click API keys 4. Check for any API keys that appear under the \"My IBM Cloud API keys\" view",
+        "remediation": "To delete an API key, complete the following steps: 1. Login as the account owner at cloud.ibm.com 2. In the console, go to Manage -> Access (IAM) 3. Click on API keys 4. Identify the row of the API key that you want to delete and select Delete from the Actions List of actions icon menu (found on the right hand side of the row). 5. Then, confirm the deletion by clicking Delete. Default Value: By default, there are no account-owner API keys created in an account. References: 1. https://cloud.ibm.com/docs/account?topic=account-userapikey",
+        "profile_applicability": "•  Level 1",
+        "impact": "The API key inherits all assigned access for the user identity for which it is created, therefore an API key created by an account owner has account-owner level access to resources in the account.",
+        "references": "1. https://cloud.ibm.com/docs/account?topic=account-userapikey"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control is primarily focused on verifying the existence of API keys created by the account owner within IBM Cloud. The audit instructions indicate checking the API keys via the IBM Cloud console's IAM section, which can be successfully automated using IBM Cloud APIs and IBM Cloud CLI commands designed to interact with IAM resources.\n\n**DECISION CRITERIA:**\n- The IBM Cloud API can query for API keys and their associated metadata. This confirms that API keys, and their creators' identity, can be programmatically checked.\n- As IAM is a standard IBM Cloud service property that is typically exposed through APIs, it aligns with criteria suitable for automated checks.\n- IBM Cloud CLI has commands to retrieve details about API keys, indicating automation feasibility via the CLI.\n\n**PROGRAM NAME:** ibm_iam_api_key_owner_check\n\n**AUTOMATION DETAILS:**\nThe automated program will carry out the following:\n\n- Utilize the IBM Cloud CLI or SDK to list all API keys associated with the account.\n- Use the `ibmcloud iam api-keys` command to retrieve API key details or the equivalent SDK method.\n- Extract and filter data specifically for API keys created by the account owner.\n- Validate that no API key exists with an owner-level privilege attached.\n- Pass/Fail Criteria:\n  - **Pass:** No API keys are created by the account owner.\n  - **Fail:** Any API key is found to be created by the account owner.\n- Example API usage: Make a call to `GET /v1/apikeys` endpoint using IBM Cloud's IAM API to fetch all API keys and verify the creator's details.\n\n**SOURCE:** CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "timestamp": "2025-10-29T16:01:19.813725",
+    "model": "gpt-4o"
+}

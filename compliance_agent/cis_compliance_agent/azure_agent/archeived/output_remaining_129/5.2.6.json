@@ -1,0 +1,17 @@
+{
+    "id": "5.2.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.2.6",
+        "unique_id": "aks_5.2.6__ensure-ssh-pam-is-enabled",
+        "title": "Ensure SSH PAM is enabled",
+        "description": "The UsePAM directive enables the Pluggable Authentication Module (PAM) interface. If set to yes this will enable PAM authentication using ChallengeResponseAuthentication and PasswordAuthentication directives in addition to PAM account and session module processing for all authentication types.",
+        "rationale": "When usePAM is set to yes, PAM runs through account and session types properly. This is important if you want to restrict access to services based off of IP, time or other factors of the account. Additionally, you can make sure users inherit certain environment variables on login or disallow access to the server",
+        "audit": "Run the following command: # sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep -i usepam Verify the output matches: usepam yes Run the following command: # grep -Pis '^\\h*UsePAM\\h+\"?no\"?\\b' /etc/ssh/sshd_config /etc/ssh/ssh_config.d/*.conf Nothing should be returned. Note: If Include locations besides, or in addition to /etc/ssh/sshd_config.d/*.conf are used in your environment, those locations should be checked for the correct configuration as well.",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter above any Include entries as follows: UsePAM yes Note: First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a file in Include location. References: 1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual \n\n**MANUAL STEPS:**\n1. **Access the Kubernetes node**:\n   - Use SSH to connect to your Kubernetes cluster node where the SSH daemon is running. You may obtain the SSH access credentials from your cluster configuration.\n\n2. **Verify SSH PAM setting**:\n   - Run the command: \n     ```\n     sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep -i usepam\n     ```\n   - Check the output for the line: `usepam yes`. This means the PAM module is enabled.\n\n3. **Check sshd_config for UsePAM**:\n   - Execute the command: \n     ```\n     grep -Pis '^\\h*UsePAM\\h+\"?no\"?\\b' /etc/ssh/sshd_config /etc/ssh/ssh_config.d/*.conf\n     ```\n   - Ensure that nothing is returned. If any lines are returned indicating `UsePAM no`, it means that PAM is not enabled.\n\n4. **Expected secure configuration**:\n   - The expected secure configuration is that `UsePAM` should be set to `yes`. Additionally, there should be no instances of `UsePAM no` in your configuration files, confirming PAM authentication is properly enabled.\n\n5. **Confirm compliance**:\n   - If all checks pass—meaning PAM is set to `yes` in the configuration and there are no entries stating otherwise—then the control can be considered compliant. If any checks fail, mitigation will be necessary to properly enable PAM in your sshd configuration."
+}

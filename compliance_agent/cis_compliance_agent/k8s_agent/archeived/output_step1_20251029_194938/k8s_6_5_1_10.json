@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.10",
+    "unique_id": "k8s_6_5_1_10",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Minimize access to the proxy sub-resource of nodes",
+    "input_row": {
+        "id": "5.1.10",
+        "unique_id": "k8s_6_5_1_10",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Minimize access to the proxy sub-resource of nodes",
+        "description": "Users with access to the Proxy sub-resource of Node objects automatically have permissions to use the Kubelet API, which may allow for privilege escalation or bypass cluster security controls such as audit logs. The Kubelet provides an API which includes rights to execute commands in any container running on the node. Access to this API is covered by permissions to the main Kubernetes API via the node object. The proxy sub-resource specifically allows wide ranging access to the Kubelet API. Direct access to the Kubelet API bypasses controls like audit logging (there is no audit log of Kubelet API access) and admission control.",
+        "rationale": "The ability to use the proxy sub-resource of node objects opens up possibilities for privilege escalation and should be restricted, where possible.",
+        "audit": "Review the users who have access to the proxy sub-resource of node objects in the Kubernetes API.",
+        "remediation": "Where possible, remove access to the proxy sub-resource of node objects. References: 1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#access-to- proxy-subresource-of-nodes 2. https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn- authz/#kubelet-authorization",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "",
+        "references": "1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#access-to- proxy-subresource-of-nodes 2. https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn- authz/#kubelet-authorization"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_node_proxy_subresource_access_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRole and Role objects in the cluster using the Kubernetes API or kubectl:\n  - `kubectl get clusterrole -o yaml`\n  - `kubectl get role --all-namespaces -o yaml`\n- For each ClusterRole and Role, inspect the `rules` field for any entries where:\n  - `apiGroups` includes `\"\"` (the core API group)\n  - `resources` includes `nodes/proxy` (the proxy sub-resource of nodes)\n  - `verbs` includes any of: `get`, `list`, `watch`, `create`, `update`, `patch`, `delete`, or `*`\n- Identify all RoleBinding and ClusterRoleBinding objects:\n  - `kubectl get clusterrolebinding -o yaml`\n  - `kubectl get rolebinding --all-namespaces -o yaml`\n- Map which users, groups, or service accounts are bound to any Role or ClusterRole granting access to `nodes/proxy`.\n- Pass Criteria: No users, groups, or service accounts (except those explicitly required for cluster operations, e.g., system:kube-controller-manager if justified) have permissions to the `nodes/proxy` sub-resource.\n- Fail Criteria: Any non-essential user, group, or service account is found to have access to the `nodes/proxy` sub-resource via RBAC.\n- Output a report listing all principals with access to `nodes/proxy` and the associated RBAC objects.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:16:08.017212",
+    "model": "gpt-4.1"
+}

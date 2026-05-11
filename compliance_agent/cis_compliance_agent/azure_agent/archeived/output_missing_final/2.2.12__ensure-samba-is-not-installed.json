@@ -1,0 +1,17 @@
+{
+    "id": "2.2.12",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.12",
+        "unique_id": "2.2.12__ensure-samba-is-not-installed",
+        "title": "Ensure Samba is not installed",
+        "description": "The Samba daemon allows system administrators to configure their Linux systems to share file systems and directories with Windows desktops. Samba will advertise the file systems and directories via the Server Message Block (SMB) protocol. Windows desktop users will be able to mount these directories and file systems as letter drives on their systems.",
+        "rationale": "If there is no need to mount directories and file systems to Windows systems, then this package can be removed to reduce the potential attack surface.",
+        "audit": "Run the following command to verify samba is not installed: # rpm -q samba package samba is not installed",
+        "remediation": "Run the following command to remove samba: # dnf remove samba References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH Access to Nodes:**\n   - Connect to the nodes of the AKS cluster using SSH. Use the Azure CLI command to get the credentials: \n     ```\n     az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>\n     ```\n   - Then use the appropriate SSH command to connect to a node:\n     ```\n     ssh <username>@<node-ip-address>\n     ```\n\n2. **Verify Samba Installation:**\n   - Once logged in, run the command:\n     ```\n     rpm -q samba\n     ```\n   - This command checks if the Samba package is installed on the system.\n\n3. **Expected Secure Configuration:**\n   - Ensure that the output of the command indicates that the package is not installed (i.e., it should return \"package samba is not installed\").\n\n4. **Confirm Compliance:**\n   - If the package is installed, the node is not compliant. Ensure that any such instances are documented, and proceed to remediation if necessary. If the package is not installed, the node is considered compliant with this control."
+}

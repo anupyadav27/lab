@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_restrict_external_access",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled"
+  ],
+  "changes_made": [
+    "Changed k8s_networkpolicy_restrict_external_access to k8s_networkpolicy_restrict_egress_to_external to better reflect the specific action and align with naming conventions"
+  ],
+  "review_notes": "The functions generally map well to Kubernetes security controls relevant to limiting external connections. The naming is mostly consistent with K8s standards, but one function required a more descriptive name to clearly indicate the specific action being checked.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider using 'restrict_egress_to_external' for clarity in k8s_networkpolicy_restrict_external_access"
+  ],
+  "control_id": "3_1_20",
+  "title": "3_1_20: 3.1.20 Verify and control/limit connections to and use of external systems",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_restrict_external_access",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled"
+  ],
+  "step1_reasoning": "The control 3.1.20 focuses on verifying and controlling/limiting connections to and use of external systems. In Kubernetes, this can be mapped to network security controls such as NetworkPolicies that restrict egress traffic to external systems, ensuring that only necessary and secure connections are allowed. Additionally, restricting the use of LoadBalancer services and ensuring TLS is enabled for Ingress can help control and secure external connections."
+}

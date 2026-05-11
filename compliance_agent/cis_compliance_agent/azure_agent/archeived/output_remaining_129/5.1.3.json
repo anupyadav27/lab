@@ -1,0 +1,17 @@
+{
+    "id": "5.1.3",
+    "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json",
+    "input_row": {
+        "id": "5.1.3",
+        "unique_id": "aks_5.1.3__minimize-cluster-access-to-read-only-for-azure-container-registry-(acr)",
+        "title": "Minimize cluster access to read-only for Azure Container Registry (ACR)",
+        "description": "Configure the Cluster Service Account with Storage Object Viewer Role to only allow read-only access to Azure Container Registry (ACR)",
+        "rationale": "The Cluster Service Account does not require administrative access to Azure ACR, only requiring pull access to containers to deploy onto Azure AKS. Restricting permissions follows the principles of least privilege and prevents credentials from being abused beyond the required role. Impact: A separate dedicated service account may be required for use by build servers and other robot users pushing or managing container images.",
+        "audit": "",
+        "remediation": "References: 1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-2-protect-sensitive-data",
+        "impact": "A separate dedicated service account may be required for use by build servers and other robot users pushing or managing container images.",
+        "reference": "1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-2-protect-sensitive-data",
+        "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control focuses on ensuring that the Cluster Service Account in Azure Kubernetes Service has read-only access to Azure Container Registry. This access control can be queried via Azure Resource Manager APIs, specifically through role assignments related to Kubernetes service accounts.\n- The mention of roles and access permissions implies the capability to audit them through APIs/CLI.\n- Based on these observations, this control can be fully verified using automation.\n\n**PROGRAM NAME:** azure_aks_cluster_service_account_read_only_access\n\n**AUTOMATION DETAILS:**\n- Use Azure Resource Manager APIs or Azure CLI commands to enumerate the role assignments for the Cluster Service Account in the Kubernetes cluster.\n- Specific resources to enumerate include:\n  - Kubernetes clusters\n  - Azure Container Registry instances\n  - Role assignments for the service account within the specific Kubernetes cluster\n- Check the following properties:\n  - Confirm that the Cluster Service Account is assigned the role of \"AcrPull\" (Storage Object Viewer Role) while ensuring it does not have higher privileges.\n- Clear Pass/Fail criteria:\n  - **Pass:** Cluster Service Account has the \"AcrPull\" role with no other higher privileges granted to it.\n  - **Fail:** Cluster Service Account has roles that exceed \"AcrPull\" or lacks this role entirely.\n- Example CLI command:\n  ```bash\n  az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>\n  az role assignment list --assignee <service-account-id> --scope <acr-id> --query \"[?roleDefinitionName=='AcrPull']\"\n  ``` \n- Expected values for pass:\n  - The role assignment list should contain an entry for \"AcrPull\" and should not contain any roles with administrative privileges like \"Owner\" or \"Contributor\"."
+}

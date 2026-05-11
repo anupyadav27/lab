@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.9",
+    "unique_id": "gcp_1_5_1_9",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH HostbasedAuthentication is disabled",
+    "input_row": {
+        "id": "5.1.9",
+        "unique_id": "gcp_1_5_1_9",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH HostbasedAuthentication is disabled",
+        "description": "The HostbasedAuthentication parameter specifies if authentication is allowed through trusted hosts via the user of .rhosts, or /etc/hosts.equiv, along with successful public key client host authentication. This option only applies to SSH Protocol Version 2.",
+        "rationale": "Even though the .rhosts files are ineffective if support is disabled in /etc/pam.conf, disabling the ability to use .rhosts files in SSH provides an additional layer of protection.",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep hostbasedauthentication HostbasedAuthentication no",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: HostbasedAuthentication no Default Value: HostbasedAuthentication no",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- **Manual:** This control requires checking the SSH configuration at the OS level, which is not exposed through GCP APIs or the Google Cloud SDK. The check involves examining the content of the `/etc/ssh/sshd_config` file on the instance to ensure the `HostbasedAuthentication` parameter is set to `no`. This requires SSH access to the instances running Container-Optimized OS.\n\n**MANUAL STEPS:**\n\n1. **SSH Access:** Use SSH to log into each instance running Container-Optimized OS.\n   - Use `gcloud compute ssh <INSTANCE_NAME>` to access the instance if SSH keys are configured.\n\n2. **Verify Configuration:**\n   - Run the command: `sudo sshd -T | grep hostbasedauthentication`.\n\n3. **Expected Secure Configuration:**\n   - The output should be: `HostbasedAuthentication no`.\n\n4. **Compliance Confirmation:**\n   - If the output matches the expected secure configuration, the instance is compliant. If not, edit the `/etc/ssh/sshd_config` file and set `HostbasedAuthentication no`, then restart the SSH service with `sudo systemctl restart sshd`.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:33:52.453266",
+    "model": "gpt-4o"
+}

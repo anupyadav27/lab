@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_rbac_no_cluster_admin_binding",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_service_type_not_nodeport"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions generally map well to the FedRAMP AC-17 (4) control by addressing remote access and privileged command concerns through RBAC and network policies. The naming conventions are mostly followed, but the function 'k8s_service_type_not_nodeport' could be improved for clarity.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider renaming 'k8s_service_type_not_nodeport' to 'k8s_service_nodeport_disabled' for better clarity and consistency with naming patterns."
+  ],
+  "control_id": "AC-17 (4)",
+  "title": "Remote Access | Privileged Commands and Access",
+  "step1_functions": [
+    "k8s_rbac_no_cluster_admin_binding",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_service_type_not_nodeport"
+  ],
+  "step1_reasoning": "The FedRAMP control AC-17 (4) focuses on securing remote access and privileged commands. In Kubernetes, this can be mapped to ensuring that no overly privileged roles (like cluster-admin) are bound to users or service accounts, which aligns with RBAC controls. Additionally, ensuring that network policies are in place to deny ingress and egress by default helps prevent unauthorized remote access. Lastly, avoiding the use of NodePort services reduces the exposure of services to the internet."
+}

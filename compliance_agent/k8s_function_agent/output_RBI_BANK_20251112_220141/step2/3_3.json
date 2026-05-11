@@ -1,0 +1,27 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_enabled",
+    "k8s_etcd_tls_enabled"
+  ],
+  "changes_made": [
+    "Removed k8s_secret_encryption_in_transit_enabled as it is not applicable; secrets are not typically encrypted in transit within Kubernetes, but rather rely on network-level encryption such as TLS."
+  ],
+  "review_notes": "The control 'Data Encryption' is applicable to Kubernetes, focusing on encryption at rest and in transit. The functions 'k8s_secret_encryption_at_rest_enabled' and 'k8s_etcd_encryption_enabled' are accurate and well-named, mapping to real K8s security controls. However, 'k8s_secret_encryption_in_transit_enabled' is not applicable as secrets are not encrypted in transit within Kubernetes itself; instead, TLS should be used for securing communication channels. The function 'k8s_etcd_tls_enabled' is correctly included to ensure encryption in transit for etcd.",
+  "agreement_with_step1": false,
+  "technical_concerns": [
+    "k8s_secret_encryption_in_transit_enabled is not a valid check as Kubernetes does not encrypt secrets in transit by itself."
+  ],
+  "naming_improvements": [],
+  "control_id": "3.3",
+  "title": "Data Encryption",
+  "step1_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_enabled",
+    "k8s_secret_encryption_in_transit_enabled",
+    "k8s_etcd_tls_enabled"
+  ],
+  "step1_reasoning": "The control 'Data Encryption' focuses on ensuring that data is encrypted both at rest and in transit. In Kubernetes, this is applicable through ensuring that Secrets are encrypted at rest using mechanisms like etcd encryption. Additionally, ensuring encryption in transit involves enabling TLS for etcd communication. These checks align with the cloud checks for storage and database encryption."
+}

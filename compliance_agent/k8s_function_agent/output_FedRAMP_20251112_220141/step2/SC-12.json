@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_enabled",
+    "k8s_secret_key_rotation_policy_defined"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions generally map well to the control SC-12 for cryptographic key management in Kubernetes. However, the function 'k8s_secret_key_rotation_policy_defined' could be misleading as Kubernetes does not natively support key rotation policies. It is technically feasible through external integrations, but this should be clearly documented. The naming conventions are followed correctly, and the functions are descriptive and specific.",
+  "agreement_with_step1": true,
+  "technical_concerns": [
+    "Kubernetes does not natively support key rotation policies; this requires external tools or custom implementations."
+  ],
+  "naming_improvements": [
+    "Consider documenting the external requirement for 'k8s_secret_key_rotation_policy_defined' to avoid confusion."
+  ],
+  "control_id": "SC-12",
+  "title": "Cryptographic Key Establishment and Management",
+  "step1_functions": [
+    "k8s_secret_encryption_at_rest_enabled",
+    "k8s_etcd_encryption_enabled",
+    "k8s_secret_key_rotation_policy_defined"
+  ],
+  "step1_reasoning": "The control SC-12 focuses on cryptographic key establishment and management, which in Kubernetes can be mapped to the management of secrets and etcd encryption. Kubernetes supports encryption of secrets at rest and etcd encryption, which aligns with the requirement for cryptographic key management. Additionally, while Kubernetes does not natively support key rotation policies, it is possible to define and enforce such policies through external integrations or custom implementations."
+}

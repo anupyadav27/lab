@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.5",
+    "unique_id": "k8s_2_5_1_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that default service accounts are not actively used.",
+    "input_row": {
+        "id": "5.1.5",
+        "unique_id": "k8s_2_5_1_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that default service accounts are not actively used.",
+        "description": "The default service account should not be used to ensure that rights granted to applications can be more easily audited and reviewed.",
+        "rationale": "Kubernetes provides a default service account which is used by cluster workloads where no specific service account is assigned to the pod. Where access to the Kubernetes API from a pod is required, a specific service account should be created for that pod, and rights granted to that service account. The default service account should be configured to ensure that it does not automatically provide a service account token, and it must not have any non-default role bindings or custom role assignments Impact: All workloads which require access to the Kubernetes API will require an explicit service account to be created.",
+        "audit": "For each namespace in the cluster, review the rights assigned to the default service account and ensure that it has no roles or cluster roles bound to it apart from the defaults. Additionally ensure that the automountServiceAccountToken: false setting is in place for each default service account.",
+        "remediation": "Create explicit service accounts wherever a Kubernetes workload requires specific access to the Kubernetes API server. Modify the configuration of each default service account to include this value automountServiceAccountToken: false Default Value: By default the default service account allows for its service account token to be mounted in pods in its namespace. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "All workloads which require access to the Kubernetes API will require an explicit service account to be created.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_service_account_default_usage_restricted\n\n**AUTOMATION DETAILS:**\n\nThe automated program will perform the following checks using the Kubernetes API or kubectl:\n\n1. **Enumerate All Namespaces:**\n   - Use `kubectl get namespaces` or Kubernetes API to list all namespaces.\n\n2. **Check Default Service Account in Each Namespace:**\n   - For each namespace, retrieve the `default` service account:\n     - `kubectl get serviceaccount default -n <namespace> -o yaml`\n\n3. **Validate automountServiceAccountToken Setting:**\n   - Inspect the `automountServiceAccountToken` field on the default service account object.\n   - Pass Criteria: The field is set to `false` (either explicitly on the service account or inherited from the namespace).\n   - Fail Criteria: The field is `true` or not set (defaults to `true`).\n\n4. **Check RoleBindings and ClusterRoleBindings:**\n   - List all `RoleBinding` and `ClusterRoleBinding` objects in the cluster:\n     - `kubectl get rolebindings --all-namespaces -o yaml`\n     - `kubectl get clusterrolebindings -o yaml`\n   - For each binding, check if the `subjects` field includes the `default` service account in any namespace.\n   - Pass Criteria: The `default` service account is not bound to any non-default roles or cluster roles.\n   - Fail Criteria: The `default` service account is bound to any custom (non-default) roles or cluster roles.\n\n5. **Report:**\n   - For each namespace, report whether the `default` service account:\n     - Has `automountServiceAccountToken: false`\n     - Is not bound to any non-default roles/cluster roles\n\n**Pass/Fail Criteria:**\n- **Pass:** In every namespace, the `default` service account has `automountServiceAccountToken: false` and is not bound to any non-default roles or cluster roles.\n- **Fail:** If in any namespace, the `default` service account has `automountServiceAccountToken: true` (or unset), or is bound to any non-default roles or cluster roles.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:35:01.455087",
+    "model": "gpt-4.1"
+}

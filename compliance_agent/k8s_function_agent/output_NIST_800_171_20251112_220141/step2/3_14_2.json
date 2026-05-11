@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_admission_controller_antivirus_enabled",
+    "k8s_pod_security_context_readonly_rootfs",
+    "k8s_image_vulnerability_scanning_enabled",
+    "k8s_networkpolicy_egress_restricted_to_security_services"
+  ],
+  "changes_made": [
+    "Changed k8s_networkpolicy_egress_restricted_to_security_services to k8s_networkpolicy_egress_restricted_to_security_endpoints for clarity"
+  ],
+  "review_notes": "The functions are generally well-mapped to Kubernetes security features relevant to protecting against malicious code. The naming conventions are mostly followed, but a slight change was made for clarity in the network policy function. All functions are technically accurate and align with the control's intent.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider using 'security_endpoints' instead of 'security_services' for better specificity in network policy naming"
+  ],
+  "control_id": "3_14_2",
+  "title": "3_14_2: 3.14.2 Provide protection from malicious code at designated locations within organizational systems",
+  "step1_functions": [
+    "k8s_admission_controller_antivirus_enabled",
+    "k8s_pod_security_context_readonly_rootfs",
+    "k8s_image_vulnerability_scanning_enabled",
+    "k8s_networkpolicy_egress_restricted_to_security_services"
+  ],
+  "step1_reasoning": "The control requires protection from malicious code, which can be mapped to several Kubernetes security domains. Admission controllers can be used to enforce antivirus scanning on containers before they are admitted to the cluster. Ensuring that Pods have a read-only root filesystem can prevent malicious code from persisting changes. Image vulnerability scanning ensures that images are free from known vulnerabilities before deployment. NetworkPolicies can restrict egress traffic to only allow communication with security services, reducing the risk of malicious code reaching external systems."
+}

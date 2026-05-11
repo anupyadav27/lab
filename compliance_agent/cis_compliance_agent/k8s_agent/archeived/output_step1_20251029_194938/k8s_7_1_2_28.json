@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.28",
+    "unique_id": "k8s_7_1_2_28",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the --encryption-provider-config argument is set as appropriate",
+    "input_row": {
+        "id": "1.2.28",
+        "unique_id": "k8s_7_1_2_28",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the --encryption-provider-config argument is set as appropriate",
+        "description": "Encrypt etcd key-value store.",
+        "rationale": "etcd is a highly available key-value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should be encrypted at rest to avoid any disclosures. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --encryption-provider-config argument is set to a EncryptionConfig file. Additionally, ensure that the EncryptionConfig file has all the desired resources covered especially any secrets.",
+        "remediation": "Follow the Kubernetes documentation and configure a EncryptionConfig file. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube-apiserver.yaml on the master node and set the --encryption-provider-config parameter to the path of that file: --encryption-provider-config=</path/to/EncryptionConfig/File> Default Value: By default, --encryption-provider-config is not set. References: 1. https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/ 2. https://acotten.com/post/kube17-security 3. https://kubernetes.io/docs/admin/kube-apiserver/ 4. https://github.com/kubernetes/features/issues/92",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/ 2. https://acotten.com/post/kube17-security 3. https://kubernetes.io/docs/admin/kube-apiserver/ 4. https://github.com/kubernetes/features/issues/92"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_encryption_provider_config_set\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the kube-system namespace as a static Pod manifest (commonly at /etc/kubernetes/manifests/kube-apiserver.yaml on control plane nodes).\n- Use the Kubernetes API or kubectl to retrieve the kube-apiserver Pod spec:\n  - Command: `kubectl -n kube-system get pod -l component=kube-apiserver -o json`\n  - If running as a static Pod, use: `kubectl get pod -n kube-system -l component=kube-apiserver -o json`\n- Inspect the `command` or `args` fields of the kube-apiserver container for the presence of the `--encryption-provider-config` flag.\n- Extract the path specified for `--encryption-provider-config`.\n- (Optional, advanced) If access to the referenced EncryptionConfig file is available via a ConfigMap, Secret, or mounted volume, parse the file to ensure that all sensitive resources (especially `secrets`) are included for encryption at rest.\n- **Pass Criteria:** The kube-apiserver is started with the `--encryption-provider-config` flag set to a valid file path.\n- **Fail Criteria:** The `--encryption-provider-config` flag is missing or not set, or the referenced file does not exist or is not mounted.\n- Example kubectl command to check:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath=\"{.items[*].spec.containers[*].command}\" | grep -- --encryption-provider-config\n  ```\n- For clusters using managed Kubernetes (e.g., EKS, GKE, AKS), check the control plane configuration via the provider's API or console for etcd encryption settings.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:29:53.878997",
+    "model": "gpt-4.1"
+}

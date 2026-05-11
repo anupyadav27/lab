@@ -1,0 +1,17 @@
+{
+    "id": "5.3.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.3.1",
+        "unique_id": "aks_5.3.1__ensure-sudo-is-installed",
+        "title": "Ensure sudo is installed",
+        "description": "sudo allows a permitted user to execute a command as the superuser or another user, as specified by the security policy. The invoking user's real (not effective) user ID is used to determine the user name with which to query the security policy.",
+        "rationale": "sudo supports a plug-in architecture for security policies and input/output logging. Third parties can develop and distribute their own policy and I/O logging plug-ins to work seamlessly with the sudo front end. The default security policy is sudoers, which is configured via the file /etc/sudoers and any entries in /etc/sudoers.d. The security policy determines what privileges, if any, a user has to run sudo. The policy may require that users authenticate themselves with a password or another authentication mechanism. If authentication is required, sudo will exit if the user's password is not entered within a configurable time limit. This limit is policy-specific.",
+        "audit": "Verify that sudo is installed. Run the following command: # dnf list sudo Installed Packages sudo.x86_64            <VERSION>        @anaconda Available Packages sudo.x86_64            <VERSION>        updates",
+        "remediation": "Run the following command to install sudo # dnf install sudo References: 1. SUDO(8) 2. NIST SP 800-53 Rev. 5: AC-6",
+        "impact": "",
+        "reference": "1. SUDO(8) 2. NIST SP 800-53 Rev. 5: AC-6",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Cluster:**\n   - Navigate to your Azure Portal and go to the Azure Kubernetes Service (AKS) that you want to verify.\n\n2. **SSH into a Kubernetes Node:**\n   - Use the Azure CLI to get the credentials for your AKS cluster:\n     ```\n     az aks get-credentials --resource-group <your-resource-group> --name <your-cluster-name>\n     ```\n   - Once you have the credentials, use SSH to connect to one of the nodes. You might need to find the public IP of the node first:\n     ```\n     az vm list-ip-addresses --resource-group <your-resource-group> --query \"[].virtualMachine.network.publicIpAddresses[*].ipAddress\"\n     ```\n   - Then connect to the node:\n     ```\n     ssh <username>@<node-ip-address>\n     ```\n\n3. **Verify the Installation of sudo:**\n   - Run the following command to check if sudo is installed:\n     ```\n     dnf list sudo\n     ```\n\n4. **What to Verify/Validate:**\n   - Look for \"sudo.x86_64\" listed under \"Installed Packages\" in the output of the previous command.\n\n5. **Expected Secure Configuration:**\n   - The output should confirm the installation of 'sudo' along with its version details.\n\n6. **How to Confirm Compliance:**\n   - If \"sudo\" is not listed as an installed package, then the control is non-compliant and sudo must be installed using:\n     ```\n     dnf install sudo\n     ```"
+}

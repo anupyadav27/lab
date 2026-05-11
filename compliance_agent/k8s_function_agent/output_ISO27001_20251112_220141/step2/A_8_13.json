@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_etcd_backup_configured",
+    "k8s_etcd_backup_encryption_enabled",
+    "k8s_pod_backup_annotation_present",
+    "k8s_pod_backup_policy_configured"
+  ],
+  "changes_made": [
+    "Changed k8s_pod_backup_annotation_present to k8s_pod_backup_annotation_configured for consistency"
+  ],
+  "review_notes": "The functions are generally well-aligned with the ISO27001 A.8.13 control for information backup. The focus on etcd backup and encryption is appropriate as etcd is critical for Kubernetes state management. The pod-level backup annotations and policies are also relevant for ensuring application data backup. However, a minor naming adjustment was made for consistency.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Use 'configured' instead of 'present' for consistency in naming"
+  ],
+  "control_id": "A.8.13",
+  "title": "Information Backup",
+  "step1_functions": [
+    "k8s_etcd_backup_configured",
+    "k8s_etcd_backup_encryption_enabled",
+    "k8s_pod_backup_annotation_present",
+    "k8s_pod_backup_policy_configured"
+  ],
+  "step1_reasoning": "The ISO27001 A.8.13 control focuses on ensuring information backup, which in a Kubernetes context can be mapped to ensuring that etcd, the key-value store for Kubernetes, is backed up and encrypted. Additionally, ensuring that backup policies are configured for applications running in pods can be achieved through annotations or specific configurations. These checks ensure that critical cluster state and application data are backed up and protected."
+}

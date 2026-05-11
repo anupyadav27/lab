@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1",
+    "unique_id": "aws_4_4_1",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+    "title": "FSX (AWS Elastic File Cache)",
+    "input_row": {
+        "id": "4.1",
+        "unique_id": "aws_4_4_1",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "title": "FSX (AWS Elastic File Cache)",
+        "description": "Amazon File Cache is a fully managed, high speed cache on AWS that is used to process file data, regardless of where the data is stored. AWS File Cache is a serverless service on AWS that spares the administrators from the burden of managing file servers and storage volumes, updating hardware, configuring software, running out of capacity, or tuning performance. AWS Elastic cache is capable of handling hundreds of GB/s of throughput and up to millions of operations per second. AWS FSx is an excellent service for cost optimization and high scalability. Amazon File Cache automatically loads data into the cache when it’s accessed for the first time and automatically releases data when it’s not used.",
+        "rationale": "Amazon File Cache is used as a temporary, high performance storage location for data that’s stored in on-premises file systems, AWS file systems, and Amazon S3 buckets. This service is used for data processing and is best suited for applications that need high data processing speeds. This is not a long term storage option.",
+        "audit": "",
+        "remediation": "You can link your cache to S3 data repositories or to any file system that supports the NFSv3 protocol. The NFS data repository can either be on premises or in the cloud and you can link a maximum of eight repositories. All the linked repositories must be using the same file system; either S3 or NFS. When linked to a data repository, Amazon File Cache transparently presents S3 or NFS objects as files and directories. Amazon File Cache is compatible to be used interchangeably with Amazon Elastic Compute Service, Amazon Elastic Container Service, and Amazon Elastic Kubernetes Service. References: 1. https://aws.amazon.com/fsx/",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://aws.amazon.com/fsx/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:** \n1. **Verify Configuration in AWS Console:**\n   - Navigate to the AWS FSx console.\n   - Click on \"File Systems\" to display the list of FSx resources.\n   - Identify the FSx resources that are linked to Amazon File Cache.\n\n2. **Review Data Repository Associations:**\n   - For each FSx resource associated with Amazon File Cache, check the linked data repositories.\n   - Ensure that the cache is linked only to compatible file systems such as S3 data repositories or NFSv3 protocol file systems.\n\n3. **Verify File System Configuration:**\n   - Confirm that each linked data repository uses the same file system type (either S3 or NFS).\n   - Check for any deviation or misconfiguration in the linked repositories that might affect data processing and performance.\n\n4. **Evaluate Usage Suitability:**\n   - Ensure that Amazon File Cache is not being used as a long-term storage solution, as it is intended for temporary, high-performance data processing.\n   - Assess the application use cases to ensure they are compatible with the high-speed data processing capabilities of File Cache.\n\n5. **Check Compliance with Intended Use:**\n   - Validate that the configurations align with workload requirements and optimize for cost and scalability as per AWS and benchmark guidelines.\n\nNote: The audit requires review and verification of configurations and use cases related to AWS FSx resources, which do not have direct AWS API methods for automated compliance checks based on the provided information.",
+    "timestamp": "2025-10-28T15:28:44.321187",
+    "model": "gpt-4o"
+}

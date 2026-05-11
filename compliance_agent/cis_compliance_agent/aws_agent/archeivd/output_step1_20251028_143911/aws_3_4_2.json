@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2",
+    "unique_id": "aws_3_4_2",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure MFA is enabled for WorkDoc users",
+    "input_row": {
+        "id": "4.2",
+        "unique_id": "aws_3_4_2",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure MFA is enabled for WorkDoc users",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThe control \"Ensure MFA is enabled for WorkDoc users\" relates to ensuring that multi-factor authentication (MFA) is enabled for users of Amazon WorkDocs, an AWS service for enterprise document management. To assess this control's auditability:\n\n- **Can AWS APIs query this property?** Yes, AWS APIs can be used to check MFA settings.\n- **Is this a standard AWS service property (encryption, logging, access control, network rules)?** Yes, it is related to access control.\n- **Does boto3 SDK have methods to check this?** While WorkDocs isn't directly managed by boto3 specific MFA calls, the WorkDocs configuration can be reviewed via AWS IAM settings, as WorkDocs users are typically tied to IAM users/groups.\n- **Does AWS CLI have commands to retrieve this?** The AWS CLI can be used in combination with IAM commands to verify MFA settings for IAM users accessing WorkDocs.\n- **Does it require SSH/RDP to instances?** No, it does not require direct access to instances.\n- **Is it about IAM, S3, EC2, VPC, CloudTrail, Config, KMS, etc.?** Yes, IAM configurations can be used to verify MFA setup, as WorkDocs users often align with IAM users.\n\n**PROGRAM NAME:** aws_iam_workdocs_users_mfa_enabled\n\n**AUTOMATION DETAILS:**\n\n- **AWS API Calls:** Use the AWS IAM service APIs to check MFA status for users. Specifically, `boto3.client('iam').list_mfa_devices()` can be used to verify if MFA is enabled for each IAM user.\n- **AWS CLI Commands:** Use `aws iam list-mfa-devices --user-name <user_name>` to list MFA devices associated with each WorkDocs user.\n- **Specific Resources to Enumerate:** Enumerate through all IAM users associated with Amazon WorkDocs in the account.\n- **Exact Configuration Properties/Settings to Validate:** Check if each user listed under WorkDocs has an MFA device associated.\n- **Clear Pass/Fail Criteria with Expected Values:**\n  - **Pass:** If at least one MFA device is associated with each WorkDocs user.\n  - **Fail:** If no MFA device is associated with a WorkDocs user. \n\nThis approach ensures a comprehensive review of MFA settings for users, leveraging AWS IAM capabilities to automate compliance checking.",
+    "timestamp": "2025-10-28T15:18:39.259873",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.8",
+    "unique_id": "k8s_3_1_1_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the etcd pod specification file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.8",
+        "unique_id": "k8s_3_1_1_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the etcd pod specification file ownership is set to root:root",
+        "description": "Ensure that the /etc/kubernetes/manifests/etcd.yaml file ownership is set to root:root.",
+        "rationale": "The etcd pod specification file /etc/kubernetes/manifests/etcd.yaml controls various parameters that set the behavior of the etcd service in the master node. etcd is a highly-available key-value store which Kubernetes uses for persistent storage of all of its REST API object. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G /etc/kubernetes/manifests/etcd.yaml Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root /etc/kubernetes/manifests/etcd.yaml Default Value: By default, /etc/kubernetes/manifests/etcd.yaml file ownership is set to root:root. References: 1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) for the etcd pod specification file located at /etc/kubernetes/manifests/etcd.yaml on the control plane node. This file ownership is an OS-level property and is not exposed via any Kubernetes API, kubectl command, or controller configuration. The audit instructions explicitly require running a Linux stat or ls command on the node filesystem, which cannot be performed via Kubernetes APIs or kubectl. Therefore, this check requires direct access to the host OS.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where etcd is running.\n2. Run the following command to check the ownership of the etcd manifest file:\n   ```\n   stat -c %U:%G /etc/kubernetes/manifests/etcd.yaml\n   ```\n   or\n   ```\n   ls -l /etc/kubernetes/manifests/etcd.yaml\n   ```\n3. Verify that the output shows the file is owned by user root and group root (i.e., root:root).\n4. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/manifests/etcd.yaml\n   ```\n5. Confirm compliance by re-running the stat or ls command and ensuring the ownership is now root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:43:14.958761",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this audit approach as Manual is correct. The ownership of the etcd pod specification file is an OS-level property and cannot be verified using Kubernetes APIs, kubectl, or any Kubernetes CLI commands. This requires direct access to the host filesystem, which is outside the scope of Kubernetes API capabilities.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and complete for verifying the file ownership. The use of `stat` or `ls` commands is appropriate for checking file ownership. The remediation step using `chown` is also correct.\n- The program name convention is not applicable here as this is a manual check, but the description is clear and descriptive about what is being checked.\n\n**IMPROVEMENTS:**\n- The assessment could include a note about ensuring SSH access is secure and follows best practices, as this involves accessing the control plane node directly.\n- Consider documenting any potential impacts or considerations when changing file ownership, such as ensuring no processes are disrupted.\n- While not applicable for this specific check, mentioning the use of configuration management tools (e.g., Ansible, Puppet) for automating such checks across multiple nodes could be beneficial for larger environments.\n\n**CONFIDENCE:** HIGH\n- The assessment is straightforward, and the manual steps are well-documented and accurate. The requirement to perform this check manually is justified given the limitations of Kubernetes APIs in accessing host-level file properties.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is. The assessment is accurate and appropriately classified as Manual. The steps provided are clear and complete for verifying compliance with the control.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:03:07.316926"
+}

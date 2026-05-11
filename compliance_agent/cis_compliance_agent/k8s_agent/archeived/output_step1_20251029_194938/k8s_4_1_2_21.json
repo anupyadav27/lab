@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.21",
+    "unique_id": "k8s_4_1_2_21",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --service-account-lookup argument is set to true",
+    "input_row": {
+        "id": "1.2.21",
+        "unique_id": "k8s_4_1_2_21",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --service-account-lookup argument is set to true",
+        "description": "Validate service account before validating token.",
+        "rationale": "If --service-account-lookup is not enabled, the apiserver only verifies that the authentication token is valid, and does not validate that the service account token mentioned in the request is actually present in etcd. This allows using a service account token even after the corresponding service account is deleted. This is an example of time of check to time of use security issue. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that if the --service-account-lookup argument exists it is set to true.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the below parameter. --service-account-lookup=true Alternatively, you can delete the --service-account-lookup parameter from this file so that the default takes effect. Default Value: By default, --service-account-lookup argument is set to true. References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/24167 3. https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://github.com/kubernetes/kubernetes/issues/24167 3. https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_service_account_lookup_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the static Pod manifest at `/etc/kubernetes/manifests/kube-apiserver.yaml`, or via the Kubernetes API if the control plane is self-hosted.\n- Use `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml` to retrieve the kube-apiserver Pod spec.\n- Inspect the `command` or `args` field for the presence of the `--service-account-lookup` flag.\n- Pass Criteria:\n  - The `--service-account-lookup` flag is either:\n    - Explicitly set to `true` (i.e., `--service-account-lookup=true`), OR\n    - Omitted entirely (since the default is `true` per documentation).\n- Fail Criteria:\n  - The `--service-account-lookup` flag is present and set to `false` (i.e., `--service-account-lookup=false`).\n- Example automated logic:\n  1. Parse the kube-apiserver command line arguments.\n  2. If `--service-account-lookup` is present, ensure its value is `true`.\n  3. If `--service-account-lookup` is absent, consider it compliant (default is `true`).\n  4. If set to `false`, flag as non-compliant.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:17:12.975908",
+    "model": "gpt-4.1"
+}

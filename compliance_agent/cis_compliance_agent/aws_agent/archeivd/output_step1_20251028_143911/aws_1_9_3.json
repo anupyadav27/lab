@@ -1,0 +1,22 @@
+{
+    "control_id": "9.3",
+    "unique_id": "aws_1_9_3",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "title": "Ensure Data in Transit is Encrypted",
+    "input_row": {
+        "id": "9.3",
+        "unique_id": "aws_1_9_3",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+        "title": "Ensure Data in Transit is Encrypted",
+        "description": "Enabling encryption in transit helps that the data is protected when it is moving from one location to another.",
+        "rationale": "Impact: If an unauthorized user steals the data, it would be unreadable for them because a key would be required to decrypt the message into plaintext.",
+        "audit": "1. Sign into the AWS Management Console • Sign into the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the Amazon Neptune Console • Navigate to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/neptune/. 3. Select the Neptune Cluster • Choose the Amazon Neptune cluster for which you want to implement encryption in transit. • Click on the cluster name to access its details page. 4. Enable SSL/TLS Encryption • In the cluster details page, navigate to the Configuration or Encryption in Transit section. • Under Encryption in Transit, ensure that the Enable option is selected. • Optionally, you can also select the Enforce option to require SSL/TLS encryption for all client connections to the Neptune cluster. • Click Apply Changes to enable SSL/TLS encryption for the Neptune cluster. 5. Update Client Applications  • When connecting to the Neptune cluster, update your client applications to establish an SSL/TLS-encrypted connection. • Consult your client drivers or libraries documentation or configuration settings to enable SSL/TLS encryption. • Configure the necessary SSL/TLS settings, such as specifying the SSL/TLS certificate to use. 6. Verify Encryption in Transit • Test the connection to the Neptune cluster from your client application. • Ensure that the connection is established using SSL/TLS encryption. • Verify that all data transmitted between your client applications and the Neptune cluster is encrypted in transit.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "If an unauthorized user steals the data, it would be unreadable for them because a key would be required to decrypt the message into plaintext.",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control regarding encryption in transit for Amazon Neptune clusters can be verified using AWS APIs. \n- Encryption in transit is a standard AWS service property and generally can be checked via API calls or the AWS Management Console.\n- boto3 SDK has methods that can query the Neptune cluster configuration to determine if encryption in transit is enabled.\n- AWS CLI commands are available to describe the Neptune cluster configurations, which include encryption settings.\n- There is no indication that this control requires SSH/RDP access or relies on application-level configurations that are typically outside the scope of AWS API verification.\n\n**PROGRAM NAME:** aws_neptune_cluster_encryption_in_transit_enabled\n\n**AUTOMATION DETAILS:**\n- Use the boto3 SDK and the `describe_db_clusters` method to retrieve details about the Neptune clusters.\n- Verify the `StorageEncrypted` attribute is enabled on the cluster configuration, indicating that data in transit is encrypted. This field configuration generally reflects the enabling of encryption for data in transit.\n- Ensure the cluster has the `EnableIAMDatabaseAuthentication` set to true to enforce SSL/TLS connections, which indirectly points towards encryption in transit being required.\n- Use AWS CLI command `aws neptune describe-db-clusters` to retrieve and verify encryption settings related to data in transit.\n- Pass Criteria: The configuration must indicate that TLS/SSL encryption is enabled for client connections.\n- Example validation: \"Verify if `TLS` is required for client connections in the DB cluster parameter groups.\"",
+    "timestamp": "2025-10-28T14:54:46.027069",
+    "model": "gpt-4o"
+}

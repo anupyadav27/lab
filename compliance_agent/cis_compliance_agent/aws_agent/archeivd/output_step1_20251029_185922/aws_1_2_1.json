@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1",
+    "unique_id": "aws_1_2_1",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "title": "Ensure Amazon VPC (Virtual Private Cloud) has been created",
+    "input_row": {
+        "id": "2.1",
+        "unique_id": "aws_1_2_1",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+        "title": "Ensure Amazon VPC (Virtual Private Cloud) has been created",
+        "description": "Amazon VPCs allow you to launch AWS resources into a defined virtual network, providing network isolation and controlling inbound and outbound traffic. Here’s a step- by-step guide on how to create an Amazon Virtual Private Cloud (VPC):",
+        "rationale": "Impact: User would be required to have an AWS account to access AWS resources.",
+        "audit": "1. Sign in to the AWS Management Console Sign in to the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the Amazon VPC Console Navigate to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/vpc/. 3. Create a VPC In the Amazon VPC console, click Your VPCs in the left-hand navigation menu. • Click on the Create VPC button. • Provide a name and CIDR block for your VPC. The CIDR block defines the IP address range for your VPC. • Configure any additional settings, such as enabling DNS hostnames or DNS resolution. • Click on the Create button to create the VPC. 4. Create Subnets In the Amazon VPC console • Click on Subnets in the navigation menu. • Click on the Create subnet button. • Select the VPC you created in the previous step. • Provide a name and CIDR block for the subnet. The CIDR block should be a subset of the VPC's CIDR block. • Specify the availability zone where you want the subnet to be located. • Click on the Create button to create the subnet.  • Repeat these steps to create additional subnets if needed. 5. Create Security Groups In the Amazon VPC console, click Security Groups in the navigation menu. • Click on the Create security group button. • Provide a name and description for the security group. • Select the VPC you created earlier. • Configure inbound and outbound rules to allow the necessary network traffic for your Aurora database. • Click on the Create button to create the security group.",
+        "remediation": "Follow the AWS documentation and create an AWS account to create a VPC (Virtual Private Cloud). References: 1. https://aws.amazon.com/products/databases/ 2. https://console.aws.amazon.com/vpc/",
+        "profile_applicability": "•  Level 1",
+        "impact": "User would be required to have an AWS account to access AWS resources.",
+        "references": "1. https://aws.amazon.com/products/databases/ 2. https://console.aws.amazon.com/vpc/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** aws_ec2_vpc_presence_verified\n\n**AUTOMATION DETAILS:**\n- **AWS API calls / boto3 SDK methods:** Use `boto3`'s EC2 client with the `describe_vpcs()` method.\n- **AWS CLI equivalent:** `aws ec2 describe-vpcs`\n- **Resources to enumerate:** All AWS regions in the account (since VPCs are region-specific). The audit should iterate across each supported region for the AWS account.\n- **Configuration properties/settings to validate:**\n    - The presence of at least one non-default VPC in each region, if enforcing custom VPC creation.\n    - For base requirement, simply verify that at least one VPC exists in at least one region (including the default VPC created by AWS).\n- **Pass/Fail criteria:**\n    - **Pass:** At least one VPC is returned in the result set for each region checked.\n    - **Fail:** No VPCs are present in the region (i.e., `Vpcs` list is empty).\n- **Automated process:**\n    1. Enumerate all regions using `ec2.describe_regions()` to ensure global coverage.\n    2. For each region, call `ec2.describe_vpcs()`.\n    3. If any region has zero VPCs, flag as non-compliant.\n    4. If at least one VPC is present in each region (or at least in the regions where database services are run), mark as compliant.\n- **Reference for automation:** [Boto3 EC2 documentation – describe_vpcs](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2.html#EC2.Client.describe_vpcs)\n\n**SOURCE:** CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "timestamp": "2025-10-29T18:59:29.942227",
+    "model": "gpt-4.1"
+}

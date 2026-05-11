@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_restrict_ssh_access",
+    "k8s_networkpolicy_restrict_rdp_access"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions accurately map network security controls to Kubernetes NetworkPolicies. The naming is mostly clear and follows conventions, but slight improvements could be made for clarity.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider specifying the protocol in 'k8s_networkpolicy_restrict_ssh_access' and 'k8s_networkpolicy_restrict_rdp_access' for clarity, e.g., 'k8s_networkpolicy_restrict_ssh_tcp_access'."
+  ],
+  "control_id": "2.8",
+  "title": "Network Security",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_networkpolicy_restrict_ssh_access",
+    "k8s_networkpolicy_restrict_rdp_access"
+  ],
+  "step1_reasoning": "The control focuses on network security, specifically restricting access to certain ports and enabling logging. In Kubernetes, NetworkPolicies can be used to enforce similar restrictions by defining ingress and egress rules to control traffic flow to and from pods. This includes setting default deny policies and restricting access to specific ports like SSH and RDP. Additionally, while Kubernetes does not natively support flow logs like cloud providers, monitoring solutions can be integrated to achieve similar visibility."
+}

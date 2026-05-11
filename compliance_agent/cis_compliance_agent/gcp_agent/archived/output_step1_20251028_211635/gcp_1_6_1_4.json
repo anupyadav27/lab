@@ -1,0 +1,22 @@
+{
+    "control_id": "6.1.4",
+    "unique_id": "gcp_1_6_1_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/gshadow are configured",
+    "input_row": {
+        "id": "6.1.4",
+        "unique_id": "gcp_1_6_1_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/gshadow are configured",
+        "description": "The /etc/gshadow file is used to store the information about groups that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "rationale": "If attackers can gain read access to the /etc/gshadow file, they can easily run a password cracking program against the hashed password to break it. Other security information that is stored in the /etc/gshadow file (such as group administrators) could also be useful to subvert the group.",
+        "audit": "Run the following command and verify Uid is 0/root, Gid is 0/root or <gid>/shadow, and Access is 640 or more restrictive: # stat /etc/gshadow Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the one of the following chown commands as appropriate and the chmod to set permissions on /etc/gshadow : # chown root:root /etc/gshadow # chown root:shadow /etc/gshadow # chmod o-rwx,g-rw /etc/gshadow",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control involves checking the permissions of the `/etc/gshadow` file on the operating system of a GCP instance, specifically Container Optimized OS. This requires accessing the file system of the virtual machine to verify file ownership and permissions, which cannot be directly queried through GCP APIs or automated tools like the Google Cloud SDK (gcloud) or CLI without SSH access to the instance. Hence, this is a Manual approach.\n\n**MANUAL STEPS:**\n1. **Access the Instance:**\n   - Use SSH to connect to the GCP instance running Container Optimized OS.\n   - Example command: `gcloud compute ssh <INSTANCE_NAME> --zone=<ZONE>`\n\n2. **Verify File Ownership and Permissions:**\n   - Run the command to check the status of `/etc/gshadow`: \n     ```bash\n     stat /etc/gshadow\n     ```\n   - **Verify Ownership:** Ensure the file's `Uid` is `0/root` and `Gid` is `0/root` or set to the `shadow` group, typically represented by its GID.\n   - **Verify Permissions:** Confirm that Access permissions are `0640`, indicating it is read/write for the owner and read-only for the group.\n\n3. **Confirm Secure Configuration:**\n   - Expected secure setting: `Access: (0640/-rw-r-----) Uid: (0/root) Gid: (0/root or shadow)`\n   - If the settings do not match, follow remediation steps to correct them.\n\n4. **Remediation (if needed):**\n   - Change ownership with one of the following commands, if necessary:\n     ```bash\n     chown root:root /etc/gshadow\n     chown root:shadow /etc/gshadow\n     ```\n   - Correct permissions:\n     ```bash\n     chmod o-rwx,g-rw /etc/gshadow\n     ```\n5. **Document Compliance:**\n   - Record the verification results and any remediation steps taken to maintain compliance.",
+    "timestamp": "2025-10-28T21:41:40.615765",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.7",
+    "unique_id": "k8s_6_5_1_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Avoid use of system:masters group",
+    "input_row": {
+        "id": "5.1.7",
+        "unique_id": "k8s_6_5_1_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Avoid use of system:masters group",
+        "description": "The special group system:masters should not be used to grant permissions to any user or service account, except where strictly necessary (e.g. bootstrapping access prior to RBAC being fully available)",
+        "rationale": "The system:masters group has unrestricted access to the Kubernetes API hard-coded into the API server source code. An authenticated user who is a member of this group cannot have their access reduced, even if all bindings and cluster role bindings which mention it, are removed. When combined with client certificate authentication, use of this group can allow for irrevocable cluster-admin level credentials to exist for a cluster. Impact: Once the RBAC system is operational in a cluster system:masters should not be specifically required, as ordinary bindings from principals to the cluster-admin cluster role can be made where unrestricted access is required.",
+        "audit": "Review a list of all credentials which have access to the cluster and ensure that the group system:masters is not used.",
+        "remediation": "Remove the system:masters group from all users in the cluster. Default Value: By default some clusters will create a \"break glass\" client certificate which is a member of this group. Access to this client certificate should be carefully controlled and it should not be used for general cluster operations. References: 1. https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/rbac/escalatio n_check.go#L38",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "Once the RBAC system is operational in a cluster system:masters should not be specifically required, as ordinary bindings from principals to the cluster-admin cluster role can be made where unrestricted access is required.",
+        "references": "1. https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/rbac/escalatio n_check.go#L38"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_system_masters_group_usage_restricted\n\n**AUTOMATION DETAILS:**\n\n- **Kubernetes API calls or kubectl SDK methods to use:**\n  - Use the Kubernetes API to enumerate all RoleBindings and ClusterRoleBindings across all namespaces.\n  - Specifically, query for any subjects with `kind: Group` and `name: system:masters`.\n\n- **Kubernetes CLI commands (if applicable):**\n  - To list all ClusterRoleBindings referencing system:masters:\n    ```\n    kubectl get clusterrolebindings -o json | jq '.items[] | select(.subjects[]? | select(.kind==\"Group\" and .name==\"system:masters\")) | .metadata.name'\n    ```\n  - To list all RoleBindings in all namespaces referencing system:masters:\n    ```\n    kubectl get rolebindings --all-namespaces -o json | jq '.items[] | select(.subjects[]? | select(.kind==\"Group\" and .name==\"system:masters\")) | .metadata.namespace, .metadata.name'\n    ```\n\n- **Specific resources to enumerate:**\n  - All `ClusterRoleBinding` and `RoleBinding` objects in the cluster.\n\n- **Exact configuration properties/settings to validate:**\n  - The `subjects` field of each binding, looking for any entry with:\n    - `kind: Group`\n    - `name: system:masters`\n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** No RoleBinding or ClusterRoleBinding in the cluster grants permissions to the `system:masters` group.\n  - **Fail:** Any RoleBinding or ClusterRoleBinding is found with a subject of `kind: Group` and `name: system:masters`.\n\n- **Additional Notes:**\n  - This check does not enumerate client certificates or external authentication mechanisms that may grant membership to `system:masters` outside of RBAC bindings. However, in standard Kubernetes clusters, RBAC bindings are the primary mechanism for group-based access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:15:32.576805",
+    "model": "gpt-4.1"
+}

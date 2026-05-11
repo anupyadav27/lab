@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.15",
+    "unique_id": "k8s_5_1_1_15",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the admission control policy is set to NamespaceLifecycle",
+    "input_row": {
+        "id": "1.1.15",
+        "unique_id": "k8s_5_1_1_15",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the admission control policy is set to NamespaceLifecycle",
+        "description": "Reject creating objects in a namespace that is undergoing termination.",
+        "rationale": "Setting admission control policy to NamespaceLifecycle ensures that objects cannot be created in non-existent namespaces, and that namespaces undergoing termination are not used for creating the new objects. This is recommended to enforce the integrity of the namespace termination process and also for the availability of the newer objects.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --admission-control argument is set to a value that includes NamespaceLifecycle.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_ADMISSION_CONTROL parameter to \"--admission- control=NamespaceLifecycle,...\": KUBE_ADMISSION_CONTROL=\"--admission-control=NamespaceLifecycle,...\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: None Default Value: By default, NamespaceLifecycle is set.  41 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#namespacelifecycle",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, NamespaceLifecycle is set.  41 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#namespacelifecycle"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_namespacelifecycle_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver process arguments to verify that the NamespaceLifecycle admission plugin is enabled.\n- This can be done by inspecting the kube-apiserver Pod spec (if running as a static Pod or in a managed environment) or by querying the running process arguments on the control plane node.\n- For clusters where kube-apiserver is deployed as a Pod (common in kubeadm, managed Kubernetes, or self-hosted control planes), use:\n  - `kubectl -n kube-system get pod -l component=kube-apiserver -o json` to retrieve the Pod spec.\n  - Inspect the `command` or `args` fields for `--enable-admission-plugins` (or the deprecated `--admission-control`) and confirm that `NamespaceLifecycle` is present in the list.\n- For clusters where kube-apiserver is not a Pod, automation would require privileged access to the host to inspect the running process or configuration file, which may not be possible via Kubernetes API alone. In such cases, this check is only partially automatable.\n- Pass Criteria: The kube-apiserver configuration (either in the Pod spec or process args) includes `NamespaceLifecycle` in the list of enabled admission plugins (either via `--enable-admission-plugins=...` or `--admission-control=...`).\n- Fail Criteria: `NamespaceLifecycle` is missing from the enabled admission plugins list.\n- Example command for static Pod environments:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n  or\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].args}'\n  ```\n  Then, parse the output to confirm `NamespaceLifecycle` is present.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:40:36.365870",
+    "model": "gpt-4.1"
+}

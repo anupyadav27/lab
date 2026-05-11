@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.5",
+    "unique_id": "gcp_1_5_3_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure default user shell timeout is 900 seconds or less",
+    "input_row": {
+        "id": "5.3.5",
+        "unique_id": "gcp_1_5_3_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure default user shell timeout is 900 seconds or less",
+        "description": "The default TMOUT determines the shell timeout for users. The TMOUT value is measured in seconds.",
+        "rationale": "Having no timeout value associated with a shell could allow an unauthorized user access to another user's shell session (e.g. user walks away from their computer and doesn't lock the screen). Setting a timeout value at least reduces the risk of this happening.",
+        "audit": "Run the following commands and verify all TMOUT lines returned are 900 or less and at least one exists in each file. # grep \"^TMOUT\" /etc/bash/bashrc TMOUT=900 # grep \"^TMOUT\" /etc/profile TMOUT=900",
+        "remediation": "Edit the /etc/bash/bashrc and /etc/profile files (and the appropriate files for any other shell supported on your system) and add or edit any umask parameters as follows: TMOUT=900 Additional Information: The audit and remediation in this recommendation apply to bash and shell. If other shells are supported on the system, it is recommended that their configuration files also are checked. Other methods of setting a timeout exist for other shells not covered here. Ensure that the timeout conforms to your local policy.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control focuses on verifying and configuring the shell timeout (`TMOUT`) for users in the operating system configuration files (`/etc/bash/bashrc` and `/etc/profile`) on Container-Optimized OS instances. This setting pertains to OS-level configurations, which typically require login access to the instance to verify. Moreover, the audit procedure provided involves commands to be run on the instance itself. Consequently, this check cannot be performed through GCP APIs or the Google Cloud SDK (gcloud), as it requires SSH access and examination of specific configuration files.\n\n**MANUAL STEPS:**\n\n1. **Access the Container-Optimized OS Instance:**\n   - Use SSH to connect to the instance where the Container-Optimized OS is running.\n\n2. **Verify `/etc/bash/bashrc` File:**\n   - Execute the command `grep \"^TMOUT\" /etc/bash/bashrc` to check for the `TMOUT` setting.\n   - Ensure that a line containing `TMOUT=900` or a lower value exists.\n   - If no such line exists, or if the value exceeds 900, the instance is non-compliant.\n\n3. **Verify `/etc/profile` File:**\n   - Execute the command `grep \"^TMOUT\" /etc/profile` to check for the `TMOUT` setting.\n   - Ensure that a line containing `TMOUT=900` or a lower value exists.\n   - If no such line exists, or if the value exceeds 900, the instance is non-compliant.\n\n4. **Validation:**\n   - Confirm that both files mentioned have the correct `TMOUT` configuration set to a maximum of 900 seconds.\n   - If changes are needed, update the files to specify `TMOUT=900` and ensure the setting is applied.\n\n5. **Expected Secure Configuration:**\n   - Both `/etc/bash/bashrc` and `/etc/profile` must contain a `TMOUT` setting with a value of 900 seconds or less.\n\n**NOTE:**\nEnsure the timeout setting is consistent with the organization's security policy requirements and apply similar checks to any other supported shell configurations outside bash if applicable.",
+    "timestamp": "2025-10-28T21:40:05.146118",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "4.5.1",
+    "unique_id": "gcp_2_4_5_1",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+    "input_row": {
+        "id": "4.5.1",
+        "unique_id": "gcp_2_4_5_1",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Configure Image Provenance using ImagePolicyWebhook admission controller",
+        "description": "Configure Image Provenance for the deployment.",
+        "rationale": "Kubernetes supports plugging in provenance rules to accept or reject the images in deployments. Rules can be configured to ensure that only approved images are deployed in the cluster. Also see recommendation 5.10.4. Impact: Regular maintenance for the provenance configuration should be carried out, based on container image updates.",
+        "audit": "Review the pod definitions in the cluster and verify that image provenance is configured as appropriate. Also see recommendation 5.10.4.",
+        "remediation": "Follow the Kubernetes documentation and setup image provenance. Also see recommendation 5.10.4. Default Value: By default, image provenance is not set. References: 1. https://kubernetes.io/docs/concepts/containers/images/ 2. https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/",
+        "profile_applicability": "•  Level 2",
+        "impact": "Regular maintenance for the provenance configuration should be carried out, based on container image updates.",
+        "references": "1. https://kubernetes.io/docs/concepts/containers/images/ 2. https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/"
+    },
+    "step1_initial_assessment": "Based on the provided control information and analysis of all the fields, the best approach for auditing the \"Configure Image Provenance using ImagePolicyWebhook admission controller\" is to use a **Manual** audit approach. The control involves reviewing Kubernetes configurations related to the ImagePolicyWebhook admission controller, which is an internal cluster configuration requiring inspection of Kubernetes manifests and possibly custom policies that aren't directly accessible via GCP APIs or Google Cloud SDK commands.\n\n### MANUAL STEPS:\n\n1. **Access Kubernetes Cluster:**\n   - Use `kubectl` to access the cluster where you need to inspect the configuration.\n\n2. **Review Admission Controller Configuration:**\n   - Check if the `ImagePolicyWebhook` admission controller is enabled. This typically involves inspecting the Kubernetes API server configuration, which might require accessing the master node configuration directly or checking with the cloud provider if this configuration is managed.\n\n3. **Inspect Pod Definitions:**\n   - List all deployments and pods using:\n     ```bash\n     kubectl get deployments --all-namespaces\n     kubectl get pods --all-namespaces\n     ```\n\n4. **Verify Image Policy Configuration:**\n   - Check the webhook configuration used for image provenance by inspecting the webhook configuration.\n   - Use `kubectl get validatingwebhookconfiguration` and `kubectl get mutatingwebhookconfiguration` to see the existing webhook configurations.\n   - Ensure that images being deployed match the criteria defined in your organizational policy for approved images (such as signatures, approved registries).\n\n5. **Configuration Compliance:**\n   - Verify that only signed or validated images as per organizational policy are permitted to be deployed based on the webhook configuration.\n\n6. **Regular Updates:**\n   - Ensure the provenance configuration is regularly updated in line with new container image releases.\n\nThis approach requires human judgment and inspection of Kubernetes configurations and the related webhook settings, which are not directly exposed through GCP APIs or automated checks. Therefore, manual verification is necessary to ensure compliance with the specified control.",
+    "timestamp": "2025-10-28T21:56:38.237958",
+    "model": "gpt-4o"
+}

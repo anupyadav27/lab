@@ -1,0 +1,37 @@
+{
+    "unique_id": "6.1.2__ensure-permissions-on-_etc_passwd--are-configured",
+    "control_id": "6.1.2",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "input_row": {
+        "id": "6.1.2",
+        "unique_id": "6.1.2__ensure-permissions-on-/etc/passwd--are-configured",
+        "title": "Ensure permissions on /etc/passwd- are configured",
+        "description": " Uid is 0/root and ...\"",
+        "rationale": "The /etc/passwd- file contains backup user account information.",
+        "audit": "It is critical to ensure that the /etc/passwd- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command to verify /etc/passwd- is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd- /etc/passwd- 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/passwd-: # chmod u-x,go-wx /etc/passwd- # chown root:root /etc/passwd- Default Value: /etc/passwd- 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2"
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure portal:** Log in to the Azure portal and navigate to your virtual machine resource where you need to check the `/etc/passwd-` file.\n   \n2. **Connect to the virtual machine:** Use SSH to connect to the virtual machine. The command is typically: `ssh username@vm_public_ip`, replacing `username` and `vm_public_ip` with the appropriate values for your Azure VM.\n\n3. **Check permissions on the /etc/passwd- file:** Once connected to the virtual machine, run the following command in the terminal: `stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd-`. This command will display the permissions and ownership details of the `/etc/passwd-` file.\n\n4. **Verify the configuration:** Check the output to validate that:\n   - Permissions are set to `644` or more restrictive.\n   - User ID (Uid) is `0/root`.\n   - Group ID (Gid) is `0/root`.\n\n5. **Confirm compliance:** If the permissions and ownership match the expected secure configuration (permissions: `644`; Uid: `0/root`; Gid: `0/root`), the compliance requirement is met. If not, document the discrepancies for remediation.\n\n6. **Document findings:** Capture the output of the permission check and any discrepancies to include in your compliance report or audit documentation."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n- The classification of the audit approach as Manual is partially correct. While the manual steps provided are accurate for checking the permissions and ownership of the `/etc/passwd-` file on a Linux VM, this task can also be automated using Azure capabilities. Azure CLI and Azure PowerShell can be used to execute scripts on VMs, which can automate the checking of file permissions and ownership. Additionally, Azure Automation or Azure Runbooks could be leveraged to perform these checks automatically across multiple VMs.\n\n**TECHNICAL ACCURACY:** 7\n- The manual steps are technically correct and provide a clear, step-by-step guide to verify the file permissions and ownership. However, the assessment lacks consideration of automation possibilities using Azure services. The program naming convention is not applicable here as this is a manual process description.\n\n**IMPROVEMENTS:**\n- The assessment could be improved by including an automated approach using Azure CLI or PowerShell scripts that can be executed via Azure Automation or Azure Runbooks. This would enhance efficiency, especially in environments with multiple VMs.\n- Consider using Azure Policy to enforce and audit configurations across VMs. While Azure Policy does not directly check file permissions, it can ensure that VMs are configured to allow such checks via scripts.\n- Provide guidance on how to remediate non-compliant configurations, such as using a script to automatically set the correct permissions and ownership.\n\n**CONFIDENCE:** MEDIUM\n- While the manual steps are accurate, the lack of consideration for automation reduces confidence in the assessment's completeness. Including Azure's automation capabilities would increase confidence in the assessment's applicability to larger environments.\n\n**FINAL RECOMMENDATION:**\n- Modify: Include an automated approach using Azure CLI or PowerShell scripts that can be executed via Azure Automation or Azure Runbooks. This will make the process more efficient and scalable. Additionally, provide remediation steps for non-compliant configurations.",
+        "reviewed_at": "2025-10-26T16:32:48.675350"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** The task of verifying file permissions and ownership on a Linux VM can be automated using Azure capabilities such as Azure CLI, Azure PowerShell, or Azure Automation. These tools can execute scripts on VMs to check the necessary file attributes without manual SSH access. The second AI opinion correctly identifies the potential for automation, which aligns with Azure's capabilities to manage and monitor VM configurations programmatically.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nazure_vm_linux_check_file_permissions\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Virtual Machines\n- **API/CLI Method:** Azure CLI or Azure PowerShell with custom script extension\n- **Properties to Check:** File permissions and ownership of `/etc/passwd-`\n- **Pass Criteria:** Permissions set to `644` or more restrictive, Uid is `0/root`, Gid is `0/root`\n- **Fail Criteria:** Any deviation from the expected permissions or ownership values\n\n---\n\n**DISAGREEMENTS RESOLVED:** The first AI suggested a manual approach, while the second AI highlighted the potential for automation. Given Azure's robust automation capabilities, the automated approach is more efficient and scalable, especially for managing multiple VMs.\n\n**SOURCE:** 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "decided_at": "2025-10-27T14:01:26.436909"
+    },
+    "metadata": {
+        "reviewed_file": "6.1.2__ensure-permissions-on-_etc_passwd--are-configured.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.5",
+    "unique_id": "k8s_5_3_1_5",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --insecure-port argument is set to 0",
+    "input_row": {
+        "id": "3.1.5",
+        "unique_id": "k8s_5_3_1_5",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --insecure-port argument is set to 0",
+        "description": "Do not bind to insecure port.",
+        "rationale": "Setting up the federation apiserver to serve on an insecure port would allow unauthenticated and unencrypted access to it. It is assumed that firewall rules are set up such that this port is not reachable from outside of the cluster. But, as a defense in depth measure, you should not use an insecure port.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --insecure-port argument is set to 0.",
+        "remediation": "Edit the deployment specs and set --insecure-port=0. kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: None Default Value: By default, the insecure port is set to 8080. References: 1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/  193 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, the insecure port is set to 8080.",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/  193 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_federation_apiserver_insecure_port_disabled\n\n**AUTOMATION DETAILS:**\n- Query the Kubernetes API for the Deployment named federation-apiserver-deployment in the federation-system namespace.\n- Use kubectl or the Kubernetes API to retrieve the PodSpec for this Deployment.\n- Inspect the container args or command fields for the federation-apiserver container.\n- Check for the presence of the --insecure-port argument.\n- Validate that --insecure-port is explicitly set to 0.\n- Pass Criteria: All federation-apiserver containers in the federation-apiserver-deployment have --insecure-port=0 set in their args or command.\n- Fail Criteria: Any federation-apiserver container is missing the --insecure-port argument, or it is set to a value other than 0 (e.g., 8080).\n- Example kubectl command:\n  ```\n  kubectl -n federation-system get deployment federation-apiserver-deployment -o json | jq '.spec.template.spec.containers[].args'\n  ```\n  or\n  ```\n  kubectl -n federation-system get deployment federation-apiserver-deployment -o yaml\n  ```\n  Then, review the args/command section for --insecure-port=0.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:55:04.731101",
+    "model": "gpt-4.1"
+}

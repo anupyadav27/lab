@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1",
+    "unique_id": "aws_3_5_1",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure AppStream is utilizing its own virtual private cloud (VPC)",
+    "input_row": {
+        "id": "5.1",
+        "unique_id": "aws_3_5_1",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure AppStream is utilizing its own virtual private cloud (VPC)",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control requires verifying that AWS AppStream is utilizing its own virtual private cloud (VPC). VPC configuration in AWS is a standard property that can be queried through AWS APIs.\n- AWS provides APIs and CLI commands to retrieve information about AppStream fleets and their associated VPC settings.\n- Specifically, AWS SDK for Python (boto3) has methods to list AppStream fleets and describe their configurations, including VPC associations.\n- AWS CLI commands can also be used to verify the VPC settings for AppStream resources.\n- Given the nature of the check, it is feasible and optimal to automate this task using AWS APIs.\n\n**PROGRAM NAME:** aws_appstream_fleet_vpc_assignment_verified\n\n**AUTOMATION DETAILS:**\n- Use the boto3 library to query AWS AppStream configurations.\n- Call `boto3.client('appstream').describe_fleets()` to obtain a list of all AppStream fleets in the account.\n- For each fleet, check the `VpcConfig` attribute to ensure that it specifies a dedicated, valid virtual private cloud (VPC).\n- Validate that no shared VPCs are used by checking the presence of single, unique VPC IDs for each fleet.\n- Pass Criteria: Each AppStream fleet must have a `VpcConfig` with a non-shared VPC ID.\n- Example CLI command: `aws appstream describe-fleets --query 'Fleets[*].VpcConfig'`.\n- Ensure compliance by verifying that each fleet's VPC configuration is isolated and not exposing AppStream to a shared network environment.",
+    "timestamp": "2025-10-28T15:20:08.806514",
+    "model": "gpt-4o"
+}

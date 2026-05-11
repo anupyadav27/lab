@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.13",
+    "unique_id": "k8s_2_5_2_13",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Minimize the admission of containers which use HostPorts",
+    "input_row": {
+        "id": "5.2.13",
+        "unique_id": "k8s_2_5_2_13",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Minimize the admission of containers which use HostPorts",
+        "description": "Do not generally permit containers which require the use of HostPorts.",
+        "rationale": "Host ports connect containers directly to the host's network. This can bypass controls such as network policy. There should be at least one admission control policy defined which does not permit containers which require the use of HostPorts. If you need to run containers which require HostPorts, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined with hostPort settings in either the container, initContainer or ephemeralContainer sections will not be permitted unless they are run under a specific policy.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that each policy disallows the admission of containers which have hostPort sections.",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers which use hostPort sections. Default Value: By default, there are no restrictions on the use of HostPorts. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined with hostPort settings in either the container, initContainer or ephemeralContainer sections will not be permitted unless they are run under a specific policy.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_hostports_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster.\n- For each namespace, check for the presence and configuration of Pod Security Admission (PSA) labels (e.g., pod-security.kubernetes.io/enforce, pod-security.kubernetes.io/audit, pod-security.kubernetes.io/warn) or PodSecurityPolicy objects (if still in use).\n- Validate that the enforced Pod Security Standard (PSS) level is at least \"baseline\" or \"restricted\", as these levels disallow the use of hostPort in containers.\n- For clusters using Gatekeeper/OPA or Kyverno, enumerate all ConstraintTemplates/ClusterPolicies and Constraints/Policies that restrict the use of hostPort fields in pod specs.\n- Additionally, scan all existing PodSpecs (including Deployments, StatefulSets, DaemonSets, ReplicaSets, Jobs, CronJobs, and Pods) for containers, initContainers, and ephemeralContainers with non-null or non-zero hostPort fields.\n- Pass Criteria:\n  - Every namespace with user workloads has an enforced policy (via PSA, PSP, or admission controller) that denies pods with hostPort set, OR\n  - No existing workloads in the cluster use hostPort in any container spec.\n- Fail Criteria:\n  - Any namespace lacks such a policy, or\n  - Any existing workload uses hostPort, and no namespace-level policy restricts it.\n- Example kubectl commands:\n  - `kubectl get ns --show-labels`\n  - `kubectl get psp`\n  - `kubectl get constrainttemplates,clusterpolicies`\n  - `kubectl get pods --all-namespaces -o json | jq '.items[].spec.containers[].ports[]?.hostPort'`\n  - `kubectl get deploy,ds,sts,rs,job,cronjob --all-namespaces -o json | jq '..|.hostPort? // empty'`\n- The program should report namespaces and workloads that are non-compliant, and identify missing or misconfigured policies.",
+    "timestamp": "2025-10-29T20:40:38.580597",
+    "model": "gpt-4.1"
+}

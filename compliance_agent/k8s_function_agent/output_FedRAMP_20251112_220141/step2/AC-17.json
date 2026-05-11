@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions generally map well to the FedRAMP AC-17 control for securing remote access in a Kubernetes environment. The use of NetworkPolicies and TLS for Ingress are appropriate measures. However, the function 'k8s_service_type_loadbalancer_restricted' could be more descriptive by specifying the restriction criteria, such as IP whitelisting.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider renaming 'k8s_service_type_loadbalancer_restricted' to 'k8s_service_loadbalancer_ip_whitelist_configured' to specify the nature of the restriction."
+  ],
+  "control_id": "AC-17",
+  "title": "Remote Access",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled"
+  ],
+  "step1_reasoning": "The FedRAMP AC-17 control focuses on securing remote access, which in a Kubernetes context translates to ensuring that network access to the cluster and its services is tightly controlled. This involves using NetworkPolicies to restrict ingress and egress traffic, ensuring that services exposed via LoadBalancer are restricted to specific IP ranges, and that Ingress resources use TLS to secure data in transit. These measures help prevent unauthorized remote access to Kubernetes resources."
+}

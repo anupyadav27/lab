@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.2.6__ensure-a-dns-server-is-not-installed",
+    "control_id": "2.2.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal**: Log in to the Azure Portal and navigate to your Azure Kubernetes Service (AKS) cluster.\n2. **Connect to the cluster**: Use the command `az aks get-credentials --resource-group <your-resource-group> --name <your-aks-cluster>` to connect the Kubernetes context to your local machine.\n3. **SSH access**: If your AKS nodes are accessible via SSH, proceed to connect to one of the nodes using SSH with the command: `ssh <username>@<node-ip-address>`.\n4. **Check for DNS server installation**: Once connected via SSH, run the command `rpm -q bind` to check if the `bind` DNS server package is installed.\n5. **Evaluate the result**: \n   - If the output shows `package bind is not installed`, it indicates compliance with the control.\n   - If the output shows that the package is installed, the system is non-compliant.\n6. **Expected secure configuration**: The `bind` DNS package should not be installed on the AKS nodes unless designated as a DNS server.\n7. **Confirm compliance**: Document the findings. If the package is not installed, note that the control is compliant. If it is installed, initiate remediation steps to remove the package."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** DISAGREE\n\n- The classification of this audit as Manual is not entirely appropriate. While SSH access and manual inspection are one way to verify the absence of a DNS server, this can be automated using Azure capabilities. Specifically, Azure Resource Graph or Azure CLI can be used to query the installed packages on AKS nodes, assuming appropriate logging and monitoring are set up. Additionally, Azure Policy can be used to enforce and audit configurations without manual intervention.\n\n**TECHNICAL ACCURACY:** 5\n\n- The manual steps provided are technically correct but not optimal for an Azure environment where automation and scalability are key. The reliance on SSH access is a security risk and not always feasible in a production environment. Furthermore, the use of `rpm -q bind` assumes a specific package manager and Linux distribution, which may not be applicable to all AKS configurations.\n- The naming convention for the program is not specified in the assessment, but it should follow a consistent pattern for clarity and organization.\n\n**IMPROVEMENTS:**\n\n- **Automation Potential:** Utilize Azure Policy to create a compliance policy that checks for unauthorized software installations on AKS nodes. This can be coupled with Azure Monitor to alert when non-compliance is detected.\n- **Azure CLI/PowerShell:** Use Azure CLI or PowerShell scripts to automate the retrieval of installed packages on AKS nodes. This can be achieved by leveraging Azure VM extensions or custom scripts.\n- **Security Best Practices:** Avoid direct SSH access to AKS nodes. Instead, use Azure Bastion or other secure methods for any necessary direct access.\n- **Documentation:** Provide a more detailed explanation of how to set up automated checks using Azure services, which would enhance the scalability and reliability of the audit.\n\n**CONFIDENCE:** MEDIUM\n\n- While the manual steps are technically feasible, the reliance on them does not align with Azure's capabilities for automation and security best practices. My confidence in the current assessment is medium due to the potential for automation and the security implications of the manual approach.\n\n**FINAL RECOMMENDATION:** Re-classify\n\n- **Re-classify the audit approach from Manual to Automated.** Implement an Azure Policy to check for the presence of unauthorized DNS server installations on AKS nodes. Use Azure Monitor for alerting and Azure CLI/PowerShell for automated compliance checks. This approach will enhance security, reduce manual effort, and improve scalability.",
+        "reviewed_at": "2025-10-26T16:36:08.952184"
+    },
+    "input_row": {
+        "id": "2.2.6",
+        "unique_id": "2.2.6__ensure-a-dns-server-is-not-installed",
+        "title": "Ensure a dns server is not installed",
+        "description": "The Domain Name System (DNS) is a hierarchical naming system that maps names to IP addresses for computers, services and other resources connected to a network.",
+        "rationale": "Unless a system is specifically designated to act as a DNS server, it is recommended that the package be removed to reduce the potential attack surface.",
+        "audit": "Run one of the following commands to verify bind is not installed: # rpm -q bind package bind is not installed",
+        "remediation": "Run the following command to remove bind: # dnf remove bind References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "2.2.6__ensure-a-dns-server-is-not-installed.json",
+        "review_version": "1.0"
+    }
+}

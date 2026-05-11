@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.2",
+    "unique_id": "k8s_6_4_2_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+    "input_row": {
+        "id": "4.2.2",
+        "unique_id": "k8s_6_4_2_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+        "description": "Do not allow all requests. Enable explicit authorization.",
+        "rationale": "Kubelets, by default, allow all authenticated requests (even anonymous ones) without needing explicit authorization checks from the apiserver. You should restrict this behavior and only allow explicitly authorized requests. Impact: Unauthorized requests will be denied.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet If the --authorization-mode argument is present check that it is not set to AlwaysAllow. If it is not present check that there is a Kubelet config file specified by --config, and that file sets authorization: mode to something other than AlwaysAllow. It is also possible to review the running configuration of a Kubelet via the /configz endpoint on the Kubelet API port (typically 10250/TCP). Accessing these with appropriate credentials will provide details of the Kubelet's configuration.",
+        "remediation": "If using a Kubelet config file, edit the file to set authorization: mode to Webhook. If using executable arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_AUTHZ_ARGS variable. --authorization-mode=Webhook Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, --authorization-mode argument is set to AlwaysAllow. References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication",
+        "profile_applicability": "•  Level 1 - Worker Node •  Level 2 - Worker Node",
+        "impact": "Unauthorized requests will be denied.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet- authentication"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_authorization_mode_not_always_allow\n\n**AUTOMATION DETAILS:**\n- Enumerate all nodes in the cluster using the Kubernetes API (kubectl get nodes).\n- For each node, determine the kubelet endpoint (typically https://<node-ip>:10250/configz).\n- Query the kubelet /configz endpoint (requires appropriate authentication/authorization) to retrieve the running kubelet configuration.\n- Parse the returned configuration JSON for the field: authorization.mode.\n- Validate that authorization.mode is NOT set to AlwaysAllow. Acceptable values are Webhook or, less commonly, Node.\n- If the /configz endpoint is not accessible, check the Node's kubelet configuration via the Node's configSource (if set) or inspect the kubelet's command line arguments (if exposed via Node annotations or via the kubelet's PodSpec in self-hosted setups).\n- Pass Criteria: All kubelets in the cluster have authorization.mode set to a value other than AlwaysAllow (preferably Webhook).\n- Fail Criteria: Any kubelet is configured with authorization.mode: AlwaysAllow.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:12:10.852641",
+    "model": "gpt-4.1"
+}

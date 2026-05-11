@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.7",
+    "unique_id": "k8s_7_5_1_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Avoid use of system:masters group",
+    "input_row": {
+        "id": "5.1.7",
+        "unique_id": "k8s_7_5_1_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Avoid use of system:masters group",
+        "description": "The special group system:masters should not be used to grant permissions to any user or service account, except where strictly necessary (e.g. bootstrapping access prior to RBAC being fully available)",
+        "rationale": "The system:masters group has unrestricted access to the Kubernetes API hard-coded into the API server source code. An authenticated user who is a member of this group cannot have their access reduced, even if all bindings and cluster role bindings which mention it, are removed. When combined with client certificate authentication, use of this group can allow for irrevocable cluster-admin level credentials to exist for a cluster. Impact: Once the RBAC system is operational in a cluster system:masters should not be specifically required, as ordinary bindings from principals to the cluster-admin cluster role can be made where unrestricted access is required.",
+        "audit": "Review a list of all credentials which have access to the cluster and ensure that the group system:masters is not used.",
+        "remediation": "Remove the system:masters group from all users in the cluster. Default Value: By default some clusters will create a \"break glass\" client certificate which is a member of this group. Access to this client certificate should be carefully controlled and it should not be used for general cluster operations. References: 1. https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/rbac/escalatio n_check.go#L38",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Once the RBAC system is operational in a cluster system:masters should not be specifically required, as ordinary bindings from principals to the cluster-admin cluster role can be made where unrestricted access is required.",
+        "references": "1. https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/rbac/escalatio n_check.go#L38"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_system_masters_group_usage_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all Kubernetes RBAC bindings that reference the system:masters group.\n- Use the Kubernetes API or kubectl to list all ClusterRoleBindings and RoleBindings across all namespaces.\n- Specifically, inspect the `subjects` field of each binding for any entry where `kind: Group` and `name: system:masters`.\n- Example kubectl commands:\n  - To check ClusterRoleBindings:\n    ```\n    kubectl get clusterrolebindings -o json | jq '.items[] | select(.subjects[]? | select(.kind==\"Group\" and .name==\"system:masters\")) | .metadata.name'\n    ```\n  - To check RoleBindings in all namespaces:\n    ```\n    kubectl get rolebindings --all-namespaces -o json | jq '.items[] | select(.subjects[]? | select(.kind==\"Group\" and .name==\"system:masters\")) | [.metadata.namespace, .metadata.name]'\n    ```\n- Additionally, review user and service account certificates (if accessible via Kubernetes API) for group membership, but primary enforcement is via RBAC bindings.\n- **Pass Criteria:** No ClusterRoleBinding or RoleBinding in the cluster should have a subject with `kind: Group` and `name: system:masters`.\n- **Fail Criteria:** Any ClusterRoleBinding or RoleBinding is found with a subject referencing the system:masters group.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:40:29.442352",
+    "model": "gpt-4.1"
+}

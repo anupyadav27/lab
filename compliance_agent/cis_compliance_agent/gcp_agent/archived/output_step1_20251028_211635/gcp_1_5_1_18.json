@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.18",
+    "unique_id": "gcp_1_5_1_18",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH warning banner is configured",
+    "input_row": {
+        "id": "5.1.18",
+        "unique_id": "gcp_1_5_1_18",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH warning banner is configured",
+        "description": "The Banner parameter specifies a file whose contents must be sent to the remote user before authentication is permitted. By default, no banner is displayed.",
+        "rationale": "Banners are used to warn connecting users of the particular site's policy regarding connection. Presenting a warning message prior to the normal user login may assist the prosecution of trespassers on the computer system.",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep banner Banner /etc/issue.net",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: Banner /etc/issue.net",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control involves checking the SSH configuration on a system running Google Container Optimized OS, specifically regarding the presence and configuration of an SSH warning banner. The audit step specifies using a command (`sshd -T | grep banner`) that requires executing operations within the SSH service running on individual instances. This type of check falls under OS-level configuration, which typically necessitates direct access to the system via SSH.\n\n**DECISION CRITERIA:**\n\n- The control requires confirming the presence and configuration of an SSH Banner, which is a file-level and application-level check.\n- Verification involves checking the configuration of SSH on the OS, necessitating SSH access to the instance.\n- The audit process does not reference any GCP APIs or CLI commands, indicating that it is not feasible to perform this check via GCP APIs.\n- Since the process involves SSH and OS-level checks, it indicates the need for human judgment and manual verification.\n\n**MANUAL STEPS:**\n\n1. **Access the VM Instance:**\n   - Connect to the Google Compute Engine VM instance running Container Optimized OS using SSH.\n\n2. **Verify SSH Banner Configuration:**\n   - Once logged in, execute the command: `sshd -T | grep banner` to check the current SSH banner setting.\n\n3. **Expected Secure Configuration:**\n   - Ensure that the output of the command specifies: `Banner /etc/issue.net`. This indicates that the SSH service is configured to display the warning banner from `/etc/issue.net`.\n\n4. **Confirm Compliance:**\n   - If the banner configuration is as expected, the instance complies with the benchmark control. If not, the `/etc/ssh/sshd_config` file needs to be edited to include `Banner /etc/issue.net`, followed by restarting the SSH service to apply the changes.",
+    "timestamp": "2025-10-28T21:36:06.379463",
+    "model": "gpt-4o"
+}

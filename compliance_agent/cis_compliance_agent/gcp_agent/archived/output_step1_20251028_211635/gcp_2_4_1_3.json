@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.3",
+    "unique_id": "gcp_2_4_1_3",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Minimize wildcard use in Roles and ClusterRoles",
+    "input_row": {
+        "id": "4.1.3",
+        "unique_id": "gcp_2_4_1_3",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Minimize wildcard use in Roles and ClusterRoles",
+        "description": "Kubernetes Roles and ClusterRoles provide access to resources based on sets of objects and actions that can be taken on those objects. It is possible to set either of these to be the wildcard \"*\", which matches all items. Use of wildcards is not optimal from a security perspective as it may allow for inadvertent access to be granted when new resources are added to the Kubernetes API either as CRDs or in later versions of the product.",
+        "rationale": "The principle of least privilege recommends that users are provided only the access required for their role and nothing more. The use of wildcard rights grants is likely to provide excessive rights to the Kubernetes API.",
+        "audit": "Retrieve the roles defined across each namespaces in the cluster and review for wildcards kubectl get roles --all-namespaces -o yaml Retrieve the cluster roles defined in the cluster and review for wildcards kubectl get clusterroles -o yaml",
+        "remediation": "Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions. References: 1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThis control involves checking for the use of wildcards in Kubernetes Roles and ClusterRoles, which can be quantified and verified programmatically. The use of Kubernetes `kubectl` commands described in the audit field indicates that the process of retrieving and checking these configurations can be automated. The commands `kubectl get roles --all-namespaces -o yaml` and `kubectl get clusterroles -o yaml` can be executed programmatically to extract the necessary configuration details.\n\nSince Kubernetes is part of the Google Kubernetes Engine (GKE), and GCP APIs or `kubectl` can programmatically interact with GKE, this ensures that the control can be checked through automation. The direct nature of these checks, the well-defined method of retrieval, and the specific focus on the existence of wildcard characters make this a suitable candidate for automation. Moreover, the audit field explicitly suggests command-line checks, which implies API or command-line automation is feasible.\n\n**PROGRAM NAME:** gcp_gke_roles_clusterroles_wildcard_use_check\n\n**AUTOMATION DETAILS:**\n- Use `kubectl` commands as detailed in the audit field to retrieve the list of Roles and ClusterRoles across all namespaces in the GKE cluster.\n- For each Role and ClusterRole, check the definitions for any use of wildcard (`*`) in resources and actions.\n- This can be done by parsing the YAML output from `kubectl get roles --all-namespaces -o yaml` and `kubectl get clusterroles -o yaml`.\n- Identify the existence of wildcards in fields like `rules[*].resources` or `rules[*].verbs`.\n- Pass/Fail Criteria:\n  - **Pass:** No wildcard (`*`) usage found in resources and actions within Roles and ClusterRoles.\n  - **Fail:** At least one instance of wildcard (`*`) usage is found in any Role or ClusterRole.\n- This automated check can be run periodically or integrated into CI/CD pipeline checks for continuous security assurance.\n\nBy leveraging GCP-based command-line tools and the Kubernetes API, this verification aligns with existing CSPM standards for automated security posture management.",
+    "timestamp": "2025-10-28T21:52:55.641976",
+    "model": "gpt-4o"
+}

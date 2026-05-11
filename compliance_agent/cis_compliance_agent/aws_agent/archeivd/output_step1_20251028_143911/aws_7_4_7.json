@@ -1,0 +1,22 @@
+{
+    "control_id": "4.7",
+    "unique_id": "aws_7_4_7",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure mounting FSx cache",
+    "input_row": {
+        "id": "4.7",
+        "unique_id": "aws_7_4_7",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure mounting FSx cache",
+        "description": "Mounting the FSx cache is a crucial step to optimize data retrieval and system performance. This process involves connecting the FSx file system to your compute instances, allowing them to access cached data efficiently. Properly mounting the FSx cache ensures low-latency access to frequently used data, enhances overall application performance, and leverages the full capabilities of the AWS FSx service. This setup is essential for achieving high performance and efficient data processing in your AWS environment.",
+        "rationale": "By connecting the FSx file system to your compute instances, you enable low-latency access to frequently used data, significantly improving application performance. This setup leverages the full capabilities of the AWS FSx service, ensuring efficient data processing and resource utilization in your AWS environment. Properly mounting the FSx cache is essential for achieving high performance and operational efficiency.",
+        "audit": "To mount your cache, follow the next steps: 1. Make a directory for the mount point with the following command: sudo mkdir -p /mnt  2. Mount the Amazon file cache to the directory that you just created. Use the following command and replace these names: o Replace cache_dns_name with the actual file cache’s Domain Name System (DNS) name o Replace mountname with the cache’s mount name, which you can get by running the describe-file-caches AWS CLI command or DescribeFileCaches API operation sudo mount -t lustre -o relatime,flock cache_dns_name@tcp:/mountname /mnt Note: Make sure your EC2 instance is in the same VPC as your cache. If done correctly, the path of your folder will show up in the /mnt folder. You can also use the df command to see the DNS and mount point is attached to your file system:",
+        "remediation": "",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nAfter reviewing the fields provided, the control \"Ensure mounting FSx cache\" requires human judgment and actions that are not directly checkable via AWS APIs or automated tools. The process described involves creating a directory on an instance and executing a manual mount operation using specific system commands. This indicates that SSH access to instances is mandatory, and there's no direct AWS API method that allows verifying whether the FSx cache has been mounted correctly on compute instances.\n\n**MANUAL STEPS:**\n\n1. **Connect to the Instance:**\n   - SSH into the EC2 instance where the FSx cache should be mounted.\n\n2. **Verify Directory Creation:**\n   - Check if the directory for the mount point (e.g., `/mnt`) exists using the command:\n     ```bash\n     ls /mnt\n     ```\n\n3. **Mount Verification:**\n   - Verify the FSx cache mount using the command:\n     ```bash\n     df -h /mnt\n     ```\n   - Ensure that the DNS and mount point specified are correctly shown in the output, indicating that the FSx cache is mounted.\n\n4. **Compliance Confirmation:**\n   - Confirm that the output matches the expected DNS and setup as planned. The mounting should reflect the correct file system and cache details.\n\nSince these steps require accessing the instance and executing checks/commands on the operating system, they cannot be automated through AWS API checks and are thus classified as a manual audit approach.",
+    "timestamp": "2025-10-28T16:17:00.187604",
+    "model": "gpt-4o"
+}

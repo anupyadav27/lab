@@ -1,0 +1,22 @@
+{
+    "control_id": "2.16",
+    "unique_id": "aws_3_2_16",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure FIPS Endpoint encryption is enabled for WorkSpaces.",
+    "input_row": {
+        "id": "2.16",
+        "unique_id": "aws_3_2_16",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure FIPS Endpoint encryption is enabled for WorkSpaces.",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\n- **Automated:** The control aims to ensure that FIPS Endpoint encryption is enabled for Amazon WorkSpaces. AWS APIs and tools like boto3/AWS CLI expose the necessary configuration details to determine if FIPS endpoint encryption is enabled. This falls under standard AWS service properties, focusing on encryption settings.\n\n**PROGRAM NAME:** aws_workspaces_fips_endpoint_encryption_enabled\n\n**AUTOMATION DETAILS:**\n\n- **AWS API Calls or boto3 SDK Methods to Use:** \n  - Utilize the `describe_workspaces` and `describe_workspace_directory` methods in boto3 to fetch workspace configuration details.\n  - Check the `workspaceProperties` attribute to verify FIPS endpoint settings.\n\n- **AWS CLI Commands (if applicable):**\n  - Use AWS CLI command `aws workspaces describe-workspaces` and `aws workspaces describe-workspace-directories` to retrieve workspace configuration details. Check associated properties for FIPS endpoint encryption enabled status.\n\n- **Specific Resources to Enumerate:**\n  - Enumerate all WorkSpaces across the AWS account in all active regions.\n\n- **Exact Configuration Properties/Settings to Validate:**\n  - Look for properties related to the endpoint type in the directory settings to ensure they indicate FIPS encryption is enabled.\n\n- **Clear Pass/Fail Criteria with Expected Values:**\n  - **Pass:** The workspace directory settings indicate that FIPS endpoint encryption is configured and enabled.\n  - **Fail:** The workspace directory settings do not indicate FIPS endpoint encryption or are misconfigured.\n\nThis approach leverages the existing AWS WorkSpaces API capabilities to verify encryption settings, focusing on endpoint configurations to ensure compliance with FIPS standards.",
+    "timestamp": "2025-10-28T15:17:41.204893",
+    "model": "gpt-4o"
+}

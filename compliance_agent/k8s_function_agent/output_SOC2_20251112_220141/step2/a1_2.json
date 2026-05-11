@@ -1,0 +1,27 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_etcd_backup_configured",
+    "k8s_etcd_encryption_enabled",
+    "k8s_secret_backup_and_recovery_enabled"
+  ],
+  "changes_made": [
+    "Removed k8s_pod_disaster_recovery_policy_configured as it does not map to a specific Kubernetes feature or control"
+  ],
+  "review_notes": "The functions mostly align with the SOC2 control A1.2 for backup and disaster recovery. The focus on etcd and secrets is appropriate given their roles in data storage and sensitive information management in Kubernetes. However, the function 'k8s_pod_disaster_recovery_policy_configured' is not technically accurate as Kubernetes does not have a specific 'disaster recovery policy' at the pod level. The other functions are well-named and map correctly to Kubernetes security features.",
+  "agreement_with_step1": false,
+  "technical_concerns": [
+    "k8s_pod_disaster_recovery_policy_configured does not map to a specific Kubernetes feature"
+  ],
+  "naming_improvements": [],
+  "control_id": "a1_2",
+  "title": "A1.2 Backup and Disaster Recovery: The entity implements backup processes, data recovery infrastructure, and environmental protections",
+  "step1_functions": [
+    "k8s_etcd_backup_configured",
+    "k8s_etcd_encryption_enabled",
+    "k8s_pod_disaster_recovery_policy_configured",
+    "k8s_secret_backup_and_recovery_enabled"
+  ],
+  "step1_reasoning": "The SOC2 control A1.2 focuses on backup and disaster recovery, which can be mapped to Kubernetes by ensuring that etcd (the primary data store for Kubernetes) is properly backed up and encrypted. Additionally, ensuring that secrets (which may contain sensitive data) are backed up and can be recovered is crucial. Configuring policies for disaster recovery at the pod level can also help in maintaining application availability."
+}

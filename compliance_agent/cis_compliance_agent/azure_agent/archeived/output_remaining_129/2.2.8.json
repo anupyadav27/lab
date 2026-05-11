@@ -1,0 +1,17 @@
+{
+    "id": "2.2.8",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.8",
+        "unique_id": "aks_2.2.8__ensure-an-ftp-server-is-not-installed",
+        "title": "Ensure an ftp server is not installed",
+        "description": "FTP (File Transfer Protocol) is a traditional and widely used standard tool for transferring files between a server and clients over a network, especially where no authentication is necessary (permits anonymous users to connect to a server).",
+        "rationale": "Unless there is a need to run the system as a FTP server, it is recommended that the package be removed to reduce the potential attack surface.",
+        "audit": "Run the following command to verify vsftpd is not installed: # rpm -q vsftpd package vsftpd is not installed",
+        "remediation": "Run the following command to remove vsftpd: # dnf remove vsftpd References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect to the Kubernetes Nodes:** Access the Azure portal and navigate to your AKS (Azure Kubernetes Service) cluster. Use SSH to connect to the nodes (the method could vary based on your setup, e.g., using Azure CLI or any SSH client).\n   \n2. **Verify Installed Packages:** Once connected to a node, run the following command to check for the presence of `vsftpd`:\n   ```bash\n   rpm -q vsftpd\n   ```\n   This command will query whether the `vsftpd` package is installed.\n\n3. **Expected Secure Configuration:** The expected secure configuration is that the command returns a message stating that the package `vsftpd` is not installed.\n\n4. **Confirm Compliance:** If `vsftpd` is found to be installed, you will need to take action. If it is not installed, the compliance requirement is met. Document the results of your command and ensure appropriate follow-up actions are taken if the package is present. If needed, remove it using:\n   ```bash\n   dnf remove vsftpd\n   ```"
+}

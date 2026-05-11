@@ -1,0 +1,17 @@
+{
+    "id": "2.2.10",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.10",
+        "unique_id": "aks_2.2.10__ensure-a-web-server-is-not-installed",
+        "title": "Ensure a web server is not installed",
+        "description": "Web servers provide the ability to host web site content.",
+        "rationale": "Unless there is a need to run the system as a web server, it is recommended that the packages be removed to reduce the potential attack surface. Note: Several http servers exist. They should also be audited, and removed, if not required.",
+        "audit": "Run the following command to verify httpd and nginx are not installed: # rpm -q httpd nginx package httpd is not installed package nginx is not installed",
+        "remediation": "Run the following command to remove httpd and nginx: # dnf remove httpd nginx References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Log into the Azure portal** and navigate to the **Kubernetes services** section.\n2. Select the relevant **Azure Kubernetes Service (AKS) cluster** to inspect.\n3. Click on the **Connect** button to retrieve the SSH command for connecting to the AKS cluster.\n4. Use the SSH command to connect to the **Kubernetes nodes**.\n5. Once connected to a node, run the following command in the terminal:\n   ```bash\n   rpm -q httpd nginx\n   ```\n6. **What to verify/validate:** Check the output of the command. If it displays \"package httpd is not installed\" and \"package nginx is not installed,\" this indicates compliance.\n7. **Expected secure configuration:** Neither `httpd` nor `nginx` packages should be installed on the AKS nodes to minimize the attack surface.\n8. **How to confirm compliance:** If both packages are reported as \"not installed,\" then the control is in compliance. If either package is installed, the AKS nodes require remediation."
+}

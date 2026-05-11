@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_secret_no_sensitive_data_in_env",
+    "k8s_secret_git_repo_url_no_sensitive_credentials",
+    "k8s_admission_deny_sensitive_env_variables"
+  ],
+  "changes_made": [
+    "Renamed 'k8s_secret_git_repo_url_no_sensitive_credentials' to 'k8s_config_git_repo_url_no_sensitive_credentials' for better resource alignment"
+  ],
+  "review_notes": "The control is applicable to Kubernetes as it involves managing sensitive data exposure, which is relevant to Kubernetes Secrets and admission controllers. The function names mostly follow the naming conventions, but one function needed a resource alignment change. The functions are technically accurate and map well to Kubernetes security practices.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Use 'config' instead of 'secret' for functions related to configuration management, such as repository URLs"
+  ],
+  "control_id": "6.3.2",
+  "title": "Requirement 6.3.2",
+  "step1_functions": [
+    "k8s_secret_no_sensitive_data_in_env",
+    "k8s_secret_git_repo_url_no_sensitive_credentials",
+    "k8s_admission_deny_sensitive_env_variables"
+  ],
+  "step1_reasoning": "The control focuses on ensuring that sensitive credentials are not exposed in source repository URLs or environment variables. In Kubernetes, this translates to ensuring that Secrets are not exposed in environment variables and that repository URLs configured in applications do not contain sensitive data. Additionally, admission controllers can be used to enforce policies that prevent sensitive data from being included in environment variables."
+}

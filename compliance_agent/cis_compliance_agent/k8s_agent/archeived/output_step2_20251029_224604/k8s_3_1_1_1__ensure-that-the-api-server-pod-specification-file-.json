@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.1",
+    "unique_id": "k8s_3_1_1_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the API server pod specification file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.1",
+        "unique_id": "k8s_3_1_1_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the API server pod specification file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the API server pod specification file has permissions of 600 or more restrictive.",
+        "rationale": "The API server pod specification file controls various parameters that set the behavior of the API server. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/manifests/kube-apiserver.yaml Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/manifests/kube-apiserver.yaml Default Value: By default, the kube-apiserver.yaml file has permissions of 640. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file system permissions of the API server pod specification file (e.g., /etc/kubernetes/manifests/kube-apiserver.yaml) on the control plane node. Kubernetes APIs and kubectl do not expose file system permissions of files on the host OS. This check requires direct access to the node's file system, which is not available via Kubernetes APIs or kubectl. Therefore, this control must be audited manually.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where the kube-apiserver is running.\n2. Locate the kube-apiserver pod specification file, typically at /etc/kubernetes/manifests/kube-apiserver.yaml.\n3. Run the following command to check the file permissions:\n   stat -c %a /etc/kubernetes/manifests/kube-apiserver.yaml\n4. Verify that the output is 600 or more restrictive (e.g., 600, 400, 440, etc.).\n5. Confirm that only the file owner has write permissions and no broader access is granted.\n6. If the permissions are more permissive than 600 (e.g., 640, 644), remediate by running:\n   chmod 600 /etc/kubernetes/manifests/kube-apiserver.yaml\n7. Document the result and confirm compliance.",
+    "timestamp": "2025-10-29T20:42:13.410917",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- The classification of this control as requiring a manual audit is correct. Kubernetes APIs and `kubectl` do not provide capabilities to check file system permissions on the host operating system where the control plane components are running. This task necessitates direct access to the node's file system, which is outside the scope of Kubernetes API capabilities.\n\n**TECHNICAL ACCURACY:** 9\n\n- The manual steps provided are technically accurate and complete for verifying the file permissions of the kube-apiserver pod specification file. The use of the `stat` command to check permissions and `chmod` for remediation is correct.\n- The program name convention is not explicitly mentioned, but the description is clear and descriptive. However, a suggested naming convention could be `k8s_apiserver_podspec_file_permissions`.\n\n**IMPROVEMENTS:**\n\n- The assessment could include a brief explanation of why file permissions are critical for security, emphasizing the risk of unauthorized access or modification.\n- While the manual approach is necessary, the assessment could suggest using configuration management tools (e.g., Ansible, Puppet) to automate the enforcement of correct permissions across multiple nodes.\n- A better program name suggestion could be `k8s_apiserver_podspec_file_permissions_check` to align with the convention and clarify the specific security check being performed.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded and aligns with current Kubernetes capabilities and security best practices. The manual steps are clear and actionable, ensuring a thorough compliance check.\n\n**FINAL RECOMMENDATION:**\n\n- Keep as-is, with a minor suggestion to include a more descriptive program name as `k8s_apiserver_podspec_file_permissions_check` and a brief note on the importance of file permissions for security. This would enhance clarity and provide additional context for the audit process.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T02:10:38.576456"
+}

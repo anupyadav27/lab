@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2",
+    "unique_id": "aws_8_1_2",
+    "source": "CIS AMAZON WEB SERVICES FOUNDATIONS BENCHMARK V5.0.0",
+    "title": "Ensure security contact information is registered",
+    "input_row": {
+        "id": "1.2",
+        "unique_id": "aws_8_1_2",
+        "source": "CIS AMAZON WEB SERVICES FOUNDATIONS BENCHMARK V5.0.0",
+        "title": "Ensure security contact information is registered",
+        "description": "AWS provides customers with the option of specifying the contact information for account's security team. It is recommended that this information be provided.",
+        "rationale": "Specifying security-specific contact information will help ensure that security advisories sent by AWS reach the team in your organization that is best equipped to respond to them.",
+        "audit": "Perform the following to determine if security contact information is present: From Console: 1. Click on your account name at the top right corner of the console 2. From the drop-down menu Click My Account 3. Scroll down to the Alternate Contacts section 4. Ensure contact information is specified in the Security section From Command Line: 1. Run the following command: aws account get-alternate-contact --alternate-contact-type SECURITY 2. Ensure proper contact information is specified for the Security contact.",
+        "remediation": "Perform the following to establish security contact information: From Console: 1. Click on your account name at the top right corner of the console. 2. From the drop-down menu Click My Account 3. Scroll down to the Alternate Contacts section 4. Enter contact information in the Security section From Command Line: Run the following command with the following input parameters: --email-address, --name, and --phone-number. aws account put-alternate-contact --alternate-contact-type SECURITY Note: Consider specifying an internal email distribution list to ensure emails are regularly monitored by more than one individual. References: 1. CCE-79200-2",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. CCE-79200-2"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit description directly mentions using the AWS CLI to check the alternate contact for security, indicating that this control can be checked via API calls or AWS CLI commands.\n- The AWS API for the `account` service includes methods such as `get-alternate-contact` and `put-alternate-contact`, confirming the availability of this information programmatically.\n- The boto3 SDK supports these operations, allowing the retrieval and verification of security contact information.\n- There is no need for manual intervention or visual inspection, making this control fully automatable.\n\n**PROGRAM NAME:** aws_account_alternate_contact_security_info_specified\n\n**AUTOMATION DETAILS:**\n- Use the AWS CLI command `aws account get-alternate-contact --alternate-contact-type SECURITY` to retrieve the security contact details.\n- Alternatively, employ boto3 by calling the `get_alternate_contact` method from the AWS SDK for Python, specifying the `alternate_contact_type` as `SECURITY`.\n- Enumerate all AWS accounts within an organization if applicable, as each account may have its own security contact information.\n- Validate that the retrieved security contact information includes the required fields: `email-address`, `name`, and `phone-number`.\n- Pass Criteria: Security contact information should be complete and non-empty for all specified fields.\n- If any field is missing or empty, this would result in a Fail status, indicating that security contact information is not properly configured.",
+    "timestamp": "2025-10-28T16:21:20.665789",
+    "model": "gpt-4o"
+}

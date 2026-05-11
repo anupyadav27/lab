@@ -1,0 +1,17 @@
+{
+    "id": "2.3.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.3.6",
+        "unique_id": "2.3.6__ensure-tftp-client-is-not-installed",
+        "title": "Ensure TFTP client is not installed",
+        "description": "Trivial File Transfer Protocol (TFTP) is a simple protocol for exchanging files between two TCP/IP machines. TFTP servers allow connections from a TFTP Client for sending and receiving files.",
+        "rationale": "TFTP does not have built-in encryption, access control or authentication. This makes it very easy for an attacker to exploit TFTP to gain access to files",
+        "audit": "Run the following command to verify tftp is not installed: # rpm -q tftp package tftp is not installed",
+        "remediation": "Run the following command to remove tftp: # dnf remove tftp References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Connect to the Azure Kubernetes Service (AKS) cluster via SSH.\n   - Path: Use the Azure Cloud Shell or any local terminal with SSH access to the AKS nodes.\n   - Command: `az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>` \n   - This command will download and configure the credentials to interact with the AKS.\n\n2. Check if `tftp` is installed on the nodes.\n   - Command: `rpm -q tftp`\n   - This command queries the RPM package manager to check if the `tftp` client is installed.\n\n3. Validate the output of the command.\n   - If the output returns `package tftp is not installed`, then the control is compliant.\n   - If the output returns the package version or `tftp is installed`, then the control is non-compliant.\n\n4. Ensure compliance action, if applicable.\n   - If `tftp` is installed, run the following command to remove it: `dnf remove tftp`.\n   - Confirm successful execution by re-running `rpm -q tftp` and validating it shows that the package is removed.\n\n5. Document the findings and any remediation steps taken.\n   - Log whether the control is compliant or non-compliant and note any actions performed."
+}

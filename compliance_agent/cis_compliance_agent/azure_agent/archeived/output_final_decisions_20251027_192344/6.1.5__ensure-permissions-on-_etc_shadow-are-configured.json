@@ -1,0 +1,40 @@
+{
+    "unique_id": "6.1.5__ensure-permissions-on-_etc_shadow-are-configured",
+    "control_id": "6.1.5",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+    "input_row": {
+        "id": "6.1.5",
+        "unique_id": "6.1.5__ensure-permissions-on-/etc/shadow-are-configured",
+        "title": "Ensure permissions on /etc/shadow are configured",
+        "description": " and Access is 0400 or more restrictive...\"",
+        "rationale": "The /etc/shadow file is used to store the information about user accounts that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "audit": "If attackers can gain read access to the /etc/shadow file, they can easily run a password cracking program against the hashed password to break it. Other security information that is stored in the /etc/shadow file (such as expiration) could also be useful to subvert the user accounts.",
+        "remediation": "Run the following command and verify Uid and Gid are 0/root , and Access is 0400 or more restrictive: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/shadow /etc/shadow 400 0/root 0/root",
+        "impact": "Run the following commands to set owner, group, and permissions on /etc/shadow: # chown root:root /etc/shadow # chmod u-wx,go-rwx /etc/shadow Default Value: /etc/shadow 400 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "null": [
+            "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+        ]
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Virtual Machine (VM) or Container:**\n   - If your target Azure resource is a VM or running a container, access it via SSH or Azure Bastion.\n\n2. **Check Permissions on the /etc/shadow File:**\n   - Execute the command: `stat -Lc \"%n %a %u/%U %g/%G\" /etc/shadow`\n   - This command will display the permissions, user ID, and group ID associated with the `/etc/shadow` file.\n\n3. **Verify Configuration:**\n   - Ensure that the output indicates the permissions of `/etc/shadow` is `0400` (readable only by the owner) and both the owner and group should indicate `root`.\n\n4. **Expected Secure Configuration:**\n   - Permissions: `0400`\n   - Owner: `root`\n   - Group: `root`\n\n5. **Confirm Compliance:**\n   - If the permissions do not match `0400` or the owner/group is not `root`, remediate the issue by running:\n     - `chown root:root /etc/shadow`\n     - `chmod u-wx,go-rwx /etc/shadow`\n   - After remediation, re-run the `stat` command to confirm that the changes have been applied correctly. Verify that the output reflects the expected secure configuration.\n\nBy following these steps, you will ensure that the permissions on the `/etc/shadow` file are correctly configured to maintain the security of user accounts."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The classification as a manual approach is partially correct. While the manual steps provided are accurate for directly accessing and checking the file permissions on a VM or container, this task can also be automated using Azure capabilities.\n- **Azure APIs/CLI:** Azure provides several tools that can automate this process. For example, Azure Automation Runbooks, Azure CLI, and Azure PowerShell can be used to execute scripts on VMs. Specifically, Azure Automation State Configuration (DSC) can ensure compliance by automatically checking and enforcing file permissions.\n\n**TECHNICAL ACCURACY:** 7\n\n- **Automation Details:** The manual steps are technically correct and provide a clear method for checking and remediating file permissions. However, they lack automation details that could leverage Azure's capabilities.\n- **Manual Steps Accuracy:** The steps are accurate and complete for a manual process. The use of `stat` and `chown/chmod` commands is appropriate for verifying and setting permissions.\n- **Program Naming Convention:** There is no mention of a program name following the convention. If automation were to be implemented, a name like `azure_vm_shadowfile_permission_check` would be suitable.\n\n**IMPROVEMENTS:**\n\n- **Automation Opportunities:** Consider using Azure Automation or Azure CLI scripts to automate the checking and remediation of file permissions. This would reduce manual effort and increase efficiency.\n- **Azure Policy and Security Center:** Explore Azure Policy to enforce configurations and Azure Security Center for continuous monitoring and compliance checks.\n- **Documentation:** Include references to Azure documentation for setting up automation scripts and using Azure services for compliance checks.\n\n**CONFIDENCE:** MEDIUM\n\n- While the manual steps are clear and technically sound, the lack of integration with Azure's automation capabilities limits the overall effectiveness of the compliance check.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Re-classify:** Consider re-classifying the approach to include both manual and automated options. Provide guidance on setting up Azure Automation or using Azure CLI/PowerShell for automated checks.\n- **Enhance Documentation:** Include detailed instructions for implementing automated checks using Azure services, and provide links to relevant Azure documentation.\n- **Expand Scope:** Consider the use of Azure Security Center and Azure Policy for broader compliance management and monitoring.",
+        "reviewed_at": "2025-10-26T15:46:18.690385"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** The task of ensuring permissions on the `/etc/shadow` file can be automated using Azure Automation tools. Azure Automation State Configuration (DSC) can be used to enforce and verify the correct permissions on this file across VMs. This approach leverages Azure's capabilities to automate compliance checks and remediation, making it more efficient and scalable than manual checks.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** azure_automation_vm_ensure_shadow_permissions\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Virtual Machines\n- **API/CLI Method:** Azure Automation State Configuration (DSC)\n- **Properties to Check:** File permissions, owner, and group of `/etc/shadow`\n- **Pass Criteria:** Permissions set to `0400`, owner and group set to `root`\n- **Fail Criteria:** Any deviation from the expected permissions or ownership\n\n---\n\n**DISAGREEMENTS RESOLVED:** The first AI suggested a manual approach, while the second AI highlighted the potential for automation using Azure capabilities. Given Azure's robust automation tools, the automated approach is more appropriate for ensuring consistent compliance across multiple resources.\n\n**SOURCE:** 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "decided_at": "2025-10-27T14:03:53.329409"
+    },
+    "metadata": {
+        "reviewed_file": "6.1.5__ensure-permissions-on-_etc_shadow-are-configured.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

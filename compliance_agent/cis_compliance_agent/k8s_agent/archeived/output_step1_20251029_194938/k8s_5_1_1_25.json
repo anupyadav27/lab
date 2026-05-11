@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.25",
+    "unique_id": "k8s_5_1_1_25",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the admission control policy is set to PodSecurityPolicy",
+    "input_row": {
+        "id": "1.1.25",
+        "unique_id": "k8s_5_1_1_25",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the admission control policy is set to PodSecurityPolicy",
+        "description": "Reject creating pods that do not match Pod Security Policies.",
+        "rationale": "A Pod Security Policy is a cluster-level resource that controls the actions that a pod can perform and what it has the ability to access. The PodSecurityPolicy objects define a set of conditions that a pod must run with in order to be accepted into the system. Pod Security Policies are comprised of settings and strategies that control the security features a pod has access to and hence this must be used to control pod access permissions.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --admission-control argument is set to a value that includes PodSecurityPolicy.",
+        "remediation": "Follow the documentation and create Pod Security Policy objects as per your environment. Then, edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_ADMISSION_CONTROL parameter to \"--admission- control=...,PodSecurityPolicy,...\": KUBE_ADMISSION_CONTROL=\"--admission-control=...,PodSecurityPolicy,...\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: The policy objects must be created and granted before pod creation would be allowed.   61 | P a g e Default Value: By default, PodSecurityPolicy is not set. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#podsecuritypolicy 3. https://kubernetes.io/docs/concepts/policy/pod-security-policy/#enabling-pod- security-policies",
+        "profile_applicability": "•  Level 1",
+        "impact": "The policy objects must be created and granted before pod creation would be allowed.   61 | P a g e Default Value: By default, PodSecurityPolicy is not set.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#podsecuritypolicy 3. https://kubernetes.io/docs/concepts/policy/pod-security-policy/#enabling-pod- security-policies"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_podsecuritypolicy_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify that the PodSecurityPolicy admission plugin is enabled.\n- Use the Kubernetes API (if running as a static pod) to inspect the kube-apiserver Pod spec in the kube-system namespace:\n  - Command: kubectl -n kube-system get pod -l component=kube-apiserver -o json\n  - Inspect the command or args field for the presence of --enable-admission-plugins (or legacy --admission-control) and ensure \"PodSecurityPolicy\" is included in the list.\n- Alternatively, if kube-apiserver is not deployed as a pod (rare in modern clusters), check the process arguments on the control plane node:\n  - Command: ps -ef | grep kube-apiserver\n  - Look for --enable-admission-plugins=...PodSecurityPolicy... or --admission-control=...PodSecurityPolicy...\n- Pass Criteria: \"PodSecurityPolicy\" is present in the enabled admission plugins for the kube-apiserver.\n- Fail Criteria: \"PodSecurityPolicy\" is not present in the enabled admission plugins for the kube-apiserver.\n- Note: PodSecurityPolicy is deprecated in Kubernetes v1.21+ and removed in v1.25. For clusters using newer versions, check for Pod Security Admission instead.",
+    "timestamp": "2025-10-29T21:42:42.787038",
+    "model": "gpt-4.1"
+}

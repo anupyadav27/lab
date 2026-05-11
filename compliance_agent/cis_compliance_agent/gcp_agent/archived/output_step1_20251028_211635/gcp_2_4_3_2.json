@@ -1,0 +1,22 @@
+{
+    "control_id": "4.3.2",
+    "unique_id": "gcp_2_4_3_2",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Ensure that all Namespaces have Network Policies defined",
+    "input_row": {
+        "id": "4.3.2",
+        "unique_id": "gcp_2_4_3_2",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Ensure that all Namespaces have Network Policies defined",
+        "description": "Use network policies to isolate traffic in the cluster network.",
+        "rationale": "Running different applications on the same Kubernetes cluster creates a risk of one compromised application attacking a neighboring application. Network segmentation is important to ensure that containers can communicate only with those they are supposed to. A network policy is a specification of how selections of pods are allowed to communicate with each other and other network endpoints. Network Policies are namespace scoped. When a network policy is introduced to a given namespace, all traffic not allowed by the policy is denied. However, if there are no network policies in a namespace all traffic will be allowed into and out of the pods in that namespace. Impact: Once network policies are in use within a given namespace, traffic not explicitly allowed by a network policy will be denied. As such it is important to ensure that, when introducing network policies, legitimate traffic is not blocked.",
+        "audit": "Run the below command and review the NetworkPolicy objects created in the cluster. kubectl get networkpolicy --all-namespaces ensure that each namespace defined in the cluster has at least one Network Policy.",
+        "remediation": "Follow the documentation and create NetworkPolicy objects as needed. See: https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy for more information. Default Value: By default, network policies are not created. References: 1. https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy 2. https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview",
+        "profile_applicability": "•  Level 2",
+        "impact": "Once network policies are in use within a given namespace, traffic not explicitly allowed by a network policy will be denied. As such it is important to ensure that, when introducing network policies, legitimate traffic is not blocked.",
+        "references": "1. https://cloud.google.com/kubernetes-engine/docs/how-to/network- policy#creating_a_network_policy 2. https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- This control can be verified using the Google Cloud SDK (`kubectl`) command specified in the audit section.\n- It involves standard GCP/Kubernetes network policies, which can be queried through the GCP/Kubernetes command-line tools.\n- The `kubectl get networkpolicy --all-namespaces` command is a clear indication that this can be checked programmatically.\n- There is no need for human judgment or visual inspection since the presence of NetworkPolicy objects is confirmable through the command output.\n\n**PROGRAM NAME:** gcp_kubernetes_namespace_network_policy_defined\n\n**AUTOMATION DETAILS:**\n- Use the Kubernetes command-line tool `kubectl` to list network policies across all namespaces.\n- Specifically, execute the command: `kubectl get networkpolicy --all-namespaces`.\n- Enumerate all namespaces in the cluster and check if each has at least one `NetworkPolicy` object.\n- Pass Criteria: Every namespace must have at least one NetworkPolicy defined.\n- Fail Criteria: Any namespace without a defined NetworkPolicy will result in non-compliance.\n- The check ensures that namespaces are set up to control traffic and reduce exposure.",
+    "timestamp": "2025-10-28T21:55:38.506235",
+    "model": "gpt-4o"
+}

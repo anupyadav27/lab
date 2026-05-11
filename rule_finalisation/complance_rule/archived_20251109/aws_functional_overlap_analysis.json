@@ -1,0 +1,835 @@
+{
+  "cloudtrail_enabled": {
+    "description": "Ensure CloudTrail is enabled and properly configured",
+    "functions_found": [
+      "aws_cloudtrail_enabled",
+      "aws_cloudtrail_multi_region_enabled",
+      "aws_cloudtrail_trail_multi_region_logging_enabled",
+      "aws_cloudtrail_multi_region_enabled_logging_management_events",
+      "aws_cloudtrail_trail_multi_region_management_logging_enabled"
+    ],
+    "functions_count": 5,
+    "recommendation": "Keep: aws_cloudtrail_multi_region_enabled (most comprehensive)",
+    "rationale": "Multi-region CloudTrail enables single-region by default. Checking multi-region is sufficient.",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 102,
+    "verdict": "DISTINCT"
+  },
+  "cloudtrail_cloudwatch_integration": {
+    "description": "CloudTrail logs integrated with CloudWatch",
+    "functions_found": [
+      "aws_cloudtrail_cloudwatch_logging_enabled",
+      "aws_cloudtrail_cloudwatch_logs_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_cloudtrail_cloudwatch_logging_enabled",
+    "rationale": "Same check, different naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 99,
+    "verdict": "DISTINCT"
+  },
+  "cloudtrail_config_changes": {
+    "description": "Monitor AWS Config configuration changes",
+    "functions_found": [
+      "aws_cloudtrail_config_change_monitoring",
+      "aws_cloudtrail_config_changes_monitoring"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_cloudtrail_config_changes_monitoring",
+    "rationale": "Identical function, singular vs plural naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 2,
+    "verdict": "DISTINCT"
+  },
+  "cloudtrail_vpc_changes": {
+    "description": "Monitor VPC configuration changes",
+    "functions_found": [
+      "aws_cloudtrail_vpc_change_monitoring_configured",
+      "aws_cloudtrail_vpc_changes_monitoring_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_cloudtrail_vpc_changes_monitoring_enabled",
+    "rationale": "Same monitoring, different naming convention",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 2,
+    "verdict": "DISTINCT"
+  },
+  "cloudtrail_s3_data_events": {
+    "description": "S3 object-level logging via CloudTrail",
+    "functions_found": [
+      "aws_cloudtrail_s3_data_events_logging_enabled",
+      "aws_cloudtrail_s3_object_level_logging_enabled",
+      "aws_cloudtrail_s3_dataevents_read_enabled",
+      "aws_cloudtrail_s3_dataevents_write_enabled"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_cloudtrail_s3_dataevents_read_enabled, aws_cloudtrail_s3_dataevents_write_enabled (both needed for granularity)",
+    "rationale": "Read and write are distinct permissions. The generic 'data_events' checks are redundant if you have both read/write.",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 91,
+    "verdict": "DISTINCT"
+  },
+  "cloudtrail_kms_encryption": {
+    "description": "CloudTrail log encryption with KMS",
+    "functions_found": [
+      "aws_cloudtrail_kms_encryption_enabled",
+      "aws_cloudtrail_trail_encryption_at_rest_kms_enabled",
+      "aws_cloudtrail_trail_sse_kms_encryption_at_rest_enabled"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_cloudtrail_kms_encryption_enabled",
+    "rationale": "All check the same thing - KMS encryption for CloudTrail",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 49,
+    "verdict": "DISTINCT"
+  },
+  "cloudtrail_log_validation": {
+    "description": "CloudTrail log file integrity validation",
+    "functions_found": [
+      "aws_cloudtrail_log_file_validation_enabled",
+      "aws_cloudtrail_trail_log_file_validation_check",
+      "aws_cloudtrail_trail_log_file_validation_status_check"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_cloudtrail_log_file_validation_enabled",
+    "rationale": "All verify log file validation is enabled",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 54,
+    "verdict": "DISTINCT"
+  },
+  "s3_bucket_encryption": {
+    "description": "S3 bucket encryption at rest",
+    "functions_found": [
+      "aws_s3_bucket_default_encryption",
+      "aws_s3_bucket_encryption_enabled",
+      "aws_s3_bucket_kms_encryption",
+      "aws_s3_bucket_default_kms_encryption"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_s3_bucket_encryption_enabled (any encryption), aws_s3_bucket_kms_encryption (specifically KMS)",
+    "rationale": "Two levels: (1) Is encryption enabled at all? (2) Is it KMS specifically?",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 37,
+    "verdict": "DISTINCT"
+  },
+  "s3_bucket_logging": {
+    "description": "S3 bucket access logging",
+    "functions_found": [
+      "aws_s3_bucket_logging_enabled",
+      "aws_s3_bucket_server_access_logging_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_s3_bucket_server_access_logging_enabled (more specific)",
+    "rationale": "Same check, more explicit naming preferred",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 60,
+    "verdict": "DISTINCT"
+  },
+  "s3_bucket_versioning": {
+    "description": "S3 bucket versioning enabled",
+    "functions_found": [
+      "aws_s3_bucket_versioning_enabled",
+      "aws_s3_bucket_object_versioning"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_s3_bucket_versioning_enabled",
+    "rationale": "Same check, versioning is at bucket level not object level (misleading name)",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 52,
+    "verdict": "DISTINCT"
+  },
+  "s3_bucket_replication": {
+    "description": "S3 bucket cross-region replication",
+    "functions_found": [
+      "aws_s3_bucket_cross_region_replication",
+      "aws_s3_bucket_replication_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_s3_bucket_replication_enabled (covers both CRR and SRR)",
+    "rationale": "Replication can be cross-region or same-region; generic check is better",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 11,
+    "verdict": "DISTINCT"
+  },
+  "s3_public_access": {
+    "description": "S3 bucket public access controls",
+    "functions_found": [
+      "aws_s3_bucket_public_access",
+      "aws_s3_bucket_public_read_prohibited",
+      "aws_s3_bucket_public_write_prohibited",
+      "aws_s3_bucket_policy_public_write_access",
+      "aws_s3_account_level_public_access_blocks",
+      "aws_s3_public_access_block_check"
+    ],
+    "functions_count": 6,
+    "recommendation": "Keep: aws_s3_account_level_public_access_blocks (account-level), aws_s3_bucket_public_read_prohibited, aws_s3_bucket_public_write_prohibited (bucket-level granular)",
+    "rationale": "Account-level blocks are different from bucket-level. Need both read and write checks.",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 75,
+    "verdict": "DISTINCT"
+  },
+  "s3_secure_transport": {
+    "description": "S3 bucket requires HTTPS/TLS",
+    "functions_found": [
+      "aws_s3_bucket_secure_transport_policy",
+      "aws_s3_bucket_policy_in_transit_http_access_denied"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_s3_bucket_secure_transport_policy",
+    "rationale": "Same policy check, different naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 68,
+    "verdict": "DISTINCT"
+  },
+  "s3_cloudtrail_bucket_logging": {
+    "description": "CloudTrail S3 bucket has access logging",
+    "functions_found": [
+      "aws_s3_cloudtrail_bucket_access_logging_enabled",
+      "aws_s3_cloudtrail_bucket_logging_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_s3_cloudtrail_bucket_access_logging_enabled",
+    "rationale": "More specific naming for CloudTrail bucket logging",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 2,
+    "verdict": "DISTINCT"
+  },
+  "iam_root_mfa": {
+    "description": "Root account MFA enabled",
+    "functions_found": [
+      "aws_iam_root_mfa_enabled",
+      "aws_iam_root_mfa_status_check",
+      "aws_iam_root_user_mfa_check"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_iam_root_mfa_enabled",
+    "rationale": "All check root MFA status",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 41,
+    "verdict": "DISTINCT"
+  },
+  "iam_root_hardware_mfa": {
+    "description": "Root account hardware MFA (not virtual)",
+    "functions_found": [
+      "aws_iam_root_hardware_mfa_enabled",
+      "aws_iam_root_hardware_mfa_check"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_iam_root_hardware_mfa_enabled",
+    "rationale": "Same check, different naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 30,
+    "verdict": "DISTINCT"
+  },
+  "iam_root_access_keys": {
+    "description": "Root account access keys should not exist",
+    "functions_found": [
+      "aws_iam_no_root_access_key",
+      "aws_iam_root_user_access_key_check",
+      "aws_iam_root_user_access_keys_existence_check"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_iam_no_root_access_key",
+    "rationale": "Most concise naming, same check",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 60,
+    "verdict": "DISTINCT"
+  },
+  "iam_user_mfa": {
+    "description": "IAM users with console access have MFA",
+    "functions_found": [
+      "aws_iam_user_mfa_enabled",
+      "aws_iam_user_mfa_enabled_console_access",
+      "aws_iam_user_mfa_status_check_for_console_access",
+      "aws_iam_user_console_password_mfa_check"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_iam_user_mfa_enabled_console_access",
+    "rationale": "Specifically checks console access users (most accurate)",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 37,
+    "verdict": "DISTINCT"
+  },
+  "iam_access_key_rotation": {
+    "description": "IAM access keys rotated regularly",
+    "functions_found": [
+      "aws_iam_access_key_rotation_90_days_check",
+      "aws_iam_access_key_rotation_check",
+      "aws_iam_rotate_access_key_90_days"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_iam_access_key_rotation_90_days_check",
+    "rationale": "Specific 90-day requirement is CIS benchmark standard",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 28,
+    "verdict": "DISTINCT"
+  },
+  "iam_unused_credentials": {
+    "description": "IAM users with unused credentials",
+    "functions_found": [
+      "aws_iam_user_credentials_unused_45_days_disabled",
+      "aws_iam_user_credentials_unused_for_45_days_disabled",
+      "aws_iam_user_unused_credentials",
+      "aws_iam_user_unused_credentials_disabled"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_iam_user_credentials_unused_45_days_disabled",
+    "rationale": "45 days is the standard threshold",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 7,
+    "verdict": "DISTINCT"
+  },
+  "iam_user_in_groups": {
+    "description": "IAM users should be in groups, not have direct policies",
+    "functions_found": [
+      "aws_iam_user_in_group",
+      "aws_iam_user_group_membership",
+      "aws_iam_user_permissions_group_only_check",
+      "aws_iam_user_permissions_group_only_compliance"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_iam_user_in_group (checks group membership), aws_iam_policy_attached_only_to_group_or_roles (checks no direct policies)",
+    "rationale": "Two distinct checks: (1) Is user in a group? (2) Does user have direct policies?",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 4,
+    "verdict": "DISTINCT"
+  },
+  "iam_password_policy": {
+    "description": "IAM password policy compliance",
+    "functions_found": [
+      "aws_iam_password_policy_compliance",
+      "aws_iam_password_policy_strong",
+      "aws_iam_password_policy_minimum_length_14",
+      "aws_iam_password_policy_minimum_length_check",
+      "aws_iam_password_policy_expires_passwords_within_90_days_or_less",
+      "aws_iam_password_policy_password_reuse_prevention_check",
+      "aws_iam_password_policy_prevent_password_reuse_min_24",
+      "aws_iam_password_policy_reuse_24",
+      "aws_iam_user_password_policy_complex"
+    ],
+    "functions_count": 9,
+    "recommendation": "Keep: aws_iam_password_policy_minimum_length_14, aws_iam_password_policy_expires_passwords_within_90_days_or_less, aws_iam_password_policy_reuse_24, aws_iam_user_password_policy_complex",
+    "rationale": "Each checks a specific password policy requirement: length, expiry, reuse, complexity",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 110,
+    "verdict": "DISTINCT"
+  },
+  "iam_support_role": {
+    "description": "AWS Support access role exists",
+    "functions_found": [
+      "aws_iam_role_awssupport_access_policy_attachment",
+      "aws_iam_role_awssupport_access_policy_check"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_iam_role_awssupport_access_policy_attachment",
+    "rationale": "Same check, slightly different naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 2,
+    "verdict": "DISTINCT"
+  },
+  "iam_access_analyzer": {
+    "description": "IAM Access Analyzer enabled",
+    "functions_found": [
+      "aws_iam_access_analyzer_active_status_all_regions",
+      "aws_iam_access_analyzer_external_access_enabled_all_regions"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: Both - different checks",
+    "rationale": "First checks if active, second checks if external access analysis is on",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 2,
+    "verdict": "DISTINCT"
+  },
+  "ec2_ebs_encryption": {
+    "description": "EBS volumes encrypted",
+    "functions_found": [
+      "aws_ec2_ebs_default_encryption",
+      "aws_ec2_ebs_encryption_by_default_enabled",
+      "aws_ec2_ebs_volume_encrypted",
+      "aws_ec2_ebs_volume_encryption",
+      "aws_ec2_ebs_volume_encryption_enabled",
+      "aws_ec2_ebs_snapshots_encrypted",
+      "aws_ebs_snapshot_encryption"
+    ],
+    "functions_count": 7,
+    "recommendation": "Keep: aws_ec2_ebs_encryption_by_default_enabled (account default), aws_ec2_ebs_volume_encrypted (per-volume), aws_ec2_ebs_snapshots_encrypted (snapshots)",
+    "rationale": "Three distinct checks: default setting, individual volumes, snapshots",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 50,
+    "verdict": "DISTINCT"
+  },
+  "ec2_ebs_public": {
+    "description": "EBS snapshots not public",
+    "functions_found": [
+      "aws_ec2_ebs_public_snapshot",
+      "aws_ec2_ebs_snapshot_account_block_public_access"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: Both - different levels",
+    "rationale": "First checks individual snapshots, second checks account-level block setting",
+    "compliance_overlap_pct": 1.1,
+    "common_controls": 1,
+    "total_controls": 91,
+    "verdict": "DISTINCT"
+  },
+  "ec2_imdsv2": {
+    "description": "EC2 Instance Metadata Service v2 required",
+    "functions_found": [
+      "aws_ec2_instance_imdsv2_enabled",
+      "aws_ec2_instance_metadata_service_imdsv2_required",
+      "aws_ec2_instance_account_imdsv2_enabled",
+      "aws_ec2_launch_template_imdsv2_required"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_ec2_instance_imdsv2_enabled (running instances), aws_ec2_launch_template_imdsv2_required (launch templates)",
+    "rationale": "Need to check both running instances and launch templates separately",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 45,
+    "verdict": "DISTINCT"
+  },
+  "ec2_public_ip": {
+    "description": "EC2 instances should not have public IPs",
+    "functions_found": [
+      "aws_ec2_instance_public_ip",
+      "aws_ec2_instance_no_public_ip",
+      "aws_ec2_launch_template_no_public_ip"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_ec2_instance_no_public_ip (instances), aws_ec2_launch_template_no_public_ip (templates)",
+    "rationale": "Check both instances and templates; naming should be consistent (no_public_ip)",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 87,
+    "verdict": "DISTINCT"
+  },
+  "ec2_default_security_group": {
+    "description": "Default security group restricts all traffic",
+    "functions_found": [
+      "aws_ec2_default_security_group_restriction_check",
+      "aws_ec2_securitygroup_default_restrict_traffic",
+      "aws_ec2_securitygroup_default_restricted"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_ec2_securitygroup_default_restrict_traffic",
+    "rationale": "All check default SG is locked down",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 23,
+    "verdict": "DISTINCT"
+  },
+  "ec2_sg_ssh_restricted": {
+    "description": "Security groups don't allow SSH from internet",
+    "functions_found": [
+      "aws_ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22",
+      "aws_ec2_securitygroup_ssh_restricted",
+      "aws_ec2_security_group_ingress_ssh_rdp_restricted"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_ec2_securitygroup_ssh_restricted (SSH), aws_ec2_securitygroup_rdp_restricted (RDP separately)",
+    "rationale": "SSH and RDP are different protocols, check separately",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 37,
+    "verdict": "DISTINCT"
+  },
+  "ec2_sg_rdp_restricted": {
+    "description": "Security groups don't allow RDP from internet",
+    "functions_found": [
+      "aws_ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_3389",
+      "aws_ec2_securitygroup_rdp_restricted"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_ec2_securitygroup_rdp_restricted",
+    "rationale": "Consolidated port check into named function",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 8,
+    "verdict": "DISTINCT"
+  },
+  "ec2_sg_unrestricted": {
+    "description": "Security groups don't allow unrestricted access",
+    "functions_found": [
+      "aws_ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "aws_ec2_securitygroup_allow_ingress_from_internet_to_any_port",
+      "aws_ec2_securitygroup_allow_wide_open_public_ipv4"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+    "rationale": "All check for 0.0.0.0/0 on all ports",
+    "compliance_overlap_pct": 26.7,
+    "common_controls": 4,
+    "total_controls": 15,
+    "verdict": "DISTINCT"
+  },
+  "rds_encryption": {
+    "description": "RDS instance storage encrypted",
+    "functions_found": [
+      "aws_rds_instance_encryption_at_rest_enabled",
+      "aws_rds_instance_encryption_enabled",
+      "aws_rds_instance_storage_encrypted",
+      "aws_rds_storage_encrypted",
+      "aws_rds_cluster_storage_encrypted"
+    ],
+    "functions_count": 5,
+    "recommendation": "Keep: aws_rds_instance_storage_encrypted (instances), aws_rds_cluster_storage_encrypted (clusters)",
+    "rationale": "Instance and cluster encryption are separate checks",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 34,
+    "verdict": "DISTINCT"
+  },
+  "rds_backup": {
+    "description": "RDS automated backups enabled",
+    "functions_found": [
+      "aws_rds_backup_enabled",
+      "aws_rds_instance_backup_enabled",
+      "aws_rds_aurora_backup_enabled",
+      "aws_rds_backup_retention_period"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_rds_instance_backup_enabled (checks enabled), aws_rds_backup_retention_period (checks >= 7 days)",
+    "rationale": "Two checks: is backup on, and is retention sufficient",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 47,
+    "verdict": "DISTINCT"
+  },
+  "rds_multi_az": {
+    "description": "RDS Multi-AZ enabled",
+    "functions_found": [
+      "aws_rds_instance_multi_az",
+      "aws_rds_instance_multi_az_compliance_check",
+      "aws_rds_multi_az_enabled",
+      "aws_rds_cluster_multi_az"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_rds_instance_multi_az (instances), aws_rds_cluster_multi_az (clusters)",
+    "rationale": "Instance and cluster are different resource types",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 38,
+    "verdict": "DISTINCT"
+  },
+  "rds_public_access": {
+    "description": "RDS instances not publicly accessible",
+    "functions_found": [
+      "aws_rds_instance_no_public_access",
+      "aws_rds_instance_public_access_check"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_rds_instance_no_public_access",
+    "rationale": "Same check, consistent naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 73,
+    "verdict": "DISTINCT"
+  },
+  "rds_cloudwatch_logs": {
+    "description": "RDS logs exported to CloudWatch",
+    "functions_found": [
+      "aws_rds_instance_integration_cloudwatch_logs",
+      "aws_rds_cluster_integration_cloudwatch_logs"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: Both",
+    "rationale": "Instance and cluster logs are configured separately",
+    "compliance_overlap_pct": 1.8,
+    "common_controls": 1,
+    "total_controls": 56,
+    "verdict": "DISTINCT"
+  },
+  "rds_version_upgrade": {
+    "description": "RDS auto minor version upgrade enabled",
+    "functions_found": [
+      "aws_rds_auto_minor_version_upgrade",
+      "aws_rds_instance_auto_minor_version_upgrade_check"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_rds_instance_auto_minor_version_upgrade_check",
+    "rationale": "More specific naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 4,
+    "verdict": "DISTINCT"
+  },
+  "lambda_public_access": {
+    "description": "Lambda functions not publicly accessible",
+    "functions_found": [
+      "aws_lambda_function_not_publicly_accessible",
+      "aws_lambda_function_public_access_check",
+      "aws_lambda_function_restrict_public_access"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_lambda_function_restrict_public_access",
+    "rationale": "Most explicit naming about what should be done",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 50,
+    "verdict": "DISTINCT"
+  },
+  "lambda_vpc": {
+    "description": "Lambda functions inside VPC",
+    "functions_found": [
+      "aws_lambda_function_inside_vpc"
+    ],
+    "functions_count": 1,
+    "recommendation": "Keep: aws_lambda_function_inside_vpc",
+    "rationale": "Only one function for this check",
+    "compliance_overlap_pct": 100,
+    "common_controls": 3,
+    "total_controls": 3,
+    "verdict": "HIGH_OVERLAP"
+  },
+  "kms_key_rotation": {
+    "description": "KMS CMK automatic rotation enabled",
+    "functions_found": [
+      "aws_kms_cmk_rotation_enabled",
+      "aws_kms_key_rotation_enabled",
+      "aws_kms_symmetric_cmk_rotation_enabled",
+      "aws_kms_symmetric_key_rotation_enabled"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_kms_cmk_rotation_enabled",
+    "rationale": "CMK is the correct term (Customer Master Key); symmetric is implied for rotation",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 22,
+    "verdict": "DISTINCT"
+  },
+  "cloudwatch_log_encryption": {
+    "description": "CloudWatch Log Groups encrypted with KMS",
+    "functions_found": [
+      "aws_cloudwatch_log_group_kms_encryption_enabled"
+    ],
+    "functions_count": 1,
+    "recommendation": "Keep: aws_cloudwatch_log_group_kms_encryption_enabled",
+    "rationale": "Only function for this check",
+    "compliance_overlap_pct": 100,
+    "common_controls": 29,
+    "total_controls": 29,
+    "verdict": "HIGH_OVERLAP"
+  },
+  "cloudwatch_log_retention": {
+    "description": "CloudWatch Log Groups have retention policy",
+    "functions_found": [
+      "aws_cloudwatch_log_group_retention",
+      "aws_cloudwatch_log_group_retention_policy_specific_days_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_cloudwatch_log_group_retention",
+    "rationale": "Generic check is sufficient, covers all retention periods",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 42,
+    "verdict": "DISTINCT"
+  },
+  "vpc_flow_logs": {
+    "description": "VPC Flow Logs enabled",
+    "functions_found": [
+      "aws_vpc_flow_logs_enabled",
+      "aws_ec2_vpc_flow_logging_reject_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: Both",
+    "rationale": "First checks if enabled, second checks if REJECT traffic is logged (more stringent)",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 34,
+    "verdict": "DISTINCT"
+  },
+  "guardduty_enabled": {
+    "description": "GuardDuty enabled",
+    "functions_found": [
+      "aws_guardduty_enabled",
+      "aws_guardduty_is_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_guardduty_enabled",
+    "rationale": "Same check, simpler naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 128,
+    "verdict": "DISTINCT"
+  },
+  "config_enabled": {
+    "description": "AWS Config enabled",
+    "functions_found": [
+      "aws_config_enabled",
+      "aws_config_recorder_all_regions_enabled",
+      "aws_config_configuration_recorder_enabled_in_all_regions",
+      "aws_config_recorder_status_check_all_regions"
+    ],
+    "functions_count": 4,
+    "recommendation": "Keep: aws_config_recorder_all_regions_enabled",
+    "rationale": "Most specific - Config must be in all regions",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 16,
+    "verdict": "DISTINCT"
+  },
+  "securityhub_enabled": {
+    "description": "Security Hub enabled",
+    "functions_found": [
+      "aws_securityhub_enabled",
+      "aws_securityhub_hub_enabled_in_all_regions",
+      "aws_securityhub_hub_status_check"
+    ],
+    "functions_count": 3,
+    "recommendation": "Keep: aws_securityhub_hub_enabled_in_all_regions",
+    "rationale": "Security Hub should be enabled in all regions",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 59,
+    "verdict": "DISTINCT"
+  },
+  "elb_logging": {
+    "description": "ELB access logging enabled",
+    "functions_found": [
+      "aws_elb_logging_enabled",
+      "aws_elbv2_logging_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: Both",
+    "rationale": "Classic ELB vs ALB/NLB are different services",
+    "compliance_overlap_pct": 100.0,
+    "common_controls": 49,
+    "total_controls": 49,
+    "verdict": "HIGH_OVERLAP"
+  },
+  "elb_ssl": {
+    "description": "ELB uses SSL/TLS listeners",
+    "functions_found": [
+      "aws_elb_ssl_listeners",
+      "aws_elbv2_insecure_ssl_ciphers"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: Both",
+    "rationale": "First checks SSL is used, second checks ciphers are secure",
+    "compliance_overlap_pct": 2.7,
+    "common_controls": 2,
+    "total_controls": 73,
+    "verdict": "DISTINCT"
+  },
+  "dynamodb_encryption": {
+    "description": "DynamoDB tables encrypted",
+    "functions_found": [
+      "aws_dynamodb_encryption_enabled",
+      "aws_dynamodb_tables_kms_cmk_encryption_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: Both",
+    "rationale": "First checks any encryption, second checks KMS CMK specifically",
+    "compliance_overlap_pct": 23.1,
+    "common_controls": 6,
+    "total_controls": 26,
+    "verdict": "DISTINCT"
+  },
+  "dynamodb_pitr": {
+    "description": "DynamoDB point-in-time recovery enabled",
+    "functions_found": [
+      "aws_dynamodb_pitr_enabled",
+      "aws_dynamodb_tables_pitr_enabled"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_dynamodb_pitr_enabled",
+    "rationale": "Same check, redundant naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 35,
+    "verdict": "DISTINCT"
+  },
+  "eks_secrets_encryption": {
+    "description": "EKS secrets encrypted with KMS CMK",
+    "functions_found": [
+      "aws_eks_cluster_kms_cmk_encryption_in_secrets_enabled",
+      "aws_eks_cluster_secrets_encryption_kms_cmk"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_eks_cluster_secrets_encryption_kms_cmk",
+    "rationale": "Shorter, clearer naming",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 13,
+    "verdict": "DISTINCT"
+  },
+  "eks_public_endpoint": {
+    "description": "EKS cluster endpoint not publicly accessible",
+    "functions_found": [
+      "aws_eks_cluster_not_publicly_accessible",
+      "aws_eks_cluster_endpoint_access_check"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_eks_cluster_endpoint_access_check",
+    "rationale": "More nuanced - checks endpoint access configuration, not just public/private",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 15,
+    "verdict": "DISTINCT"
+  },
+  "acm_certificate_expiration": {
+    "description": "ACM certificates expiring soon",
+    "functions_found": [
+      "aws_acm_certificate_expiration"
+    ],
+    "functions_count": 1,
+    "recommendation": "Keep: aws_acm_certificate_expiration",
+    "rationale": "Only function after consolidation",
+    "compliance_overlap_pct": 100,
+    "common_controls": 18,
+    "total_controls": 18,
+    "verdict": "HIGH_OVERLAP"
+  },
+  "redshift_encryption": {
+    "description": "Redshift cluster encrypted",
+    "functions_found": [
+      "aws_redshift_cluster_encrypted",
+      "aws_redshift_cluster_encrypted_at_rest"
+    ],
+    "functions_count": 2,
+    "recommendation": "Keep: aws_redshift_cluster_encrypted",
+    "rationale": "At-rest is implied for Redshift encryption",
+    "compliance_overlap_pct": 0.0,
+    "common_controls": 0,
+    "total_controls": 2,
+    "verdict": "DISTINCT"
+  },
+  "redshift_audit_logging": {
+    "description": "Redshift audit logging enabled",
+    "functions_found": [
+      "aws_redshift_cluster_audit_logging"
+    ],
+    "functions_count": 1,
+    "recommendation": "Keep: aws_redshift_cluster_audit_logging",
+    "rationale": "Only function for this check",
+    "compliance_overlap_pct": 100,
+    "common_controls": 69,
+    "total_controls": 69,
+    "verdict": "HIGH_OVERLAP"
+  }
+}

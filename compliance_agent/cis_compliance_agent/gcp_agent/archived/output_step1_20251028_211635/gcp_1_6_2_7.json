@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.7",
+    "unique_id": "gcp_1_6_2_7",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure all users' home directories exist",
+    "input_row": {
+        "id": "6.2.7",
+        "unique_id": "gcp_1_6_2_7",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure all users' home directories exist",
+        "description": "Users can be defined in /etc/passwd without a home directory or with a home directory that does not actually exist.",
+        "rationale": "If the user's home directory does not exist or is unassigned, the user will be placed in \"/\" and will not be able to write any files or have local environment variables set.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash grep -E -v '^(halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'\"$(which nologin)\"'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read -r user dir; do if [ ! -d \"$dir\" ]; then echo \"The home directory ($dir) of user $user does not exist.\" fi done",
+        "remediation": "If any users' home directories do not exist, create them and make sure the respective user owns the directory. Users without an assigned home directory should be removed or assigned a home directory as appropriate. Additional Information: The audit script checks all users UID 500 and above except nfsnobody. Some distributions split at UID 1000 instead, consult your documentation and/or the UID_MIN setting in /etc/login.defs to determine which is appropriate for you. On some distributions the /sbin/nologin should be replaced with /usr/sbin/nologin.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control requires verification that all users' home directories exist on the OS level of a GCP instance running Container Optimized OS. This involves checking file system configurations using SSH access to instances since GCP APIs do not provide the ability to query file system-level details directly. The audit script provided needs to be executed within the instance's operating environment, thereby necessitating a manual approach.\n\n**MANUAL STEPS:**\n\n1. **Access GCP Console**:\n   - Navigate to Compute Engine > VM instances in your GCP project.\n   - Identify instances running the Container Optimized OS which need to be audited.\n\n2. **SSH into the Instance**:\n   - Use the SSH button in the GCP Console for the chosen instance, or use the gcloud CLI command:\n     ```bash\n     gcloud compute ssh <instance-name> --zone=<instance-zone>\n     ```\n\n3. **Execute the Audit Script**:\n   - Once logged into the instance, execute the provided audit script to verify the existence of users' home directories:\n     ```bash\n     #!/bin/bash\n     grep -E -v '^(halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'$(which nologin)'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read -r user dir; do if [ ! -d \"$dir\" ]; then echo \"The home directory ($dir) of user $user does not exist.\" fi done\n     ```\n\n4. **Verify Output**:\n   - Ensure that the script returns no results. If it does, note the users for whom the home directory does not exist.\n\n5. **Remediate Identified Issues**:\n   - For any users' home directories that do not exist, create them using the command:\n     ```bash\n     mkdir -p /home/<username> && chown <username>:<group> /home/<username>\n     ```\n   - If users are missing an assigned home directory, consider default settings or reassign directories appropriately.\n\n6. **Confirm Compliance**:\n   - Re-run the audit script to ensure no missing home directories remain.\n   - Confirm that each user's directory has been created and owned by the correct user.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:44:27.903070",
+    "model": "gpt-4o"
+}

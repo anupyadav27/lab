@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.3",
+    "unique_id": "gcp_1_1_1_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure nodev option set on /tmp partition",
+    "input_row": {
+        "id": "1.1.3",
+        "unique_id": "gcp_1_1_1_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure nodev option set on /tmp partition",
+        "description": "The nodev mount option specifies that the filesystem cannot contain special devices.",
+        "rationale": "Since the /tmp filesystem is not intended to support devices, set this option to ensure that users cannot attempt to create block or character special devices in /tmp .",
+        "audit": "Verify that the nodev option is set if a /tmp partition exists Run the following command and verify that nothing is returned: # mount | grep -E '\\s/tmp\\s' | grep -v nodev",
+        "remediation": "Run the following command to remount /tmp : # mount -o remount,nodev /tmp /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control requires verification of the `nodev` option set on the `/tmp` partition, which is an OS-level configuration specific to the Container-Optimized OS (COS) instance. This cannot be checked or enforced through GCP APIs or the Google Cloud SDK (`gcloud`) because it deals directly with instance filesystem configurations, which are within the virtual machines running on GCP rather than managed by GCP itself. This process requires direct access to the instance to perform and verify the configuration, typically via SSH.\n\n**MANUAL STEPS:**\n\n1. **SSH Access to Instance:**\n   - Access the Google Cloud Platform console.\n   - Navigate to the Compute Engine section and select \"VM instances.\"\n   - Identify the instance running Container-Optimized OS.\n\n2. **Verify Current Mount Options:**\n   - SSH into the instance using `gcloud` or another SSH client.\n   - Run the command: \n     ```bash\n     mount | grep -E '\\\\s/tmp\\\\s' | grep -v nodev\n     ```\n   - **What to verify/validate:** Ensure that this command returns nothing, indicating that the `nodev` option is set for the `/tmp` partition.\n\n3. **Expected Secure Configuration:**\n   - The `/tmp` partition should have the `nodev` option set in its mount options.\n   - If `/tmp` is listed without the `nodev` option, this indicates non-compliance.\n\n4. **Remediation (if necessary):**\n   - If the configuration is incorrect, execute the following command to remount `/tmp` with the `nodev` option:\n     ```bash\n     mount -o remount,nodev /tmp\n     ```\n   - Note that these changes will not persist across reboots on Container-Optimized OS.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThe procedure requires logging into the instance and performing OS-level checks that are beyond the scope of automated checks done through GCP APIs or Google Cloud SDK tools.",
+    "timestamp": "2025-10-28T21:17:20.315366",
+    "model": "gpt-4o"
+}

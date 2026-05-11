@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1",
+    "unique_id": "aws_6_2_1",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure Amazon VPC (Virtual Private Cloud) has been created",
+    "input_row": {
+        "id": "2.1",
+        "unique_id": "aws_6_2_1",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure Amazon VPC (Virtual Private Cloud) has been created",
+        "description": "Amazon VPCs allow you to launch AWS resources into a defined virtual network, providing network isolation and controlling inbound and outbound traffic. Here’s a step- by-step guide on how to create an Amazon Virtual Private Cloud (VPC):",
+        "rationale": "Impact: User would be required to have an AWS account to access AWS resources.",
+        "audit": "1. Sign in to the AWS Management Console Sign in to the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the Amazon VPC Console Navigate to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/vpc/. 3. Create a VPC In the Amazon VPC console, click Your VPCs in the left-hand navigation menu. • Click on the Create VPC button. • Provide a name and CIDR block for your VPC. The CIDR block defines the IP address range for your VPC. • Configure any additional settings, such as enabling DNS hostnames or DNS resolution. • Click on the Create button to create the VPC. 4. Create Subnets In the Amazon VPC console • Click on Subnets in the navigation menu. • Click on the Create subnet button. • Select the VPC you created in the previous step. • Provide a name and CIDR block for the subnet. The CIDR block should be a subset of the VPC's CIDR block. • Specify the availability zone where you want the subnet to be located. • Click on the Create button to create the subnet.  • Repeat these steps to create additional subnets if needed. 5. Create Security Groups In the Amazon VPC console, click Security Groups in the navigation menu. • Click on the Create security group button. • Provide a name and description for the security group. • Select the VPC you created earlier. • Configure inbound and outbound rules to allow the necessary network traffic for your Aurora database. • Click on the Create button to create the security group.",
+        "remediation": "Follow the AWS documentation and create an AWS account to create a VPC (Virtual Private Cloud). References: 1. https://aws.amazon.com/products/databases/ 2. https://console.aws.amazon.com/vpc/",
+        "profile_applicability": "•  Level 1",
+        "impact": "User would be required to have an AWS account to access AWS resources.",
+        "references": "1. https://aws.amazon.com/products/databases/ 2. https://console.aws.amazon.com/vpc/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- This control relates to the creation of an Amazon Virtual Private Cloud (VPC), which is a standard AWS service property.\n- AWS APIs, particularly the `boto3` SDK and AWS CLI, provide methods to query and verify the existence of VPCs.\n- The compliance check involves determining if at least one VPC exists within an AWS account, which can be easily automated using AWS APIs.\n- The rationale and impact statements do not indicate any organizational policy requirement that would mandate a manual review, and there is no need for human judgment beyond what can be surfaced through API queries.\n\n**PROGRAM NAME:** aws_vpc_existence_check\n\n**AUTOMATION DETAILS:**\n- Use the `boto3` Python SDK, specifically the `describe_vpcs` method, to list all VPCs in an account.\n- AWS CLI command: `aws ec2 describe-vpcs` can also be used to retrieve the VPC list.\n- Check if the `Vpcs` list returned by the API is empty or not. \n- Pass Criteria: At least one VPC should be present in the account.\n- If there are no VPCs, it indicates non-compliance. If one or more VPCs are present, the control passes.\n- Enumerate VPCs across all AWS regions accessible to the account, because VPCs are region-specific and compliance must be checked for each region individually.\n\n**SOURCE:** CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "timestamp": "2025-10-28T15:47:34.751368",
+    "model": "gpt-4o"
+}

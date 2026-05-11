@@ -1,0 +1,17 @@
+{
+    "id": "2.3.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.3.5",
+        "unique_id": "aks_2.3.5__ensure-ldap-client-is-not-installed",
+        "title": "Ensure LDAP client is not installed",
+        "description": "The Lightweight Directory Access Protocol (LDAP) was introduced as a replacement for NIS/YP. It is a service that provides a method for looking up information from a central database.",
+        "rationale": "If the system will not need to act as an LDAP client, it is recommended that the software be removed to reduce the potential attack surface. Impact: Removing the LDAP client will prevent or inhibit using LDAP for authentication in your environment.",
+        "audit": "Run the following command to verify that the openldap-clients package is not installed: # rpm -q openldap-clients package openldap-clients is not installed",
+        "remediation": "Run the following command to remove the openldap-clients package: # dnf remove openldap-clients References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Removing the LDAP client will prevent or inhibit using LDAP for authentication in your environment.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH Access to AKS Node**:\n   - Connect to one of the Azure Kubernetes Service (AKS) nodes via SSH. You may need to use the Azure CLI or the Azure portal to get the credentials to SSH into the node.\n\n2. **Check Installed Packages**:\n   - Run the command: `rpm -q openldap-clients` to check if the `openldap-clients` package is installed.\n\n3. **Verify Output**:\n   - If the command returns `package openldap-clients is not installed`, it indicates compliance with the control.\n   - If the command shows that the `openldap-clients` package is installed, this indicates non-compliance.\n\n4. **Expected Secure Configuration**:\n   - The `openldap-clients` package should not be installed on the AKS node.\n\n5. **Confirm Compliance**:\n   - Document the output of the `rpm` command run in step 2 and ensure that it meets the expected secure configuration to confirm compliance with this control."
+}

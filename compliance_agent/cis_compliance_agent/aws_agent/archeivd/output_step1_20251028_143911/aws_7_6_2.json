@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2",
+    "unique_id": "aws_7_6_2",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure AWS Disaster Recovery Configuration",
+    "input_row": {
+        "id": "6.2",
+        "unique_id": "aws_7_6_2",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure AWS Disaster Recovery Configuration",
+        "description": "It’s important to understand how the network on EDR works. This isn’t a simple service to configure, but it works with multiple work loads over the network. You can connect your on-premises or third-party cloud service to AWS EDR over the network. Below are the descriptions of the AWS network architecture: 1. Your local network inside the data center or cloud a.Connect an AWS Replication Agent to each of your resources. 2. AWS Cloud Architecture a. Choose the AWS Region that you want to house your disaster recovery instances. b.Create AWS API Endpoints for EC2, Disaster Recovery, and S3. c.Upon creation of Disaster Recovery endpoints, two subnets will be created in your VPC i.Staging Area Subnets: Replication servers with EBS volumes attached to each disk on the replication servers. ii.Recovery Subnets: Recovery EC2 instances attached to EBS volumes/ d.Connect local network over TCP port 443 to EDR and S3 e.Connect local replication agent to AWS replication servers over TCP port 1500 f.Connectivity out of staging area: Connect staging area on AWS to EDR over TCP port 443 g.Allow connection to S3 over TCP 443 h.Allow connectivity to EC2 over TCP 443 to connect to API Endpoint",
+        "rationale": "",
+        "audit": "",
+        "remediation": "References: 1. https://aws.amazon.com/disaster-recovery/",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://aws.amazon.com/disaster-recovery/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis compliance control revolves around ensuring an appropriate AWS Disaster Recovery Configuration, which involves multiple steps and considerations not strictly defined by specific AWS API calls. Key components of disaster recovery, such as ensuring the correct configuration of AWS Replication Agents, setting up EDR connections, and the specific network architecture configuration, involve human judgment, understanding application-level networks, and connectivity considerations beyond standard AWS resource configurations. The control described doesn't provide direct API queries or checks, suggesting that this involves more strategic and architectural oversight than can be automated through standard API interfaces alone.\n\n**MANUAL STEPS:**\n\n1. **Review Disaster Recovery Planning:**\n   - Access the AWS Management Console and navigate to the EC2 and network services.\n   - Ensure each resource that requires disaster recovery has a well-documented plan on how replication is handled.\n\n2. **Verify AWS Replication Agent:**\n   - Check that AWS Replication Agents are installed and configured on necessary resources both on-premises and cloud-based, ensuring connectivity over TCP port 1500.\n\n3. **Ensure Network Configuration:**\n   - Verify the connectivity settings between on-premises networks and AWS EDR through TCP port 443.\n   - Validate that the required API endpoints for EC2, Disaster Recovery, and S3 are correctly configured and accessible.\n\n4. **Validate Subnet Allocation:**\n   - Within the AWS Management Console, confirm that staging area subnets and recovery subnets are properly configured with associated EBS volumes.\n\n5. **Test Connectivity:**\n   - Test and validate all paths ensuring data transfer over TCP ports 443 and 1500 is operational, aligning with disaster recovery requirements.\n\n6. **Consult AWS Documentation:**\n   - Reference the AWS disaster recovery document: https://aws.amazon.com/disaster-recovery/ to align strategic configurations and updates.\n\n7. **Adhere to Policy and Business Requirements:**\n   - Align DR architecture with organizational policies, ensuring it meets all specified business continuity and compliance needs. \n\n**NOTE:** This manual audit should be conducted periodically and reviewed during every major system architecture change to ensure the disaster recovery setup remains effective and compliant.",
+    "timestamp": "2025-10-28T16:18:20.921956",
+    "model": "gpt-4o"
+}

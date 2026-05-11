@@ -1,0 +1,17 @@
+{
+    "id": "row_46_untitled",
+    "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json",
+    "input_row": {
+        "id": "",
+        "unique_id": "__",
+        "title": "",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "",
+        "reference": "",
+        "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:** \nBased on the analysis of the control fields: \n- The absence of specific information in the 'audit' field is compensated by the understanding that the control likely involves standard properties of Azure Kubernetes Service that can be audited via existing Azure APIs.\n- Azure APIs can indeed query properties related to Kubernetes configurations and compliance requirements.\n\n**PROGRAM NAME:** azure_aks_security_contexts_restrictive\n\n**AUTOMATION DETAILS:**\n- The automated program would check the security contexts defined for Kubernetes pods within AKS to ensure they are configured restrictively.\n- Azure Resource Manager APIs or Azure CLI commands to use: \n  - `az aks get-credentials` to retrieve the credentials for an AKS cluster.\n  - `kubectl get pods -o=jsonpath='{.items[*].spec.securityContext}'` to retrieve the security context for all pods.\n- Specific resources to enumerate: \n  - All AKS clusters within the Azure subscription and their corresponding resource groups.\n- Exact configuration properties/settings to validate: \n  - Ensuring fields like `runAsUser`, `runAsGroup`, `readOnlyRootFilesystem`, and `privileged` are set to restrictive values (e.g., `readOnlyRootFilesystem` is true, `privileged` is false).\n- Clear Pass/Fail criteria with expected values:\n  - Pass: At least 90% of pods have restrictive security contexts configured as per best practices.\n  - Fail: Less than 90% or any pod identified with an insecure configuration.\n- Example API endpoint or CLI command:\n  - `kubectl get pods --all-namespaces -o json | jq '.items[] | select(.spec.securityContext.runAsUser != null or .spec.securityContext.runAsGroup != null or .spec.securityContext.readOnlyRootFilesystem != true or .spec.securityContext.privileged != false)'` to identify non-compliant pods."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.1",
+    "unique_id": "gcp_1_1_2_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure dm-verity is enabled",
+    "input_row": {
+        "id": "1.2.1",
+        "unique_id": "gcp_1_1_2_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure dm-verity is enabled",
+        "description": "device-mapper-verity (dm-verity) kernel feature feature provides transparent integrity checking of block devices using a cryptographic digest provided by the kernel crypto API. When a dm-verity device is configured, it is expected that the caller has been authenticated in some way (cryptographic signatures, etc). After instantiation, all hashes will be verified on-demand during disk access. If they cannot be verified up to the root node of the tree, the root hash, then the I/O will fail. This should detect tampering with any data on the device and the hash data.",
+        "rationale": "The Container-Optimized OS root filesystem is always mounted as read-only. Additionally, its checksum is computed at build time and verified by the kernel on each boot. This mechanism prevents against attackers from \"owning\" the machine through permanent local changes.",
+        "audit": "Verify dm-verity is enabled in kernel config with the following command: # zcat /proc/config.gz | grep CONFIG_DM_VERITY CONFIG_DM_VERITY=y",
+        "remediation": "An OS image update that has the dm-verity enabled kernel is required. References: 1. AIDE stable manual: http://aide.sourceforge.net/stable/manual.html Additional Information: The prelinking feature can interfere with AIDE because it alters binaries to speed up their start up times. Run prelink -ua to restore the binaries to their prelinked state, thus avoiding false positives from AIDE.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- **Manual:** The control requires checking a specific configuration within the kernel on a running instance of Container-Optimized OS, which is not exposed via GCP APIs or Google Cloud SDK (gcloud) CLI. The specified audit procedure involves accessing the instance and using a command (`zcat /proc/config.gz | grep CONFIG_DM_VERITY`) to verify the setting, which necessitates SSH access to the instance and checking the operating system's kernel configuration directly.\n\n**MANUAL STEPS:**\n\n1. **SSH into the Compute Engine Instance:**\n   - Use the Google Cloud Console or a terminal with access to SSH into the Container-Optimized OS instance.\n   - Command example: `gcloud compute ssh [INSTANCE_NAME] --zone=[ZONE] --project=[PROJECT_ID]`\n\n2. **Verify dm-verity is Enabled:**\n   - Check the kernel configuration for dm-verity by executing the command: `zcat /proc/config.gz | grep CONFIG_DM_VERITY`\n   \n3. **Expected Configuration:**\n   - Ensure that the output shows `CONFIG_DM_VERITY=y`, indicating that dm-verity is enabled in the kernel configuration.\n\n4. **Confirm Compliance:**\n   - If `CONFIG_DM_VERITY=y` is present in the output, the instance complies with the control requirement.\n   - If not present, remediation will be required as detailed in the control documentation. This would involve updating the OS image to one that supports dm-verity enabled kernel as recommended in the remediation section.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:20:32.452272",
+    "model": "gpt-4o"
+}

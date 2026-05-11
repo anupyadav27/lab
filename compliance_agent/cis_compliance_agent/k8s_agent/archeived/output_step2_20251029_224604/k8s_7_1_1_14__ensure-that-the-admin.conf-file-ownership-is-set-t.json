@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.14",
+    "unique_id": "k8s_7_1_1_14",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the admin.conf file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.14",
+        "unique_id": "k8s_7_1_1_14",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the admin.conf file ownership is set to root:root",
+        "description": "Ensure that the admin.conf file ownership is set to root:root.",
+        "rationale": "The admin.conf file contains the admin credentials for the cluster. You should set its file ownership to maintain the integrity and confidentiality of the file. The file should be owned by root:root. Impact: None.",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G /etc/kubernetes/admin.conf Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root /etc/kubernetes/admin.conf Default Value: By default, admin.conf file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kubeadm/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None.",
+        "references": "1. https://kubernetes.io/docs/admin/kubeadm/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file ownership (user and group) of /etc/kubernetes/admin.conf on the control plane node.\n- This information is not exposed via the Kubernetes API, kubectl, or any Kubernetes controller/state configuration.\n- The audit instructions require running OS-level commands (e.g., stat, ls -l) directly on the host.\n- Kubernetes APIs do not provide access to node filesystem details outside of containerized workloads.\n- Therefore, this check cannot be automated via Kubernetes-native APIs or kubectl and requires direct host access.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where /etc/kubernetes/admin.conf is located.\n2. Run the following command to check the file ownership:\n   ```\n   stat -c %U:%G /etc/kubernetes/admin.conf\n   ```\n   or\n   ```\n   ls -l /etc/kubernetes/admin.conf\n   ```\n3. Verify that the output shows the owner and group as root:root.\n4. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/admin.conf\n   ```\n5. Confirm compliance by re-running the ownership check and ensuring the result is root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:24:04.899053",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this control as requiring a Manual approach is correct. The verification of file ownership on the host filesystem is outside the scope of Kubernetes APIs and kubectl capabilities. Kubernetes does not provide native API access to the host filesystem for security and abstraction reasons. Therefore, direct host access using OS-level commands is necessary.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and correctly describe the process to verify and remediate the file ownership. The use of `stat` and `ls -l` commands are appropriate for checking file ownership. The remediation step using `chown` is also correct. The program name convention is not applicable here as this is a manual check and not a script or program.\n\n**IMPROVEMENTS:**\n- The assessment could include a note on ensuring that SSH access to the control plane node is secured and audited, as this is a sensitive operation.\n- Consideration of using configuration management tools (e.g., Ansible, Puppet) to automate the checking and remediation process across multiple nodes could be mentioned, though this would still require manual setup and is not Kubernetes-native.\n- A brief explanation of why Kubernetes does not expose such filesystem details could provide additional context for auditors unfamiliar with Kubernetes architecture.\n\n**CONFIDENCE:** HIGH\n- The assessment is straightforward and aligns with known limitations of Kubernetes API capabilities regarding host-level file system access.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is. The assessment is accurate and appropriately classified as Manual. The steps are clear and complete for verifying compliance with the control.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:21:22.668263"
+}

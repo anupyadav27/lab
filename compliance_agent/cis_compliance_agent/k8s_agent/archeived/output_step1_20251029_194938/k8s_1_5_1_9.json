@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.9",
+    "unique_id": "k8s_1_5_1_9",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Minimize access to create persistent volumes",
+    "input_row": {
+        "id": "5.1.9",
+        "unique_id": "k8s_1_5_1_9",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Minimize access to create persistent volumes",
+        "description": "The ability to create persistent volumes in a cluster can provide an opportunity for privilege escalation, via the creation of hostPath volumes. As persistent volumes are not covered by Pod Security Admission, a user with access to create persistent volumes may be able to get access to sensitive files from the underlying host even where restrictive Pod Security Admission policies are in place.",
+        "rationale": "The ability to create persistent volumes in a cluster opens up possibilities for privilege escalation and should be restricted, where possible.",
+        "audit": "Review the users who have create access to PersistentVolume objects in the Kubernetes API.",
+        "remediation": "Where possible, remove create access to PersistentVolume objects in the cluster. References: 1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#persistent- volume-creation",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "",
+        "references": "1. https://kubernetes.io/docs/concepts/security/rbac-good-practices/#persistent- volume-creation"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_persistentvolume_create_permissions_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRole and Role objects in the cluster using the Kubernetes API or kubectl:\n  - `kubectl get clusterroles -o yaml`\n  - `kubectl get roles --all-namespaces -o yaml`\n- For each ClusterRole and Role, inspect the `rules` field for any entries where:\n  - `apiGroups` includes `\"\"` (the core API group)\n  - `resources` includes `persistentvolumes`\n  - `verbs` includes `create` or `*`\n- Identify all RoleBindings and ClusterRoleBindings that grant these roles to users, groups, or service accounts:\n  - `kubectl get clusterrolebindings -o yaml`\n  - `kubectl get rolebindings --all-namespaces -o yaml`\n- Map which subjects (users, groups, service accounts) have been granted roles with `create` access to `persistentvolumes`.\n- Pass Criteria: Only authorized and minimal set of users/groups/service accounts have `create` permission on `persistentvolumes`. Ideally, this should be restricted to trusted controllers (e.g., storage provisioners) and not general users.\n- Fail Criteria: Any unnecessary or broad assignment of `create` permission on `persistentvolumes` to users/groups/service accounts not explicitly required for storage provisioning.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:09:12.191336",
+    "model": "gpt-4.1"
+}

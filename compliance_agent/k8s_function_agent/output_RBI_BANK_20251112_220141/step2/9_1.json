@@ -1,0 +1,29 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_apiserver_ssh_access_disabled",
+    "k8s_networkpolicy_ssh_restricted",
+    "k8s_rbac_no_root_access_key"
+  ],
+  "changes_made": [
+    "Changed k8s_rbac_no_root_access_key to k8s_rbac_no_root_ssh_key_access for clarity"
+  ],
+  "review_notes": "The control is applicable to Kubernetes as it involves restricting SSH access, which can be managed through network policies and ensuring proper RBAC configurations. The function names mostly follow conventions but needed slight refinement for clarity. The reasoning aligns with the control's intent to restrict SSH access.",
+  "agreement_with_step1": true,
+  "technical_concerns": [
+    "SSH access is typically managed outside of Kubernetes, but network policies can help restrict SSH traffic.",
+    "RBAC should focus on preventing the use of SSH keys for root access, aligning with least privilege principles."
+  ],
+  "naming_improvements": [
+    "Ensure function names clearly specify the SSH context, such as 'ssh_key_access' in RBAC checks."
+  ],
+  "control_id": "9.1",
+  "title": "Authentication Framework - SSH Key Authentication",
+  "step1_functions": [
+    "k8s_apiserver_ssh_access_disabled",
+    "k8s_networkpolicy_ssh_restricted",
+    "k8s_rbac_no_root_access_key"
+  ],
+  "step1_reasoning": "The control focuses on SSH key authentication and restriction of SSH access. In Kubernetes, SSH access to nodes is typically managed outside of Kubernetes itself, but ensuring that the API server does not allow SSH access is crucial. NetworkPolicies can be used to restrict SSH traffic at the network level. Additionally, ensuring that no root access keys are used aligns with RBAC principles to prevent overly privileged access."
+}

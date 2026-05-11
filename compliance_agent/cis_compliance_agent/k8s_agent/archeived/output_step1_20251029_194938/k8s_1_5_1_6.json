@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.6",
+    "unique_id": "k8s_1_5_1_6",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that Service Account Tokens are only mounted where necessary",
+    "input_row": {
+        "id": "5.1.6",
+        "unique_id": "k8s_1_5_1_6",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that Service Account Tokens are only mounted where necessary",
+        "description": "Service accounts tokens should not be mounted in pods except where the workload running in the pod explicitly needs to communicate with the API server",
+        "rationale": "Mounting service account tokens inside pods can provide an avenue for privilege escalation attacks where an attacker is able to compromise a single pod in the cluster. Avoiding mounting these tokens removes this attack avenue. Impact: Pods mounted without service account tokens will not be able to communicate with the API server, except where the resource is available to unauthenticated principals.",
+        "audit": "Review pod and service account objects in the cluster and ensure that the option below is set, unless the resource explicitly requires this access. automountServiceAccountToken: false",
+        "remediation": "Modify the definition of pods and service accounts which do not need to mount service account tokens to disable it. Default Value: By default, all pods get a service account token mounted in them. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods mounted without service account tokens will not be able to communicate with the API server, except where the resource is available to unauthenticated principals.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_service_account_token_automount_restricted\n\n**AUTOMATION DETAILS:**\n\n- **Kubernetes API calls / kubectl SDK methods:**\n  - Use the Kubernetes API to list all Pods and ServiceAccounts in all namespaces.\n  - For each Pod, check the `spec.automountServiceAccountToken` field.\n  - For each ServiceAccount, check the `automountServiceAccountToken` field.\n  - For each Pod, determine which ServiceAccount it uses (`spec.serviceAccountName`). If the Pod does not explicitly set `automountServiceAccountToken`, check the referenced ServiceAccount's setting. If neither is set, default is `true` (token is mounted).\n\n- **Kubernetes CLI commands (if applicable):**\n  - `kubectl get pods --all-namespaces -o json`\n  - `kubectl get serviceaccounts --all-namespaces -o json`\n\n- **Specific resources to enumerate:**\n  - All Pods in all namespaces\n  - All ServiceAccounts in all namespaces\n\n- **Exact configuration properties/settings to validate:**\n  - For each Pod, ensure that `spec.automountServiceAccountToken: false` is set unless the workload explicitly requires API server access.\n  - If not set at the Pod level, check the referenced ServiceAccount for `automountServiceAccountToken: false`.\n  - If neither is set, the default is `true` (non-compliant unless justified).\n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** Pods that do not require API server access have `automountServiceAccountToken: false` set either at the Pod or ServiceAccount level.\n  - **Fail:** Pods that do not require API server access but have `automountServiceAccountToken: true` (explicitly or by default) at both Pod and ServiceAccount levels.\n\n- **Example logic:**\n  1. Enumerate all Pods and their associated ServiceAccounts.\n  2. For each Pod:\n     - If `spec.automountServiceAccountToken` is set to `false`, mark as compliant.\n     - Else, check the referenced ServiceAccount:\n       - If `automountServiceAccountToken` is set to `false`, mark as compliant.\n       - If neither is set, or either is `true`, mark as non-compliant unless the Pod is on an allowlist of workloads that require API server access (allowlist management is out of scope for automation).\n  3. Report all non-compliant Pods with namespace, name, and ServiceAccount reference.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:08:30.905299",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.4.1",
+    "unique_id": "k8s_2_1_4_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --profiling argument is set to false",
+    "input_row": {
+        "id": "1.4.1",
+        "unique_id": "k8s_2_1_4_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --profiling argument is set to false",
+        "description": "Disable profiling, if not needed.",
+        "rationale": "Profiling allows for the identification of specific performance bottlenecks. It generates a significant amount of program data that could potentially be exploited to uncover system and program details. If you are not experiencing any bottlenecks and do not need the profiler for troubleshooting purposes, it is recommended to turn it off to reduce the potential attack surface. Impact: Profiling information would not be available.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-scheduler Verify that the --profiling argument is set to false.",
+        "remediation": "Edit the Scheduler pod specification file /etc/kubernetes/manifests/kube- scheduler.yaml file on the Control Plane node and set the below parameter. --profiling=false Default Value: By default, profiling is enabled. References: 1. https://kubernetes.io/docs/admin/kube-scheduler/ 2. https://github.com/kubernetes/community/blob/master/contributors/devel/profiling. md",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Profiling information would not be available.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-scheduler/ 2. https://github.com/kubernetes/community/blob/master/contributors/devel/profiling. md"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_scheduler_profiling_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-scheduler Pod specification, typically located in the static Pod manifest at `/etc/kubernetes/manifests/kube-scheduler.yaml`, using the Kubernetes API or by inspecting the running Pod's command/args.\n- Use `kubectl -n kube-system get pod -l component=kube-scheduler -o json` to retrieve the kube-scheduler Pod definition.\n- Parse the `spec.containers[].command` and/or `spec.containers[].args` fields to check for the presence and value of the `--profiling` flag.\n- Pass Criteria: The kube-scheduler must have the argument `--profiling=false` explicitly set.\n- Fail Criteria: The kube-scheduler is missing the `--profiling` flag, or it is set to `true`, or the default (enabled) is in effect.\n- Example check logic:\n  - If `--profiling=false` is present in the command/args → PASS\n  - If `--profiling` is absent or set to `true` → FAIL\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:25:14.446235",
+    "model": "gpt-4.1"
+}

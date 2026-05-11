@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.1.1",
+    "unique_id": "gcp_1_2_1_1_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure time synchronization is in use",
+    "input_row": {
+        "id": "2.1.1.1",
+        "unique_id": "gcp_1_2_1_1_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure time synchronization is in use",
+        "description": "System time should be synchronized between all systems in an environment. This is typically done by establishing an authoritative time server or set of servers and having all systems synchronize their clocks to them.",
+        "rationale": "Time synchronization is important to support time sensitive security mechanisms like Kerberos and also ensures log files have consistent time records across the enterprise, which aids in forensic investigations.",
+        "audit": "On physical systems or virtual systems where host based time synchronization is not available verify that chrony is installed with the following command: # grep '\\\"name\\\": \\\"chrony\\\"' /etc/cos-package-info.json \"name\": \"chrony\", On virtual systems where host based time synchronization is available consult your virtualization software documentation and verify that host based synchronization is in use.",
+        "remediation": "On physical systems or virtual systems where host based time synchronization is not available update to an image that comes with chrony package installed. On virtual systems where host based time synchronization is available consult your virtualization software documentation and setup host based synchronization. Additional Information: systemd-timesyncd is part of systemd. Some versions of systemd have been compiled without systemd-timesycnd. On these distributions, chrony or NTP should be used instead of systemd-timesycnd.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe audit involves verifying the installation of the `chrony` package on physical or virtual systems for time synchronization, which requires SSH access to the instances to check the `/etc/cos-package-info.json` file directly. Additionally, for virtual systems that utilize host-based time synchronization, checking the virtualization software documentation is required, which cannot be automated through GCP APIs or Google Cloud SDK commands. \n\n**MANUAL STEPS:**\n1. **SSH to Instances:**\n   - Access the CoOS instances via SSH to perform the checks manually.\n   \n2. **Verify chrony Installation:**\n   - Run the command `grep '\\\"name\\\": \\\"chrony\\\"' /etc/cos-package-info.json` on each instance.\n   - Confirm that the `chrony` package is listed, indicating that it is installed.\n\n3. **Host-Based Synchronization for Virtual Systems:**\n   - Review the virtualization software documentation (e.g., VMware, Hyper-V) to verify that host-based time synchronization is configured.\n   - Ensure that the virtualization platform is set up to sync time with the host system.\n\n4. **Expected Secure Configuration:**\n   - `chrony` should be installed on physical instances or virtual instances without host-based synchronization.\n   - Host-based time synchronization should be enabled and configured correctly for virtual systems supporting it.\n\n5. **Confirm Compliance:**\n   - Instances with `chrony` installed or properly configured host-based time synchronization are compliant.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThis control requires a manual audit approach as it involves accessing the instance's OS-level configurations, which cannot be checked using GCP APIs or SDKs.",
+    "timestamp": "2025-10-28T21:23:57.562933",
+    "model": "gpt-4o"
+}

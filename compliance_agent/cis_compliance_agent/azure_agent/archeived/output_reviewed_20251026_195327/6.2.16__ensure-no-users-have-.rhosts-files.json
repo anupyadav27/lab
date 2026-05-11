@@ -1,0 +1,31 @@
+{
+    "unique_id": "6.2.16__ensure-no-users-have-.rhosts-files",
+    "control_id": "6.2.16",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH Access to Nodes**\n   - Use SSH to connect to each node in your Azure Kubernetes Service (AKS) cluster. \n\n2. **Locate User Home Directories**\n   - Navigate to the home directories of the users on the nodes. This is typically located under `/home/` for standard user accounts.\n\n3. **Check for .rhosts Files**\n   - In each user’s home directory, check for the existence of the `.rhosts` file:\n     ```bash\n     ls -la /home/<username>/.rhosts\n     ```\n   - Replace `<username>` with the actual username of the user accounts. \n\n4. **Verification**\n   - If the command returns `.rhosts`, note that user and the file's presence. \n   - Ensure that no `.rhosts` files exist for all interactive users.\n\n5. **Expected Secure Configuration**\n   - The presence of no `.rhosts` files for users is the expected configuration. If any files are found, they indicate a compliance issue.\n\n6. **Document Findings**\n   - Create a report of the findings, detailing which user accounts (if any) had unreadable `.rhosts` files and may require remediation steps, as outlined in the control.\n\n7. **Confirm Compliance**\n   - Confirm that any existing `.rhosts` files are removed or that a policy is in place for their management in accordance with your organizational policies."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The manual classification is partially correct. While the manual steps are straightforward, this task can be automated using Azure capabilities. Azure does not directly provide an API to check for `.rhosts` files, but you can automate the process using Azure CLI or Azure Automation to script the SSH access and file checks.\n- **Azure APIs/CLI:** Azure CLI or Azure Automation Runbooks could be used to automate the SSH connection and file checking process. This would involve scripting the SSH access and executing the necessary commands on each node.\n\n**TECHNICAL ACCURACY:** 6\n\n- **Automation Details:** The assessment lacks automation details, which could be enhanced by leveraging Azure Automation or scripting with Azure CLI.\n- **Manual Steps Accuracy:** The manual steps are generally accurate for checking `.rhosts` files but are incomplete in terms of leveraging Azure's capabilities to streamline the process.\n- **Program Naming Convention:** The assessment does not mention any program or script names, so it cannot be evaluated against naming conventions.\n\n**IMPROVEMENTS:**\n\n- **Automation Enhancement:** Implement a script using Azure CLI or PowerShell that automates the SSH login and file check process. This script could be scheduled using Azure Automation or Azure DevOps pipelines.\n- **Azure Security Center:** Consider integrating Azure Security Center to monitor and alert on unauthorized file changes or configurations that deviate from best practices.\n- **Policy Implementation:** Use Azure Policy to enforce configurations that prevent the creation of `.rhosts` files or alert when they are created.\n\n**CONFIDENCE:** MEDIUM\n\n- The assessment is based on standard manual procedures, but it does not fully leverage Azure's automation capabilities, which affects confidence in its efficiency and scalability.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modify:** Enhance the assessment by incorporating automation using Azure CLI or Azure Automation. This will reduce manual effort and increase efficiency. Additionally, consider integrating Azure Security Center for continuous monitoring and Azure Policy for preventive measures.",
+        "reviewed_at": "2025-10-26T14:33:39.600678"
+    },
+    "input_row": {
+        "id": "6.2.16",
+        "unique_id": "6.2.16__ensure-no-users-have-.rhosts-files",
+        "title": "Ensure no users have .rhosts files",
+        "description": "While no .rhosts files are shipped by default, users can easily create them.",
+        "rationale": "This action is only meaningful if .rhosts support is permitted in the file /etc/pam.conf . Even though the .rhosts files are ineffective if support is disabled in /etc/pam.conf , they may have been brought over from other systems and could contain information useful to an attacker for those other systems.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $1 \" \" $6 }' /etc/passwd | while read -r user dir; do if [ -d \"$dir\" ]; then file=\"$dir/.rhosts\" if [ ! -h \"$file\" ] && [ -f \"$file\" ]; then echo \"User: \\\"$user\\\" file: \\\"$file\\\" exists\" fi fi done",
+        "remediation": "Making global modifications to users' files without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user .rhosts files and determine the action to be taken in accordance with site policy. The following script will remove .rhosts files from interactive users' home directories #!/bin/bash awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $6 }' /etc/passwd | while read -r dir; do if [ -d \"$dir\" ]; then file=\"$dir/.rhosts\" [ ! -h \"$file\" ] && [ -f \"$file\" ] && rm -r \"$file\" fi done References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "6.2.16.json",
+        "review_version": "1.0"
+    }
+}

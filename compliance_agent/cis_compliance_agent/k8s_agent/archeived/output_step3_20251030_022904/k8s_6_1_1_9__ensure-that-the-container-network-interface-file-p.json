@@ -1,0 +1,33 @@
+{
+    "control_id": "1.1.9",
+    "unique_id": "k8s_6_1_1_9",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the Container Network Interface file permissions are set to 644 or more restrictive",
+    "input_row": {
+        "id": "1.1.9",
+        "unique_id": "k8s_6_1_1_9",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the Container Network Interface file permissions are set to 644 or more restrictive",
+        "description": "Ensure that the Container Network Interface files have permissions of 644 or more restrictive.",
+        "rationale": "Container Network Interface provides various networking options for overlay networking. You should consult their documentation and restrict their respective file permissions to maintain the integrity of those files. Those files should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a <path/to/cni/files> Verify that the permissions are 644 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 644 <path/to/cni/files> Default Value: NA References: 1. https://kubernetes.io/docs/concepts/cluster-administration/networking/",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/cluster-administration/networking/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of file permissions on the Container Network Interface (CNI) binaries and configuration files, which reside on the host filesystem (typically under /etc/cni/net.d/ and /opt/cni/bin/). Kubernetes APIs and kubectl do not expose or provide access to host-level file permissions. This check requires direct OS-level access (e.g., SSH) to the control plane node(s) to inspect file permissions, as described in the audit instructions. Therefore, this control cannot be fully automated via Kubernetes APIs or kubectl.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Identify the locations of CNI configuration and binary files (commonly /etc/cni/net.d/ and /opt/cni/bin/).\n3. For each file in these directories, run:\n   - `stat -c %a <file_path>`\n4. Verify that the permissions for each file are 644 or more restrictive (i.e., no more permissive than rw-r--r--).\n5. Confirm that only administrators (root) have write access to these files.\n6. Document any files that do not meet the required permission level and remediate as necessary.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T21:58:39.306873",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Manual is correct. The Kubernetes API and kubectl do not provide direct access to the host filesystem to check file permissions, especially for files like CNI binaries and configurations located outside the Kubernetes-managed directories.\n- This task requires direct OS-level access to the nodes, typically via SSH, to inspect file permissions, which cannot be automated through Kubernetes APIs or kubectl.\n\n**TECHNICAL ACCURACY:** 9\n\n- The manual steps are technically accurate and complete for verifying file permissions on the host filesystem.\n- The use of the `stat` command to check file permissions is appropriate and standard for this type of audit.\n- The program name convention is not applicable here as this is a manual check, but the description is clear about what is being checked.\n\n**IMPROVEMENTS:**\n\n- Consider adding a step to document the current state of file permissions before making any changes, which can be useful for audit trails.\n- The assessment could benefit from mentioning potential automation tools outside of Kubernetes, such as configuration management tools (e.g., Ansible, Puppet) that could help automate the verification process across multiple nodes.\n- A better program name suggestion is not applicable here, but ensuring that documentation clearly states the purpose and scope of the check would be beneficial.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded and aligns with the limitations of Kubernetes APIs and kubectl regarding host-level file permission checks.\n\n**FINAL RECOMMENDATION:** Keep as-is\n\n- The assessment is accurate and appropriately classifies the audit approach as Manual due to the nature of the task requiring direct access to the filesystem on the host nodes. No reclassification is necessary.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:07:33.296096",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Manual\n\n**JUSTIFICATION:**\nBoth AI opinions unanimously agree that this control requires manual inspection due to the need for direct OS-level access to the host filesystem, which is not possible through Kubernetes APIs or kubectl. The audit steps provided clearly outline the necessary actions to verify file permissions, reinforcing the decision for a manual approach.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Navigate to the CNI configuration and binary files locations, typically found in `/etc/cni/net.d/` and `/opt/cni/bin/`.\n3. For each file in these directories, execute the command:\n   - `stat -c %a <file_path>`\n4. Verify that the permissions for each file are set to 644 or more restrictive (i.e., no more permissive than rw-r--r--).\n5. Ensure that only administrators (root) have write access to these files.\n6. Document any files that do not meet the required permission level and take corrective actions as necessary.\n\n**WHY NOT AUTOMATED:**\nThis control cannot be automated via Kubernetes APIs because it involves checking file permissions on the host filesystem, which is outside the scope of Kubernetes management and requires direct access to the operating system.\n\n---\n\n**DISAGREEMENTS RESOLVED:**\nThere were no disagreements between the two AI opinions; both confirmed the manual nature of the audit process, leading to a consistent conclusion.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "final_approach": "Manual",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T02:52:37.126617"
+    }
+}

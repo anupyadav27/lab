@@ -1,0 +1,22 @@
+{
+    "control_id": "2.8",
+    "unique_id": "aws_1_2_8",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "title": "Ensure Access Keys are Regularly Rotated",
+    "input_row": {
+        "id": "2.8",
+        "unique_id": "aws_1_2_8",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+        "title": "Ensure Access Keys are Regularly Rotated",
+        "description": "Regularly rotating your Aurora Access Keys is critical to access management, contributing to maintaining system security.",
+        "rationale": "Rotating AWS IAM user access keys ensures security and any potential risk of the business that may be compromised due to the active key since it changes quite often. Impact: Only authorized personnel would need to login with their key, which restricts unauthorized users access to the database.",
+        "audit": "1. Navigate to IAM Dashboard • In the AWS Management Console, navigate to the IAM service. • You can find this under the Security, Identity, & Compliance category. 2. Choose the IAM User • In the IAM Dashboard, click on Users. • Then click on the name of the user whose access keys you want to rotate. 3. Create a New Access Key • In the Security credentials tab, click Create access key. • Store the new access key ID and secret access key in a secure location. 4. Replace the Old Access Key • Update all your applications to use the new access key. • Verify that the applications are working correctly. 5. Delete the Old Access Key • In the Security credentials tab, find the old access key. • Click Delete, and then confirm the deletion.  Note : To avoid disrupting your applications, keep the old access key until you have replaced it in all your applications and confirmed that they are working correctly.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "Only authorized personnel would need to login with their key, which restricts unauthorized users access to the database.",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** aws_iam_user_access_key_rotation_period_compliance\n\n**AUTOMATION DETAILS:**\n- Enumerate all IAM users using boto3’s `iam.list_users()`.\n- For each user, retrieve their access keys with `iam.list_access_keys(UserName=...)`.\n- For each access key, obtain and evaluate the `CreateDate` field.\n- Determine if any active access key has not been rotated within an organization-defined period (commonly 90 days). This threshold should be configurable.\n- Mark compliance as FAIL if any enabled (Active) access key for any user is older than the allowed rotation window.\n- Pass criteria: All enabled access keys for all users have a `CreateDate` within the allowed window (e.g., none older than 90 days).\n- Optionally, provide a list of non-compliant users/access key IDs and their key ages for reporting.\n- AWS CLI equivalents:\n  - `aws iam list-users` to enumerate users.\n  - `aws iam list-access-keys --user-name <user>` to list keys for each user.\n  - `aws iam get-access-key-last-used --access-key-id <key>` can provide information about key use, but for rotation, use `CreateDate`.\n- This check is API-accessible and follows industry-standard approaches from tools such as Prowler, CloudSploit, and ScoutSuite.\n\n**SOURCE:** CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "timestamp": "2025-10-29T19:00:56.550852",
+    "model": "gpt-4.1"
+}

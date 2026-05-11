@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.5",
+    "unique_id": "k8s_3_1_1_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.5",
+        "unique_id": "k8s_3_1_1_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the scheduler pod specification file has permissions of 600 or more restrictive.",
+        "rationale": "The scheduler pod specification file controls various parameters that set the behavior of the Scheduler service in the master node. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/manifests/kube-scheduler.yaml Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/manifests/kube-scheduler.yaml Default Value: By default, kube-scheduler.yaml file has permissions of 640. References: 1. https://kubernetes.io/docs/admin/kube-scheduler/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-scheduler/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file permissions on the kube-scheduler pod specification file (typically /etc/kubernetes/manifests/kube-scheduler.yaml) at the OS level. Kubernetes APIs and kubectl do not expose or allow querying of file system permissions on the host node. This check requires direct access to the control plane node's file system, which is outside the scope of Kubernetes API or kubectl capabilities.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where the kube-scheduler runs.\n2. Locate the kube-scheduler pod specification file, typically at /etc/kubernetes/manifests/kube-scheduler.yaml.\n3. Run the following command to check the file permissions:\n   ```\n   stat -c %a /etc/kubernetes/manifests/kube-scheduler.yaml\n   ```\n4. Verify that the output is 600 or more restrictive (e.g., 600, 400, 440, etc.).\n5. If the permissions are more permissive than 600 (such as 640 or 644), remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/manifests/kube-scheduler.yaml\n   ```\n6. Confirm compliance by re-running the stat command and ensuring the permissions are set correctly.",
+    "timestamp": "2025-10-29T20:42:51.251292",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification as a Manual audit approach is correct. Kubernetes APIs and `kubectl` do not provide functionality for checking file permissions on the host node's file system. This task inherently requires direct access to the node's operating system, which is outside the scope of Kubernetes API capabilities.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and complete for verifying and remediating the file permissions of the kube-scheduler pod specification file.\n- The use of the `stat` command to check file permissions and `chmod` for remediation is appropriate and standard practice.\n- The description and steps are clear and follow a logical sequence.\n- The program name is not explicitly provided in the assessment, but the description is clear and descriptive regarding the security check being performed.\n\n**IMPROVEMENTS:**\n- The assessment could benefit from a more descriptive program name, such as `k8s_scheduler_pod_spec_file_permissions_check`.\n- Consideration of documenting the potential impact of changing file permissions on running services could be added.\n- It might be helpful to include a note about ensuring that SSH access to the control plane node is secure and audited, as this is a critical security consideration when performing manual checks.\n\n**CONFIDENCE:** HIGH\n- The assessment is straightforward, and the steps are well-documented and align with best practices for verifying file permissions on a Kubernetes control plane node.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is, with a suggestion to enhance the documentation with a more descriptive program name and additional security considerations regarding SSH access. The manual approach is justified, and the technical details are accurate and complete.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:35:45.370812"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "2.1.7",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.1.7",
+        "unique_id": "2.1.7__ensure-'https-only'-is-set-to-'on'",
+        "title": "Ensure 'HTTPS Only' is set to 'On'",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Login to Azure Portal using https://portal.azure.com 2. Go to App Services 3. For each App Service 4. Under Setting section, click on Configuration 5. Under the General Settings tab, set HTTPS Only to On under Platform Settings Remediate from Azure CLI To set HTTPS-only traffic value for an existing app, run the following command: az webapp update --resource-group <RESOURCE_GROUP_NAME> --name <APP_NAME> -- set httpsOnly=true Remediate from PowerShell Set-AzWebApp -ResourceGroupName <RESOURCE_GROUP_NAME> -Name <APP_NAME> - HttpsOnly $true Default Value: HTTPS Only is disabled by default. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-security#https-and- certificates 2. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- data-protection#dp-3-encrypt-sensitive-data-in-transit 3. https://techcommunity.microsoft.com/t5/azure-paas-blog/enable-https-setting-on- azure-app-service-using-azure-policy/ba-p/3286603 4. https://learn.microsoft.com/en-us/cli/azure/webapp 5. https://learn.microsoft.com/en-us/powershell/module/az.websites/get-azwebapp 6. https://learn.microsoft.com/en-us/powershell/module/az.websites/set-azwebapp CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- Control can be fully verified via Azure Resource Manager APIs/CLI/SDK/PowerShell.\n- The audit mentions CLI commands to verify the configuration, indicating this can be automated.\n- The HTTPS setting is a standard Azure resource property that can be checked directly via the Azure APIs.\n\n**PROGRAM NAME:** azure_appservice_https_only_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n\n- **Azure Resource Manager API/CLI to Use:** The Azure CLI command `az webapp show` can be used to retrieve the web app settings, and the `az webapp update` command will be used to set the HTTPS-only property.\n  \n- **Specific Resources to Enumerate:** The program should enumerate all App Services in a specified subscription or resource group.\n\n- **Exact Configuration Properties/Settings to Validate:**\n  - The setting `httpsOnly` under the web app configuration.\n\n- **Pass/Fail Criteria:**\n  - **Pass:** `httpsOnly` is set to `true`\n  - **Fail:** `httpsOnly` is set to `false` or is not configured.\n\n- **Example CLI Command:**\n  - To check the setting: `az webapp show --resource-group <RESOURCE_GROUP_NAME> --name <APP_NAME> --query httpsOnly`\n  - To remediate (if needed): `az webapp update --resource-group <RESOURCE_GROUP_NAME> --name <APP_NAME> --set httpsOnly=true`"
+}

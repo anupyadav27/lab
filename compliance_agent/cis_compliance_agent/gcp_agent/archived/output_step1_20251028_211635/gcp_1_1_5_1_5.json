@@ -1,0 +1,22 @@
+{
+    "control_id": "1.5.1.5",
+    "unique_id": "gcp_1_1_5_1_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/issue are configured",
+    "input_row": {
+        "id": "1.5.1.5",
+        "unique_id": "gcp_1_1_5_1_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/issue are configured",
+        "description": "The contents of the /etc/issue file are displayed to users prior to login for local terminals.",
+        "rationale": "If the /etc/issue file does not have the correct ownership it could be modified by unauthorized users with incorrect or misleading information.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/issue Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set permissions on /etc/issue : # chown root:root /etc/issue # chmod 644 /etc/issue /etc is stateless on Container-Optimized OS. Therefore, the steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control requires checking the file permissions and ownership of `/etc/issue` on the Container-Optimized OS. Since such a check involves verifying filesystem permissions on an operating system file, it requires direct access to the instance where the OS is running. This type of check isn't typically exposed via GCP APIs or the Google Cloud SDK (gcloud) because it's an OS-level configuration detail. Therefore, manual verification through SSH access to the instance is necessary.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to connect to the Container-Optimized OS instance.\n   - `gcloud compute ssh <instance-name> --project=<project-id> --zone=<zone>`\n\n2. **Verify File Permissions:**\n   - Run the command to check the `/etc/issue` file permissions:\n     ```\n     stat /etc/issue\n     ```\n\n3. **Validate Ownership and Permissions:**\n   - Ensure the output shows `Uid` and `Gid` as `0/root` and `Access` as `644`:\n     - Expected Uid: `(0/root)`\n     - Expected Gid: `(0/root)`\n     - Expected Access: `0644/-rw-r--r--`\n\n4. **Confirm Compliance:**\n   - If the permissions and ownership match the expected values, the control is compliant.\n   - If not, adjust the file permissions using:\n     ```\n     sudo chown root:root /etc/issue\n     sudo chmod 644 /etc/issue\n     ```\n   - Note that these permissions need to be re-applied after each instance reboot as `/etc` is stateless on Container-Optimized OS. \n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:23:16.088052",
+    "model": "gpt-4o"
+}

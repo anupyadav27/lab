@@ -1,0 +1,17 @@
+{
+    "id": "5.3.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.3.3",
+        "unique_id": "5.3.3__ensure-sudo-authentication-timeout-is-configured-correctly",
+        "title": "Ensure sudo authentication timeout is configured correctly",
+        "description": "sudo caches used credentials for a default of 5 minutes. This is for ease of use when there are multiple administrative tasks to perform. The timeout can be modified to suit local security policies.",
+        "rationale": "Setting a timeout value reduces the window of opportunity for unauthorized privileged access to another user.",
+        "audit": "Ensure that the caching timeout is no more than 15 minutes. Example: # grep -roP \"timestamp_timeout=\\K[0-9]*\" /etc/sudoers* If there is no timestamp_timeout configured in /etc/sudoers* then the default is 5 minutes. This default can be checked with: # sudo -V | grep \"Authentication timestamp timeout:\" NOTE: A value of -1 means that the timeout is disabled. Depending on the configuration of the timestamp_type, this could mean for all terminals / processes of that user and not just that one single terminal session.",
+        "remediation": "If the currently configured timeout is larger than 15 minutes, edit the file listed in the audit section with visudo -f <PATH TO FILE> and modify the entry timestamp_timeout= to 15 minutes or less as per your site policy. The value is in minutes. This particular entry may appear on its own, or on the same line as env_reset. See the following two examples: Defaults    env_reset, timestamp_timeout=15 Defaults    timestamp_timeout=15 Defaults    env_reset References: 1. https://www.sudo.ws/man/1.9.0/sudoers.man.html 2. NIST SP 800-53 Rev. 5: AC-6",
+        "impact": "",
+        "reference": "1. https://www.sudo.ws/man/1.9.0/sudoers.man.html 2. NIST SP 800-53 Rev. 5: AC-6",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Nodes:** SSH into the Azure VM or Kubernetes nodes where the sudoers file is located.\n2. **Check the Sudo Configuration:** Execute the command to check the current timeout configuration:\n   ```bash\n   grep -roP \"timestamp_timeout=\\K[0-9]*\" /etc/sudoers*\n   ```\n   Alternatively, verify the default configuration with:\n   ```bash\n   sudo -V | grep \"Authentication timestamp timeout:\"\n   ```\n3. **Review the Output:** Look for the value returned by the commands:\n   - A value greater than 15 minutes should be noted as non-compliant.\n   - A value of -1 indicates no timeout is set, which is also non-compliant.\n4. **Verify Configuration:** Check if the `timestamp_timeout` line is present in `/etc/sudoers` or its included files. If the line is missing, the default setting of 5 minutes will apply.\n5. **Determine Compliance:** Note if the configuration meets the requirement of being 15 minutes or less.\n\n**Expected Secure Configuration:**\n- The `timestamp_timeout` value should be set to 15 minutes or less.\n\n**How to Confirm Compliance:**\n- If the `timestamp_timeout` is observed to be 15 minutes or less, the setup is compliant. If it exceeds 15 minutes or if it is missing (default 5 minutes, which is compliant), corrective actions should be planned based on the organization's policy."
+}

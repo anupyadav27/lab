@@ -1,0 +1,22 @@
+{
+    "control_id": "2.17",
+    "unique_id": "aws_3_2_17",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure WorkSpaces API requests flow through a VPC Endpoint",
+    "input_row": {
+        "id": "2.17",
+        "unique_id": "aws_3_2_17",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure WorkSpaces API requests flow through a VPC Endpoint",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nGiven that the focus of the control is ensuring WorkSpaces API requests flow through a VPC Endpoint, this can be assessed using AWS APIs. VPC endpoints are standard AWS networking features that can be queried programmatically. The `describe_vpc_endpoints` method in boto3 for the EC2 service allows you to list and inspect VPC endpoints, including their associated services like WorkSpaces. This falls under typical network configuration checks which are suitable for automation.\n\n**PROGRAM NAME:** aws_workspaces_vpc_endpoint_configured\n\n**AUTOMATION DETAILS:**\nTo verify that WorkSpaces API requests flow through a VPC Endpoint, the automated program would:\n\n1. Use the `boto3.client('ec2')` to interact with the EC2 service.\n2. Call `describe_vpc_endpoints()` method to retrieve a list of all VPC endpoints within the account.\n3. Filter the VPC endpoints to find those with `ServiceName` related to AWS WorkSpaces (`com.amazonaws.<region>.workspaces`), where `<region>` is the AWS region being evaluated.\n4. Verify if there is a correctly configured VPC endpoint for WorkSpaces service in the required region.\n5. Validation: Ensure the endpoint state is `available` and that it is associated with the correct VPC and configured subnets.\n6. Pass/Fail criteria: Pass if a VPC Endpoint for WorkSpaces exists and is available; Fail if no such endpoint is found or is not properly configured.\n\nThis approach ensures precise evaluation of the VPC endpoint configuration relevant to WorkSpaces API requests.",
+    "timestamp": "2025-10-28T15:17:50.271098",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "4.3",
+    "unique_id": "aws_7_4_3",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure the creation of an FSX Bucket",
+    "input_row": {
+        "id": "4.3",
+        "unique_id": "aws_7_4_3",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure the creation of an FSX Bucket",
+        "description": "An S3 bucket will store the data that Amazon Elastic File Cache accesses",
+        "rationale": "Storing data in S3 ensures scalability, durability, and cost-efficiency, while Amazon Elastic File Cache enhances access speed by caching frequently accessed data. This combination leverages the strengths of both services, providing a seamless and efficient data storage and retrieval solution.",
+        "audit": "1. Navigate to the Amazon S3 bucket console. https://s3.console.aws.amazon.com/s3/. 2. Select “Create Bucket”. 3. Give your bucket a name and select the region. Note: your bucket must be a unique name that’s not used anywhere else on AWS. 4. Block public access: This is an internal service that will not be accessed outside of our internal AWS network. Keep the “block public access” setting checked. 5. Enable bucket versioning. 6. Leave the rest of the settings as default. 7. Select “create bucket.” 8. Create a path in your bucket, give it a name and leave the encryption as default for now.",
+        "remediation": "References: 1. https://docs.aws.amazon.com/fsx/latest/LustreGuide/create-dra-linked-data- repo.html",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/fsx/latest/LustreGuide/create-dra-linked-data- repo.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nGiven the nature of the control, we can use AWS APIs or SDKs to verify multiple aspects such as existence, versioning, public access settings, and encryption of the S3 bucket. The audit steps described in the provided control instructions can be automated via AWS CLI or boto3 SDK since these are standard properties of an S3 bucket.\n\n**PROGRAM NAME:** aws_s3_bucket_fsx_configuration_check\n\n**AUTOMATION DETAILS:**\nTo automate the check for the creation and configuration of the S3 bucket intended for FSX integration:\n\n- Enumerate all S3 buckets using the AWS SDK for Python (boto3) with the `list_buckets()` method.\n- For each bucket, use `get_bucket_versioning()` to ensure bucket versioning is enabled.\n- Use `get_bucket_acl()` or `get_bucket_policy()` to check for public access policies and ensure Block Public Access settings are enabled.\n- Additionally, check for any required encryption settings using `get_bucket_encryption()` to verify encryption is correctly configured if mentioned in the remediation steps.\n- Ensure the bucket name aligns with naming conventions and region specifications.\n- Validate bucket accessibility and encryption defaults as per AWS documentation guidelines.\n\nExpected Pass/Fail Criteria:\n- Bucket must exist with the specified unique name.\n- Bucket versioning must be enabled.\n- Public access must be blocked.\n- Encryption settings, if specified, must align with best practices.\n- If all criteria are met according to the audit, the bucket configuration is compliant.",
+    "timestamp": "2025-10-28T16:15:44.002182",
+    "model": "gpt-4o"
+}

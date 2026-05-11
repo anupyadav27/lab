@@ -1,0 +1,33 @@
+{
+    "control_id": "2.3",
+    "unique_id": "k8s_1_2_3",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the --auto-tls argument is not set to true",
+    "input_row": {
+        "id": "2.3",
+        "unique_id": "k8s_1_2_3",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the --auto-tls argument is not set to true",
+        "description": "Do not use self-signed certificates for TLS.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should not be available to unauthenticated clients. You should enable the client authentication via valid certificates to secure the access to the etcd service. Impact: Clients will not be able to use self-signed certificates for TLS.",
+        "audit": "Run the following command on the etcd server node: ps -ef | grep etcd Verify that if the --auto-tls argument exists, it is not set to true.",
+        "remediation": "Edit the etcd pod specification file /etc/kubernetes/manifests/etcd.yaml on the master node and either remove the --auto-tls parameter or set it to false. --auto-tls=false Default Value: By default, --auto-tls is set to false. References: 1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#auto-tls",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Clients will not be able to use self-signed certificates for TLS.",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#auto-tls"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_etcd_auto_tls_disabled\n\n**AUTOMATION DETAILS:**\n- Query the etcd Pod specification running on the control plane node(s), typically located at `/etc/kubernetes/manifests/etcd.yaml`, which is managed as a static Pod by the kubelet.\n- Use `kubectl` to retrieve the etcd Pod spec:\n  - `kubectl -n kube-system get pod -l component=etcd -o yaml`\n  - Or, if running as a static Pod and not managed by the kubelet API, directly inspect the manifest file on the node (requires host access, but the Pod spec is visible via the Kubernetes API if mirrored).\n- Parse the container command/args for the etcd process:\n  - Look for the presence of the `--auto-tls` flag.\n  - If present, ensure its value is set to `false`.\n  - If absent, this is compliant (default is `false`).\n- Pass Criteria: The etcd container command/args do NOT include `--auto-tls=true`.\n- Fail Criteria: The etcd container command/args include `--auto-tls=true`.\n- Example check using `kubectl`:\n  ```\n  kubectl -n kube-system get pod -l component=etcd -o jsonpath=\"{.items[*].spec.containers[*].command}\"\n  ```\n  or\n  ```\n  kubectl -n kube-system get pod -l component=etcd -o jsonpath=\"{.items[*].spec.containers[*].args}\"\n  ```\n  Then, programmatically search for `--auto-tls=true`.\n- This check is fully automatable as the etcd Pod spec and its arguments are exposed via the Kubernetes API.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:01:08.228601",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. The check can be performed using Kubernetes APIs and `kubectl` commands, which are suitable for automation. The etcd Pod specification can be accessed via the Kubernetes API, allowing for programmatic checks of the `--auto-tls` argument.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly accurate. The use of `kubectl` to retrieve the etcd Pod specification and parse the command/args for the `--auto-tls` flag is correct. \n- The example `kubectl` commands provided are valid, but the explanation could be more precise. Specifically, the use of `jsonpath` should be clearly explained as it extracts specific fields from the JSON output.\n- The program name `k8s_etcd_auto_tls_disabled` is descriptive and follows a reasonable naming convention, though it could be slightly more descriptive by including the context of the check, such as `k8s_etcd_tls_auto_disabled`.\n\n**IMPROVEMENTS:**\n- The explanation of the `jsonpath` usage could be expanded to clarify how it extracts the command or args. For instance, specifying that `jsonpath=\"{.items[*].spec.containers[*].command}\"` retrieves the command array for each container.\n- Consider adding a check for the default value of `--auto-tls` to ensure that the absence of the flag is indeed compliant.\n- The program name could be improved to `k8s_etcd_tls_auto_disabled` to better reflect the specific check being performed.\n- Consider using `kubectl describe pod` for a more human-readable output when manually verifying the Pod specification.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded with a clear understanding of how to automate the check using Kubernetes APIs and `kubectl`. The technical details are mostly accurate, and the approach is feasible.\n\n**FINAL RECOMMENDATION:**\n- Modify: Enhance the explanation of `jsonpath` usage for clarity and consider adjusting the program name for better descriptiveness. Additionally, ensure that the absence of the `--auto-tls` flag is correctly interpreted as compliant by confirming the default behavior.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T01:27:59.275712",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nBoth AI opinions agree that the audit approach can be automated using Kubernetes APIs and `kubectl` commands. The ability to retrieve the etcd Pod specification and check the `--auto-tls` argument programmatically supports this decision. The automation details provided are technically sound and feasible, allowing for efficient compliance checks.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nk8s_etcd_auto_tls_disabled\n\n**AUTOMATION DETAILS:**\n- Kubernetes Resource/Service: Pods\n- API/CLI Method: `kubectl`\n- Properties to Check: Command-line arguments of the etcd container\n- Pass Criteria: The etcd container command/args do NOT include `--auto-tls=true`.\n- Fail Criteria: The etcd container command/args include `--auto-tls=true`.",
+        "final_approach": "Automated",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T04:07:27.538833"
+    }
+}

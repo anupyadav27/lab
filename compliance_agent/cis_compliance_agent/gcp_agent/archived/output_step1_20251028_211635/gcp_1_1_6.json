@@ -1,0 +1,22 @@
+{
+    "control_id": "1.6",
+    "unique_id": "gcp_1_1_6",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure AppArmor is installed",
+    "input_row": {
+        "id": "1.6",
+        "unique_id": "gcp_1_1_6",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure AppArmor is installed",
+        "description": "SELinux and AppArmor provide Mandatory Access Controls.",
+        "rationale": "Without a Mandatory Access Control system installed only the default Discretionary Access Control system will be available.",
+        "audit": "Verify that AppArmor is installed with the following command: # grep '\\\"name\\\": \\\"apparmor\\\"' /etc/cos-package-info.json \"name\": \"apparmor\",",
+        "remediation": "Update to an OS image that includes the the apparmor package. Additional Information: SELinux and AppArmor both have several package names in use on different distributions. Research the appropriate packages for your environment.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- **Manual:** This control requires verification of an OS-level setting (the presence of the AppArmor package on the Container-Optimized OS), which cannot be accomplished through GCP APIs, Google Cloud SDK (gcloud), or GCP CLI. The audit process described requires checking a file on the operating system itself, specifically `/etc/cos-package-info.json`, using SSH access to the instance, something not typically exposed via GCP APIs.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - SSH into the Container-Optimized OS instance where you want to verify AppArmor installation.\n\n2. **Check for AppArmor Package:**\n   - Run the following command to verify if AppArmor is listed in the package info:\n     ```bash\n     grep '\\\"name\\\": \\\"apparmor\\\"' /etc/cos-package-info.json\n     ```\n   \n3. **Verify/Validate:**\n   - Ensure that the output includes `\\\"name\\\": \\\"apparmor\\\"`, indicating that AppArmor is installed.\n\n4. **Expected Secure Configuration:**\n   - The system should output a line confirming the presence of the AppArmor package. If not present, remediation is required as per the benchmark guidelines.\n\n5. **Confirm Compliance:**\n   - Once AppArmor is verified as installed through the above command, compliance with the control is confirmed.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:23:41.342542",
+    "model": "gpt-4o"
+}

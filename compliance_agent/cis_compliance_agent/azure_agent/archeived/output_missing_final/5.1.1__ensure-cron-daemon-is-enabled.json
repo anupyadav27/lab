@@ -1,0 +1,17 @@
+{
+    "id": "5.1.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.1.1",
+        "unique_id": "5.1.1__ensure-cron-daemon-is-enabled",
+        "title": "Ensure cron daemon is enabled",
+        "description": "The cron daemon is used to execute batch jobs on the system.",
+        "rationale": "While there may not be user jobs that need to be run on the system, the system does have maintenance jobs that may include security monitoring that have to run, and cron is used to execute them.",
+        "audit": "Run the the following command to verify cron is enabled: # systemctl is-enabled crond enabled Verify result is \"enabled\".",
+        "remediation": "Run the following command to enable cron: # systemctl --now enable crond References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5 Additional Information: Additional methods of enabling a service exist. Consult your distribution documentation for appropriate methods.",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5 Additional Information: Additional methods of enabling a service exist. Consult your distribution documentation for appropriate methods.",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect to the Azure Kubernetes Service (AKS) cluster via SSH:**\n   - Use the Azure portal to access the AKS resource and obtain the SSH command or configure an SSH client with the necessary credentials.\n   - Command example to connect: `az aks get-credentials --resource-group <ResourceGroupName> --name <AKSName>`\n\n2. **Verify if the cron daemon is enabled:**\n   - Run the command: `sudo systemctl is-enabled crond`\n\n3. **Check the output:**\n   - Ensure that the result is `\"enabled\"`.\n\n4. **If the cron daemon is not enabled:**\n   - Run the command to enable cron: `sudo systemctl --now enable crond`\n\n5. **Confirm compliance:**\n   - Re-run the audit command (`sudo systemctl is-enabled crond`) to confirm it returns `\"enabled\"`.\n\nThis process confirms that the cron daemon is enabled on the AKS cluster nodes, adhering to compliance requirements outlined in the CIS benchmark."
+}

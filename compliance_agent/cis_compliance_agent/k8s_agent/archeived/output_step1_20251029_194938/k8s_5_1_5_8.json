@@ -1,0 +1,22 @@
+{
+    "control_id": "1.5.8",
+    "unique_id": "k8s_5_1_5_8",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --max-wals argument is set to 0",
+    "input_row": {
+        "id": "1.5.8",
+        "unique_id": "k8s_5_1_5_8",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --max-wals argument is set to 0",
+        "description": "Do not auto rotate logs.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. You should avoid automatic log rotation and instead safeguard the logs in a centralized repository or through a separate log management system.",
+        "audit": "Run the following command on the etcd server node: ps -ef | grep etcd Verify that --max-wals argument exists and it is set to 0.",
+        "remediation": "Edit the etcd environment file (for example, /etc/etcd/etcd.conf) on the etcd server node and set the ETCD_MAX_WALS parameter to 0: ETCD_MAX_WALS=\"0\" Edit the etcd startup file (for example, /etc/systemd/system/multi- user.target.wants/etcd.service) and configure the startup parameter for --max-wals and set it to \\\"${ETCD_MAX_WALS}\\\": ExecStart=/bin/bash -c \"GOMAXPROCS=$(nproc) /usr/bin/etcd -- name=\\\"${ETCD_NAME}\\\" --data-dir=\\\"${ETCD_DATA_DIR}\\\" --listen-client- urls=\\\"${ETCD_LISTEN_CLIENT_URLS}\\\" --max-walsr=\\\"${ETCD_MAX_WALS}\\\"\" Based on your system, reload the daemon and restart the etcd service. For example, systemctl daemon-reload systemctl restart etcd.service Impact: You will have to manage log rotation and archiving.  127 | P a g e Default Value: By default, --max-wals argument is set to 5. References: 1. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#max-wals 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1",
+        "impact": "You will have to manage log rotation and archiving.  127 | P a g e Default Value: By default, --max-wals argument is set to 5.",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#max-wals 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the etcd process startup arguments, specifically the presence and value of the --max-wals flag.\n- etcd is often run as a systemd service or as a static pod, but the Kubernetes API does NOT expose etcd process arguments directly.\n- The audit procedure specifies running ps -ef | grep etcd on the etcd server node, which requires host-level access.\n- There is no standard Kubernetes API or kubectl command to retrieve etcd process flags unless etcd is deployed as a pod and the command/args are visible in the PodSpec (which is not always the case, especially for external etcd clusters).\n- Therefore, this check requires manual/host-level inspection.\n\n**MANUAL STEPS:**\n1. SSH into each etcd server node in your Kubernetes cluster.\n2. Run the following command to list the running etcd process and its arguments:\n   ```\n   ps -ef | grep etcd\n   ```\n3. Examine the command line for the etcd process and verify that the --max-wals argument is present and set to 0.\n   - Example: `... --max-wals=0 ...`\n4. If etcd is managed via a systemd service, also review the etcd service unit file (commonly at /etc/systemd/system/etcd.service) and any referenced environment files (such as /etc/etcd/etcd.conf) to confirm that ETCD_MAX_WALS is set to \"0\".\n5. Confirm compliance if all etcd instances have --max-wals=0 set. If any instance is missing the flag or has a different value, the control is not met.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:49:15.392773",
+    "model": "gpt-4.1"
+}

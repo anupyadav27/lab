@@ -1,0 +1,17 @@
+{
+    "id": "5.2.11",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.2.11",
+        "unique_id": "5.2.11__ensure-ssh-ignorerhosts-is-enabled",
+        "title": "Ensure SSH IgnoreRhosts is enabled",
+        "description": "The IgnoreRhosts parameter specifies that .rhosts and .shosts files will not be used in RhostsRSAAuthentication or HostbasedAuthentication.",
+        "rationale": "Setting this parameter forces users to enter a password when authenticating with SSH.",
+        "audit": "Run the following command: # sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep ignorerhosts Verify the output matches: ignorerhosts yes Run the following command: # grep -Pis '^\\h*ignorerhosts\\h+\"?no\"?\\b' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf Nothing should be returned. Note: If Include locations besides, or in addition to /etc/ssh/sshd_config.d/*.conf and/or Match set statements are used in your environment, those locations should be checked for the correct configuration as well.",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter above any Include entries as follows: IgnoreRhosts yes Note: First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a file in Include location. Default Value: IgnoreRhosts yes  References: 1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:** \n1. **Access SSH Configuration**: SSH into the Azure Linux virtual machine or Kubernetes node where the SSH service is running.\n   \n2. **Check IgnoreRhosts Parameter**: Run the following command to verify the configuration:\n   ```bash\n   grep -Pis '^\\h*ignorerhosts\\h+\\\"?no\\\"?\\b' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf\n   ```\n   \n3. **Verify Output**: Ensure that the output returns nothing. If it returns any value, it indicates that `IgnoreRhosts` is not set to `yes`.\n\n4. **Expected Secure Configuration**: The configuration file(s) should explicitly include the line:\n   ```bash\n   IgnoreRhosts yes\n   ```\n   This ensures that `.rhosts` and `.shosts` files will not be used in RhostsRSAAuthentication or HostbasedAuthentication.\n\n5. **Confirm Compliance**: If the necessary configuration is missing or incorrectly set, make the required changes to the `/etc/ssh/sshd_config` file and restart the SSH service for changes to take effect. Verify once more that the parameter is correctly set and ensure there are no matches found for the invalid setting."
+}

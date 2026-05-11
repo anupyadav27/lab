@@ -1,0 +1,17 @@
+{
+    "id": "1.3.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "1.3.2",
+        "unique_id": "1.3.2__ensure-core-dump-backtraces-are-disabled",
+        "title": "Ensure core dump backtraces are disabled",
+        "description": "A core dump is the memory of an executable program. It is generally used to determine why a program aborted. It can also be used to glean confidential information from a core file.",
+        "rationale": "A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems, increasing the risk to the system.",
+        "audit": "Run the following command to verify ProcessSizeMax is set to 0 in /etc/systemd/coredump.conf: # grep -i '^\\s*ProcessSizeMax\\s*=\\s*0' /etc/systemd/coredump.conf ProcessSizeMax=0",
+        "remediation": "Edit or add the following line in /etc/systemd/coredump.conf: ProcessSizeMax=0 Default Value: ProcessSizeMax=2G References: 1. https://www.freedesktop.org/software/systemd/man/coredump.conf.html 2. NIST SP 800-53 Rev. 5: CM-6",
+        "impact": "",
+        "reference": "1. https://www.freedesktop.org/software/systemd/man/coredump.conf.html 2. NIST SP 800-53 Rev. 5: CM-6",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal:** Log in to the Azure portal at https://portal.azure.com.\n2. **Navigate to Azure Kubernetes Service (AKS):** In the left-hand sidebar, select \"Kubernetes services,\" and then select the specific AKS cluster you want to audit.\n3. **Connect to the AKS Cluster:** Use `az aks get-credentials --resource-group <YourResourceGroup> --name <YourAKSClusterName>` to connect to your AKS cluster via `kubectl`.\n4. **SSH to a Node:** Identify one of the nodes in your AKS cluster using `kubectl get nodes` and SSH into the node with appropriate credentials.\n5. **Check Configuration File:** Once inside the node, run the command `cat /etc/systemd/coredump.conf` to open the configuration file for coredumps.\n6. **Verify the Value:** Look for the line that starts with `ProcessSizeMax`. Determine if it reads `ProcessSizeMax=0`. \n7. **Expected Secure Configuration:** Ensure that there is a single line `ProcessSizeMax=0` in the coredump configuration file.\n8. **Confirm Compliance:** If the configuration is as expected (`ProcessSizeMax=0`), then the control is compliant. Document the result for future reference.\n\nIf `ProcessSizeMax` is not set to `0`, then it is considered non-compliant, and the remediation steps should be followed as outlined in the control."
+}

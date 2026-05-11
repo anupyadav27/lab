@@ -1,0 +1,17 @@
+{
+    "id": "5.2.8",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.2.8",
+        "unique_id": "5.2.8__ensure-ssh-hostbasedauthentication-is-disabled",
+        "title": "Ensure SSH HostbasedAuthentication is disabled",
+        "description": "The HostbasedAuthentication parameter specifies if authentication is allowed through trusted hosts via the user of .rhosts, or /etc/hosts.equiv, along with successful public key client host authentication.",
+        "rationale": "Even though the .rhosts files are ineffective if support is disabled in /etc/pam.conf, disabling the ability to use .rhosts files in SSH provides an additional layer of protection.",
+        "audit": "Run the following command: # sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep hostbasedauthentication Verify the output matches: hostbasedauthentication no Run the following command: # grep -Pis '^\\h*HostbasedAuthentication\\h+\"?yes\"?\\b' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf Nothing should be returned. Note: If Include locations besides, or in addition to /etc/ssh/sshd_config.d/*.conf and/or Match set statements are used in your environment, those locations should be checked for the correct configuration as well.",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter above any Include entries as follows: HostbasedAuthentication no Note: First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a file in Include location. Default Value: HostbasedAuthentication no References: 1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5 MITRE ATT&CK Mappings: Techniques / Sub- techniques Tactics Mitigations T1078, T1078.001, T1078.003 TA0001 M1042",
+        "impact": "",
+        "reference": "1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5 MITRE ATT&CK Mappings: Techniques / Sub- techniques Tactics Mitigations T1078, T1078.001, T1078.003 TA0001 M1042",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect to Kubernetes Node:** Access the nodes of the Azure Kubernetes Service (AKS) cluster using SSH. You can typically do this by using the Azure CLI command: `az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>`, followed by `ssh <node-ip>`.\n2. **Verify SSH Configuration:** Once inside the node, run the command `grep -Pis '^\\h*HostbasedAuthentication\\h+\"?yes\"?\\b' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf`.\n3. **What to Verify/Validate:** There should be no output from the command above if HostbasedAuthentication is correctly disabled.\n4. **Expected Secure Configuration:** If the output is empty, then HostbasedAuthentication is disabled as required.\n5. **Confirm Compliance:** Ensure that the `/etc/ssh/sshd_config` file has the line `HostbasedAuthentication no`. You can check this by running the command `sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep hostbasedauthentication`. The output should confirm that `hostbasedauthentication no`."
+}

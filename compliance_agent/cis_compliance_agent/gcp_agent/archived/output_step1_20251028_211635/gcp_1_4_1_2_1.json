@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.2.1",
+    "unique_id": "gcp_1_4_1_2_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure journald is configured to compress large log files",
+    "input_row": {
+        "id": "4.1.2.1",
+        "unique_id": "gcp_1_4_1_2_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure journald is configured to compress large log files",
+        "description": "The journald system includes the capability of compressing overly large files to avoid filling up the system with logs or making the logs unmanageably large.",
+        "rationale": "Uncompressed large files may unexpectedly fill a filesystem leading to resource unavailability. Compressing logs prior to write can prevent sudden, unexpected filesystem impacts.",
+        "audit": "Review /etc/systemd/journald.conf and verify that large files will be compressed: # grep -e Compress /etc/systemd/journald.conf # Compress=yes",
+        "remediation": "Edit the /etc/systemd/journald.conf file and add the following line: Compress=yes Reload the configuration to be effective. # systemctl force-reload systemd-journald /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot. References: 1. https://github.com/konstruktoid/hardening/blob/master/systemd.adoc#etcsystemd journaldconf Additional Information: The main configuration file /etc/systemd/journald.conf is read before any of the custom *.conf files. If there are custom configs present, they override the main configuration parameters",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n1. The control involves checking the configuration of `journald` on the operating system level, specifically on Google Container-Optimized OS. This requires access to the OS configuration file `/etc/systemd/journald.conf`.\n2. There are no exposed GCP APIs or Google Cloud SDK commands for directly checking or modifying `/etc/systemd/journald.conf`, as it is an OS-level setting and not a cloud-managed configuration.\n3. The audit process described (\"grep -e Compress /etc/systemd/journald.conf\") indicates that human judgment is necessary to SSH into instances and manually verify the content of this file.\n4. This setting is not part of a standard GCP service property such as IAM, storage, or network configurations that can be checked through cloud APIs but requires access to the underlying host.\n\n**MANUAL STEPS:**\n\n1. **SSH Access:** \n   - Gain SSH access to the Container-Optimized OS instance in question.\n   - Use the following command to SSH into the instance: `gcloud compute ssh <instance-name> --zone=<zone>`.\n\n2. **Verify Configuration:**\n   - Execute the command `grep -e Compress /etc/systemd/journald.conf` to check if the `Compress` option is set.\n   - Ensure that the output shows `Compress=yes`.\n\n3. **Expected Secure Configuration:**\n   - The `journald.conf` file should have the line `Compress=yes`. \n\n4. **Confirm Compliance:**\n   - If `Compress=yes` is present in the output, the instance is compliant with this control.\n   - If the output does not show this configuration, it indicates non-compliance, and the setting needs to be updated manually after every reboot due to the stateless nature of `/etc` on Container-Optimized OS.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:30:39.436784",
+    "model": "gpt-4o"
+}

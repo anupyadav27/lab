@@ -1,0 +1,37 @@
+{
+    "unique_id": "2.2.1.1__ensure-public-network-access-is-disabled",
+    "control_id": "2.2.1.1",
+    "source": "CIS_MICROSOFT_AZURE_FOUNDATIONS_BENCHMARK_V4.0.0_updated_20250825_190952.json",
+    "input_row": {
+        "id": "2.2.1.1",
+        "unique_id": "2.2.1.1__ensure-public-network-access-is-disabled",
+        "title": "Ensure public network access is Disabled",
+        "description": "Disable public network access to prevent exposure to the internet and reduce the risk of unauthorized access. Use private endpoints to securely manage access within trusted networks.",
+        "rationale": "Disabling public network access improves security by ensuring that a service is not exposed on the public internet. Impact: Disabling public network access restricts access to the service. This enhances security but may require the configuration of private endpoints for any services or users needing access within trusted networks.",
+        "audit": "",
+        "remediation": "Additional Information: This Common Reference Recommendation is referenced in the following Service Recommendations: • Storage Services > Storage Accounts > Networking > \"Ensure that 'Public Network Access' is 'Disabled' for storage accounts\"",
+        "impact": "Disabling public network access restricts access to the service. This enhances security but may require the configuration of private endpoints for any services or users needing access within trusted networks.",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_FOUNDATIONS_BENCHMARK_V4.0.0_updated_20250825_190952.json"
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control mandates ensuring that public network access is disabled, which relates to network access configuration—a standard property exposed via Azure APIs. \n- Public network access settings for Azure resources, such as storage accounts, can be queried and verified programmatically.\n\n**PROGRAM NAME:** azure_storage_account_public_network_access_disabled\n\n**AUTOMATION DETAILS:**\n- The automated program would check the public network access setting for all storage accounts within the specified Azure subscriptions or resource groups.\n- Azure Resource Manager APIs or Azure CLI commands to be used:\n  - API endpoint: `GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts?api-version=2021-04-01`\n  - CLI command: `az storage account show --name <storage_account_name> --query \"networkRuleSet.defaultAction\" --output tsv`\n- Specific resources to enumerate would be all storage accounts within defined subscriptions/resource groups.\n- The exact configuration properties/settings to validate include checking the `publicNetworkAccess` property set to `Disabled`.\n- Clear Pass/Fail criteria:\n  - Pass: `publicNetworkAccess` property equals `Disabled`.\n  - Fail: `publicNetworkAccess` property equals `Enabled` or is missing.\n- The CLI command would return the default action for the storage account's network rules, which should be `Disabled` to comply with the control."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- **Manual vs Automated Classification:** The classification as \"Automated\" is appropriate. The control involves checking a specific configuration setting (`publicNetworkAccess`) for Azure Storage Accounts, which can be efficiently verified using Azure APIs or CLI tools.\n- **Azure APIs/CLI Feasibility:** The use of Azure Resource Manager (ARM) APIs and Azure CLI is suitable for this task. Both provide the necessary capabilities to query and verify the public network access settings of Azure Storage Accounts.\n\n**TECHNICAL ACCURACY:** 8\n\n- **Automation Details:** The automation details are mostly correct. The API endpoint and CLI command are appropriate for retrieving the necessary information. However, the CLI command should be slightly adjusted to ensure it directly checks the `publicNetworkAccess` property rather than the `networkRuleSet.defaultAction`, which is not directly related to the public network access setting.\n- **Program Name Convention:** The program name follows the convention well, though it could be slightly more descriptive, such as `azure_storage_account_public_network_access_check`.\n\n**IMPROVEMENTS:**\n\n- **CLI Command Correction:** The CLI command should be updated to directly query the `publicNetworkAccess` property. The correct CLI command would be:\n  ```bash\n  az storage account show --name <storage_account_name> --query \"publicNetworkAccess\" --output tsv\n  ```\n- **Additional Considerations:** Consider adding a check for other resources that might have similar public network access settings, such as Azure SQL Databases or Azure Key Vaults, if they are within the scope of the control.\n- **Documentation and Comments:** Include comments or documentation within the automation script to clarify the purpose of each step and any assumptions made.\n\n**CONFIDENCE:** HIGH\n\n- The approach is well-founded, and the necessary Azure capabilities are correctly identified. The minor technical inaccuracies do not significantly impact the overall assessment.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modification Needed:** Update the CLI command to directly check the `publicNetworkAccess` property. Ensure that the automation script or program includes comprehensive documentation and comments for clarity.\n- **Reclassification Not Required:** The classification as an automated approach remains valid given the nature of the control and the available Azure capabilities.",
+        "reviewed_at": "2025-10-26T16:31:27.379250"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:** Both AI opinions agree that the control can be automated by querying the public network access settings of Azure Storage Accounts using Azure APIs or CLI tools. The necessary properties are exposed through Azure Resource Manager APIs, allowing for efficient verification of the `publicNetworkAccess` setting. This aligns with the compliance control's requirement to ensure public network access is disabled.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nazure_storage_account_public_network_access_disabled\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** Storage Accounts\n- **API/CLI Method:** `az storage account show --name <storage_account_name> --query \"publicNetworkAccess\" --output tsv`\n- **Properties to Check:** `publicNetworkAccess`\n- **Pass Criteria:** The value should be `Disabled`\n- **Fail Criteria:** Any value other than `Disabled` indicates non-compliance\n\n**DISAGREEMENTS RESOLVED:** There were no significant disagreements between the AI opinions. Both agreed on the feasibility of automation and the use of Azure APIs/CLI for verification.\n\n**SOURCE:** CIS_MICROSOFT_AZURE_FOUNDATIONS_BENCHMARK_V4.0.0_updated_20250825_190952.json",
+        "decided_at": "2025-10-27T13:58:50.345122"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.1.1__ensure-public-network-access-is-disabled.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_audit_policy_captures_metadata",
+    "k8s_networkpolicy_flow_logging_enabled"
+  ],
+  "changes_made": [
+    "Changed k8s_audit_logging_enabled to k8s_apiserver_audit_logging_enabled for consistency with existing patterns"
+  ],
+  "review_notes": "The functions generally map well to Kubernetes security controls related to monitoring activities. However, the naming for audit logging should be consistent with existing patterns that specify the resource more clearly, such as 'apiserver' for API server-related audit logging. The function for network policy flow logging is correctly named and applicable.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Use 'apiserver' as the resource prefix for audit logging functions to maintain consistency with existing naming patterns"
+  ],
+  "control_id": "A.8.16",
+  "title": "Monitoring Activities",
+  "step1_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_audit_policy_captures_metadata",
+    "k8s_networkpolicy_flow_logging_enabled"
+  ],
+  "step1_reasoning": "The ISO27001 control A.8.16 focuses on monitoring activities, which in the Kubernetes context can be mapped to audit logging and network flow logging. Kubernetes audit logs can be configured to monitor API server activities, capturing metadata and ensuring logs are retained for compliance. Additionally, network policies can be configured to enable flow logging, providing visibility into network traffic, similar to VPC flow logs in cloud environments."
+}

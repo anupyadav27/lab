@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.4",
+    "unique_id": "k8s_4_5_1_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Minimize access to create pods",
+    "input_row": {
+        "id": "5.1.4",
+        "unique_id": "k8s_4_5_1_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Minimize access to create pods",
+        "description": "The ability to create pods in a namespace can provide a number of opportunities for privilege escalation, such as assigning privileged service accounts to these pods or mounting hostPaths with access to sensitive data (unless Pod Security Policies are implemented to restrict this access) As such, access to create new pods should be restricted to the smallest possible group of users.",
+        "rationale": "The ability to create pods in a cluster opens up possibilities for privilege escalation and should be restricted, where possible. Impact: Care should be taken not to remove access to pods to system components which require this for their operation",
+        "audit": "Review the users who have create access to pod objects in the Kubernetes API.",
+        "remediation": "Where possible, remove create access to pod objects in the cluster. Default Value: By default in a kubeadm cluster the following list of principals have create privileges on pod objects CLUSTERROLEBINDING                                    SUBJECT TYPE            SA-NAMESPACE cluster-admin                                         system:masters Group system:controller:clusterrole-aggregation-controller  clusterrole- aggregation-controller  ServiceAccount  kube-system system:controller:daemon-set-controller               daemon-set-controller ServiceAccount  kube-system system:controller:job-controller                      job-controller ServiceAccount  kube-system system:controller:persistent-volume-binder            persistent-volume- binder            ServiceAccount  kube-system system:controller:replicaset-controller               replicaset-controller ServiceAccount  kube-system system:controller:replication-controller              replication-controller ServiceAccount  kube-system system:controller:statefulset-controller              statefulset-controller ServiceAccount  kube-system",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Care should be taken not to remove access to pods to system components which require this for their operation",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_pod_create_permissions_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRole and Role objects in the cluster using the Kubernetes API or kubectl:\n  - `kubectl get clusterroles -o yaml`\n  - `kubectl get roles --all-namespaces -o yaml`\n- For each ClusterRole and Role, inspect the `rules` field for verbs that include `create` and resources that include `pods`.\n- Identify all RoleBindings and ClusterRoleBindings:\n  - `kubectl get clusterrolebindings -o yaml`\n  - `kubectl get rolebindings --all-namespaces -o yaml`\n- Map which users, groups, or service accounts are granted these roles with `create` access to `pods`.\n- Compare the list of subjects with pod creation privileges to the expected system accounts (as listed in the remediation section: system:masters group, and specific kube-system service accounts for controllers).\n- Flag any additional users, groups, or service accounts with `create` access to pods outside of the documented system components.\n- **Pass Criteria:** Only the default system accounts and controllers have `create` access to pods.\n- **Fail Criteria:** Any additional users, groups, or service accounts have `create` access to pods beyond the required system components.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:30:10.661496",
+    "model": "gpt-4.1"
+}

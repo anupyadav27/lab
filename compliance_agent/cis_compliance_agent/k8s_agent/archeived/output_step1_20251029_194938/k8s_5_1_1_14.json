@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.14",
+    "unique_id": "k8s_5_1_1_14",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the admission control policy is set to SecurityContextDeny",
+    "input_row": {
+        "id": "1.1.14",
+        "unique_id": "k8s_5_1_1_14",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the admission control policy is set to SecurityContextDeny",
+        "description": "Restrict pod level SecurityContext customization. Instead of using a customized SecurityContext for your pods, use a Pod Security Policy (PSP), which is a cluster-level resource that controls the actions that a pod can perform and what it has the ability to access.",
+        "rationale": "Setting admission control policy to SecurityContextDeny denies the pod level SecurityContext customization. Any attempts to customize the SecurityContexts that are not explicitly defined in the Pod Security Policy (PSP) are blocked. This ensures that all the pods adhere to the PSP defined by your organization and you have a uniform pod level security posture.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --admission-control argument is set to a value that includes SecurityContextDeny.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_ADMISSION_CONTROL parameter to \"--admission- control=...,SecurityContextDeny,...\": KUBE_ADMISSION_CONTROL=\"--admission-control=...,SecurityContextDeny,...\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: None  39 | P a g e Default Value: By default, SecurityContextDeny is set. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#securitycontextdeny 3. https://kubernetes.io/docs/user-guide/pod-security-policy/#working-with-rbac",
+        "profile_applicability": "•  Level 1",
+        "impact": "None  39 | P a g e Default Value: By default, SecurityContextDeny is set.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#securitycontextdeny 3. https://kubernetes.io/docs/user-guide/pod-security-policy/#working-with-rbac"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_securitycontextdeny_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver process arguments to verify that the admission plugin SecurityContextDeny is enabled.\n- Use Kubernetes API or CLI tooling to inspect the running kube-apiserver configuration:\n    - If running as a static pod (common in kubeadm and managed clusters), use:  \n      `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml`  \n      Inspect the `spec.containers[].command` or `spec.containers[].args` fields for the presence of `--admission-control=...SecurityContextDeny...` or `--enable-admission-plugins=...SecurityContextDeny...` (depending on Kubernetes version).\n    - Alternatively, if kube-apiserver is managed as a systemd service or via a manifest file, retrieve the manifest (typically at `/etc/kubernetes/manifests/kube-apiserver.yaml`) and check the command/args for the admission plugin flag.\n- Pass Criteria:\n    - The kube-apiserver configuration must include SecurityContextDeny in the list of enabled admission plugins (either via `--admission-control` or `--enable-admission-plugins`).\n- Fail Criteria:\n    - SecurityContextDeny is not present in the enabled admission plugins list.\n- Note: SecurityContextDeny is deprecated in newer Kubernetes versions and replaced by PodSecurity admission. For clusters running Kubernetes 1.6, this check is valid as described.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:40:29.450085",
+    "model": "gpt-4.1"
+}

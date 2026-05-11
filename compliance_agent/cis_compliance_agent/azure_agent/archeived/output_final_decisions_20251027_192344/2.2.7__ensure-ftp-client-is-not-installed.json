@@ -1,0 +1,37 @@
+{
+    "unique_id": "2.2.7__ensure-ftp-client-is-not-installed",
+    "control_id": "2.2.7",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.7",
+        "unique_id": "2.2.7__ensure-ftp-client-is-not-installed",
+        "title": "Ensure FTP client is not installed",
+        "description": "FTP (File Transfer Protocol) is a traditional and widely used standard tool for transferring files between a server and clients over a network, especially where no authentication is necessary (permits anonymous users to connect to a server).",
+        "rationale": "FTP does not protect the confidentiality of data or authentication credentials. It is recommended SFTP be used if file transfer is required. Unless there is a need to run the system as a FTP server (for example, to allow anonymous downloads), it is recommended that the package be removed to reduce the potential attack surface.",
+        "audit": "Run the following command to verify ftp is not installed: # rpm -q ftp package ftp is not installed",
+        "remediation": "Run the following command to remove ftp: # dnf remove ftp References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access SSH to the AKS Node:**\n   - Use Azure CLI to connect to your AKS cluster with the command:\n     ```\n     az aks get-credentials --resource-group <YourResourceGroup> --name <YourAKSCluster>\n     ```\n   - SSH into one of the AKS nodes (you may need to identify the node's IP address):\n     ```\n     ssh azureuser@<NodeIP>\n     ```\n\n2. **Check for FTP Client Installation:**\n   - Run the following command to verify if the FTP client is installed:\n     ```\n     rpm -q ftp\n     ```\n\n3. **What to Verify/Validate:**\n   - If the output returns \"package ftp is not installed\", then the compliance control is satisfied.\n   - If the output indicates that the ftp package is installed, further action is required.\n\n4. **Expected Secure Configuration:**\n   - The expected configuration is that the FTP client package (`ftp`) should **not** be installed on the system.\n\n5. **How to Confirm Compliance:**\n   - Document the output of the `rpm` command. If the output confirms that \"ftp\" is not installed, the control is compliant. If it is installed, follow remediation steps to remove it:\n     ```\n     dnf remove ftp\n     ```"
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** DISAGREE\n\n- **Manual vs Automated Classification:** The classification as \"Manual\" is not entirely correct. While the manual approach is valid, this check can be automated using Azure capabilities. Azure Policy can be used to enforce and audit configurations on Azure resources, including AKS nodes. Additionally, Azure Automation or Azure Monitor can be configured to regularly check for installed packages on AKS nodes.\n- **Azure APIs/CLI:** The Azure CLI or Azure Policy can be leveraged to automate the compliance check. Specifically, Azure Policy can be used to define a policy that checks for the presence of specific packages on VMs, including AKS nodes. This can be integrated with Azure Monitor to alert when non-compliant configurations are detected.\n\n**TECHNICAL ACCURACY:** 6\n\n- **Automation Details:** The manual steps provided are technically accurate for checking the presence of the FTP client on an AKS node. However, they do not leverage Azure's automation capabilities, which could streamline the process.\n- **Manual Steps Accuracy:** The steps are correct for a manual check, but they assume SSH access to AKS nodes, which is not always recommended due to security best practices. Accessing nodes directly can be a security risk and should be minimized.\n- **Program Naming Convention:** The program name does not follow the convention, as it is not specified in the assessment.\n\n**IMPROVEMENTS:**\n\n- **Automation Suggestions:** Implement an Azure Policy to check for and enforce the absence of the FTP client on AKS nodes. This policy can be combined with Azure Monitor to provide alerts and compliance reports.\n- **Security Considerations:** Direct SSH access to AKS nodes should be minimized. Consider using Azure Bastion or other secure methods if access is necessary.\n- **Alternative Approaches:** Use Azure Security Center to monitor and report on compliance with security benchmarks. Azure Security Center can provide insights and recommendations for securing AKS clusters.\n\n**CONFIDENCE:** MEDIUM\n\n- While the manual steps are technically correct, the lack of automation and reliance on direct node access reduces confidence in the approach's security and efficiency.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Re-classify:** The assessment should be re-classified to include an automated approach using Azure Policy and Azure Monitor. This will enhance security, reduce manual effort, and provide continuous compliance monitoring.\n- **Modify Steps:** Include steps to create and apply an Azure Policy for package compliance on AKS nodes. Document how to set up alerts in Azure Monitor for non-compliance.\n- **Security Enhancement:** Recommend minimizing direct SSH access to AKS nodes and using secure methods for any necessary access.",
+        "reviewed_at": "2025-10-26T16:29:51.256806"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nThe compliance control can be automated using Azure Policy, which allows for the enforcement and auditing of configurations on Azure resources, including AKS nodes. Azure Policy can be configured to check for the presence of specific packages, such as the FTP client, on VMs and AKS nodes. This approach leverages Azure's capabilities to automate compliance checks, making it more efficient and scalable than manual inspection.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nazure_policy_aks_package_check\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** AKS Clusters\n- **API/CLI Method:** Azure Policy\n- **Properties to Check:** Presence of the FTP package on AKS nodes\n- **Pass Criteria:** FTP package is not installed\n- **Fail Criteria:** FTP package is installed\n\n---\n\n**DISAGREEMENTS RESOLVED:**\nThe first AI opinion suggested a manual approach, while the second AI opinion highlighted the potential for automation using Azure Policy. Given Azure's capabilities to automate compliance checks through Azure Policy, the automated approach is more appropriate and efficient.\n\n**SOURCE:** CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+        "decided_at": "2025-10-27T13:55:15.531772"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.7__ensure-ftp-client-is-not-installed.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

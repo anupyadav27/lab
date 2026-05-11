@@ -1,0 +1,20 @@
+{
+    "id": "20.6",
+    "source": null,
+    "input_row": {
+        "id": "20.6",
+        "unique_id": "20.6__ensure-that-only-approved-extensions-are-installed",
+        "title": "Ensure that Only Approved Extensions Are Installed",
+        "description": " go to Settings. ...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to Virtual machines. 2. For each virtual machine, go to Settings. 3. Click on Extensions + applications. 4. If there are unapproved extensions, uninstall them. Remediate from Azure CLI From the audit command identify the unapproved extensions, and use the below CLI command to remove an unapproved extension attached to VM. az vm extension delete --resource-group <resourceGroupName> --vm-name <vmName> --name <extensionName> Remediate from PowerShell For each VM and each insecure extension from the Audit Procedure run the following command. Remove-AzVMExtension -ResourceGroupName <ResourceGroupName> -Name <ExtensionName> -VMName <VirtualMachineName> Default Value: By default, no extensions are added to the virtual machines. References: 1. https://docs.microsoft.com/en-us/azure/virtual-machines/windows/extensions- features 2. https://docs.microsoft.com/en-us/powershell/module/az.compute/?view=azps- 7.5.0#vm-extensions 3. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-asset- management#am-2-use-only-approved-services 4. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-asset- management#am-5-use-only-approved-applications-in-virtual-machine CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nBased on the analysis:\n- The control describes how to check for unapproved extensions installed in Virtual Machines, which can be queried using Azure APIs.\n- The remediation section provides specific Azure CLI commands (`az vm extension delete`) that indicate this control can be automated.\n- There are APIs available to query the extensions installed on virtual machines.\n- The audit could be conducted via Azure Resource Manager APIs or CLI commands, which allows for programmatic verification.\n\n**PROGRAM NAME:** azure_vm_extensions_approved_check\n\n**AUTOMATION DETAILS:**\nThe automated program would check:\n- Utilize Azure Resource Manager APIs or Azure CLI to enumerate all virtual machines and their extensions:\n  - API Endpoint: `GET /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions`\n  - CLI Command: `az vm extension list --resource-group <resourceGroupName> --vm-name <vmName>`\n\n- Check for the following specific properties:\n  - List of installed extensions and their statuses.\n  \n- Pass/Fail criteria:\n  - Pass: No unapproved extensions are found in the list returned.\n  - Fail: At least one unapproved extension is detected.\n\n- Example CLI command to check for unapproved extensions:\n  `az vm extension list --resource-group <resourceGroupName> --vm-name <vmName> --query \"[?not(approvedExtensions[*].contains(name))].{Extension:name}\" --output table`\n  \nThis will provide a list of extensions that are not part of the approved list, thereby allowing the compliance check to be automated effectively."
+}

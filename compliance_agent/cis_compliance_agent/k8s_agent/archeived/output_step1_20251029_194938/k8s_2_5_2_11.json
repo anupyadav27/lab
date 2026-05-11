@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.11",
+    "unique_id": "k8s_2_5_2_11",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Minimize the admission of Windows HostProcess Containers",
+    "input_row": {
+        "id": "5.2.11",
+        "unique_id": "k8s_2_5_2_11",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Minimize the admission of Windows HostProcess Containers",
+        "description": "Do not generally permit Windows containers to be run with the hostProcess flag set to true.",
+        "rationale": "A Windows container making use of the hostProcess flag can interact with the underlying Windows cluster node. As per the Kubernetes documentation, this provides \"privileged access\" to the Windows node. Where Windows containers are used inside a Kubernetes cluster, there should be at least one admission control policy which does not permit hostProcess Windows containers. If you need to run Windows containers which require hostProcess, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined with securityContext.windowsOptions.hostProcess: true will not be permitted unless they are run under a specific policy.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that each policy disallows the admission of hostProcess containers",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of hostProcess containers. Default Value: By default, there are no restrictions on the creation of hostProcess containers. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/ 2. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined with securityContext.windowsOptions.hostProcess: true will not be permitted unless they are run under a specific policy.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/ 2. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_windows_hostprocess_containers_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster.\n- For each namespace, check for the presence and configuration of Pod Security Admission (PSA) labels (e.g., `pod-security.kubernetes.io/enforce`, `pod-security.kubernetes.io/audit`, `pod-security.kubernetes.io/warn`) or PodSecurityPolicy objects (if still in use).\n- For each namespace, determine if the enforced Pod Security Standard (PSS) level is at least `baseline` or `restricted`, as these levels disallow `hostProcess: true` by default.\n- Additionally, enumerate all active admission controller policies (e.g., Gatekeeper, Kyverno) for rules that deny pods with `securityContext.windowsOptions.hostProcess: true`.\n- Optionally, list all pods (including historical/failed pods) and check for any with `spec.securityContext.windowsOptions.hostProcess: true`.\n- Pass Criteria:\n  - Every namespace with user workloads must have an enforced policy (via PSA label, PodSecurityPolicy, or admission controller) that denies pods with `securityContext.windowsOptions.hostProcess: true`, except for namespaces with explicit, tightly scoped exceptions.\n  - No pods should be running with `hostProcess: true` unless explicitly allowed by a narrowly scoped policy.\n- Example kubectl commands:\n  - `kubectl get ns --show-labels`\n  - `kubectl get psp -o yaml` (if PSP is enabled)\n  - `kubectl get pods --all-namespaces -o json | jq '.items[] | select(.spec.securityContext.windowsOptions.hostProcess == true)'`\n  - For OPA Gatekeeper/Kyverno: `kubectl get constraints` or `kubectl get clusterpolicy` and review for hostProcess restrictions.\n- The automation should flag any namespace lacking such a restriction or where exceptions are not tightly scoped.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:39:54.436805",
+    "model": "gpt-4.1"
+}

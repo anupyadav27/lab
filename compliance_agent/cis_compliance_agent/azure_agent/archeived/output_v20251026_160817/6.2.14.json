@@ -1,0 +1,17 @@
+{
+    "id": "6.2.14",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.14",
+        "unique_id": "6.2.14__ensure-no-users-have-.forward-files",
+        "title": "Ensure no users have .forward files",
+        "description": "The .forward file specifies an email address to forward the user's mail to.",
+        "rationale": "Use of the .forward file poses a security risk in that sensitive data may be inadvertently transferred outside the organization. The .forward file also poses a risk as it can be used to execute commands that may perform unintended actions.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $1 \" \" $6 }' /etc/passwd | while read -r user dir; do if [ -d \"$dir\" ]; then file=\"$dir/.forward\" if [ ! -h \"$file\" ] && [ -f \"$file\" ]; then echo \"User: \\\"$user\\\" file: \\\"$file\\\" exists\" fi fi done",
+        "remediation": "Making global modifications to users' files without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user .forward files and determine the action to be taken in accordance with site policy. The following script will remove .forward files from interactive users' home directories #!/bin/bash awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $6 }' /etc/passwd | while read -r dir; do if [ -d \"$dir\" ]; then file=\"$dir/.forward\" [ ! -h \"$file\" ] && [ -f \"$file\" ] && rm -r \"$file\" fi done References: 1. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Ubuntu or Linux VM running in Azure:**\n   - Navigate to the Azure portal.\n   - Go to \"Virtual Machines\" and select the desired VM.\n   - Click on \"Connect\" to SSH into the VM.\n\n2. **Check for `.forward` files:**\n   - In the terminal, run the following command to find users with `.forward` files:\n     ```bash\n     awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\\\\/usr)?\\\\/sbin\\\\/nologin(\\\\/)?$/ && $7!~/(\\\\/usr)?\\\\/bin\\\\/false(\\\\/)?$/) { print $1 \" \" $6 }' /etc/passwd | while read -r user dir; do if [ -d \"$dir\" ]; then file=\"$dir/.forward\"; if [ ! -h \"$file\" ] && [ -f \"$file\" ]; then echo \"User: \\\"$user\\\" file: \\\"$file\\\" exists\"; fi; fi; done\n     ```\n\n3. **What to verify/validate:**\n   - Verify that the output of the command does not return any users with `.forward` files.\n\n4. **Expected secure configuration:**\n   - No users should have `.forward` files in their home directories to ensure sensitive data is not externally forwarded.\n\n5. **How to confirm compliance:**\n   - If any results are returned from the command, this indicates non-compliance. Note down the users who have `.forward` files and plan remediation steps accordingly."
+}

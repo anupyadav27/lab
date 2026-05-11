@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.5",
+    "unique_id": "k8s_2_1_2_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --kubelet-certificate-authority argument is set as appropriate",
+    "input_row": {
+        "id": "1.2.5",
+        "unique_id": "k8s_2_1_2_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --kubelet-certificate-authority argument is set as appropriate",
+        "description": "Verify kubelet's certificate before establishing connection.",
+        "rationale": "The connections from the apiserver to the kubelet are used for fetching logs for pods, attaching (through kubectl) to running pods, and using the kubelet’s port-forwarding functionality. These connections terminate at the kubelet’s HTTPS endpoint. By default, the apiserver does not verify the kubelet’s serving certificate, which makes the connection subject to man-in-the-middle attacks, and unsafe to run over untrusted and/or public networks. Impact: You require TLS to be configured on apiserver as well as kubelets.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --kubelet-certificate-authority argument exists and is set as appropriate. Alternative Audit kubectl get pod -nkube-system -lcomponent=kube-apiserver -o=jsonpath='{range .items[]}{.spec.containers[].command} {\"\\n\"}{end}' | grep '--kubelet- certificate-Authority' | grep -i false If the exit code is '1', then the control isn't present / failed",
+        "remediation": "Follow the Kubernetes documentation and setup the TLS connection between the apiserver and kubelets. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube-apiserver.yaml on the Control Plane node and set the --kubelet-certificate-authority parameter to the path to the cert file for the certificate authority. --kubelet-certificate-authority=<ca-string> Default Value: By default, --kubelet-certificate-authority argument is not set. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/ 3. https://kubernetes.io/docs/concepts/cluster-administration/master-node- communication/#apiserver---kubelet",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "You require TLS to be configured on apiserver as well as kubelets.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/kubelet-authentication-authorization/ 3. https://kubernetes.io/docs/concepts/cluster-administration/master-node- communication/#apiserver---kubelet"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_kubelet_certificate_authority_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification in the kube-system namespace, typically managed as a static Pod on control plane nodes.\n- Use the following kubectl command to extract the command-line arguments for the kube-apiserver container:\n  ```\n  kubectl get pod -n kube-system -l component=kube-apiserver -o=jsonpath='{range .items[]}{.spec.containers[].command}{\"\\n\"}{end}'\n  ```\n- Parse the output to check for the presence of the `--kubelet-certificate-authority` flag.\n- Validate that the flag is set and points to a non-empty file path (i.e., not missing or set to \"false\").\n- Pass Criteria: The `--kubelet-certificate-authority` argument is present and references a valid certificate authority file (not empty, not \"false\").\n- Fail Criteria: The argument is missing, empty, or explicitly set to \"false\".\n- This check can be performed programmatically by parsing the Pod spec or the command line of the kube-apiserver container via the Kubernetes API, requiring no manual/host-level access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:19:11.317974",
+    "model": "gpt-4.1"
+}

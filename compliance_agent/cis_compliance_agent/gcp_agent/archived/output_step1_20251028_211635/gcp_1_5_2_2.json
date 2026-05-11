@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.2",
+    "unique_id": "gcp_1_5_2_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure password reuse is limited",
+    "input_row": {
+        "id": "5.2.2",
+        "unique_id": "gcp_1_5_2_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure password reuse is limited",
+        "description": "The /etc/security/opasswd file stores the users' old passwords and can be checked to ensure that users are not recycling recent passwords.",
+        "rationale": "Forcing users not to reuse their past 5 passwords make it less likely that an attacker will be able to guess the password. Note that these change only apply to accounts configured on the local system.",
+        "audit": "Verify remembered password history is 5 or more. This setting is commonly configured with the pam_unix.so or pam_pwhistory.so remember options found in /etc/pam.d/common-password or /etc/pam.d/system-auth . Examples: password required pam_pwhistory.so remember=5 password required pam_unix.so remember=5",
+        "remediation": "Set remembered password history to conform to site policy. Many distributions provide tools for updating PAM configuration, consult your documentation for details. If no tooling is provided edit the appropriate /etc/pam.d/ configuration file and add or modify the pam_pwhistory.so or pam_unix.so lines to include the remember option: password required pam_pwhistory.so remember=5 password required pam_unix.so remember=5 Additional Information: Consult your documentation for the appropriate PAM file and module. Additional module options may be set, recommendation only covers those listed here.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control focuses on the configuration of password reuse policies enforced through PAM (Pluggable Authentication Modules) within the operating system of Google Container Optimized OS. This is a system-level configuration specific to how passwords are managed locally on the instances themselves. The control involves verifying settings within the operating system's PAM configuration files, such as `/etc/pam.d/common-password` or `/etc/pam.d/system-auth`, which are not directly queryable through GCP APIs or the Google Cloud SDK.\n\nSince it requires checking OS-level configuration files and is not exposed through GCP's API, SDK, or CLI tools, this audit requires manual steps involving access to the instance:\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - SSH into the Container Optimized OS instance using `gcloud compute ssh <instance-name> --zone=<zone>`.\n\n2. **Locate the Configuration File:**\n   - Open the PAM configuration file for password settings. Depending on the system, this might be:\n     - `/etc/pam.d/common-password`\n     - `/etc/pam.d/system-auth`\n\n3. **Verify the Configuration:**\n   - Inspect the file for lines that configure password history. Look for the presence of either:\n     - `password required pam_pwhistory.so remember=5`\n     - `password required pam_unix.so remember=5`\n   - Ensure that the `remember` parameter is set to 5 or more, which limits password reuse appropriately.\n\n4. **Confirm Compliance:**\n   - Verify that the configuration matches site policy for password history requirements.\n   - Document the findings, noting any discrepancies from the expected secure configuration.\n\nAccording to the guideline, verifying and ensuring compliance with this control is essential to prevent password reuse, enhancing security against password-based attacks.",
+    "timestamp": "2025-10-28T21:37:36.901893",
+    "model": "gpt-4o"
+}

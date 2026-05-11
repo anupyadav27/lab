@@ -1,0 +1,17 @@
+{
+    "id": "2.2.8",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.8",
+        "unique_id": "2.2.8__ensure-an-ftp-server-is-not-installed",
+        "title": "Ensure an ftp server is not installed",
+        "description": "FTP (File Transfer Protocol) is a traditional and widely used standard tool for transferring files between a server and clients over a network, especially where no authentication is necessary (permits anonymous users to connect to a server).",
+        "rationale": "Unless there is a need to run the system as a FTP server, it is recommended that the package be removed to reduce the potential attack surface.",
+        "audit": "Run the following command to verify vsftpd is not installed: # rpm -q vsftpd package vsftpd is not installed",
+        "remediation": "Run the following command to remove vsftpd: # dnf remove vsftpd References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH Access**: Connect to the Azure Kubernetes Service (AKS) node where the FTP service would potentially be installed. Use an SSH client and the appropriate credentials to access the node.\n   \n2. **Package Verification**: Execute the following command to check if the vsftpd package is installed on the node:\n   ```\n   rpm -q vsftpd\n   ```\n\n3. **Validation**: Verify the output of the command:\n   - If the output is \"package vsftpd is not installed\", it indicates that the FTP server is not present.\n   - If the command returns information about the vsftpd package (e.g., \"vsftpd-xxx\" is installed), this means the FTP server is installed, which is not compliant with the control.\n\n4. **Expected Secure Configuration**: The expected outcome is that the vsftpd package should not be installed on any AKS nodes. \n\n5. **Compliance Confirmation**: Take note of the command output and ensure that no instances of the vsftpd FTP server are present on the node. Document the findings to confirm compliance with the security control."
+}

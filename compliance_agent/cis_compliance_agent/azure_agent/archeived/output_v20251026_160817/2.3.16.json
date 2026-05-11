@@ -1,0 +1,17 @@
+{
+    "id": "2.3.16",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.3.16",
+        "unique_id": "2.3.16__ensure-all-traffic-is-routed-through-the-virtual-network",
+        "title": "Ensure all traffic is routed through the virtual network",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Go to App Services or Function App. 2. Click the name of a function app. 3. Under Settings, click Networking. 4. Under Outbound traffic configuration, next to Virtual network integration, click the virtual network and subnet name. 5. Under Application routing, check the box next to Outbound internet traffic. 6. Click Apply. 7. Repeat steps 1-6 for each function app requiring remediation. Remediate from Azure CLI For each function app requiring remediation, run the following command to route all traffic through the virtual network: az resource update --resource-group <resource-group-name> --name <function- app-name> --resource-type \"Microsoft.Web/sites\" --set properties.vnetRouteAllEnabled=true Default Value: For function apps integrated with a virtual network, all traffic is routed through the virtual network by default. References: 1. https://learn.microsoft.com/en-us/azure/app-service/configure-vnet-integration- routing#configure-application-routing 2. https://learn.microsoft.com/en-us/azure/azure-functions/functions-app- settings#vnetrouteallenabled 3. https://learn.microsoft.com/en-us/cli/azure/functionapp 4. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit mentions using Azure CLI commands, indicating the property can be queried via Azure APIs.\n- The control specifies a configuration related to function apps integrated with a virtual network, which is a standard Azure resource property and can be inspected via API.\n\n**PROGRAM NAME:** azure_function_app_vnet_traffic_routing_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n- Use Azure Resource Manager APIs or Azure CLI commands to query each Function App in each resource group to verify if traffic routing is configured correctly.\n\n1. **CLI Command Example:** \n   ```bash\n   az functionapp show --resource-group <resource-group-name> --name <function-app-name> --query properties.vnetRouteAllEnabled\n   ```\n\n2. **Resources to enumerate:** \n   - Enumerate through all Function Apps in all Resource Groups within the Subscription.\n\n3. **Configuration properties/settings to validate:**\n   - Check that the property `vnetRouteAllEnabled` is set to `true`.\n\n4. **Pass/Fail criteria:**\n   - **Pass:** If `vnetRouteAllEnabled` is `true` for all Function Apps checked.\n   - **Fail:** If the property is `false` or not present (indicating that traffic is not routed through the virtual network).\n\n5. **API Endpoint Example:** \n   - The endpoint used to retrieve the Function App configuration would be similar to:\n   ```\n   GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{functionAppName}?api-version=2021-01-15\n   ```\n\nThis setup allows for comprehensive automated checks against the compliance control specified."
+}

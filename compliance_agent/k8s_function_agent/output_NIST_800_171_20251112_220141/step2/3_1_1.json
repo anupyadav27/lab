@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_rbac_no_cluster_admin_binding",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_service_type_not_nodeport"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions generally map well to the NIST control 3.1.1 by focusing on limiting access through RBAC and network policies. However, the function 'k8s_service_type_not_nodeport' could be improved for clarity and consistency with naming conventions.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider renaming 'k8s_service_type_not_nodeport' to 'k8s_service_nodeport_disabled' for better clarity and consistency with the pattern."
+  ],
+  "control_id": "3_1_1",
+  "title": "3_1_1: 3.1.1 Limit system access to authorized users, processes acting on behalf of authorized users, and devices (including other systems)",
+  "step1_functions": [
+    "k8s_rbac_least_privilege_enforcement",
+    "k8s_rbac_no_cluster_admin_binding",
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_service_type_not_nodeport"
+  ],
+  "step1_reasoning": "The control 3.1.1 focuses on limiting system access to authorized users and processes. In Kubernetes, this can be mapped to ensuring that RBAC policies enforce least privilege and avoid the use of overly permissive roles like cluster-admin. Additionally, NetworkPolicies should be used to restrict ingress traffic by default, and services should avoid using NodePort to prevent exposing services unnecessarily. These measures collectively help in limiting access to authorized entities only."
+}

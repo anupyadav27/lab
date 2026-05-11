@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.6",
+    "unique_id": "k8s_3_1_2_6",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+    "input_row": {
+        "id": "1.2.6",
+        "unique_id": "k8s_3_1_2_6",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the --authorization-mode argument is not set to AlwaysAllow",
+        "description": "Do not always authorize all requests.",
+        "rationale": "The API Server, can be configured to allow all requests. This mode should not be used on any production cluster. Impact: Only authorized requests will be served.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --authorization-mode argument exists and is not set to AlwaysAllow.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --authorization-mode parameter to values other than AlwaysAllow. One such example could be as below. --authorization-mode=RBAC Default Value: By default, AlwaysAllow is not enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Only authorized requests will be served.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/authorization/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_authorization_mode_always_allow_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify that the --authorization-mode flag does not include AlwaysAllow.\n- For clusters using static pods (most kubeadm and managed clusters), inspect the kube-apiserver manifest, typically located at /etc/kubernetes/manifests/kube-apiserver.yaml. This can be retrieved via the Kubernetes API as a Pod in the kube-system namespace with the label component=kube-apiserver.\n- Use kubectl to get the kube-apiserver Pod specification:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o yaml\n  ```\n- Inspect the command or args field for the kube-apiserver container to find the --authorization-mode flag.\n- Validate that:\n  - The --authorization-mode flag exists.\n  - The value does NOT include AlwaysAllow (case-sensitive).\n  - Acceptable values include RBAC, Node, Webhook, ABAC, etc., but not AlwaysAllow.\n- Pass Criteria: --authorization-mode is set and AlwaysAllow is NOT present in the list of modes.\n- Fail Criteria: --authorization-mode is missing or includes AlwaysAllow.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:46:22.043302",
+    "model": "gpt-4.1"
+}

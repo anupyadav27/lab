@@ -1,0 +1,17 @@
+{
+    "id": "5.3.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.3.1",
+        "unique_id": "5.3.1__ensure-sudo-is-installed",
+        "title": "Ensure sudo is installed",
+        "description": "sudo allows a permitted user to execute a command as the superuser or another user, as specified by the security policy. The invoking user's real (not effective) user ID is used to determine the user name with which to query the security policy.",
+        "rationale": "sudo supports a plug-in architecture for security policies and input/output logging. Third parties can develop and distribute their own policy and I/O logging plug-ins to work seamlessly with the sudo front end. The default security policy is sudoers, which is configured via the file /etc/sudoers and any entries in /etc/sudoers.d. The security policy determines what privileges, if any, a user has to run sudo. The policy may require that users authenticate themselves with a password or another authentication mechanism. If authentication is required, sudo will exit if the user's password is not entered within a configurable time limit. This limit is policy-specific.",
+        "audit": "Verify that sudo is installed. Run the following command: # dnf list sudo Installed Packages sudo.x86_64            <VERSION>        @anaconda Available Packages sudo.x86_64            <VERSION>        updates",
+        "remediation": "Run the following command to install sudo # dnf install sudo References: 1. SUDO(8) 2. NIST SP 800-53 Rev. 5: AC-6",
+        "impact": "",
+        "reference": "1. SUDO(8) 2. NIST SP 800-53 Rev. 5: AC-6",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Step:** Connect to the Azure Kubernetes Service (AKS) cluster using SSH.\n   - **Path:** Use Azure CLI or Azure Portal to obtain the SSH credentials and command.\n2. **Step:** Once connected to a node in the AKS cluster, run the command to check if `sudo` is installed.\n   - **Command:** `dnf list sudo`\n3. **Step:** Verify the output to check if `sudo` is listed under Installed Packages.\n   - **What to verify/validate:** Look for an entry similar to `sudo.x86_64 <VERSION> @anaconda`.\n4. **Step:** If `sudo` is not installed, installation should be performed to maintain compliance.\n   - **Expected secure configuration:** `sudo` should be installed and accessible for authorized users.\n5. **Step:** To confirm compliance, ensure that users can execute `sudo` without errors.\n   - **How to confirm compliance:** Run a test command using `sudo` to validate functionality.\n\n**SOURCE:** CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+}

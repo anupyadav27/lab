@@ -1,0 +1,123 @@
+Full rename proposal — review before applying
+==============================================
+
+Total proposals:          643
+  - rule_type changes:    8
+  - rule_id renames:      635
+
+Suffix additions by suffix:
+  _configured      468
+  _enabled          73
+  _restricted       56
+  _enforced         31
+  _check             4
+  _disabled          3
+
+Renames by CSP:
+  ibm         206
+  gcp          90
+  alicloud     86
+  oracle       86
+  k8s          63
+  aws          54
+  azure        50
+
+== First 40 renames (sample) ==
+  [alicloud] alicloud.actiontrail.trail.is_organization_trail
+         → alicloud.actiontrail.trail.is_organization_trail_check  (is/has → state predicate)
+  [alicloud] alicloud.cms.alarm.contact_groups
+         → alicloud.cms.alarm.contact_groups_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ack.node_pool.configured
+         → alicloud.ack.node_pool.configured_configured  (fallback → _configured)
+  [alicloud] alicloud.ack.node_pool.pki_key_permissions
+         → alicloud.ack.node_pool.pki_key_permissions_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ack.cluster.pki_ownership
+         → alicloud.ack.cluster.pki_ownership_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.auto_provisioning_group.multi_zone
+         → alicloud.ecs.auto_provisioning_group.multi_zone_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.ecs.disk.delete_with_instance
+         → alicloud.ecs.disk.delete_with_instance_configured  (fallback → _configured)
+  [alicloud] alicloud.ecs.image.encrypted_system_disk
+         → alicloud.ecs.image.encrypted_system_disk_configured  (fallback → _configured)
+  [alicloud] alicloud.ecs.instance.auto_snapshot
+         → alicloud.ecs.instance.auto_snapshot_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.ecs.instance.backup_policy
+         → alicloud.ecs.instance.backup_policy_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.instance.baseline_image
+         → alicloud.ecs.instance.baseline_image_configured  (fallback → _configured)
+  [alicloud] alicloud.ecs.instance.cloud_assistant_status
+         → alicloud.ecs.instance.cloud_assistant_status_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.instance.cloud_monitor_agent
+         → alicloud.ecs.instance.cloud_monitor_agent_configured  (fallback → _configured)
+  [alicloud] alicloud.ecs.instance.delete_protection
+         → alicloud.ecs.instance.delete_protection_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.ecs.instance.disaster_recovery
+         → alicloud.ecs.instance.disaster_recovery_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.ecs.instance.guest_config
+         → alicloud.ecs.instance.guest_config_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.instance.image_scan
+         → alicloud.ecs.instance.image_scan_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.ecs.instance.inventory
+         → alicloud.ecs.instance.inventory_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.ecs.instance.maintenance_window
+         → alicloud.ecs.instance.maintenance_window_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.instance.recovery_setting
+         → alicloud.ecs.instance.recovery_setting_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.instance.required_tags
+         → alicloud.ecs.instance.required_tags_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.instance.security_center_linked
+         → alicloud.ecs.instance.security_center_linked_configured  (fallback → _configured)
+  [alicloud] alicloud.ecs.securitygroup.with_many_ingress_egress_rules
+         → alicloud.ecs.securitygroup.with_many_ingress_egress_rules_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ecs.snapshot_policy.auto_snapshot_policy
+         → alicloud.ecs.snapshot_policy.auto_snapshot_policy_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.ram.role.kms_enforce_separation_of_duties
+         → alicloud.ram.role.kms_enforce_separation_of_duties_configured  (fallback → _configured)
+  [alicloud] alicloud.ram.role.sa_enforce_separation_of_duties
+         → alicloud.ram.role.sa_enforce_separation_of_duties_configured  (fallback → _configured)
+  [alicloud] alicloud.ram.user.last_login_time
+         → alicloud.ram.user.last_login_time_configured  (fallback → _configured)
+  [alicloud] alicloud.kms.cmk.not_multi_region
+         → alicloud.kms.cmk.not_multi_region_enforced  (not_* → absence enforcement)
+  [alicloud] alicloud.kms.key.automatic_rotation
+         → alicloud.kms.key.automatic_rotation_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.kms.key.key_manager
+         → alicloud.kms.key.key_manager_configured  (fallback → _configured)
+  [alicloud] alicloud.kms.key.not_publicly_accessible
+         → alicloud.kms.key.not_publicly_accessible_enforced  (not_* → absence enforcement)
+  [alicloud] alicloud.log.project.retention_period
+         → alicloud.log.project.retention_period_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.log.project.kubernetes_audit
+         → alicloud.log.project.kubernetes_audit_configured  (fallback → _configured)
+  [alicloud] alicloud.nas.file_system.encryption
+         → alicloud.nas.file_system.encryption_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.bastionhost.instance.enabled
+         → alicloud.bastionhost.instance.enabled_configured  (fallback → _configured)
+  [alicloud] alicloud.oss.bucket.cross.account.replication.disabled
+         → alicloud.oss.bucket.cross.account.replication.disabled_configured  (fallback → _configured)
+  [alicloud] alicloud.oss.bucket.kms_encryption
+         → alicloud.oss.bucket.kms_encryption_enabled  (boolean feature → _enabled)
+  [alicloud] alicloud.oss.bucket.policy.sas.linked.to.stored.access.policy
+         → alicloud.oss.bucket.policy.sas.linked.to.stored.access.policy_configured  (fallback → _configured)
+  [alicloud] alicloud.oss.bucket.sts_token_expiry
+         → alicloud.oss.bucket.sts_token_expiry_configured  (attribute noun → configuration value)
+  [alicloud] alicloud.oss.bucket.versioning
+         → alicloud.oss.bucket.versioning_enabled  (boolean feature → _enabled)
+
+== rule_type reclassifications (all) ==
+  [azure] azure.monitor.activity_log.profile.log_retention
+         type: config → ciem  (segment-2 'activity_log' is CIEM-typical)
+  [gcp] gcp.iam.audit.logs_enabled
+         type: config → ciem  (segment-2 'audit' is CIEM-typical)
+  [gcp] gcp.iam.audit.require_mfa_for_cloud_console
+         type: config → ciem  (segment-2 'audit' is CIEM-typical)
+  [ibm] ibm.iam.audit.logs_enabled
+         type: config → ciem  (segment-2 'audit' is CIEM-typical)
+  [ibm] ibm.openshift.audit.log_max_backup_retention
+         type: config → ciem  (segment-2 'audit' is CIEM-typical)
+  [ibm] ibm.openshift.audit.log_max_file_size_configured
+         type: config → ciem  (segment-2 'audit' is CIEM-typical)
+  [ibm] ibm.openshift.audit.log_path_check
+         type: config → ciem  (segment-2 'audit' is CIEM-typical)
+  [k8s] k8s.rbac.audit.clusterrole
+         type: config → ciem  (segment-2 'audit' is CIEM-typical)

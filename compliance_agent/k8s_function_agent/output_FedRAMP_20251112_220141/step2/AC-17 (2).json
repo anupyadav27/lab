@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_ingress_tls_enabled",
+    "k8s_apiserver_encryption_at_rest_enabled"
+  ],
+  "changes_made": [
+    "Changed k8s_apiserver_encryption_enabled to k8s_apiserver_encryption_at_rest_enabled for clarity"
+  ],
+  "review_notes": "The functions mostly align with the control's focus on encryption for confidentiality and integrity. Network policies and TLS for ingress are appropriate mappings. The API server function name was adjusted to specify encryption at rest, which is more relevant to the control's intent.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Specify 'encryption_at_rest' for API server to clarify the type of encryption"
+  ],
+  "control_id": "AC-17 (2)",
+  "title": "Remote Access | Protection of Confidentiality and Integrity Using Encryption",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_ingress_tls_enabled",
+    "k8s_apiserver_encryption_enabled"
+  ],
+  "step1_reasoning": "The control AC-17 (2) focuses on protecting the confidentiality and integrity of remote access using encryption. In Kubernetes, this can be mapped to ensuring that network traffic is restricted and encrypted. NetworkPolicies can be used to enforce ingress and egress restrictions, ensuring that only authorized traffic is allowed. Enabling TLS for Ingress ensures that data in transit is encrypted. Additionally, ensuring that the API server encryption is enabled helps protect the confidentiality and integrity of data accessed via the API."
+}

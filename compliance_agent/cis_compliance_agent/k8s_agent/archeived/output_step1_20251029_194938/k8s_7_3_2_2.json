@@ -1,0 +1,22 @@
+{
+    "control_id": "3.2.2",
+    "unique_id": "k8s_7_3_2_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the audit policy covers key security concerns",
+    "input_row": {
+        "id": "3.2.2",
+        "unique_id": "k8s_7_3_2_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the audit policy covers key security concerns",
+        "description": "Ensure that the audit policy created for the cluster covers key security concerns.",
+        "rationale": "Security audit logs should cover access and modification of key resources in the cluster, to enable them to form an effective part of a security environment. Impact: Increasing audit logging will consume resources on the nodes or other log destination.",
+        "audit": "Review the audit policy provided for the cluster and ensure that it covers at least the following areas :- • Access to Secrets managed by the cluster. Care should be taken to only log Metadata for requests to Secrets, ConfigMaps, and TokenReviews, in order to avoid the risk of logging sensitive data. • Modification of pod and deployment objects. • Use of pods/exec, pods/portforward, pods/proxy and services/proxy. For most requests, minimally logging at the Metadata level is recommended (the most basic level of logging).",
+        "remediation": "Consider modification of the audit policy in use on the cluster to include these items, at a minimum. Default Value: By default Kubernetes clusters do not log audit information. References: 1. https://github.com/k8scop/k8s-security- dashboard/blob/master/configs/kubernetes/adv-audit.yaml 2. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#audit-policy 3. https://github.com/falcosecurity/falco/blob/master/examples/k8s_audit_config/aud it-policy.yaml 4. https://github.com/kubernetes/kubernetes/blob/master/cluster/gce/gci/configure- helper.sh#L735",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "Increasing audit logging will consume resources on the nodes or other log destination.",
+        "references": "1. https://github.com/k8scop/k8s-security- dashboard/blob/master/configs/kubernetes/adv-audit.yaml 2. https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#audit-policy 3. https://github.com/falcosecurity/falco/blob/master/examples/k8s_audit_config/aud it-policy.yaml 4. https://github.com/kubernetes/kubernetes/blob/master/cluster/gce/gci/configure- helper.sh#L735"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires reviewing the content of the Kubernetes audit policy file to ensure it covers specific key security concerns (access to Secrets, modification of pods/deployments, use of pods/exec, etc.) at the appropriate log levels. The audit policy file is not exposed via the Kubernetes API or kubectl; it is a file referenced in the API server configuration and must be visually inspected for the presence and correctness of specific rules. This requires subjective human judgment to confirm that the policy covers all required areas and uses the correct log levels (e.g., Metadata for Secrets). Therefore, this check cannot be fully automated via Kubernetes APIs or CLI.\n\n**MANUAL STEPS:**\n1. Locate the audit policy file referenced by the API server (commonly via the `--audit-policy-file` flag in the API server manifest, usually at `/etc/kubernetes/manifests/kube-apiserver.yaml`).\n2. Open the audit policy file for review.\n3. Verify that the policy includes rules covering:\n   - Access to Secrets, ConfigMaps, and TokenReviews, with log level set to at least \"Metadata\" (to avoid logging sensitive data).\n   - Modification (create, update, patch, delete) of pod and deployment objects.\n   - Use of pods/exec, pods/portforward, pods/proxy, and services/proxy.\n4. Confirm that for each of the above, the policy specifies at least \"Metadata\" level logging, and does not log full request/response bodies for sensitive resources.\n5. Ensure the policy is comprehensive and does not omit any of the required areas.\n6. Document the findings and confirm compliance if all required areas are covered at the appropriate log levels.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:34:26.336022",
+    "model": "gpt-4.1"
+}

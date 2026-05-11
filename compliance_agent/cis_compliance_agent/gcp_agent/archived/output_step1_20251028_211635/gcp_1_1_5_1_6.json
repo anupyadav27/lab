@@ -1,0 +1,22 @@
+{
+    "control_id": "1.5.1.6",
+    "unique_id": "gcp_1_1_5_1_6",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/issue.net are configured",
+    "input_row": {
+        "id": "1.5.1.6",
+        "unique_id": "gcp_1_1_5_1_6",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/issue.net are configured",
+        "description": "The contents of the /etc/issue.net file are displayed to users prior to login for remote connections from configured services.",
+        "rationale": "If the /etc/issue.net file does not have the correct ownership it could be modified by unauthorized users with incorrect or misleading information.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/issue.net Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set permissions on /etc/issue.net : # chown root:root /etc/issue.net # chmod 644 /etc/issue.net /etc is stateless on Container-Optimized OS. Therefore, the steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- This control requires checking the file permissions directly on the OS-level file, `/etc/issue.net`, within a Google Container-Optimized OS instance. \n- The audit specifies verifying ownership and permissions using commands (`stat`) that need to be executed within the server environment.\n- Since this control pertains to file permissions at the OS level and necessitates SSH access to instances running the Container-Optimized OS, it cannot be checked using GCP APIs or Google Cloud SDK (gcloud) commands alone.\n- The Google Cloud SDK and GCP CLI do not have capabilities to directly inspect or modify OS-level file permissions on individual instances from a remote management standpoint.\n\n**MANUAL STEPS:**\n\n1. **Connect to the Container-Optimized OS instance**: Use a secure method such as SSH to access the instance that you want to audit.\n\n2. **Verify File Permissions**: Once logged into the instance, execute the following command:\n   ```sh\n   stat /etc/issue.net\n   ```\n   - What to verify/validate: Confirm that the output shows `Uid` and `Gid` both as `0/root` and `Access` as `644`.\n\n3. **Expected Secure Configuration**: \n   - Ensure the file permissions are set correctly as follows: `Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)`.\n   - If the permissions are not set as required, it indicates non-compliance and needs remediation.\n\n4. **Remediation (if needed)**: If the permissions are incorrect, adjust them by running:\n   ```sh\n   chown root:root /etc/issue.net\n   chmod 644 /etc/issue.net\n   ```\n   Note: Remediation steps need to be re-applied post-reboot as `/etc` is stateless on Container-Optimized OS. \n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:23:30.448754",
+    "model": "gpt-4o"
+}

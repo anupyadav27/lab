@@ -1,0 +1,24 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_host_network_disabled",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions accurately map to Kubernetes security controls relevant to preventing unauthorized network paths, aligning with the intent of SC-7(7). The naming conventions are mostly followed, but minor improvements could enhance clarity.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider using 'k8s_service_loadbalancer_exposure_restricted' for clarity on the purpose of restricting LoadBalancer services."
+  ],
+  "control_id": "SC-7(7)",
+  "title": "Boundary Protection - Boundary protection | split tunneling for remote devices prevent split tunneling",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_pod_host_network_disabled",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "step1_reasoning": "The control SC-7(7) focuses on preventing split tunneling, which is about ensuring that remote devices do not bypass security controls by creating unauthorized network paths. In Kubernetes, this can be mapped to network security controls that prevent unauthorized external access and ensure that all traffic is routed through defined and secure paths. NetworkPolicies can be used to enforce default deny rules for egress traffic, ensuring that pods cannot communicate outside the cluster without explicit permission. Disabling host networking for pods can prevent them from bypassing Kubernetes network policies. Restricting the use of LoadBalancer services can ensure that services are not exposed to the internet without proper controls."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.1",
+    "unique_id": "gcp_1_5_1_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/ssh/sshd_config are configured",
+    "input_row": {
+        "id": "5.1.1",
+        "unique_id": "gcp_1_5_1_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/ssh/sshd_config are configured",
+        "description": "The /etc/ssh/sshd_config file contains configuration specifications for sshd. The command below sets the owner and group of the file to root.",
+        "rationale": "The /etc/ssh/sshd_config file needs to be protected from unauthorized changes by non-privileged users.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access does not grant permissions to group or other: # stat /etc/ssh/sshd_config Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set ownership and permissions on /etc/ssh/sshd_config: # chown root:root /etc/ssh/sshd_config # chmod og-rwx /etc/ssh/sshd_config",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control is specifically related to verifying file permissions on the SSH configuration file located at `/etc/ssh/sshd_config` on individual instances running Container-Optimized OS. Given that it involves checking file ownership and permissions at the OS level, it requires SSH access to the instances and cannot be verified solely through GCP APIs or the Cloud SDK. The nature of the check involves assessing file-level attributes, which is typically done through SSH commands like `stat` to inspect file metadata directly on the system.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to connect to each instance running Container-Optimized OS where this check is applicable.\n\n2. **Verify File Permissions:**\n   - Run the command: `stat /etc/ssh/sshd_config`. \n   - Ensure the output indicates `Access: (0600/-rw-------)`, meaning the permissions are read and write for the owner only.\n\n3. **Verify Ownership:**\n   - From the same `stat` output, check for `Uid: (    0/    root)` and `Gid: (    0/    root)`.\n   - Confirm that both the user and group owners of the file are set to root.\n\n4. **Expected Secure Configuration:**\n   - The file should have permissions of `0600` with both user ID and group ID set to `root`.\n\n5. **Confirm Compliance:**\n   - Instances are compliant if the above conditions are met on all relevant systems where sshd_config exists.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nAs this check is specifically about a system-level configuration that can't be verified using the Google Cloud SDK or GCP CLI alone, the audit must be manual, following the steps provided above.",
+    "timestamp": "2025-10-28T21:31:40.015931",
+    "model": "gpt-4o"
+}

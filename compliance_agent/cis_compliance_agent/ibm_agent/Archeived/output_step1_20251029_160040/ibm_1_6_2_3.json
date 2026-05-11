@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.3",
+    "unique_id": "ibm_1_6_2_3",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure no VPC security groups allow ingress from 0.0.0.0/0 to port 3389",
+    "input_row": {
+        "id": "6.2.3",
+        "unique_id": "ibm_1_6_2_3",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure no VPC security groups allow ingress from 0.0.0.0/0 to port 3389",
+        "description": "VPC security groups provide stateful filtering of ingress/egress network traffic to Virtual Server Instances. It is recommended that no security group allows unrestricted ingress access to port 3389.",
+        "rationale": "Removing uncontrolled connectivity to remote console services, such as RDP, reduces a server's exposure to risk. Impact: For updating an existing environment, care should be taken to ensure that administrators currently relying on an ingress from 0.0.0.0/0 have access to port 3389 through another, more restrictive, access control list.",
+        "audit": "Perform the following tasks to determine if the account is configured as prescribed: 1. Login to the IBM Cloud Portal at https://cloud.ibm.com. 2. At the Menu icon, select VPC Infrastructure-->Security Groups . 3. For each security group, perform the following: a. Select the security group name. b. Ensure no Inbound Rule exists that has a port range that includes port 3389 and has a Source of 0.0.0.0/0. Note that a port range value of ALL or a port range that includes port 3389, e.g. 3300-3400, are inclusive of port 3389.",
+        "remediation": "1. Login to the IBM Cloud Portal at https://cloud.ibm.com. 2. At the Menu icon, select VPC Infrastructure-->Security Groups . 3. For each security group, perform the following: a. Select the access control list name. b. Identify the Inbound rule to be removed. c. Using the Options icon, select Delete . Default Value: There are no default rules in the default security group with a value of 3389. References: 1. https://cloud.ibm.com/docs/vpc?topic=vpc-using-acls",
+        "profile_applicability": "•  Level 1",
+        "impact": "For updating an existing environment, care should be taken to ensure that administrators currently relying on an ingress from 0.0.0.0/0 have access to port 3389 through another, more restrictive, access control list.",
+        "references": "1. https://cloud.ibm.com/docs/vpc?topic=vpc-using-acls"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nGiven the context of the control, the VPC security groups are a standard IBM Cloud service property related to network rules. This control can be automated as IBM Cloud APIs and IBM Cloud CLI commands can be used to query the necessary security group settings. Here are the key decision points:\n\n- The control involves verifying network access rules on VPC security groups, which is a resource that can be queried programmatically.\n- IBM Cloud CLI and APIs offer the capability to list security groups and their rules, allowing us to check for any inbound rules permitting access to port 3389 from 0.0.0.0/0.\n- The task does not involve visual inspection, manual judgment, or interaction with instances directly; thus, it is suitable for automation.\n\n**PROGRAM NAME:** ibm_vpc_security_group_ingress_rule_restriction\n\n**AUTOMATION DETAILS:**\n\nThe automated program would perform the following actions:\n\n1. **Enumerate All VPC Security Groups:**\n   - Use IBM Cloud CLI or IBM Cloud API to list all VPC security groups in the account.\n   - CLI Command Example: `ibmcloud is security-groups`\n\n2. **Retrieve Security Group Rules:**\n   - For each security group, retrieve all inbound rules.\n   - CLI Command Example: `ibmcloud is security-group-rules <security-group-id>`\n\n3. **Validate Security Group Rules:**\n   - Check if any rule allows ingress from 0.0.0.0/0 to port 3389.\n   - Rules must be checked for specific port 3389 access as well as ranges that include port 3389.\n\n4. **Pass/Fail Criteria:**\n   - **Pass:** No inbound rules exist that permit access from 0.0.0.0/0 to port 3389.\n   - **Fail:** Presence of any inbound rule allowing access from 0.0.0.0/0 to port 3389 or inclusively through port ranges.\n\nThe program ensures compliance by programmatically checking each security group's configuration and evaluating the presence of any rule that might pose a risk of unrestricted access to port 3389.",
+    "timestamp": "2025-10-29T16:07:27.664142",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,20 @@
+{
+    "id": "20.3",
+    "source": null,
+    "input_row": {
+        "id": "20.3",
+        "unique_id": "20.3__ensure-that-'unattached-disks'-are-encrypted-with-'customer-managed-key'-(cmk)",
+        "title": "Ensure that 'Unattached disks' are encrypted with 'Customer Managed Key' (CMK)",
+        "description": " refer to Azure documentation to delete unattached da...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "If data stored in the disk is no longer useful, refer to Azure documentation to delete unattached data disks at: -https://docs.microsoft.com/en-us/rest/api/compute/disks/delete -https://docs.microsoft.com/en-us/cli/azure/disk?view=azure-cli-latest#az- disk-delete If data stored in the disk is important, to encrypt the disk refer to azure documentation at: -https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable- customer-managed-keys-portal -https://docs.microsoft.com/en- us/rest/api/compute/disks/update#encryptionsettings Default Value: By default, managed disks are encrypted with a Platform-managed key. References: 1. https://docs.microsoft.com/en-us/azure/security/fundamentals/azure-disk- encryption-vms-vmss 2. https://docs.microsoft.com/en-us/azure/security-center/security-center-disk- encryption?toc=%2fazure%2fsecurity%2ftoc.json 3. https://docs.microsoft.com/en-us/rest/api/compute/disks/delete 4. https://docs.microsoft.com/en-us/cli/azure/disk?view=azure-cli-latest#az-disk- delete 5. https://docs.microsoft.com/en- us/rest/api/compute/disks/update#encryptionsettings 6. https://docs.microsoft.com/en-us/cli/azure/disk?view=azure-cli-latest#az-disk- update 7. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-data- protection#dp-5-use-customer-managed-key-option-in-data-at-rest-encryption- when-required CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control focuses on verifying that unattached disks in Azure are encrypted with customer-managed keys (CMK). \n- Given that encryption settings, particularly the 'keySource' property, are standard Azure resource properties and can be queried via Azure APIs, the audit can be fully automated.\n\n**PROGRAM NAME:** azure_compute_disk_encryption_verified\n\n**AUTOMATION DETAILS:**\n- This program would use Azure Resource Manager APIs or Azure CLI commands to check the encryption status of unattached disks.\n- The specific resources to enumerate would be unattached managed disks within a subscription or resource group.\n- The key properties to validate will include:\n  - `encryptionSettings.enabled`: Should be true\n  - `encryptionSettings.keySource`: Should be set to 'Microsoft.Keyvault' to indicate CMK usage.\n- The criteria for a Pass/Fail verdict will be:\n  - Pass: `encryptionSettings.enabled` is true AND `encryptionSettings.keySource` is 'Microsoft.Keyvault'.\n  - Fail: Either of the properties do not meet the expected criteria.\n- Example API endpoint or CLI command to check the disk's encryption settings: \n  - API: `GET https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Compute/disks/{disk-name}?api-version=2021-03-01`\n  - CLI: `az disk show --name <disk-name> --resource-group <resource-group> --query \"encryptionSettings\"`"
+}

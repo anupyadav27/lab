@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2.2",
+    "unique_id": "k8s_5_2_2_2",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the config file ownership is set to root:root",
+    "input_row": {
+        "id": "2.2.2",
+        "unique_id": "k8s_5_2_2_2",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the config file ownership is set to root:root",
+        "description": "Ensure that the config file ownership is set to root:root.",
+        "rationale": "The config file controls various parameters that set the behavior of various components of the worker node. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root.",
+        "audit": "Run the below command (based on the file location on your system) on the each worker node. For example, stat -c %U:%G /etc/kubernetes/config Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the each worker node. For example, chown root:root /etc/kubernetes/config Impact: None Default Value: By default, config file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kubelet/   175 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, config file ownership is set to root:root.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/   175 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) of the Kubernetes config file on each worker node (e.g., /etc/kubernetes/config). This property is not exposed via the Kubernetes API, kubectl, or any Kubernetes controller or resource. It requires direct OS-level access to the node filesystem to check file ownership, which is outside the scope of Kubernetes API or kubectl capabilities.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes worker node.\n2. Run the following command to check the ownership of the config file (replace the path if your config file is located elsewhere):\n   ```\n   stat -c %U:%G /etc/kubernetes/config\n   ```\n3. Verify that the output is:\n   ```\n   root:root\n   ```\n4. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/config\n   ```\n5. Repeat for all worker nodes in the cluster.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:53:47.807022",
+    "model": "gpt-4.1"
+}

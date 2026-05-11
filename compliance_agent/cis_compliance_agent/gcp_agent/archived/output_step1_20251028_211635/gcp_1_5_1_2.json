@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.2",
+    "unique_id": "gcp_1_5_1_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on SSH private host key files are configured",
+    "input_row": {
+        "id": "5.1.2",
+        "unique_id": "gcp_1_5_1_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on SSH private host key files are configured",
+        "description": "An SSH private key is one of two files used in SSH public key authentication. In this authentication method, the possession of the private key is proof of identity. Only a private key that corresponds to a public key will be able to authenticate successfully. The private keys need to be stored and handled carefully, and no copies of the private key should be distributed.",
+        "rationale": "If an unauthorized user obtains the private SSH host key file, the host could be impersonated",
+        "audit": "Run the following command and verify Uid is 0/root and Gid is 0/root. Ensure group and other do not have permissions # find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec stat {} \\; File: ‘/etc/ssh/ssh_host_rsa_key’ Size: 1679            Blocks: 8          IO Block: 4096   regular file Device: ca01h/51713d    Inode: 8628138     Links: 1 Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (  0/root) Access: 2018-10-22 18:24:56.861750616 +0000 Modify: 2018-10-22 18:24:56.861750616 +0000 Change: 2018-10-22 18:24:56.873750616 +0000 Birth: - File: ‘/etc/ssh/ssh_host_ecdsa_key’ Size: 227             Blocks: 8          IO Block: 4096   regular file Device: ca01h/51713d    Inode: 8631760     Links: 1 Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (  0/root) Access: 2018-10-22 18:24:56.897750616 +0000 Modify: 2018-10-22 18:24:56.897750616 +0000 Change: 2018-10-22 18:24:56.905750616 +0000 Birth: - File: ‘/etc/ssh/ssh_host_ed25519_key’ Size: 387             Blocks: 8          IO Block: 4096   regular file Device: ca01h/51713d    Inode: 8631762     Links: 1 Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: ( 0/root) Access: 2018-10-22 18:24:56.945750616 +0000 Modify: 2018-10-22 18:24:56.945750616 +0000 Change: 2018-10-22 18:24:56.957750616 +0000 Birth: -",
+        "remediation": "Run the following commands to set ownership and permissions on the private SSH host key files # find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:root {} \\; # find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod 0600 {} \\;",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- This control requires human judgment to verify permissions on SSH private host key files.\n- Audit involves checking file attributes and permissions directly on instances.\n- Requires SSH access to instances and cannot be fully automated using GCP APIs or CLI.\n- Not a standard GCP service property that can be checked via API (e.g., IAM, bucket policies).\n\n**MANUAL STEPS:** \n1. **SSH to Instance:**\n   - Use SSH to log into the instances running Container-Optimized OS.\n\n2. **Navigate to SSH Directory:**\n   - Run the command `cd /etc/ssh` to change to the SSH directory.\n\n3. **Verify Ownership and Permissions:**\n   - Execute `find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec stat {} \\;` to list key files and their permissions.\n   - Check that Uid and Gid are set to `0/root` indicating root ownership.\n   - Ensure file permissions are set to `0600`, signifying only the owner can read and write.\n\n4. **Expected Secure Configuration:**\n   - Ownership should be `root:root`.\n   - Permissions should be `0600` (read/write for owner only).\n\n5. **Confirm Compliance:**\n   - Files should not be accessible by group or other users to maintain secure permissions compliance.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThis manual approach is necessary because the check cannot be automated via GCP APIs or CLI and requires access to each instance to verify file permissions directly.",
+    "timestamp": "2025-10-28T21:31:52.420031",
+    "model": "gpt-4o"
+}

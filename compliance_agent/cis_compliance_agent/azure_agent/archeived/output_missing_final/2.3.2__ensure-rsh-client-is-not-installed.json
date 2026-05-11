@@ -1,0 +1,17 @@
+{
+    "id": "2.3.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.3.2",
+        "unique_id": "2.3.2__ensure-rsh-client-is-not-installed",
+        "title": "Ensure rsh client is not installed",
+        "description": "The rsh package contains the client commands for the rsh services.",
+        "rationale": "These legacy clients contain numerous security exposures and have been replaced with the more secure SSH package. Even if the server is removed, it is best to ensure the clients are also removed to prevent users from inadvertently attempting to use these commands and therefore exposing their credentials. Note that removing the rsh package removes the clients for rsh , rcp and rlogin . Impact: Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "audit": "Run the following command to verify that the rsh package is not installed: # rpm -q rsh package rsh is not installed",
+        "remediation": "Run the following command to remove the rsh package: # dnf remove rsh References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "Many insecure service clients are used as troubleshooting tools and in testing environments. Uninstalling them can inhibit capability to test and troubleshoot. If they are required it is advisable to remove the clients after use to prevent accidental or intentional misuse.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH into the AKS nodes:**\n   - Use an SSH client to connect to the AKS node. You can find the command to SSH into Azure Kubernetes Service (AKS) nodes in the Azure portal under the Kubernetes cluster's settings.\n\n2. **Check for the rsh package installation:**\n   - Run the command: `rpm -q rsh` to query if the 'rsh' package is installed on the node.\n\n3. **Verify the output:**\n   - If the output states that 'rsh is not installed', the configuration is secure.\n   - If the output indicates that 'rsh is installed', it indicates a violation.\n\n4. **Review installed packages:**\n   - For further verification, you may run `dnf list installed` or `rpm -qa | grep rsh` to see all related packages and confirm information about 'rsh', 'rcp', and 'rlogin'.\n\n5. **Confirm compliance:**\n   - If the 'rsh' client is absent on the node, you can confirm compliance. If present, document your findings for remediation.\n\nMake sure to log the findings and follow up with the appropriate remediation steps as needed based on the audit outcome."
+}

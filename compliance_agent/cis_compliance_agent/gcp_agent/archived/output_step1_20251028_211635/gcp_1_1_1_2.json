@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.2",
+    "unique_id": "gcp_1_1_1_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure /tmp is configured",
+    "input_row": {
+        "id": "1.1.2",
+        "unique_id": "gcp_1_1_1_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure /tmp is configured",
+        "description": "The /tmp directory is a world-writable directory used for temporary storage by all users and some applications.",
+        "rationale": "Making /tmp its own file system allows an administrator to set the noexec option on the mount, making /tmp useless for an attacker to install executable code. It would also prevent an attacker from establishing a hardlink to a system setuid program and wait for it to be updated. Once the program was updated, the hardlink would be broken and the attacker would have his own copy of the program. If the program happened to have a security vulnerability, the attacker could continue to exploit the known flaw. This can be accomplished by either mounting tmpfs to /tmp, or creating a separate partition for /tmp. Impact: Since the /tmp directory is intended to be world-writable, there is a risk of resource exhaustion if it is not bound to a separate partition. Running out of /tmp space is a problem regardless of what kind of filesystem lies under it, but in a default installation a disk-based /tmp will essentially have the whole disk available, as it only creates a single / partition. On the other hand, a RAM-based /tmp as with tmpfs will almost certainly be much smaller, which can lead to applications filling up the filesystem much more easily. /tmp utilizing tmpfs can be resized using the size={size} parameter on the Options line on the tmp.mount file",
+        "audit": "Run the following command and verify output shows /tmp is mounted: # mount | grep -E '\\s/tmp\\s' tmpfs on /tmp type tmpfs (rw,nosuid,nodev,noexec,relatime) Run the following command and verify that output shows static # systemctl is-enabled tmp.mount static",
+        "remediation": "Run the following commands to configure mount options systemctl edit tmp.mount Edit the file to define the options that needs to be set. For example: [Mount] Options= Options=mode=1777,strictatime,noexec,nodev,nosuid Restart the tmp.mount systemctl daemon-reload # might be optional systemctl restart tmp.mount /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot. References: 1. AJ Lewis, \"LVM HOWTO\", http://tldp.org/HOWTO/LVM-HOWTO/ 2. https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems/",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control pertains to ensuring that the `/tmp` directory is mounted correctly on the Container-Optimized OS. The audit steps involve executing specific commands on the operating system level to check the mount settings of the `/tmp` directory. As such, this requires SSH access to the instances to execute the commands and cannot be done purely through GCP APIs or CLI commands. Therefore, a manual approach is necessary.\n\n**MANUAL STEPS:**\n1. **Access the Instance:**\n   - Use SSH to connect to the Container-Optimized OS instance.\n\n2. **Verify /tmp Mount:**\n   - Execute the command: `mount | grep -E '\\\\s/tmp\\\\s'`\n   - Check the output for `/tmp` mounted with the correct options, such as `tmpfs` type with options like `rw,nosuid,nodev,noexec,relatime`.\n\n3. **Check if tmp.mount is Enabled:**\n   - Run the command: `systemctl is-enabled tmp.mount`\n   - Ensure the output shows `static` indicating that the mount is properly configured.\n\n4. **Review Mount Options:**\n   - Inspect if the `Options=` line in the `tmp.mount` file, found via `systemctl edit tmp.mount`, includes parameters like `mode=1777`, `strictatime`, `noexec`, `nodev`, and `nosuid`.\n\n5. **Expected Configuration:**\n   - Ensure that `/tmp` is a separate mount point with the appropriate settings for security as per CIS guidance.\n\nThe auditing process necessitates OS-level checks, which cannot be automated using only GCP APIs or the Google Cloud SDK due to the requirement of OS-level command execution and configurations not exposed in GCP's cloud console or API.",
+    "timestamp": "2025-10-28T21:17:03.000119",
+    "model": "gpt-4o"
+}

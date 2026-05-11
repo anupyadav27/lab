@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.2",
+    "unique_id": "gcp_1_2_1_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure X Window System is not installed",
+    "input_row": {
+        "id": "2.1.2",
+        "unique_id": "gcp_1_2_1_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure X Window System is not installed",
+        "description": "The X Window System provides a Graphical User Interface (GUI) where users can have multiple windows in which to run programs and various add on. The X Windows system is typically used on workstations where users login, but not on servers where users typically do not login.",
+        "rationale": "Unless your organization specifically requires graphical login access via X Windows, remove it to reduce the potential attack surface. Impact: Many Linux systems run applications which require a Java runtime. Some Linux Java packages have a dependency on specific X Windows xorg-x11-fonts. One workaround to avoid this dependency is to use the \"headless\" Java packages for your specific Java runtime, if provided by your distribution.",
+        "audit": "Verify X Windows System is not installed. The following command should return empty result. # grep xorg /etc/cos-package-info.json",
+        "remediation": "An OS image update that does not include X Window System is required.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control requires checking if the X Window System is installed on the Container-Optimized OS, which involves analyzing the contents of a file on the operating system (`/etc/cos-package-info.json`) by using the `grep` command for \"xorg\". This process necessitates access to the instance's operating system and is highly specific to the configuration files within the OS. It is not something that can be checked via GCP APIs or Google Cloud SDK, as these do not expose package-level information of installed OS components. \n\nGiven the nature of this check, which necessitates direct OS-level inspection, the control falls under a manual audit process rather than an automated one.\n\n**MANUAL STEPS:**\n\n1. **Access the Compute Instance:**\n   - SSH into the GCP Compute Engine instance running Container-Optimized OS.\n\n2. **Verify Installed Packages:**\n   - Execute the command: `grep xorg /etc/cos-package-info.json`.\n\n3. **Check the Output:**\n   - Verify that the command returns empty or no results. This ensures that the X Window System is not installed, aligning with the secure configuration.\n\n4. **Confirm Compliance:**\n   - If the command returns empty, the instance is compliant. If any results indicate the presence of xorg packages, remediation is necessary by updating the OS image without this component.\n\nThis manual verification is critical because it involves checking system-level package installations which are not exposed via GCP traditional API methods. The standard GCP services or CLI tools for securing infrastructure typically do not extend into the granularity of OS-package details.",
+    "timestamp": "2025-10-28T21:24:33.347048",
+    "model": "gpt-4o"
+}

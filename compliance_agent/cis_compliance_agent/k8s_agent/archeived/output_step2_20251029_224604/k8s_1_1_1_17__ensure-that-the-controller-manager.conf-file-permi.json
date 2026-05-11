@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.17",
+    "unique_id": "k8s_1_1_1_17",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the controller-manager.conf file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.17",
+        "unique_id": "k8s_1_1_1_17",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the controller-manager.conf file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the controller-manager.conf file has permissions of 600 or more restrictive.",
+        "rationale": "The controller-manager.conf file is the kubeconfig file for the Controller Manager. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the following command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/controller-manager.conf Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/controller-manager.conf Default Value: By default, controller-manager.conf has permissions of 640. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the file permissions of /etc/kubernetes/controller-manager.conf on the host filesystem.\n- Kubernetes APIs and kubectl do not expose host-level file permissions for configuration files.\n- The audit procedure explicitly instructs to run a Linux stat command on the Control Plane node, which requires OS-level access.\n- This check cannot be performed via Kubernetes API, kubectl, or any controller/state config exposed by Kubernetes.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes Control Plane node.\n2. Run the following command to check the permissions of the controller-manager.conf file:\n   ```\n   stat -c %a /etc/kubernetes/controller-manager.conf\n   ```\n3. Verify that the output is 600 or more restrictive (e.g., 600, 400, 440, etc.).\n4. If the permissions are more permissive than 600 (such as 640, 644, etc.), this is non-compliant.\n5. Confirm compliance by ensuring all relevant nodes have the file set to 600 or more restrictive permissions.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T19:52:44.404329",
+    "model": "gpt-4.1",
+    "step2_review": "### 1. APPROACH VALIDATION: AGREE\n- **Manual vs Automated Classification:** The classification as a manual audit is correct. The Kubernetes API and `kubectl` do not provide direct access to host-level file permissions, which necessitates manual verification.\n- **Kubernetes API/kubectl/CLI Check:** There is no Kubernetes API, `kubectl` command, or CLI tool that can directly check file permissions on the host filesystem where the Kubernetes components are running. This requires direct OS-level access.\n\n### 2. TECHNICAL ACCURACY: 9\n- **Automation Details:** The assessment correctly identifies that automation through Kubernetes APIs or CLI is not possible for this control.\n- **Manual Steps:** The manual steps are accurate and complete. The use of the `stat` command is appropriate for checking file permissions.\n- **Program Name Convention:** The program name is not explicitly provided in the assessment. However, the description is clear about the security check being performed. A suggested name could be `k8s_controller_manager_conf_file_permissions`.\n\n### 3. IMPROVEMENTS:\n- **Program Name Suggestion:** Use a more descriptive program name such as `k8s_controller_manager_conf_file_permissions`.\n- **Missing Considerations:** Consider documenting the process for remediating non-compliant permissions to provide a complete compliance workflow.\n- **Alternative Methods:** While no Kubernetes API method exists, consider using configuration management tools (e.g., Ansible, Puppet) to automate the verification across multiple nodes, which can streamline the manual process.\n\n### 4. CONFIDENCE: HIGH\n- The assessment is well-founded and aligns with current Kubernetes capabilities and security best practices. The manual approach is justified given the limitations of Kubernetes APIs in accessing host-level file details.\n\n### 5. FINAL RECOMMENDATION: Keep as-is\n- The assessment is accurate and correctly classifies the audit approach as manual. The technical details are sound, and the manual steps are appropriate for verifying compliance with the control.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T01:09:06.664285"
+}

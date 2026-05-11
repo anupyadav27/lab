@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.8",
+    "unique_id": "k8s_4_1_1_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the etcd pod specification file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.8",
+        "unique_id": "k8s_4_1_1_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the etcd pod specification file ownership is set to root:root",
+        "description": "Ensure that the /etc/kubernetes/manifests/etcd.yaml file ownership is set to root:root.",
+        "rationale": "The etcd pod specification file /etc/kubernetes/manifests/etcd.yaml controls various parameters that set the behavior of the etcd service in the master node. etcd is a highly-available key-value store which Kubernetes uses for persistent storage of all of its REST API object. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G /etc/kubernetes/manifests/etcd.yaml Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root /etc/kubernetes/manifests/etcd.yaml Default Value: By default, /etc/kubernetes/manifests/etcd.yaml file ownership is set to root:root. References: 1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file ownership (root:root) of /etc/kubernetes/manifests/etcd.yaml on the host filesystem.\n- Kubernetes APIs and kubectl do not expose file ownership or permissions of files on the underlying node OS.\n- The audit procedure explicitly requires running OS-level commands (e.g., stat) on the control plane node.\n- This check cannot be performed via Kubernetes API, kubectl, or controller/state configs.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where etcd is running.\n2. Run the following command to check the ownership of the etcd manifest file:\n   ```\n   stat -c %U:%G /etc/kubernetes/manifests/etcd.yaml\n   ```\n3. Verify that the output is:\n   ```\n   root:root\n   ```\n4. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/manifests/etcd.yaml\n   ```\n5. Confirm compliance by re-running the stat command and ensuring the ownership is set to root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:11:10.134622",
+    "model": "gpt-4.1"
+}

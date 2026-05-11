@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.1",
+    "unique_id": "k8s_5_1_2_1",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --profiling argument is set to false",
+    "input_row": {
+        "id": "1.2.1",
+        "unique_id": "k8s_5_1_2_1",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --profiling argument is set to false",
+        "description": "Disable profiling, if not needed.",
+        "rationale": "Profiling allows for the identification of specific performance bottlenecks. It generates a significant amount of program data that could potentially be exploited to uncover system and program details. If you are not experiencing any bottlenecks and do not need the profiler for troubleshooting purposes, it is recommended to turn it off to reduce the potential attack surface.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-scheduler Verify that the --profiling argument is set to false.",
+        "remediation": "Edit the /etc/kubernetes/scheduler file on the master node and set the KUBE_SCHEDULER_ARGS parameter to \"--profiling=false\": KUBE_SCHEDULER_ARGS=\"--profiling=false\" Based on your system, restart the kube-scheduler service. For example: systemctl restart kube-scheduler.service Impact: Profiling information would not be available.   75 | P a g e Default Value: By default, profiling is enabled. References: 1. https://kubernetes.io/docs/admin/kube-scheduler/ 2. https://github.com/kubernetes/community/blob/master/contributors/devel/profi ling.md",
+        "profile_applicability": "•  Level 1",
+        "impact": "Profiling information would not be available.   75 | P a g e Default Value: By default, profiling is enabled.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-scheduler/ 2. https://github.com/kubernetes/community/blob/master/contributors/devel/profi ling.md"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the kube-scheduler process argument --profiling=false.\n- The kube-scheduler is typically run as a static Pod or systemd service on the control plane node.\n- The --profiling flag is not exposed via the Kubernetes API or via kubectl; it is a process-level flag.\n- The audit procedure in the CIS benchmark instructs to check the process arguments directly on the host (ps -ef | grep kube-scheduler), which requires OS-level access.\n- There is no Kubernetes API, resource, or field that exposes the kube-scheduler's process arguments.\n- Therefore, this check cannot be performed using kubectl or Kubernetes APIs and requires host-level access.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node (master node) where the kube-scheduler is running.\n2. Run the following command to list the kube-scheduler process and its arguments:\n   ```\n   ps -ef | grep kube-scheduler\n   ```\n3. Examine the process arguments for the kube-scheduler. Look specifically for the --profiling flag.\n4. Confirm that the argument --profiling=false is present.\n5. If --profiling is not set or is set to true, this is a finding (non-compliant).\n6. If --profiling=false is set, the node is compliant with this control.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:44:27.127249",
+    "model": "gpt-4.1"
+}

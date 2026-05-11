@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.7",
+    "unique_id": "k8s_6_5_2_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Minimize the admission of root containers",
+    "input_row": {
+        "id": "5.2.7",
+        "unique_id": "k8s_6_5_2_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Minimize the admission of root containers",
+        "description": "Do not generally permit containers to be run as the root user.",
+        "rationale": "Containers may run as any Linux user. Containers which run as the root user, whilst constrained by Container Runtime security features still have a escalated likelihood of container breakout. Ideally, all containers should run as a defined non-UID 0 user. There should be at least one admission control policy defined which does not permit root containers. If you need to run root containers, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods with containers which run as the root user will not be permitted.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that each policy restricts the use of root containers by setting MustRunAsNonRoot or MustRunAs with the range of UIDs not including 0. This audit may also require that you review the securityContext in the Pod specification yaml.",
+        "remediation": "Create a policy for each namespace in the cluster, ensuring that either MustRunAsNonRoot or MustRunAs with the range of UIDs not including 0, is set. Default Value: By default, there are no restrictions on the use of root containers and if a User is not specified in the image, the container will run as root. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "Pods with containers which run as the root user will not be permitted.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_root_containers_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API (e.g., `kubectl get ns`).\n- For each namespace, check for the presence of Pod Security Admission (PSA) labels or PodSecurityPolicy (if still in use), or other admission controller policies (e.g., OPA/Gatekeeper, Kyverno) that enforce restrictions on running containers as root.\n    - For PSA: Ensure the namespace label `pod-security.kubernetes.io/enforce` is set to at least `baseline` or `restricted`.\n    - For PodSecurityPolicy: Check for policies where `runAsUser.rule` is set to `MustRunAsNonRoot` or `MustRunAs` with a UID range that does not include 0.\n    - For OPA/Gatekeeper/Kyverno: Query for policies that enforce `securityContext.runAsNonRoot: true` or equivalent constraints.\n- Additionally, enumerate all current Pod specs in each namespace (`kubectl get pods --all-namespaces -o json`) and inspect the `securityContext` for each container:\n    - Confirm that `securityContext.runAsNonRoot: true` is set, or that `securityContext.runAsUser` is set to a non-zero value.\n- Pass Criteria:\n    - Every namespace has an enforced policy (via PSA, PSP, or admission controller) that prohibits containers from running as root (UID 0).\n    - No pods are running with containers where `runAsUser: 0` or `runAsNonRoot: false` or unset.\n- Fail Criteria:\n    - Any namespace lacks such a policy, or any pod/container is found running as root.\n- Example kubectl commands:\n    - `kubectl get ns --show-labels`\n    - `kubectl get psp -o yaml`\n    - `kubectl get constrainttemplates.constraints.gatekeeper.sh`\n    - `kubectl get kyverno policies`\n    - `kubectl get pods --all-namespaces -o json | jq '.items[].spec.containers[].securityContext'`\n- This check is fully automatable via Kubernetes APIs and does not require subjective review or host-level access.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:18:32.815522",
+    "model": "gpt-4.1"
+}

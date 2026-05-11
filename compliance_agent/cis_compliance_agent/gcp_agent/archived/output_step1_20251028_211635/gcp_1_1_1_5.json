@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.5",
+    "unique_id": "gcp_1_1_1_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure noexec option set on /tmp partition",
+    "input_row": {
+        "id": "1.1.5",
+        "unique_id": "gcp_1_1_1_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure noexec option set on /tmp partition",
+        "description": "The noexec mount option specifies that the filesystem cannot contain executable binaries.",
+        "rationale": "Since the /tmp filesystem is only intended for temporary file storage, set this option to ensure that users cannot run executable binaries from /tmp .",
+        "audit": "Verify that the noexec option is set if a /tmp partition exists Run the following command and verify that nothing is returned: # mount | grep -E '\\s/tmp\\s' | grep -v noexec",
+        "remediation": "Run the following command to remount /tmp : # mount -o remount,noexec /tmp /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- **Manual:** This control requires checking the mount options on the file system of a Container-Optimized OS instance. This step cannot be performed using GCP APIs, Google Cloud SDK (gcloud), or GCP CLI commands because it involves assessing the OS configuration directly on the instance, which typically requires SSH access.\n\n- The audit field specifies a Linux command to check the configuration, indicating the need for direct command-line execution on the instance.\n\n- This compliance check involves verifying OS-level configurations that are not exposed through GCP APIs or commands. The presence of the `noexec` flag on partitions is an operating system-specific configuration.\n\n**MANUAL STEPS:**\n\n1. **SSH Access to Instance:**\n   - SSH into the Container-Optimized OS instance you want to audit. You can achieve this using the Google Cloud Console or via CLI with the command:\n     ```bash\n     gcloud compute ssh <INSTANCE_NAME> --zone <ZONE>\n     ```\n\n2. **Check Mount Options:**\n   - Execute the following command on the instance to obtain current mount options and check for `/tmp`:\n     ```bash\n     mount | grep -E '\\\\s/tmp\\\\s' | grep -v noexec\n     ```\n   - This command is searching for the `/tmp` partition but excluding lines that mention `noexec`. If no output is returned, it indicates that the `noexec` flag is correctly set.\n\n3. **Expected Secure Configuration:**\n   - Ensure that the command returns no output, indicating that the `noexec` option is correctly set for the `/tmp` partition.\n\n4. **Confirm Compliance:**\n   - If there is no output from the command, the system is in compliance with the control. If output is returned, you need to apply the remediation steps specified in the control guidelines to achieve compliance.\n\nThis approach confirms the absence of executable permissions on the `/tmp` partition, aligning with the security best practices outlined by the CIS Google Container Optimized OS Benchmark.",
+    "timestamp": "2025-10-28T21:17:56.858973",
+    "model": "gpt-4o"
+}

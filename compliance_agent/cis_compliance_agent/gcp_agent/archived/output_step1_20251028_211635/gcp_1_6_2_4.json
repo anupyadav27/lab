@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.4",
+    "unique_id": "gcp_1_6_2_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure no legacy \"+\" entries exist in /etc/group",
+    "input_row": {
+        "id": "6.2.4",
+        "unique_id": "gcp_1_6_2_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure no legacy \"+\" entries exist in /etc/group",
+        "description": "The character + in various files used to be markers for systems to insert data from NIS maps at a certain point in a system configuration file. These entries are no longer required on most systems, but may exist in files that have been imported from other platforms.",
+        "rationale": "These entries may provide an avenue for attackers to gain privileged access on the system.",
+        "audit": "Run the following command and verify that no output is returned: # grep '^\\+:' /etc/group",
+        "remediation": "Remove any legacy '+' entries from /etc/group if they exist.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The audit of this control involves inspecting the contents of the `/etc/group` file on instances running Container-Optimized OS. According to the audit instructions, it requires running a command (`grep '^\\\\+:' /etc/group`) directly on the system to check for legacy \"+\" entries.\n- GCP APIs or Google Cloud SDK (gcloud) do not provide direct access or commands to check OS-level configurations, such as the contents of the `/etc/group` file on VM instances.\n- This check requires SSH access to the instance where the Container-Optimized OS is running, which typically necessitates manual review.\n- Given these requirements, this control falls into the category of OS-level checks that are not exposed via GCP APIs and cannot be automated purely through those interfaces.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - SSH into the GCP VM instance that is running Container-Optimized OS.\n   - Use the Google Cloud Console or gcloud CLI to establish an SSH session to the instance.\n\n2. **Run the Audit Command:**\n   - Execute the following command in the SSH terminal to search for legacy \"+\" entries:\n     ```bash\n     grep '^\\\\+:' /etc/group\n     ```\n\n3. **Verify/Validate:**\n   - Ensure that no output is returned by the command. An empty result indicates compliance, as there are no legacy \"+\" entries present.\n\n4. **Expected Secure Configuration:**\n   - The `/etc/group` file should not contain any entries beginning with the \"+\" character.\n\n5. **Confirm Compliance:**\n   - If the command returns no output, the system complies with the control. If there are results, these need to be reviewed and removed as per the remediation guidelines.",
+    "timestamp": "2025-10-28T21:43:40.161708",
+    "model": "gpt-4o"
+}

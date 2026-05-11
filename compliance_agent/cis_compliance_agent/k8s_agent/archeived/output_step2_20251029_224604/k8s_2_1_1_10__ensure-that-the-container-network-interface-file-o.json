@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.10",
+    "unique_id": "k8s_2_1_1_10",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the Container Network Interface file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.10",
+        "unique_id": "k8s_2_1_1_10",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the Container Network Interface file ownership is set to root:root",
+        "description": "Ensure that the Container Network Interface files have ownership set to root:root.",
+        "rationale": "Container Network Interface provides various networking options for overlay networking. You should consult their documentation and restrict their respective file permissions to maintain the integrity of those files. Those files should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G <path/to/cni/files> Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root <path/to/cni/files> Default Value: NA References: 1. https://kubernetes.io/docs/concepts/cluster-administration/networking/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/cluster-administration/networking/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file ownership (root:root) of Container Network Interface (CNI) files on the host filesystem. Kubernetes APIs and kubectl do not expose host-level file ownership or permissions for files outside of Kubernetes-managed resources. The audit and remediation steps explicitly reference OS-level commands (e.g., stat, chown) to be run directly on the node, which cannot be performed or verified via Kubernetes APIs or kubectl. Therefore, this check requires manual verification on the host.\n\n**MANUAL STEPS:**\n\n1. **Identify the CNI directory on the control plane node(s):**\n   - Common locations include `/etc/cni/net.d/` and `/opt/cni/bin/`.\n   - Consult your cluster/network plugin documentation if unsure.\n\n2. **List all files in the CNI directories:**\n   - Run: `ls -l /etc/cni/net.d/`\n   - Run: `ls -l /opt/cni/bin/`\n\n3. **Check ownership of each file:**\n   - For each file, verify the owner and group are both `root`.\n   - Alternatively, run: `stat -c %U:%G <path/to/cni/file>` for each file.\n\n4. **Expected secure configuration:**\n   - All CNI configuration and binary files should be owned by `root:root`.\n\n5. **Confirm compliance:**\n   - If all files in the relevant CNI directories are owned by `root:root`, the control is compliant.\n   - If any file is not owned by `root:root`, remediate by running: `chown root:root <path/to/cni/file>` and re-verify.",
+    "timestamp": "2025-10-29T20:16:48.860057",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Manual is correct. Kubernetes APIs and kubectl do not provide capabilities to check or modify file ownership on the host filesystem. This task involves verifying file ownership at the OS level, which is outside the scope of Kubernetes-managed resources. Therefore, manual verification on the host is necessary.\n\n**TECHNICAL ACCURACY:** 9\n\n- The manual steps provided are technically accurate and complete for verifying the ownership of CNI files. The use of OS-level commands such as `ls -l` and `stat` is appropriate for this task. The remediation step using `chown` is also correct.\n- The program name convention is not applicable here as this is a manual check and not a script or automated program. However, the description of the steps is clear and descriptive.\n\n**IMPROVEMENTS:**\n\n- The assessment could include a note on the importance of documenting the findings and any remediation actions taken for audit trails.\n- While the manual steps are comprehensive, it might be beneficial to include a script template for administrators to streamline the process of checking file ownership across multiple nodes.\n- Consider providing guidance on how to handle discrepancies if the expected directories (`/etc/cni/net.d/` and `/opt/cni/bin/`) are not found, such as consulting network plugin documentation or cluster configuration.\n\n**CONFIDENCE:** HIGH\n\n- I am confident in the assessment's accuracy and the necessity of a manual approach due to the limitations of Kubernetes APIs in accessing host-level file attributes.\n\n**FINAL RECOMMENDATION:** Keep as-is\n\n- The assessment is well-structured and accurate. It correctly identifies the need for a manual approach and provides clear, actionable steps for compliance verification. No reclassification or significant modifications are necessary.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:53:42.161102"
+}

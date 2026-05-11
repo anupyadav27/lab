@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.8",
+    "unique_id": "gcp_1_5_1_8",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH IgnoreRhosts is enabled",
+    "input_row": {
+        "id": "5.1.8",
+        "unique_id": "gcp_1_5_1_8",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH IgnoreRhosts is enabled",
+        "description": "The IgnoreRhosts parameter specifies that .rhosts and .shosts files will not be used in RhostsRSAAuthentication or HostbasedAuthentication.",
+        "rationale": "Setting this parameter forces users to enter a password when authenticating with ssh.",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep ignorerhosts IgnoreRhosts yes",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: IgnoreRhosts yes Default Value: IgnoreRhosts yes",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control involves verifying the configuration of the SSH daemon on instances running Google Container-Optimized OS. The audit field specifies a command (`sshd -T | grep ignorerhosts`) that must be run locally on the instance to check the configuration of the SSH service. This requirement inherently demands SSH access to the instance to perform the audit check. \n\nGiven that it requires executing commands on the operating system of the instance, it falls into the category of OS-level SSH checks. Since such configurations are not exposed via GCP APIs or available via the Google Cloud SDK (gcloud) or GCP CLI, the most appropriate approach is Manual.\n\n**MANUAL STEPS:**\n\n1. **Access the instance:**\n   - Use SSH to connect to the instance running Google Container-Optimized OS. You can initiate this connection using the Google Cloud Console or via a terminal using SSH command.\n\n2. **Verify SSH IgnoreRhosts Parameter:**\n   - Run the following command to check the SSH configuration:\n     ```sh\n     sshd -T | grep ignorerhosts\n     ```\n   - **What to verify/validate**: Check that the output of the command is `IgnoreRhosts yes`.\n\n3. **Expected secure configuration:**\n   - The correct output should be `IgnoreRhosts yes`. This indicates that the `.rhosts` and `.shosts` files are not being used, ensuring that host-based authentication methods that bypass password authentication are disabled.\n\n4. **Confirm compliance:**\n   - If the command's output matches the expected secure configuration (`IgnoreRhosts yes`), the instance complies with this CIS control. If it does not, update the `/etc/ssh/sshd_config` file to include the line `IgnoreRhosts yes` and restart the SSH daemon to apply the change.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:33:39.143727",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.8",
+    "unique_id": "gcp_1_1_1_8",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure nodev option set on /var partition",
+    "input_row": {
+        "id": "1.1.8",
+        "unique_id": "gcp_1_1_1_8",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure nodev option set on /var partition",
+        "description": "The nodev mount option specifies that the filesystem cannot contain special devices.",
+        "rationale": "Since the /var filesystem is not intended to support devices, set this option to ensure that users cannot attempt to create block or character special devices in /var .",
+        "audit": "Verify that the nodev option is set if a /var partition exists. Run the following command and verify that nothing is returned: # mount | grep -E '\\s/var\\s' | grep -v nodev",
+        "remediation": "Run the following command to remount /var : # mount -o remount,nodev /var /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nBased on the control details provided for ensuring the `nodev` option is set on the `/var` partition, the control requires an inspection at the operating system level of the instance. This means logging into the instance and verifying the mount options directly. Since this involves checking the configuration of the underlying filesystem on Google Container-Optimized OS instances, it typically cannot be achieved through GCP APIs or the Google Cloud SDK (gcloud). Therefore, this needs manual verification as it involves OS-level checks that would be accessed via SSH or direct console access.\n\n**MANUAL STEPS:**\n1. SSH into the GCP instance running Google Container-Optimized OS.\n   - Use the GCP Console or a preferred SSH client to establish a connection.\n   \n2. Run the following command to check the current mount options for the `/var` partition:\n   ```sh\n   mount | grep -E '\\s/var\\s' | grep -v nodev\n   ```\n\n3. Verify the output:\n   - Ensure that no output is returned. This confirms that the `nodev` option is properly set. If there is output, it indicates that the `nodev` option is not set.\n\n4. Confirm compliance:\n   - Compliance is achieved if there is no output from step 2, indicating that the `nodev` option is set for the `/var` partition.\n\n5. If the `nodev` option is not set, follow remediation steps to mount `/var` with the `nodev` option:\n   ```sh\n   mount -o remount,nodev /var\n   ```\n   - Note: This change is not persistent across reboots due to `/etc` being stateless on Container-Optimized OS. You need to perform this action after each boot.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:18:41.226480",
+    "model": "gpt-4o"
+}

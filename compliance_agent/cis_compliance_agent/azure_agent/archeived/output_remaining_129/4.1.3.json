@@ -1,0 +1,17 @@
+{
+    "id": "4.1.3",
+    "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json",
+    "input_row": {
+        "id": "4.1.3",
+        "unique_id": "aks_4.1.3__minimize-wildcard-use-in-roles-and-clusterroles",
+        "title": "Minimize wildcard use in Roles and ClusterRoles",
+        "description": "Kubernetes Roles and ClusterRoles provide access to resources based on sets of objects and actions that can be taken on those objects. It is possible to set either of these to be the wildcard \"*\" which matches all items. Use of wildcards is not optimal from a security perspective as it may allow for inadvertent access to be granted when new resources are added to the Kubernetes API either as CRDs or in later versions of the product.",
+        "rationale": "The principle of least privilege recommends that users are provided only the access required for their role and nothing more. The use of wildcard rights grants is likely to provide excessive rights to the Kubernetes API.",
+        "audit": "Retrieve the roles defined across each namespaces in the cluster and review for wildcards kubectl get roles --all-namespaces -o yaml Retrieve the cluster roles defined in the cluster and review for wildcards kubectl get clusterroles -o yaml",
+        "remediation": "Where possible replace any use of wildcards in clusterroles and roles with specific objects or actions. References: 1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- privileged-access#pa-7-follow-just-enough-administration-least-privilege-principle",
+        "impact": "",
+        "reference": "1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- privileged-access#pa-7-follow-just-enough-administration-least-privilege-principle",
+        "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_aks_roles_wildcard_use_minimized\n\n**AUTOMATION DETAILS:** \nThe automated program would check the use of wildcards in Kubernetes Roles and ClusterRoles. It will utilize the Azure CLI commands to retrieve roles and cluster roles, verifying compliance with the principle of least privilege.\n\n- Use the following Azure CLI commands to enumerate roles:\n  - `kubectl get roles --all-namespaces -o yaml`: This will retrieve all Kubernetes roles across namespaces.\n  - `kubectl get clusterroles -o yaml`: This will retrieve all cluster roles defined in the Kubernetes cluster.\n\n- The program will then parse the output for any instances of wildcards (\"*\") in the `rules` section of each role and cluster role.\n\n**Pass/Fail Criteria:**\n- **Pass**: None of the retrieved Roles or ClusterRoles have wildcard (\"*\") permissions specified.\n- **Fail**: At least one Role or ClusterRole contains wildcard (\"*\") permissions.\n\n- Example API endpoints or CLI commands would be:\n  - For roles per namespace: `kubectl get roles -n <namespace> -o yaml`\n  - For cluster roles: `kubectl get clusterroles -o yaml`  \n\nThis approach leverages available Azure Kubernetes APIs/CLI to automate the compliance check effectively."
+}

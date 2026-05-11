@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.8",
+    "unique_id": "alicloud_1_4_1_8",
+    "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+    "title": "Ensure that the client certificate authorities file ownership is set to root:root",
+    "input_row": {
+        "id": "4.1.8",
+        "unique_id": "alicloud_1_4_1_8",
+        "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+        "title": "Ensure that the client certificate authorities file ownership is set to root:root",
+        "description": "Ensure\tthat\tthe\tcertificate\tauthorities\tfile\townership\tis\tset\tto\troot:root.",
+        "rationale": "The\tcertificate\tauthorities\tfile\tcontrols\tthe\tauthorities\tused\tto\tvalidate\tAPI\trequests.\tYou should\tset\tits\tfile\townership\tto\tmaintain\tthe\tintegrity\tof\tthe\tfile.\tThe\tfile\tshould\tbe\towned by\troot:root. Impact: None",
+        "audit": "Run\tthe\tfollowing\tcommand: ps -ef | grep kubelet Find\tthe\tfile\tspecified\tby\tthe\t--client-ca-file\targument. Run\tthe\tfollowing\tcommand: stat -c %U:%G <filename> Verify\tthat\tthe\townership\tis\tset\tto\troot:root.",
+        "remediation": "Run\tthe\tfollowing\tcommand\tto\tmodify\tthe\townership\tof\tthe\t--client-ca-file. chown root:root <filename> Default\tValue: By\tdefault\tno\t--client-ca-file\tis\tspecified. References: 175\t|\tP a g e 1. https://kubernetes.io/docs/admin/authentication/#x509-client-certs CIS\tControls: Version\t6 5.1\tMinimize\tAnd\tSparingly\tUse\tAdministrative\tPrivileges Minimize\tadministrative\tprivileges\tand\tonly\tuse\tadministrative\taccounts\twhen\tthey\tare required.\tImplement\tfocused\tauditing\ton\tthe\tuse\tof\tadministrative\tprivileged\tfunctions\tand monitor\tfor\tanomalous\tbehavior. Version\t7 5.1\tEstablish\tSecure\tConfigurations Maintain\tdocumented,\tstandard\tsecurity\tconfiguration\tstandards\tfor\tall\tauthorized operating\tsystems\tand\tsoftware. 176\t|\tP a g e",
+        "profile_applicability": "",
+        "impact": "None",
+        "references": "175\t|\tP a g e 1. https://kubernetes.io/docs/admin/authentication/#x509-client-certs CIS\tControls: Version\t6 5.1\tMinimize\tAnd\tSparingly\tUse\tAdministrative\tPrivileges Minimize\tadministrative\tprivileges\tand\tonly\tuse\tadministrative\taccounts\twhen\tthey\tare required.\tImplement\tfocused\tauditing\ton\tthe\tuse\tof\tadministrative\tprivileged\tfunctions\tand monitor\tfor\tanomalous\tbehavior. Version\t7 5.1\tEstablish\tSecure\tConfigurations Maintain\tdocumented,\tstandard\tsecurity\tconfiguration\tstandards\tfor\tall\tauthorized operating\tsystems\tand\tsoftware. 176\t|\tP a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verifying the file ownership of the client certificate authorities file, which is typically stored on the file system of a Kubernetes node. The audit instructions involve running local commands (`ps`, `stat`) on the node to determine the file ownership. These operations require access to the underlying operating system of the node, which is not accessible via Alibaba Cloud APIs or CLI tools. Therefore, since it requires SSH access and can't be verified through APIs or managed services, it falls under manual inspection.\n\n**MANUAL STEPS:**\n\n1. **Access the Kubernetes Node:**\n   - Use SSH to connect to the node running the Kubernetes service.\n\n2. **Identify the Client CA File:**\n   - Run the command: `ps -ef | grep kubelet`\n   - Look for the `--client-ca-file` argument in the output to identify the path of the client CA file.\n\n3. **Verify File Ownership:**\n   - Execute the command: `stat -c %U:%G <path_to_client_ca_file>`\n   - Ensure the output shows `root:root` as the owner and group for the file.\n\n4. **Expected Secure Configuration:**\n   - The file ownership should be confirmed as `root:root`. If not, this needs remediation to match the expected secure setting.\n\n5. **Document Findings:**\n   - Record the observed ownership and confirm compliance with the benchmark, or note any discrepancies for remediation.\n\n**SOURCE:** CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+    "timestamp": "2025-10-29T14:53:04.597878",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,37 @@
+{
+    "unique_id": "2.2.10__ensure-a-web-server-is-not-installed",
+    "control_id": "2.2.10",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.10",
+        "unique_id": "2.2.10__ensure-a-web-server-is-not-installed",
+        "title": "Ensure a web server is not installed",
+        "description": "Web servers provide the ability to host web site content.",
+        "rationale": "Unless there is a need to run the system as a web server, it is recommended that the packages be removed to reduce the potential attack surface. Note: Several http servers exist. They should also be audited, and removed, if not required.",
+        "audit": "Run the following command to verify httpd and nginx are not installed: # rpm -q httpd nginx package httpd is not installed package nginx is not installed",
+        "remediation": "Run the following command to remove httpd and nginx: # dnf remove httpd nginx References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Step 1:** Access the Azure portal and navigate to the relevant resource group containing your Azure Kubernetes Service (AKS) cluster.\n2. **Step 2:** Use SSH to connect to the AKS cluster nodes.\n   - Command: `ssh <user>@<node-ip>`\n3. **Step 3:** Check if the web servers (httpd and nginx) are installed on the AKS nodes.\n   - Command: `rpm -q httpd nginx`\n4. **Step 4:** Verify the output of the command.\n   - **Expected secure configuration:** The output should indicate that both `httpd` and `nginx` are not installed. If either is reported as installed, this could expose the system to unnecessary attack vectors.\n5. **Step 5:** If either web server is found installed, proceed to remove them.\n   - Command: `sudo dnf remove httpd nginx`\n6. **Step 6:** Re-run the command from Step 3 to confirm their removal.\n   - Ensure that the same packages do not appear in the output.\n\nBy following these steps, you will determine whether your AKS cluster is compliant with the control to ensure a web server is not installed."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** DISAGREE\n\n- **Manual vs Automated Classification:** The classification as a manual approach is not entirely correct. While the steps provided are manual, this assessment can be automated using Azure capabilities.\n- **Azure APIs/CLI:** Azure provides several tools that can automate this process. For example, Azure CLI or Azure PowerShell can be used to execute commands on AKS nodes. Additionally, Azure Policy can be used to enforce compliance by checking for the presence of specific packages on nodes.\n\n**TECHNICAL ACCURACY:** 6\n\n- **Automation Details:** The steps provided are technically correct for a manual approach but lack automation details. The use of SSH and manual RPM checks are valid but not efficient for large-scale environments.\n- **Manual Steps Accuracy:** The manual steps are accurate in terms of checking for installed packages, but they do not leverage Azure's capabilities for automation.\n- **Program Naming Convention:** The assessment does not follow any specific naming convention related to Azure services or security intents.\n\n**IMPROVEMENTS:**\n\n- **Automation Potential:** Utilize Azure CLI or Azure PowerShell to automate the checking of installed packages across AKS nodes. For example, using Azure CLI to execute commands remotely on AKS nodes can streamline this process.\n- **Azure Policy:** Consider implementing Azure Policy to automatically audit and enforce compliance regarding installed packages on AKS nodes.\n- **Security Best Practices:** Ensure that SSH access to AKS nodes is secured and limited to necessary personnel only. Consider using Azure Bastion for secure access.\n- **Alternative Approach:** Use Azure Monitor and Log Analytics to track installed software on AKS nodes and set up alerts for non-compliance.\n\n**CONFIDENCE:** MEDIUM\n\n- The assessment provides a valid manual approach, but it lacks consideration of Azure's automation capabilities, which reduces confidence in its efficiency and scalability.\n\n**FINAL RECOMMENDATION:** Re-classify\n\n- **Re-classify to Automated:** Leverage Azure CLI, Azure PowerShell, and Azure Policy to automate the compliance check. This will increase efficiency, reduce human error, and ensure scalability across multiple AKS clusters.\n- **Justification:** Azure provides robust tools for automating compliance checks, which are more suitable for this task than a manual approach. Automating this process aligns with best practices for managing cloud environments.",
+        "reviewed_at": "2025-10-26T16:43:42.999095"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nThe second AI opinion correctly identifies that Azure's capabilities, such as Azure CLI or Azure PowerShell, can automate the process of checking for installed packages on AKS nodes. Azure Policy can also be used to enforce compliance by checking for the presence of specific packages, making the manual approach unnecessary and inefficient for large-scale environments.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nazure_aks_node_check_web_server\n\n**AUTOMATION DETAILS:**\n- **Azure Resource/Service:** AKS Clusters\n- **API/CLI Method:** Use Azure CLI to execute commands on AKS nodes via `az aks command invoke`\n- **Properties to Check:** Execute `rpm -q httpd nginx` on each node\n- **Pass Criteria:** Output indicates that both `httpd` and `nginx` are not installed\n- **Fail Criteria:** Either `httpd` or `nginx` is reported as installed\n\n---\n\n**DISAGREEMENTS RESOLVED:**\nThe first AI suggested a manual approach, but the second AI highlighted the potential for automation using Azure's tools. Given Azure's robust capabilities for automation, the automated approach is more efficient and scalable.\n\n**SOURCE:** CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+        "decided_at": "2025-10-27T14:32:30.154043"
+    },
+    "metadata": {
+        "reviewed_file": "2.2.10__ensure-a-web-server-is-not-installed.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "csp": "Azure",
+    "phase": "2_complete",
+    "date": "2025-11-08",
+    "based_on": "AWS improvement methodology",
+    "status": "ready_for_phase_3",
+    "total_consolidations": 23
+  },
+  
+  "function_consolidations": {
+    "_comment_1": "=== IAM/Active Directory Consolidations ===",
+    
+    "azure_active_directory_aws_attached_policy_no_administrative_privileges": "azure_ad_policy_no_administrative_privileges",
+    "azure_active_directory_customer_attached_policy_no_administrative_privileges": "azure_ad_policy_no_administrative_privileges",
+    "azure_active_directory_inline_policy_no_administrative_privileges": "azure_ad_policy_no_administrative_privileges",
+    
+    "azure_active_directory_password_policy_lowercase": "azure_ad_user_password_policy_complex",
+    "azure_active_directory_password_policy_number": "azure_ad_user_password_policy_complex",
+    "azure_active_directory_password_policy_symbol": "azure_ad_user_password_policy_complex",
+    "azure_active_directory_password_policy_uppercase": "azure_ad_user_password_policy_complex",
+    
+    "_comment_2": "=== Monitor/Logging Consolidations (AWS terminology removal) ===",
+    
+    "azure_monitor_cloudwatch_logging_enabled": "azure_monitor_logging_enabled",
+    "azure_monitor_cloudwatch_logs_enabled": "azure_monitor_logging_enabled",
+    
+    "azure_monitor_log_file_validation_enabled": "azure_monitor_log_file_integrity_enabled",
+    "azure_monitor_log_file_validation_status_check": "azure_monitor_log_file_integrity_enabled",
+    
+    "_comment_3": "=== Security Center Consolidations ===",
+    
+    "azure_security_center_is_enabled": "azure_security_center_enabled",
+    
+    "_comment_4": "=== Compute Consolidations (EBS→Disk) ===",
+    
+    "azure_compute_ebs_default_encryption": "azure_compute_disk_encryption_enabled",
+    "azure_compute_ebs_volume_encryption": "azure_compute_disk_encryption_enabled",
+    
+    "_comment_5": "=== Storage Consolidations (Bucket→Account) ===",
+    
+    "azure_storage_bucket_default_encryption": "azure_storage_account_encryption_enabled",
+    "azure_storage_bucket_encryption_enabled": "azure_storage_account_encryption_enabled",
+    
+    "azure_storage_bucket_logging_enabled": "azure_storage_account_logging_enabled",
+    "azure_storage_bucket_server_access_logging_enabled": "azure_storage_account_logging_enabled",
+    
+    "_comment_6": "=== SQL Database Consolidations (Instance→Database) ===",
+    
+    "azure_sql_instance_backup_enabled": "azure_sql_database_backup_enabled",
+    
+    "azure_sql_instance_storage_encrypted": "azure_sql_database_encryption_at_rest_enabled",
+    "azure_sql_instance_encryption_at_rest_enabled": "azure_sql_database_encryption_at_rest_enabled",
+    
+    "_comment_7": "=== Azure Functions Consolidations (Function→App) ===",
+    
+    "azure_functions_function_not_publicly_accessible": "azure_functions_app_restrict_public_access",
+    "azure_functions_function_public_access_check": "azure_functions_app_restrict_public_access"
+  },
+  
+  "consolidation_patterns": {
+    "pattern_1_aws_terminology": {
+      "description": "Remove AWS service names from Azure functions",
+      "examples": {
+        "cloudwatch": "monitor",
+        "s3": "storage",
+        "ebs": "disk",
+        "bucket": "account"
+      },
+      "estimated_impact": "60-70 functions"
+    },
+    "pattern_2_verbose_names": {
+      "description": "Shorten verbose service names",
+      "examples": {
+        "active_directory": "ad"
+      },
+      "estimated_impact": "45 functions"
+    },
+    "pattern_3_encryption_suffixes": {
+      "description": "Standardize encryption function suffixes",
+      "preferred": "_encryption_enabled",
+      "consolidate": ["_default_encryption", "_volume_encryption", "_storage_encrypted"],
+      "estimated_impact": "25-30 functions"
+    },
+    "pattern_4_logging_suffixes": {
+      "description": "Standardize logging function suffixes",
+      "preferred": "_enabled",
+      "consolidate": ["_check", "_status_check", "_is_enabled"],
+      "estimated_impact": "20-25 functions"
+    },
+    "pattern_5_resource_terminology": {
+      "description": "Use correct Azure resource names",
+      "examples": {
+        "sql_instance": "sql_database",
+        "functions_function": "functions_app"
+      },
+      "estimated_impact": "15-20 functions"
+    }
+  },
+  
+  "phase_2_statistics": {
+    "total_functions_analyzed": "~450",
+    "azure_services_identified": 35,
+    "duplicate_patterns_found": 8,
+    "consolidations_in_mapping": 23,
+    "estimated_total_consolidations": "85-95",
+    "estimated_final_count": "355-365",
+    "reduction_percentage": "~19%"
+  },
+  
+  "next_phase_3_objectives": [
+    "Service-specific deep dive for top 6 services",
+    "Extract all functions grouped by service",
+    "Identify remaining service-specific patterns",
+    "Expand consolidation mapping to 85-95 entries",
+    "Document Azure naming best practices"
+  ]
+}
+

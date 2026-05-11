@@ -1,0 +1,22 @@
+{
+    "control_id": "2.2.2",
+    "unique_id": "ibm_1_2_2_2",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure 'OS disk' are encrypted with Customer managed keys",
+    "input_row": {
+        "id": "2.2.2",
+        "unique_id": "ibm_1_2_2_2",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure 'OS disk' are encrypted with Customer managed keys",
+        "description": "By default, IBM Cloud Block Storage provides provider-managed encryption for all data. For enhanced security, customers can bring their own encryption keys and manage them through IBM Key Management Services – Key Protect or Hyper Protect Crypto Services (HPCS). Provider-managed encryption is turned on by default and cannot be turned off.",
+        "rationale": "With customer-managed keys, only customers can access and manage their master root keys, giving them full control over their data security.",
+        "audit": "You can use the IBM Cloud Block Storage configuration properties to verify whether a Cloud Object Storage bucket is enabled to use Key Protect or Hyper Protect key management services. From Console, Navigate to your Cloud Object Storage instance: 1. In the IBM Cloud console, go to Menu icon > VPC Infrastructure > Storage > Block storage volumes. A list of all block storage volumes displays. 2. For each volumes listed with Attachment Type column value \"Boot\", ensure the encryption field is Not pointing to \"Provider Managed\".",
+        "remediation": "You will not be able to change encryption option once data is already written to a Cloud Block Storage Volume. In order to ensure that objects are encrypted using customer managed keys you will need to create a new Cloud Block Storage volume, set it to use either Key Protect or Hyper Protect key management service and then upload/copy the existing objects to this new volume. Default Value: Provider Managed References: 1. https://cloud.ibm.com/vpc-ext",
+        "profile_applicability": "•  Level 2",
+        "impact": "",
+        "references": "1. https://cloud.ibm.com/vpc-ext"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThis control is about ensuring that 'OS disk' for IBM Cloud Block Storage are encrypted with customer-managed keys instead of the default provider-managed encryption. Given the description and audit fields, this type of control involves checking specific configuration settings related to encryption in IBM Cloud. Since detailed inspection of these settings can be achieved through IBM Cloud APIs and CLI commands, it fits the criteria for an automated check.\n\n**PROGRAM NAME:** ibm_block_storage_os_disk_customer_managed_encryption\n\n**AUTOMATION DETAILS:**\n- **IBM Cloud API Calls/CLI Methods:** Utilize the IBM Cloud CLI and SDK methods to retrieve details of block storage volumes and check their encryption settings.\n- **IBM Cloud CLI Commands:** Use the `ibmcloud is volumes` command to list block storage volumes and their properties. Specifically, check the encryption field to ensure it is set to use customer-managed keys (i.e., not \"Provider Managed\").\n- **Resources to Enumerate:** Enumerate all block storage volumes in the IBM Cloud account, especially focusing on those with the \"Boot\" attachment type.\n- **Configuration Properties to Validate:** Ensure that for each volume with the \"Boot\" type, the encryption field should point to either \"Key Protect\" or \"Hyper Protect\", indicating customer-managed encryption keys.\n- **Pass/Fail Criteria:** \n  - Pass: If the encryption setting for a block storage volume is using customer-managed keys, specifically \"Key Protect\" or \"Hyper Protect\".\n  - Fail: If the encryption is set to \"Provider Managed\" or any other non-customer managed option.\n- **Example:** Use `ibmcloud is volume <volume-id>` to verify if the `encryption` attribute points to \"Key Protect\" or \"Hyper Protect\".\n\nThe automation should ensure that all operational boot volumes comply with customer-managed key encryption policies, according to the details provided in the CIS Benchmark guidelines.",
+    "timestamp": "2025-10-29T16:04:39.606160",
+    "model": "gpt-4o"
+}

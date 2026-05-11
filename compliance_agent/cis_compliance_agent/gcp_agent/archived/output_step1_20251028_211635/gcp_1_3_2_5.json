@@ -1,0 +1,22 @@
+{
+    "control_id": "3.2.5",
+    "unique_id": "gcp_1_3_2_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure broadcast ICMP requests are ignored",
+    "input_row": {
+        "id": "3.2.5",
+        "unique_id": "gcp_1_3_2_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure broadcast ICMP requests are ignored",
+        "description": "Setting net.ipv4.icmp_echo_ignore_broadcasts to 1 will cause the system to ignore all ICMP echo and timestamp requests to broadcast and multicast addresses.",
+        "rationale": "Accepting ICMP echo and timestamp requests with broadcast or multicast destinations for your network could be used to trick your host into starting (or participating) in a Smurf attack. A Smurf attack relies on an attacker sending large amounts of ICMP broadcast messages with a spoofed source address. All hosts receiving this message and responding would send echo-reply messages back to the spoofed address, which is probably not routable. If many hosts respond to the packets, the amount of traffic on the network could be significantly multiplied.",
+        "audit": "Run the following commands and verify output matches: # sysctl net.ipv4.icmp_echo_ignore_broadcasts net.ipv4.icmp_echo_ignore_broadcasts = 1 # grep \"net\\.ipv4\\.icmp_echo_ignore_broadcasts\" /etc/sysctl.conf /etc/sysctl.d/* net.ipv4.icmp_echo_ignore_broadcasts = 1",
+        "remediation": "Set the following parameters in /etc/sysctl.conf or a /etc/sysctl.d/* file: net.ipv4.icmp_echo_ignore_broadcasts = 1 Run the following commands to set the active kernel parameters: # sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=1 # sysctl -w net.ipv4.route.flush=1 /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The control is about ensuring specific kernel parameter configurations on GCP instances using Container-Optimized OS.\n- The control requires access to the instance's operating system to verify that `net.ipv4.icmp_echo_ignore_broadcasts` is set to `1`. This involves checking system configuration files and active kernel settings, which are typically not exposed via GCP APIs or the Google Cloud SDK.\n- This requires SSH access to instances to perform the audit steps mentioned, such as running `sysctl` commands and examining `/etc/sysctl.conf` and `/etc/sysctl.d/*` files.\n- Because checking these parameters involves operations at the OS level on specific instances, an automated approach via GCP APIs or SDK is not feasible for this type of compliance check.\n\n**MANUAL STEPS:**\n\n1. **SSH Access to Instances:**\n   - Access the GCP instance running Container-Optimized OS via SSH.\n\n2. **Verify Kernel Parameter:**\n   - Run the command: `sysctl net.ipv4.icmp_echo_ignore_broadcasts`.\n   - Verify that the output displays: `net.ipv4.icmp_echo_ignore_broadcasts = 1`.\n   - This checks the current active setting of the kernel parameter.\n\n3. **Check Configuration Files:**\n   - Execute: `grep \"net\\.ipv4\\.icmp_echo_ignore_broadcasts\" /etc/sysctl.conf /etc/sysctl.d/*`.\n   - Confirm that the parameter is set as: `net.ipv4.icmp_echo_ignore_broadcasts = 1` in the output.\n   - This ensures the parameter is configured to be set at boot time or when configurations are reloaded.\n\n4. **Expected Secure Configuration:**\n   - The parameter `net.ipv4.icmp_echo_ignore_broadcasts` should be set to `1` both in the active kernel parameters and in the configuration files.\n\n5. **Compliance Confirmation:**\n   - Compliance is confirmed when both the active parameter and configuration files are set correctly to ensure no participation in potential network-based attacks.",
+    "timestamp": "2025-10-28T21:26:33.576209",
+    "model": "gpt-4o"
+}

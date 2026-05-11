@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.15",
+    "unique_id": "k8s_5_3_1_15",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --token-auth-file parameter is not set",
+    "input_row": {
+        "id": "3.1.15",
+        "unique_id": "k8s_5_3_1_15",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --token-auth-file parameter is not set",
+        "description": "Do not use token based authentication.",
+        "rationale": "The token-based authentication utilizes static tokens to authenticate requests to the federation apiserver. The tokens are stored in clear-text in a file on the federation apiserver, and cannot be revoked or rotated without restarting the federation apiserver. Hence, do not use static token-based authentication.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --token-auth-file argument does not exist.",
+        "remediation": "Follow the documentation and configure alternate mechanisms for authentication. Then, edit the deployment specs and remove the --token-auth-file=<filename> argument. kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: You will have to configure and use alternate authentication mechanisms such as certificates. Static token based authentication could not be used. Default Value: By default, --token-auth-file argument is not set. References: 1. https://kubernetes.io/docs/admin/authentication/#static-token-file 2. https://kubernetes.io/docs/admin/federation-apiserver/  213 | P a g e 3. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 4. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "profile_applicability": "•  Level 1",
+        "impact": "You will have to configure and use alternate authentication mechanisms such as certificates. Static token based authentication could not be used. Default Value: By default, --token-auth-file argument is not set.",
+        "references": "1. https://kubernetes.io/docs/admin/authentication/#static-token-file 2. https://kubernetes.io/docs/admin/federation-apiserver/  213 | P a g e 3. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 4. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_token_auth_file_disabled\n\n**AUTOMATION DETAILS:**\n- Query the Deployment or Pod specification for the federation-apiserver in the federation-system namespace using the Kubernetes API or kubectl.\n- Specifically, inspect the command and args fields of the federation-apiserver container(s) to determine if the --token-auth-file flag is present.\n- Example kubectl command:\n  ```\n  kubectl -n federation-system get deployments federation-apiserver-deployment -o json\n  ```\n- In the resulting JSON, examine `.spec.template.spec.containers[].command` and `.spec.template.spec.containers[].args` for any occurrence of `--token-auth-file`.\n- **Pass Criteria:** The `--token-auth-file` argument is NOT present in any container command or args for the federation-apiserver deployment.\n- **Fail Criteria:** The `--token-auth-file` argument IS present in any container command or args for the federation-apiserver deployment.\n- This check can be fully automated by parsing the deployment spec via the Kubernetes API; no host-level access or subjective review is required.",
+    "timestamp": "2025-10-29T21:56:29.730173",
+    "model": "gpt-4.1"
+}

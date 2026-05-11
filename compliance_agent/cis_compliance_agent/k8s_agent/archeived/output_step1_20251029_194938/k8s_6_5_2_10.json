@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.10",
+    "unique_id": "k8s_6_5_2_10",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Minimize the admission of containers with capabilities assigned",
+    "input_row": {
+        "id": "5.2.10",
+        "unique_id": "k8s_6_5_2_10",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Minimize the admission of containers with capabilities assigned",
+        "description": "Do not generally permit containers with capabilities",
+        "rationale": "Containers run with a default set of capabilities as assigned by the Container Runtime. Capabilities are parts of the rights generally granted on a Linux system to the root user. In many cases applications running in containers do not require any capabilities to operate, so from the perspective of the principal of least privilege use of capabilities should be minimized. Impact: Pods with containers require capabilities to operate will not be permitted.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that at least one policy requires that capabilities are dropped by all containers. This audit may also require that you review the securityContext in the Pod specification yaml.",
+        "remediation": "Review the use of capabilities in applications running on your cluster. Where a namespace contains applications which do not require any Linux capabilities to operate consider adding a policy which forbids the admission of containers which do not drop all capabilities. Default Value: By default, there are no restrictions on the creation of containers with additional capabilities References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "Pods with containers require capabilities to operate will not be permitted.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/ 2. https://www.nccgroup.trust/uk/our-research/abusing-privileged-and-unprivileged- linux-containers/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_container_capabilities_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API (kubectl get namespaces).\n- For each namespace, check for the presence of Pod Security Admission (PSA) labels or PodSecurityPolicies (if legacy PSP is enabled), or any third-party admission controllers (e.g., OPA/Gatekeeper) enforcing container capabilities restrictions.\n- For PSA, verify that the namespace is labeled with at least baseline or restricted policy (kubectl get ns --show-labels | grep pod-security.kubernetes.io).\n- For each policy (PSA, PSP, or OPA/Gatekeeper ConstraintTemplate), inspect the rules to ensure that containers are required to drop all Linux capabilities (e.g., securityContext.capabilities.drop: [\"ALL\"]) and do not allow adding capabilities unless explicitly justified.\n- Enumerate all currently running Pods in each namespace (kubectl get pods -A -o json).\n- For each Pod, inspect the spec.containers[*].securityContext.capabilities field:\n    - Ensure that either the field is absent (default: no additional capabilities) or, if present, that all capabilities are dropped (drop: [\"ALL\"]) and add is empty or not present.\n- Pass Criteria:\n    - At least one policy per namespace enforces dropping all capabilities for all containers.\n    - No running Pods have containers with added capabilities unless explicitly allowed by policy.\n- Fail Criteria:\n    - Any namespace lacks a policy enforcing drop of all capabilities.\n    - Any running Pod/container has capabilities added that are not explicitly allowed by policy.\n- Example kubectl commands:\n    - kubectl get ns --show-labels\n    - kubectl get psp -o yaml (if PSP enabled)\n    - kubectl get pods -A -o json | jq '.items[].spec.containers[].securityContext.capabilities'\n    - kubectl get constraints (for OPA/Gatekeeper)\n- This check is fully automatable via Kubernetes API and does not require subjective human review.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:19:06.421973",
+    "model": "gpt-4.1"
+}

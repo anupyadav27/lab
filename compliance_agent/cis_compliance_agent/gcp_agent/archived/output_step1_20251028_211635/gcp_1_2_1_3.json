@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.3",
+    "unique_id": "gcp_1_2_1_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure NFS and RPC are not enabled",
+    "input_row": {
+        "id": "2.1.3",
+        "unique_id": "gcp_1_2_1_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure NFS and RPC are not enabled",
+        "description": "The Network File System (NFS) is one of the first and most widely distributed file systems in the UNIX environment. It provides the ability for systems to mount file systems of other servers through the network.",
+        "rationale": "If the system does not export NFS shares or act as an NFS client, it is recommended that these services be disabled to reduce the remote attack surface.",
+        "audit": "Run the following commands to verify the nfs-server and rpcbind are not enabled: # systemctl is-enabled nfs-server disabled # systemctl is-enabled rpcbind disabled Verify result is not \"enabled\" for both.",
+        "remediation": "Run the following commands to disable the nfs-server and rpcbind: # systemctl --now disable nfs-server # systemctl --now disable rpcbind /etc is stateless on Container-Optimized OS. Therefore, the steps mentioned above needs to be performed after every boot. Additional Information: Additional methods of disabling a service exist. Consult your distribution documentation for appropriate methods.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control involves verifying whether NFS (nfs-server) and RPC (rpcbind) services are enabled on the instances running Container-Optimized OS. The audit process described in the input requires the use of systemctl commands executed on the operating system level to check the status of these services. There is no mention of GCP APIs or the Google Cloud SDK (gcloud) commands being able to directly query the status of these OS-level services.\n\nThe nature of this check requires SSH access to the instances as it is an operating system configuration check and not something that can be queried through GCP's external APIs or command line tools like gcloud. Therefore, it requires manual verification.\n\n**MANUAL STEPS:**\n1. SSH into the Container-Optimized OS instance:\n   - Use `gcloud compute ssh [INSTANCE_NAME] --zone=[ZONE]` to initiate an SSH session to the instance.\n2. Check if the NFS service is enabled:\n   - Run the command `systemctl is-enabled nfs-server`.\n   - Verify that the output is `disabled`, indicating the service is not enabled.\n3. Check if the RPC service is enabled:\n   - Run the command `systemctl is-enabled rpcbind`.\n   - Verify that the output is `disabled`, indicating the service is not enabled.\n4. Confirming compliance:\n   - Both services must be reported as `disabled` for the instance to be compliant with this control. If either service is enabled, remediate by running the provided commands to disable them and ensure actions are taken post-boot since the configuration is stateless.",
+    "timestamp": "2025-10-28T21:24:44.907508",
+    "model": "gpt-4o"
+}

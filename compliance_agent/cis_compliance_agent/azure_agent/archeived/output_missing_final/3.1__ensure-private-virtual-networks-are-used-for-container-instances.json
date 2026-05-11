@@ -1,0 +1,17 @@
+{
+    "id": "3.1",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "3.1",
+        "unique_id": "3.1__ensure-private-virtual-networks-are-used-for-container-instances",
+        "title": "Ensure Private Virtual Networks are used for Container Instances",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Container Instances which have been created with Public IP addresses will need to be re-created with private IP addresses. During the initial creation of a Container Instance, ensure that the Networking Type of \"Private\" is selected prior to creating the Container Instance. Default Value: By default, the \"Public\" Networking type is selected when creating a Container Instance from Azure Portal. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/baselines/container- instances-security-baseline?toc=%2Fazure%2Fcontainer- instances%2FTOC.json 2. https://learn.microsoft.com/en-us/azure/container-instances/container-instances- vnet CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control can be validated with Azure APIs, specifically checking for the presence of public IP addresses on Azure Container Instances, which indicates whether they are using a public or private virtual network.\n- Network settings are uniform properties available through Azure Resource Manager APIs.\n\n**PROGRAM NAME:** azure_container_instances_private_networks_enabled\n\n**AUTOMATION DETAILS:**\nThe automated program would check the following:\n\n1. **APIs/CLI Commands:**\n   - Use Azure Resource Manager (ARM) APIs or Azure CLI to query the properties of Azure Container Instances.\n\n2. **Resources to Enumerate:**\n   - Target all Azure Container Instances deployed in the subscriptions, particularly checking their network configurations.\n\n3. **Configuration Properties/Settings to Validate:**\n   - Query the `networkProfileId` or `ipAddress` property of the container instances to check if they are assigned a public IP address.\n\n4. **Pass/Fail Criteria:**\n   - **Pass:** If the `ipAddress` property of any Container Instance is null or if it explicitly indicates a private IP address.\n   - **Fail:** If any Container Instance is found with a public IP address assigned.\n\n5. **Example API Endpoint or CLI Command:**\n   - ARM API: \n     ```\n     GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups?api-version=2021-07-01\n     ```\n   - Azure CLI command:\n     ```\n     az container list --query \"[?contains(ipAddress, 'Public')]\" --output table\n     ```\nThis would provide a list of container instances with public IPs, indicating they do not comply with the control."
+}

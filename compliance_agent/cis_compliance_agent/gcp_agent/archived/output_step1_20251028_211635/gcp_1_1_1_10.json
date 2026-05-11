@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.10",
+    "unique_id": "gcp_1_1_1_10",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure nodev option set on /dev/shm partition",
+    "input_row": {
+        "id": "1.1.10",
+        "unique_id": "gcp_1_1_1_10",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure nodev option set on /dev/shm partition",
+        "description": "The nodev mount option specifies that the filesystem cannot contain special devices.",
+        "rationale": "Since the /dev/shm filesystem is not intended to support devices, set this option to ensure that users cannot attempt to create special devices in /dev/shm partitions.",
+        "audit": "Verify that the nodev option is set if a /dev/shm partition exists. Run the following command and verify that nothing is returned: # mount | grep -E '\\s/dev/shm\\s' | grep -v nodev",
+        "remediation": "Run the following command to remount /dev/shm : # mount -o remount,nodev /dev/shm /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control is best verified manually due to the nature of the check, which involves verifying the mount options for a specific partition on the OS level. It requires access to the underlying file system of the instances running Container-Optimized OS, which cannot be directly checked via GCP APIs or Google Cloud SDK. This check does not involve standard GCP resource properties that can typically be queried via GCP APIs.\n\n**MANUAL STEPS:**\n1. **SSH Access to Instance:**\n   - Gain SSH access to the instance running Container-Optimized OS that you need to audit.\n   \n2. **Verify Mount Options:**\n   - Run the following command in the terminal to check the mount options for the /dev/shm partition:\n     ```\n     mount | grep -E '\\\\s/dev/shm\\\\s' | grep -v nodev\n     ```\n   \n3. **Check for Compliance:**\n   - Ensure that no output is returned from the command; this indicates that the `nodev` option is set correctly on the /dev/shm partition.\n\n4. **Expected Secure Configuration:**\n   - If the `nodev` option is not set, you will need to manually remount `/dev/shm` with the `nodev` option as follows:\n     ```\n     mount -o remount,nodev /dev/shm\n     ```\n   - Note: Since /etc is stateless on Container-Optimized OS, these steps must be performed after every system reboot.\n\n5. **Document Findings:**\n   - Record whether the `nodev` option was appropriately set or if remediation steps were necessary to bring the system into compliance.",
+    "timestamp": "2025-10-28T21:19:11.489726",
+    "model": "gpt-4o"
+}

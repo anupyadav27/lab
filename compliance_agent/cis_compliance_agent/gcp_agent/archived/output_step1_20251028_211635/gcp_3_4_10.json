@@ -1,0 +1,22 @@
+{
+    "control_id": "4.10",
+    "unique_id": "gcp_3_4_10",
+    "source": "CIS GOOGLE CLOUD PLATFORM FOUNDATION BENCHMARK V4.0.0",
+    "title": "Ensure That App Engine Applications Enforce HTTPS Connections",
+    "input_row": {
+        "id": "4.10",
+        "unique_id": "gcp_3_4_10",
+        "source": "CIS GOOGLE CLOUD PLATFORM FOUNDATION BENCHMARK V4.0.0",
+        "title": "Ensure That App Engine Applications Enforce HTTPS Connections",
+        "description": "In order to maintain the highest level of security all connections to an application should be secure by default.",
+        "rationale": "Insecure HTTP connections maybe subject to eavesdropping which can expose sensitive data. Impact: All connections to appengine will automatically be redirected to the HTTPS endpoint ensuring that all connections are secured by TLS.",
+        "audit": "Verify that the app.yaml file controlling the application contains a line which enforces secure connections. For example handlers: - url: /.* secure: always redirect_http_response_code: 301 script: auto https://cloud.google.com/appengine/docs/standard/python3/config/appref",
+        "remediation": "Add a line to the app.yaml file controlling the application which enforces secure connections. For example handlers: - url: /.* **secure: always** redirect_http_response_code: 301 script: auto [https://cloud.google.com/appengine/docs/standard/python3/config/appref] Default Value: By default both HTTP and HTTP are supported References: 1. https://cloud.google.com/appengine/docs/standard/python3/config/appref 2. https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-your-app- with-app-yaml",
+        "profile_applicability": "•  Level 2",
+        "impact": "All connections to appengine will automatically be redirected to the HTTPS endpoint ensuring that all connections are secured by TLS.",
+        "references": "1. https://cloud.google.com/appengine/docs/standard/python3/config/appref 2. https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-your-app- with-app-yaml"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The control requires checking the `app.yaml` configuration file for a specified line that enforces HTTPS connections. This file is part of the application's source code or configuration repository rather than a setting that can be queried directly through GCP APIs or CLI commands.\n- The audit instructions specify verifying the presence of configuration details (`handlers: - url: /.* secure: always`) within the application deployment files. This is typical for application-level configurations that involve manual inspection or code review.\n- There are no direct GCP CLI commands or Google Cloud SDK functions provided that can automate verifying the specific line in an application’s `app.yaml` file.\n\n**MANUAL STEPS:**\n\n1. **Access the Google Cloud Console or Source Code Repository:**\n   - Navigate to the repository where the `app.yaml` file for the App Engine application is stored.\n\n2. **Verify HTTPs Configuration in `app.yaml`:**\n   - Open the `app.yaml` file associated with the App Engine application.\n   - Locate any configuration block concerning URL handlers.\n\n3. **Check for the HTTPS Enforced Setting:**\n   - Ensure there is a line under the handler definition that specifies `secure: always` and `redirect_http_response_code: 301`.\n   - Example configuration: \n     ```yaml\n     handlers:\n       - url: /.*\n         secure: always\n         redirect_http_response_code: 301\n         script: auto\n     ```\n\n4. **Expected Secure Configuration:**\n   - Confirm that the `secure` attribute is set to `always`, ensuring automatic redirection of HTTP to HTTPS.\n\n5. **Confirm Compliance:**\n   - If the configuration is present as specified, the application enforces HTTPS connections, ensuring compliance with the control.\n\nThis control requires a manual review process because it involves inspecting application configuration files which cannot be queried directly through APIs.",
+    "timestamp": "2025-10-28T22:20:44.883619",
+    "model": "gpt-4o"
+}

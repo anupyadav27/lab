@@ -1,0 +1,34 @@
+{
+    "unique_id": "2.2.17__ensure-cross-origin-resource-sharing-does-not-allow-all-origins",
+    "control_id": "2.2.17",
+    "source": null,
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe rationale for the audit control focused on ensuring CORS configurations do not allow all origins, to mitigate potential security risks such as unauthorized cross-origin requests. There are Azure CLI commands provided in the remediation section, which indicate that the compliance status can be verified through automated means.\n\n- The control mentions using Azure CLI commands to check and set the allowed origins for Azure App Services.\n- The control relates to a standard Azure resource property (specifically the CORS settings).\n- The property can indeed be queried or updated via Azure ARM APIs or CLI commands.\n\nGiven this context, the control can be audited automatically.\n\n**PROGRAM NAME:** azure_app_service_cors_allowed_origins_configured\n\n**AUTOMATION DETAILS:** \nThe automated program would do the following:\n\n- **Use Azure CLI commands** to check the CORS settings for each App Service and its deployment slots.\n- **Enumerate resources**: All App Services in the subscription or specific resource groups to aggregate their deployment slots.\n- **Check configuration properties**: Validate the `properties.cors.allowedOrigins` array.\n- **Pass/Fail criteria**: \n  - Pass if the allowed origins contain specific legitimate origins only.\n  - Fail if the allowed origins list includes `*` or is empty.\n\n**Example API endpoint or CLI command:**\n- To retrieve the CORS settings for a specific web application slot:\n  ```bash\n  az webapp cors show --name <app-name> --resource-group <resource-group-name> --slot <deployment-slot-name>\n  ```\n\n- **Expected values**: \n  - The output should show allowed origins that are specific and not `*`. \n  - If `allowedOrigins` contains `*`, then it fails compliance."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Automated is correct. The CORS settings for Azure App Services can be queried and modified using Azure CLI, ARM APIs, and other automation tools, making it feasible to automate this compliance check.\n- Azure APIs, CLI, and PowerShell cmdlets support operations to retrieve and set CORS configurations, validating the decision to automate.\n\n**TECHNICAL ACCURACY:** 8\n\n- The automation details are mostly accurate. The use of Azure CLI to retrieve CORS settings is correct, and the logic for pass/fail criteria is sound.\n- The program name follows a logical convention, although it could be more descriptive to include the specific security intent, such as `azure_app_service_cors_origin_restriction`.\n- The example CLI command provided is correct, but it would be beneficial to include commands for setting the CORS configuration as well, to provide a complete picture of both assessment and remediation.\n\n**IMPROVEMENTS:**\n\n- **Missing Considerations:** The assessment should consider scenarios where multiple origins are allowed but do not include `*`. This requires a more nuanced check to ensure that only authorized origins are listed.\n- **Alternative Approach:** In addition to CLI, consider using Azure Policy to enforce and audit CORS settings. Azure Policy can provide continuous compliance monitoring and remediation.\n- **Additional Details:** Include a note on how to handle cases where CORS settings are managed through Infrastructure as Code tools like Terraform or ARM templates, as these might require different handling.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded and aligns with Azure capabilities for managing App Service configurations. The use of Azure CLI and the outlined logic for compliance checks are technically sound.\n\n**FINAL RECOMMENDATION:**\n\n- **Modify:** While the overall approach is correct, I recommend enhancing the automation details by including commands for setting CORS configurations, and considering Azure Policy as an additional tool for continuous compliance. This would provide a more comprehensive solution.\n- The classification remains Automated, but with the suggested improvements, the assessment will be more robust and adaptable to various operational contexts.",
+        "reviewed_at": "2025-10-26T15:53:01.791985"
+    },
+    "input_row": {
+        "id": "2.2.17",
+        "unique_id": "2.2.17__ensure-cross-origin-resource-sharing-does-not-allow-all-origins",
+        "title": "Ensure cross-origin resource sharing does not allow all origins",
+        "description": " ...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Service. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under API, click CORS. 6. Under Allowed Origins, delete the entry that equals *. 7. Specify the origins that should be allowed to make cross-origin calls. 8. Click Save. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to update the allowed origins array to contain only the origins that should be allowed: az resource update --name web --resource-group <resource-group-name> -- namespace Microsoft.Web --resource-type config --parent sites/<app- name>/slots/<deployment-slot-name> --set properties.cors.allowedOrigins=\"['<allowed-origin>']\" Default Value: By default, CORS is not configured. References: 1. https://learn.microsoft.com/en-gb/azure/app-service/app-service-web-tutorial- rest-api 2. https://learn.microsoft.com/en-us/cli/azure/webapp 3. https://learn.microsoft.com/en-us/cli/azure/resource 4. https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.ht ml 5. https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS 6. https://cheatsheetseries.owasp.org/cheatsheets/Cross- Site_Request_Forgery_Prevention_Cheat_Sheet.html CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "metadata": {
+        "original_file": "2.2.17.json",
+        "review_version": "1.0"
+    }
+}

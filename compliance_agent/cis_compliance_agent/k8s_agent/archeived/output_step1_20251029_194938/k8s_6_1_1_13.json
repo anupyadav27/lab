@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.13",
+    "unique_id": "k8s_6_1_1_13",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the admin.conf file permissions are set to 644",
+    "input_row": {
+        "id": "1.1.13",
+        "unique_id": "k8s_6_1_1_13",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the admin.conf file permissions are set to 644",
+        "description": "Ensure that the admin.conf file has permissions of 644.",
+        "rationale": "The admin.conf is the administrator kubeconfig file defining various settings for the administration of the cluster. This file contains private key and respective certificate allowed to fully manage the cluster. You should restrict its file permissions to maintain the integrity and confidentiality of the file. The file should be readable and writable by only the administrators on the system. Impact: None.",
+        "audit": "Run the following command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/admin.conf Verify that the permissions are 644 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 644 /etc/kubernetes/admin.conf Default Value: By default, admin.conf has permissions of 640. References: 1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "None.",
+        "references": "1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file permissions of `/etc/kubernetes/admin.conf` on the control plane node.\n- The permissions of files on the host OS are not exposed via the Kubernetes API, kubectl, or any Kubernetes controller or resource.\n- The audit procedure explicitly requires running a shell command (`stat -c %a /etc/kubernetes/admin.conf`) on the node itself.\n- There is no Kubernetes-native way to query or validate the file permissions of admin.conf remotely or via the Kubernetes API.\n\n**MANUAL STEPS:**\n1. Log in to the Kubernetes control plane node (via SSH or console access).\n2. Run the following command to check the permissions of the admin.conf file:\n   ```\n   stat -c %a /etc/kubernetes/admin.conf\n   ```\n3. Verify that the output is `644` or a more restrictive value (e.g., `640`, `600`).\n4. If the permissions are more permissive than `644` (e.g., `666`, `777`), remediate by running:\n   ```\n   chmod 644 /etc/kubernetes/admin.conf\n   ```\n5. Confirm compliance by re-running the `stat` command and ensuring the permissions are set to `644` or more restrictive.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T21:59:13.784077",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.28",
+    "unique_id": "k8s_5_1_1_28",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the admission control policy is set to ServiceAccount",
+    "input_row": {
+        "id": "1.1.28",
+        "unique_id": "k8s_5_1_1_28",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the admission control policy is set to ServiceAccount",
+        "description": "Automate service accounts management.",
+        "rationale": "When you create a pod, if you do not specify a service account, it is automatically assigned the default service account in the same namespace. You should create your own service account and let the API server manage its security tokens.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --admission-control argument is set to a value that includes ServiceAccount.",
+        "remediation": "Follow the documentation and create ServiceAccount objects as per your environment. Then, edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_ADMISSION_CONTROL parameter to \"--admission- control=...,ServiceAccount,...\": KUBE_ADMISSION_CONTROL=\"--admission-control=...,ServiceAccount,...\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: The ServiceAccount objects must be created and granted before pod creation would be allowed. Default Value: By default, ServiceAccount is not set.  67 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#serviceaccount 3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 1",
+        "impact": "The ServiceAccount objects must be created and granted before pod creation would be allowed. Default Value: By default, ServiceAccount is not set.  67 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#serviceaccount 3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_serviceaccount_enabled\n\n**AUTOMATION DETAILS:**\n- Query the Kubernetes API server configuration to verify that the \"ServiceAccount\" admission plugin is enabled.\n- This can be checked by examining the arguments passed to the kube-apiserver process, specifically the `--enable-admission-plugins` flag (for Kubernetes 1.10+) or the deprecated `--admission-control` flag (for older versions).\n- Use the following methods:\n  - If running in a managed environment (e.g., kubeadm, static pods), retrieve the kube-apiserver manifest (typically at `/etc/kubernetes/manifests/kube-apiserver.yaml`) and parse the command line arguments.\n  - Alternatively, use `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml` to retrieve the running pod spec and inspect the `command` or `args` fields.\n- Pass Criteria:\n  - The `--enable-admission-plugins` flag (or `--admission-control` for legacy clusters) must include `ServiceAccount` in its comma-separated list of plugins.\n- Example CLI commands:\n  - `kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath=\"{.items[*].spec.containers[*].command}\"`\n  - Or, for static pod clusters, inspect `/etc/kubernetes/manifests/kube-apiserver.yaml` for the presence of `--enable-admission-plugins=...,ServiceAccount,...` or `--admission-control=...,ServiceAccount,...`\n- Fail Criteria:\n  - If the `ServiceAccount` plugin is not present in the enabled admission plugins list, the control fails.\n- This check is fully automatable as it relies on the configuration of the kube-apiserver, which is accessible via the Kubernetes API or by inspecting the static pod manifest. No subjective review or host OS access is required beyond reading the pod spec or manifest.",
+    "timestamp": "2025-10-29T21:43:34.998917",
+    "model": "gpt-4.1"
+}

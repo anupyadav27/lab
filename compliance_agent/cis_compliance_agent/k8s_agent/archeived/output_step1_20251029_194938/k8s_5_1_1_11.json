@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.11",
+    "unique_id": "k8s_5_1_1_11",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the admission control policy is not set to AlwaysAdmit",
+    "input_row": {
+        "id": "1.1.11",
+        "unique_id": "k8s_5_1_1_11",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the admission control policy is not set to AlwaysAdmit",
+        "description": "Do not allow all requests.",
+        "rationale": "Setting admission control policy to AlwaysAdmit allows all requests and do not filter any requests.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --admission-control argument is set to a value that does not include AlwaysAdmit.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_ADMISSION_CONTROL parameter to a value that does not include AlwaysAdmit. Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: Only requests explicitly allowed by the admissions control policy would be served. Default Value: By default, AlwaysAdmit is used if no --admission-control flag is provided. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#alwaysadmit  33 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "Only requests explicitly allowed by the admissions control policy would be served. Default Value: By default, AlwaysAdmit is used if no --admission-control flag is provided.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#alwaysadmit  33 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_alwaysadmit_disabled\n\n**AUTOMATION DETAILS:**\n- Query the configuration of all kube-apiserver instances in the cluster.\n- Retrieve the command-line arguments or configuration manifest for each kube-apiserver, specifically the value of the `--admission-control` or `--enable-admission-plugins` flag.\n- Validate that the list of enabled admission controllers does NOT include `AlwaysAdmit`.\n- If the flag is missing, verify whether the default set includes `AlwaysAdmit` (in Kubernetes 1.6, absence of the flag defaults to `AlwaysAdmit`, which is insecure).\n- Pass Criteria: No kube-apiserver instance is configured with `AlwaysAdmit` enabled in its admission control plugins.\n- Example kubectl command (if kube-apiserver is running as a Pod, e.g., in static Pods or as a Deployment):\n  ```\n  kubectl -n kube-system get pods -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n  or, for manifest-based clusters, inspect `/etc/kubernetes/manifests/kube-apiserver.yaml` for the relevant flags.\n- For each instance, parse the command line or config file and confirm:\n  - `--admission-control` (or `--enable-admission-plugins`) does NOT include `AlwaysAdmit`\n  - If the flag is absent, flag as non-compliant (since default is insecure)\n- Fail Criteria: Any kube-apiserver instance includes `AlwaysAdmit` in its admission control configuration, or omits the flag entirely.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:39:48.794382",
+    "model": "gpt-4.1"
+}

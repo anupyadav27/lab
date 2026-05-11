@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.19",
+    "unique_id": "k8s_1_1_1_19",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the Kubernetes PKI directory and file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.19",
+        "unique_id": "k8s_1_1_1_19",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the Kubernetes PKI directory and file ownership is set to root:root",
+        "description": "Ensure that the Kubernetes PKI directory and file ownership is set to root:root.",
+        "rationale": "Kubernetes makes use of a number of certificates as part of its operation. You should set the ownership of the directory containing the PKI information and all files in that directory to maintain their integrity. The directory and files should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, ls -laR /etc/kubernetes/pki/ Verify that the ownership of all files and directories in this hierarchy is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown -R root:root /etc/kubernetes/pki/ Default Value: By default, the /etc/kubernetes/pki/ directory and all of the files and directories contained within it, are set to be owned by the root user. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the ownership (user:group) of the Kubernetes PKI directory and all files within it, specifically that they are set to root:root. This information is not exposed via the Kubernetes API, kubectl, or any Kubernetes-native resource or configuration. It requires direct access to the file system of the control plane node(s) to inspect file ownership, which is outside the scope of Kubernetes API or kubectl capabilities.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Run the following command to recursively list ownership of all files and directories within the PKI directory:\n   ```\n   ls -laR /etc/kubernetes/pki/\n   ```\n3. Review the output and verify that the owner and group for all files and directories is set to `root:root`.\n4. If any file or directory is not owned by `root:root`, this is a finding and must be remediated.\n5. Document the results for compliance evidence.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T19:52:58.486381",
+    "model": "gpt-4.1"
+}

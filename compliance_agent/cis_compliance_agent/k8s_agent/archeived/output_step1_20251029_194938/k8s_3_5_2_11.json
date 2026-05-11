@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.11",
+    "unique_id": "k8s_3_5_2_11",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Minimize the admission of Windows HostProcess Containers",
+    "input_row": {
+        "id": "5.2.11",
+        "unique_id": "k8s_3_5_2_11",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Minimize the admission of Windows HostProcess Containers",
+        "description": "Do not generally permit Windows containers to be run with the hostProcess flag set to true.",
+        "rationale": "A Windows container making use of the hostProcess flag can interact with the underlying Windows cluster node. As per the Kubernetes documentation, this provides \"privileged access\" to the Windows node. Where Windows containers are used inside a Kubernetes cluster, there should be at least one admission control policy which does not permit hostProcess Windows containers. If you need to run Windows containers which require hostProcess, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined with securityContext.windowsOptions.hostProcess: true will not be permitted unless they are run under a specific policy.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that each policy disallows the admission of hostProcess containers",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of hostProcess containers. Default Value: By default, there are no restrictions on the creation of hostProcess containers. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/ 2. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined with securityContext.windowsOptions.hostProcess: true will not be permitted unless they are run under a specific policy.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/create-hostprocess-pod/ 2. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_windows_hostprocess_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API or kubectl.\n- For each namespace, check for the presence and configuration of Pod Security Admission (PSA) labels or PodSecurityPolicies (if still in use) that restrict the use of Windows HostProcess containers.\n- Specifically, verify that policies (e.g., Pod Security Standards or OPA/Gatekeeper constraints) are in place to deny pods where `spec.containers[*].securityContext.windowsOptions.hostProcess: true` or `spec.initContainers[*].securityContext.windowsOptions.hostProcess: true`.\n- Use the following kubectl commands as part of the check:\n    - `kubectl get ns --show-labels` to identify PSA labels (e.g., `pod-security.kubernetes.io/enforce=baseline` or `restricted`)\n    - For each namespace, check for admission controller policies (e.g., Gatekeeper constraints or Kyverno policies) that deny HostProcess pods.\n    - Optionally, attempt a dry-run creation of a pod with `hostProcess: true` in each namespace to confirm admission is denied.\n- Pass Criteria: Every namespace with user workloads must have a policy (PSA, OPA, Kyverno, or legacy PSP) that denies pods with `windowsOptions.hostProcess: true`, unless explicitly allowed for tightly controlled service accounts.\n- Fail Criteria: Any namespace lacking such a policy, or where a pod with `hostProcess: true` can be admitted without restriction.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T21:07:23.413377",
+    "model": "gpt-4.1"
+}

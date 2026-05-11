@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.12",
+    "unique_id": "gcp_1_5_1_12",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH PermitUserEnvironment is disabled",
+    "input_row": {
+        "id": "5.1.12",
+        "unique_id": "gcp_1_5_1_12",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH PermitUserEnvironment is disabled",
+        "description": "The PermitUserEnvironment option allows users to present environment options to the ssh daemon.",
+        "rationale": "Permitting users the ability to set environment variables through the SSH daemon could potentially allow users to bypass security controls (e.g. setting an execution path that has ssh executing trojan'd programs)",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep permituserenvironment PermitUserEnvironment no",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: PermitUserEnvironment no Default Value: PermitUserEnvironment no",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The control in question is about the configuration of SSH on Container-Optimized OS, specifically the \"PermitUserEnvironment\" setting in the SSH daemon configuration.\n- The only way to verify the setting \"PermitUserEnvironment\" is by accessing the SSH configuration file on the instance, which requires SSH access to the instance. \n- This setting is part of the OS-level configuration and is not exposed through any GCP APIs or Google Cloud SDK (gcloud) commands.\n- The audit command provided (`sshd -T | grep permituserenvironment`) indicates that this setting requires manual verification on the instances themselves.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to connect to the GCP instance running Container-Optimized OS.\n   - Command: `gcloud compute ssh <INSTANCE_NAME> --zone=<ZONE>`\n\n2. **Verify SSH Configuration:**\n   - Once connected, run the command to check the SSH daemon configuration:\n     - `sshd -T | grep permituserenvironment`\n   - Review the output of the command. \n\n3. **Expected Secure Configuration:**\n   - Ensure that the output confirms: `PermitUserEnvironment no`\n   - This indicates that the ability to set user-defined environment variables via SSH is disabled, aligning with the CIS benchmark recommendation.\n\n4. **Confirm Compliance:**\n   - If the configuration matches the expected secure setting, the instance is in compliance with the CIS benchmark.\n   - If the configuration does not match, update the `/etc/ssh/sshd_config` file to set `PermitUserEnvironment no` and restart the SSH service.",
+    "timestamp": "2025-10-28T21:34:30.753941",
+    "model": "gpt-4o"
+}

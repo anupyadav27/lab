@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.7",
+    "unique_id": "k8s_2_1_1_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the etcd pod specification file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.7",
+        "unique_id": "k8s_2_1_1_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the etcd pod specification file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the /etc/kubernetes/manifests/etcd.yaml file has permissions of 600 or more restrictive.",
+        "rationale": "The etcd pod specification file /etc/kubernetes/manifests/etcd.yaml controls various parameters that set the behavior of the etcd service in the master node. etcd is a highly-available key-value store which Kubernetes uses for persistent storage of all of its REST API object. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/manifests/etcd.yaml Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/manifests/etcd.yaml Default Value: By default, /etc/kubernetes/manifests/etcd.yaml file has permissions of 640. References: 1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file permissions on /etc/kubernetes/manifests/etcd.yaml on the host filesystem of the control plane node. Kubernetes APIs and kubectl do not expose host-level file permissions for static pod manifest files. This check requires direct OS-level access (e.g., SSH) to the node to inspect file permissions, which is not possible via Kubernetes APIs or kubectl.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where etcd is running.\n2. Run the following command to check the file permissions:\n   ```\n   stat -c %a /etc/kubernetes/manifests/etcd.yaml\n   ```\n3. Verify that the output is 600 or a more restrictive value (e.g., 400).\n4. Confirm compliance if the permissions are 600 or more restrictive. If not, remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/manifests/etcd.yaml\n   ```\n5. Document the result for audit purposes.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:16:19.319814",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- **Manual vs Automated Classification:** The classification as a manual check is correct. Kubernetes APIs and kubectl do not provide a mechanism to directly access or verify host-level file permissions for static pod manifest files like `/etc/kubernetes/manifests/etcd.yaml`. This requires direct access to the node's filesystem, typically via SSH.\n- **Kubernetes APIs/kubectl/CLI:** There are no Kubernetes API endpoints or kubectl commands that can check or modify file permissions on the host filesystem. The task requires OS-level access, which is outside the scope of Kubernetes API capabilities.\n\n**TECHNICAL ACCURACY:** 9\n\n- **Automation Details:** The manual steps provided are technically accurate. The use of `stat -c %a` is a valid method to check file permissions, and `chmod 600` is the correct command to set the permissions.\n- **Manual Steps:** The steps are accurate and complete for verifying and remediating file permissions.\n- **Program Naming:** The naming convention is not applicable here as this is a manual check. However, if it were automated, a name like `k8s_etcd_manifest_file_permissions_check` would be descriptive and clear.\n\n**IMPROVEMENTS:**\n\n- **Considerations:** Ensure that the SSH access to control plane nodes is secured and audited, as this access can be sensitive.\n- **Alternative Methods:** While no Kubernetes API methods exist for this check, consider using configuration management tools like Ansible or Puppet to automate the verification and remediation process across multiple nodes.\n- **Program Name Suggestion:** If automated, a better name could be `k8s_etcd_manifest_permissions_check`.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded, and the manual approach is justified given the current capabilities of Kubernetes APIs and tools.\n\n**FINAL RECOMMENDATION:**\n\n- **Keep as-is:** The current assessment and approach are appropriate and should remain unchanged. The manual steps are necessary due to the limitations of Kubernetes APIs in accessing host-level file permissions.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:03:08.038154"
+}

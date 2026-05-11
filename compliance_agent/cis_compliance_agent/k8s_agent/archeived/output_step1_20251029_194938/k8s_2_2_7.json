@@ -1,0 +1,22 @@
+{
+    "control_id": "2.7",
+    "unique_id": "k8s_2_2_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --peer-auto-tls argument is not set to true",
+    "input_row": {
+        "id": "2.7",
+        "unique_id": "k8s_2_2_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --peer-auto-tls argument is not set to true",
+        "description": "Do not use automatically generated self-signed certificates for TLS connections between peers.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should be accessible only by authenticated etcd peers in the etcd cluster. Hence, do not use self-signed certificates for authentication. Impact: All peers attempting to communicate with the etcd server will require a valid client certificate for authentication.",
+        "audit": "Run the following command on the etcd server node: ps -ef | grep etcd Verify that if the --peer-auto-tls argument exists, it is not set to true. Note: This recommendation is applicable only for etcd clusters. If you are using only one etcd server in your environment then this recommendation is not applicable.",
+        "remediation": "Edit the etcd pod specification file /etc/kubernetes/manifests/etcd.yaml on the master node and either remove the --peer-auto-tls parameter or set it to false. --peer-auto-tls=false Default Value: Note: This recommendation is applicable only for etcd clusters. If you are using only one etcd server in your environment then this recommendation is not applicable. By default, --peer-auto-tls argument is set to false. References: 1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#peer-auto-tls",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "All peers attempting to communicate with the etcd server will require a valid client certificate for authentication.",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#peer-auto-tls"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_etcd_peer_auto_tls_disabled\n\n**AUTOMATION DETAILS:**\n- Query the etcd Pod specification running on the master node(s), typically located in the static Pod manifest at `/etc/kubernetes/manifests/etcd.yaml`.\n- Use the Kubernetes API or `kubectl` to retrieve the etcd Pod spec:\n  - Command: `kubectl -n kube-system get pod -l component=etcd -o yaml`\n  - Or, if using static Pods, inspect the manifest directly (may require host access, but the Pod spec is visible via the API if the Pod is running).\n- Examine the `spec.containers[].command` or `spec.containers[].args` fields for the presence of the `--peer-auto-tls` flag.\n- Pass Criteria:\n  - The `--peer-auto-tls` flag is either not present (default is false), or explicitly set to `false` (i.e., `--peer-auto-tls=false`).\n- Fail Criteria:\n  - The `--peer-auto-tls` flag is present and set to `true` (i.e., `--peer-auto-tls=true`).\n- The check should be performed only if there is more than one etcd Pod (i.e., in an etcd cluster).\n- Example logic:\n  1. List all etcd Pods.\n  2. For each etcd Pod, inspect the container command/args for `--peer-auto-tls`.\n  3. Report non-compliance if any etcd Pod has `--peer-auto-tls=true`.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:26:48.372198",
+    "model": "gpt-4.1"
+}

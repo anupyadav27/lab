@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1",
+    "unique_id": "aws_3_3_1",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure User Access Logging is enabled",
+    "input_row": {
+        "id": "3.1",
+        "unique_id": "aws_3_3_1",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure User Access Logging is enabled",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "From the Console: 1. Log in to the Amazon Kinesis console at https://console.aws.amazon.com/kinesis/home 2. In the left pane, click Data Streams then Create data stream. 3. Enter a name for your data stream. The name must be prefixed with amazon- workspaces-web 4. Select the desired data stream capacity and click Create data stream 5. Log into the Amazon WorkSpaces console at https://console.aws.amazon.com/workspaces/v2/home 6. In the left pane click Web Portals 7. Click the link for the web portal you wish to edit. 8. Click Edit 9. Scroll to User access logging and select the Kinesis data stream you created above. 10. Click Save From the Command Line: 1. Run the create-user-access-logging-settings command aws workspaces-web create-user-access-logging-settings --kinesis-stream-arn <kinesis_data_stream_arn>. --output table  2. The output will return a list of settings ----------------------------------------------------------------------------- --------------------------------------------------------------------- | CreateUserAccessLoggingSettings | +------------------------------+--------------------------------------------- --------------------------------------------------------------------+ |  userAccessLoggingSettingsArn|  arn:aws:workspaces- web:[region]:[account]:userAccessLoggingSettings/[guid] | +------------------------------+--------------------------------------------- --------------------------------------------------------------------+ Default Value: By default, user access logging is not enabled. References: 1. https://docs.aws.amazon.com/workspaces-web/latest/adminguide/data- protection-logging.html 4 WorkDocs This section contains recommendations for configuring the WorkDocs service and any additional resources required.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control involves enabling and checking User Access Logging within Amazon WorkSpaces Web. This configuration can be automated using AWS APIs to verify if the specific user access logging settings are enabled and associated with a Kinesis data stream. This type of configuration is standard for AWS API access and is not dependent on manual inspection beyond what can be programmatically verified.\n\n**PROGRAM NAME:** aws_workspaces_web_user_access_logging_enabled\n\n**AUTOMATION DETAILS:**\n- Use the AWS CLI command `aws workspaces-web list-user-access-logging-settings` or the equivalent boto3 SDK method `boto3.client('workspaces-web').list_user_access_logging_settings()`.\n- Cross-check the Kinesis Data Stream ARN associated with user access logging using the `describe-user-access-logging-settings` method to ensure it's configured.\n- Enumerate across relevant AWS regions because WorkSpaces configurations can be region-specific.\n- Validate that the `userAccessLoggingSettingsArn` exists and is correctly associated with an active Kinesis Data Stream.\n- Expected Pass/Fail Criteria:\n  - **Pass:** The `userAccessLoggingSettingsArn` is present, pointing to an existing and enabled Kinesis Data Stream with appropriate permissions.\n  - **Fail:** No `userAccessLoggingSettingsArn` is configured, or it is not pointing to a valid Kinesis Data Stream.",
+    "timestamp": "2025-10-28T15:18:16.433330",
+    "model": "gpt-4o"
+}

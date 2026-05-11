@@ -1,0 +1,22 @@
+{
+    "control_id": "3.3.1.2",
+    "unique_id": "gcp_1_3_3_1_2",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure IPv6 loopback traffic is configured",
+    "input_row": {
+        "id": "3.3.1.2",
+        "unique_id": "gcp_1_3_3_1_2",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure IPv6 loopback traffic is configured",
+        "description": "Configure the loopback interface to accept traffic. Configure all other interfaces to deny traffic to the loopback network (::1).",
+        "rationale": "Loopback traffic is generated between processes on machine and is typically critical to operation of the system. The loopback interface is the only place that loopback network (::1) traffic should be seen, all other interfaces should ignore traffic on this network as an anti-spoofing measure.",
+        "audit": "Run the following commands and verify output includes the listed rules in order (packet and byte counts may differ): # ip6tables -L INPUT -v -n Chain INPUT (policy DROP 0 packets, 0 bytes) pkts bytes target     prot opt in     out     source destination 0     0 ACCEPT     all      lo     *       ::/0                 ::/0 0     0 DROP       all      *      *       ::1                  ::/0 # ip6tables -L OUTPUT -v -n Chain OUTPUT (policy DROP 0 packets, 0 bytes) pkts bytes target     prot opt in     out     source destination 0     0 ACCEPT     all      *      lo      ::/0                 ::/0",
+        "remediation": "Run the following commands to implement the loopback rules: # ip6tables -A INPUT -i lo -j ACCEPT # ip6tables -A OUTPUT -o lo -j ACCEPT # ip6tables -A INPUT -s ::1 -j DROP Additional Information: Changing firewall settings while connected over network can result in being locked out of the system. Remediation will only affect the active system firewall, be sure to configure the default policy in your firewall management to apply on boot as well.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control specifically involves verifying the configuration of IPv6 loopback traffic at the operating system level, which requires checking the `ip6tables` firewall rules on each individual machine running Container-Optimized OS. \n- This form of verification necessitates SSH access to the instances to manually inspect the `ip6tables` configurations, as there are no GCP APIs or `gcloud` commands capable of directly querying or validating these OS-level firewall settings remotely.\n- Since it involves OS configuration outside the scope of GCP's managed services API or SDK access, it requires manual inspection and verification.\n\n**MANUAL STEPS:**\n1. **SSH into the Instance:**\n   - Use `gcloud compute ssh <INSTANCE_NAME>` to access the target GCP instance running Container-Optimized OS.\n\n2. **Check `ip6tables` Configuration:**\n   - Run `sudo ip6tables -L INPUT -v -n` and `sudo ip6tables -L OUTPUT -v -n` to list the current rules for IPv6 traffic.\n   \n3. **Verify Loopback Rules:**\n   - Ensure that there are rules present that accept all traffic on the interface `lo` (loopback interface) and drop all traffic from `::1` that is not on the loopback interface.\n   - For INPUT chain, look for rules resembling:\n     - `ACCEPT all lo * ::/0 ::/0`\n     - `DROP all * * ::1 ::/0`\n   - For OUTPUT chain, verify:\n     - `ACCEPT all * lo ::/0 ::/0`\n\n4. **Expected Configuration:**\n   - Confirm that the loopback interface is configured to accept traffic, and all other interfaces are configured to deny traffic to the loopback network (`::1`), ensuring critical internal functionality and anti-spoofing measures are in place.\n\n5. **Document Findings:**\n   - Take note of the configurations and ensure they match the expected settings for compliance. Report any deviations for remediation. \n\nThese manual steps ensure a comprehensive and accurate assessment of the loopback traffic configurations for Container-Optimized OS images within your GCP environment per the specified CIS benchmark control.",
+    "timestamp": "2025-10-28T21:27:59.300382",
+    "model": "gpt-4o"
+}

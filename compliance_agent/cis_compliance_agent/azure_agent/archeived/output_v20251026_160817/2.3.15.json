@@ -1,0 +1,17 @@
+{
+    "id": "2.3.15",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.3.15",
+        "unique_id": "2.3.15__ensure-configuration-is-routed-through-the-virtual-network-integration",
+        "title": "Ensure configuration is routed through the virtual network integration",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure CLI For each function app requiring remediation, run the following command to route container image pulls and content sharing through the virtual network integration: az resource update --resource-group <resource-group-name> --name <function- app-name> --resource-type \"Microsoft.Web/sites\" --set properties.vnetImagePullEnabled=true --set properties.vnetContentShareEnabled=true Default Value: By default, configuration traffic goes directly over the public route. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-vnet- integration#routes 2. https://learn.microsoft.com/en-us/azure/app-service/configure-vnet-integration- routing#configure-configuration-routing 3. https://learn.microsoft.com/en-us/cli/azure/functionapp 4. https://learn.microsoft.com/en-us/cli/azure/resource Additional Information: In addition to configuring the routing for content sharing, you must also ensure that any firewall or Network Security Group configured on traffic from the subnet allow traffic to port 443 and 445. CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_function_app_virtual_network_integration_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n\n- **Azure Resource Manager APIs or Azure CLI commands to use:** \n  - Use the Azure CLI command provided in the remediation: \n    ```bash\n    az resource show --resource-group <resource-group-name> --name <function-app-name> --resource-type \"Microsoft.Web/sites\" --query \"properties.vnetImagePullEnabled, properties.vnetContentShareEnabled\"\n    ```\n\n- **Specific resources to enumerate:** \n  - Function Apps within specified Resource Groups.\n  \n- **Exact configuration properties/settings to validate:** \n  - `properties.vnetImagePullEnabled`: Should be `true`\n  - `properties.vnetContentShareEnabled`: Should be `true`\n\n- **Clear Pass/Fail criteria with expected values:** \n  - Pass: both properties are `true`\n  - Fail: any of the properties is `false`\n\n- **Example API endpoint or CLI command:** \n  - The command above (showing configurations) can be executed for each Function App within the desired scope for validation of the specific properties. \n\nBy automating this control, compliance can be efficiently assessed across multiple Function Apps in Azure."
+}

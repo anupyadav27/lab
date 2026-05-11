@@ -1,0 +1,27 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_ingress_tls_enabled",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions generally map well to the control's requirement to manage remote access via controlled points. NetworkPolicies for ingress and egress are correctly identified as essential controls. TLS for Ingress and restricting LoadBalancer service types are valid considerations for managing access points. However, the function names could be slightly improved for clarity and consistency.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider renaming 'k8s_ingress_tls_enabled' to 'k8s_ingress_tls_enforced' to better indicate a mandatory security requirement.",
+    "Ensure 'k8s_service_type_loadbalancer_restricted' clearly communicates the restriction criteria, possibly by specifying what is restricted."
+  ],
+  "control_id": "3_1_14",
+  "title": "3_1_14: 3.1.14 Route remote access via managed access control points",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_ingress_tls_enabled",
+    "k8s_service_type_loadbalancer_restricted"
+  ],
+  "step1_reasoning": "The control 3.1.14 requires routing remote access via managed access control points, which in Kubernetes can be achieved by implementing NetworkPolicies to restrict ingress and egress traffic by default, ensuring that only explicitly allowed traffic is permitted. Additionally, using TLS for Ingress resources and restricting the use of LoadBalancer service types to prevent unrestricted external access aligns with the control's intent to manage access points."
+}

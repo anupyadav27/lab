@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.1.16__ensure-private-endpoints-are-used-to-access-app-service-apps",
+    "control_id": "2.1.16",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_app_service_private_endpoint_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check:\n\n- Use Azure Resource Manager APIs to query the configuration of App Service applications and their associated private endpoint settings.\n- Use the Azure CLI command: \n  ```bash\n  az webapp show --resource-group <resource-group-name> --name <app-name>\n  ```\n- The specific configuration properties to validate include:\n  - Check if the `privateEndpointConnections` property is present and properly configured for the App Service.\n  \n- Pass/Fail criteria:\n  - **Pass:** The `privateEndpointConnections` array is not empty and contains valid entries indicating that private endpoints are configured.\n  - **Fail:** The `privateEndpointConnections` array is empty or not configured.\n\n- Example API endpoint:\n  - `GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{appName}?api-version=2021-02-01` \n\nThis ensure that all App Service applications are accessed only via private endpoints, aligning with the security intent of the control."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n\n- **Manual vs Automated Classification:** The classification as automated is appropriate. The use of Azure Resource Manager APIs and Azure CLI commands to check the configuration of App Service applications aligns with an automated approach.\n- **Azure APIs/CLI Capability:** This control can indeed be checked via Azure APIs and CLI. The ARM API and Azure CLI command mentioned are suitable for retrieving the necessary configuration details to verify private endpoint settings.\n\n**TECHNICAL ACCURACY:** 8\n\n- **Automation Details:** The automation details are mostly correct. The use of the `az webapp show` command and the ARM API endpoint are appropriate for retrieving App Service configuration details. However, the description of the `privateEndpointConnections` property could be more detailed, specifying how to interpret the entries to ensure they are valid.\n- **Program Name Convention:** The program name `azure_app_service_private_endpoint_enabled` follows the convention and clearly indicates the service, resource, and security intent.\n\n**IMPROVEMENTS:**\n\n- **Detail on Valid Entries:** It would be beneficial to provide more detail on what constitutes a \"valid entry\" in the `privateEndpointConnections` array. For example, checking the status of the connection and ensuring it is not in a \"Pending\" or \"Failed\" state.\n- **Error Handling:** Consider including error handling in the automation script to manage scenarios where the API call fails or returns unexpected results.\n- **Additional Verification:** It might be useful to verify if the private endpoint is correctly associated with the intended virtual network and subnet, ensuring that the private endpoint is not only configured but also correctly implemented.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded with the use of Azure APIs and CLI, and the details provided are mostly accurate. The approach is consistent with Azure security best practices for ensuring private endpoint usage.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modification Suggestions:** Enhance the automation details by specifying what constitutes a valid entry in the `privateEndpointConnections` array and include additional checks for the status of the private endpoint connections. Additionally, consider verifying the association with the correct virtual network and subnet to ensure comprehensive compliance with the control.",
+        "reviewed_at": "2025-10-26T15:58:45.029870"
+    },
+    "input_row": {
+        "id": "2.1.16",
+        "unique_id": "2.1.16__ensure-private-endpoints-are-used-to-access-app-service-apps",
+        "title": "Ensure private endpoints are used to access App Service apps",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Settings, click Networking. 4. Under Inbound traffic configuration, click the link next to Private endpoints. 5. Click + Add. 6. From the drop-down menu, select Express or Advanced. 7. If selecting Express: 1. Provide a Name, and select a Subscription, Virtual network, and Subnet. 2. Click OK. 8. If selecting Advanced: 1. Select a Subscription and Resource group, provide an instance Name and Network Interface Name, and select a Region. 2. Click Next : Resource >. 3. Select a Target sub-resource. 4. Click Next : Virtual Network >. 5. Select a Virtual network and a Subnet. 6. Click Next : DNS >. 7. Optionally update the DNS configuration. 8. Click Next : Tags >. 9. Optionally configure tags. 10. Click Next : Review + create >. 11. Click Create. Remediate from Azure CLI For each app requiring remediation, run the following command to create a private endpoint: az network private-endpoint create --resource-group <resource-group-name> -- location <location> --name <private-endpoint-name> --vnet-name <virtual- network-name> --subnet <subnet-name> --private-connection-resource-id <fully- qualified-app-id> --connection-name <connection-name> --group-id sites Default Value: By default, private endpoints are not configured for apps. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-private-endpoint 2. https://azure.microsoft.com/en-us/pricing/details/private-link/ 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/cli/azure/network/private-endpoint CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "metadata": {
+        "original_file": "2.1.16.json",
+        "review_version": "1.0"
+    }
+}

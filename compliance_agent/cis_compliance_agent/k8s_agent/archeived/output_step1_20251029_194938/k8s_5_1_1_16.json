@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.16",
+    "unique_id": "k8s_5_1_1_16",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --audit-log-path argument is set as appropriate",
+    "input_row": {
+        "id": "1.1.16",
+        "unique_id": "k8s_5_1_1_16",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --audit-log-path argument is set as appropriate",
+        "description": "Enable auditing on kubernetes apiserver and set the desired audit log path as appropriate.",
+        "rationale": "Auditing Kubernetes apiserver provides a security-relevant chronological set of records documenting the sequence of activities that have affected system by individual users, administrators or other components of the system. Even though currently, Kubernetes provides only basic audit capabilities, it should be enabled. You can enable it by setting an appropriate audit log path.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --audit-log-path argument is set as appropriate.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_API_ARGS parameter to \"--audit-log-path=<filename>\": KUBE_API_ARGS=\"--audit-log-path=/var/log/apiserver/audit.log\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: None Default Value: By default, auditing is not enabled.   43 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22",
+        "profile_applicability": "•  Level 1",
+        "impact": "None Default Value: By default, auditing is not enabled.   43 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_path_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver process arguments to verify that the `--audit-log-path` flag is set with a non-empty value.\n- In clusters where the kube-apiserver runs as a static Pod (common in kubeadm and managed Kubernetes distributions), use:\n  - `kubectl -n kube-system get pod -l component=kube-apiserver -o json` to retrieve the Pod spec.\n  - Inspect the `spec.containers[].command` or `spec.containers[].args` array for the presence of `--audit-log-path=<path>`.\n- In clusters where the kube-apiserver is managed as a systemd service or via a manifest file, inspect the relevant configuration (e.g., `/etc/kubernetes/manifests/kube-apiserver.yaml`) for the `--audit-log-path` argument.\n- Pass Criteria: The `--audit-log-path` argument is present and set to a valid file path (e.g., `/var/log/apiserver/audit.log`).\n- Fail Criteria: The `--audit-log-path` argument is missing or set to an empty value.\n- Example kubectl command for static Pod clusters:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n  or\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].args}'\n  ```\n  Then, search for `--audit-log-path` in the output.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:40:46.447683",
+    "model": "gpt-4.1"
+}

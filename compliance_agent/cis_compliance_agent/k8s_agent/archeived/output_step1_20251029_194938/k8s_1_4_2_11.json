@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.11",
+    "unique_id": "k8s_1_4_2_11",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Verify that the RotateKubeletServerCertificate argument is set to true",
+    "input_row": {
+        "id": "4.2.11",
+        "unique_id": "k8s_1_4_2_11",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Verify that the RotateKubeletServerCertificate argument is set to true",
+        "description": "Enable kubelet server certificate rotation.",
+        "rationale": "RotateKubeletServerCertificate causes the kubelet to both request a serving certificate after bootstrapping its client credentials and rotate the certificate as its existing credentials expire. This automated periodic rotation ensures that the there are no downtimes due to expired certificates and thus addressing availability in the CIA security triad. Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to take care of rotation yourself. Impact: None",
+        "audit": "Ignore this check if serverTLSBootstrap is true in the kubelet config file or if the --rotate- server-certificates parameter is set on kubelet Run the following command on each node: ps -ef | grep kubelet Verify that RotateKubeletServerCertificate argument exists and is set to true.",
+        "remediation": "Edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_CERTIFICATE_ARGS variable. --feature-gates=RotateKubeletServerCertificate=true Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, kubelet server certificate rotation is enabled. References: 1. https://github.com/kubernetes/kubernetes/pull/45059 2. https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "None",
+        "references": "1. https://github.com/kubernetes/kubernetes/pull/45059 2. https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_server_certificate_rotation_enabled\n\n**AUTOMATION DETAILS:**\n\n- Enumerate all nodes in the cluster.\n- For each node, determine the kubelet configuration source:\n    - If the kubelet uses a config file (commonly referenced via the --config flag or systemd unit), retrieve the kubelet config file (usually /var/lib/kubelet/config.yaml or as specified in the node's kubelet service).\n    - If the kubelet is started with command-line flags, retrieve the process arguments (e.g., via the Node's systemd unit or via the Kubernetes Node API if possible).\n- Check the following in the kubelet configuration:\n    - If the config file contains `serverTLSBootstrap: true`, this implies server certificate rotation is enabled (per CIS guidance).\n    - If the config file or command-line arguments include `--feature-gates=RotateKubeletServerCertificate=true`, this also enables rotation.\n    - Alternatively, if the command-line flag `--rotate-server-certificates=true` is present, this is sufficient.\n- Pass Criteria:\n    - At least one of the following is true for each node:\n        - `serverTLSBootstrap: true` in kubelet config\n        - `--feature-gates=RotateKubeletServerCertificate=true` in kubelet args\n        - `--rotate-server-certificates=true` in kubelet args\n- Fail Criteria:\n    - None of the above settings are present/enabled for a node.\n- Example kubectl commands (if using kubelet config via ConfigMap):\n    - `kubectl get node <node-name> -o json | jq '.spec.configSource'` to find the config source.\n    - If using a ConfigMap, `kubectl get configmap <name> -n kube-system -o yaml` and inspect for `serverTLSBootstrap: true`.\n- Note: If kubelet config is not managed via the Kubernetes API (e.g., not via Dynamic Kubelet Config), this check may require privileged access to node files or process arguments, which is outside the scope of Kubernetes API. In such cases, flag as \"unable to verify via API\" for those nodes.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:06:48.755353",
+    "model": "gpt-4.1"
+}

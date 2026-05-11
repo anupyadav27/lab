@@ -1,0 +1,22 @@
+{
+    "control_id": "4.3.1",
+    "unique_id": "gcp_2_4_3_1",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Ensure that the CNI in use supports Network Policies",
+    "input_row": {
+        "id": "4.3.1",
+        "unique_id": "gcp_2_4_3_1",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Ensure that the CNI in use supports Network Policies",
+        "description": "There are a variety of CNI plugins available for Kubernetes. If the CNI in use does not support Network Policies it may not be possible to effectively restrict traffic in the cluster.",
+        "rationale": "Kubernetes network policies are enforced by the CNI plugin in use. As such it is important to ensure that the CNI plugin supports both Ingress and Egress network policies. See also recommendation 5.6.7. Impact: None",
+        "audit": "Review the documentation of CNI plugin in use by the cluster, and confirm that it supports Ingress and Egress network policies.",
+        "remediation": "To use a CNI plugin with Network Policy, enable Network Policy in GKE, and the CNI plugin will be updated. See recommendation 5.6.7. Default Value: This will depend on the CNI plugin in use. References: 1. https://kubernetes.io/docs/concepts/services-networking/network-policies/ 2. https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage- net/network-plugins/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview Additional Information: One example here is Flannel (https://github.com/flannel-io/flannel) which does not support Network policy unless Calico is also in use.",
+        "profile_applicability": "•  Level 1",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/services-networking/network-policies/ 2. https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage- net/network-plugins/ 3. https://cloud.google.com/kubernetes-engine/docs/concepts/network-overview Additional Information: One example here is Flannel (https://github.com/flannel-io/flannel) which does not support Network policy unless Calico is also in use."
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control to \"Ensure that the CNI in use supports Network Policies\" involves verifying the documentation of the CNI plugin currently being used by the Kubernetes cluster to confirm it supports both Ingress and Egress network policies. This verification relies on understanding the specific CNI plugin's capabilities rather than a direct setting or configuration that can be queried through a GCP API or the Google Cloud SDK. \n\nThis requirement is inherently manual because:\n\n- It requires reviewing documentation or possibly consulting with cluster configurations to ascertain which CNI plugin is installed and its capabilities.\n- There is no direct API call or GCP CLI command that can definitively confirm whether a CNI plugin supports network policies, especially since this attribute is more about what the CNI is capable of rather than a specific state or flag within the GCP service or resource configuration.\n- CNI plugins' support for network policies can vary greatly, and identifying the specific combination of CNI plugins (e.g., Flannel with Calico) makes it non-trivial to automate this check.\n\n**MANUAL STEPS:**\n\n1. Access the GCP Console and navigate to Kubernetes Engine.\n2. Identify the CNI plugin being utilized by the GKE cluster.\n3. Review the official documentation for the identified CNI plugin to verify its support for Ingress and Egress network policies.\n   - You can find relevant links in the provided CIS reference or directly on the CNI plugin's documentation page.\n4. Ensure that the documentation or configuration steps indicate explicit support for both Ingress and Egress network policies.\n5. Confirm compliance based on documentation confirmation that the CNI supports the required network policies.\n\nIn conclusion, due to the nature of this control which involves understanding capabilities of third-party software (CNI plugins) rather than adjustable settings on GCP resources, manual verification is the appropriate approach.",
+    "timestamp": "2025-10-28T21:55:23.494726",
+    "model": "gpt-4o"
+}

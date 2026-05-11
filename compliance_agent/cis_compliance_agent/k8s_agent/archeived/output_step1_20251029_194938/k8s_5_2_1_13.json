@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.13",
+    "unique_id": "k8s_5_2_1_13",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --cadvisor-port argument is set to 0",
+    "input_row": {
+        "id": "2.1.13",
+        "unique_id": "k8s_5_2_1_13",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --cadvisor-port argument is set to 0",
+        "description": "Disable cAdvisor.",
+        "rationale": "cAdvisor provides potentially sensitive data and there's currently no way to block access to it using anything other than iptables. It does not require authentication/authorization to connect to the cAdvisor port. Hence, you should disable the port.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that --cadvisor-port argument exists and is set to 0.",
+        "remediation": "Edit the /etc/kubernetes/kubelet file on each node and set the KUBELET_ARGS parameter to \"--cadvisor-port=0\": KUBELET_ARGS=\"--cadvisor-port=0\" Based on your system, restart the kubelet service. For example: systemctl restart kubelet.service Impact: cAdvisor will not be available directly. You need to work with /metrics endpoint on the API server. Default Value: By default, --cadvisor-port argument is set to 4194. References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/issues/11710  171 | P a g e 3. https://github.com/kubernetes/kubernetes/issues/32638 4. https://raesene.github.io/blog/2016/10/14/Kubernetes-Attack-Surface-cAdvisor/",
+        "profile_applicability": "•  Level 1",
+        "impact": "cAdvisor will not be available directly. You need to work with /metrics endpoint on the API server. Default Value: By default, --cadvisor-port argument is set to 4194.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/issues/11710  171 | P a g e 3. https://github.com/kubernetes/kubernetes/issues/32638 4. https://raesene.github.io/blog/2016/10/14/Kubernetes-Attack-Surface-cAdvisor/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the Kubelet process argument --cadvisor-port on each node.\n- The audit procedure explicitly instructs to run ps -ef | grep kubelet on each node, which requires OS-level access.\n- The --cadvisor-port flag is a process-level argument and is not exposed via the Kubernetes API, kubelet API, or kubectl.\n- There is no Kubernetes-native resource or API that exposes the process arguments of the kubelet running on each node.\n- Therefore, this check cannot be performed via Kubernetes APIs or kubectl and requires direct host access.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes node in the cluster.\n2. Run the following command to list the kubelet process and its arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Inspect the output and verify that the --cadvisor-port argument is present and set to 0 (i.e., --cadvisor-port=0).\n4. If the argument is missing or set to a value other than 0, the node is non-compliant.\n5. Repeat for all nodes in the cluster to ensure cluster-wide compliance.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:53:30.063647",
+    "model": "gpt-4.1"
+}

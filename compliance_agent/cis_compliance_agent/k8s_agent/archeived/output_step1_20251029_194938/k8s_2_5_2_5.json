@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.5",
+    "unique_id": "k8s_2_5_2_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Minimize the admission of containers wishing to share the host network namespace",
+    "input_row": {
+        "id": "5.2.5",
+        "unique_id": "k8s_2_5_2_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Minimize the admission of containers wishing to share the host network namespace",
+        "description": "Do not generally permit containers to be run with the hostNetwork flag set to true.",
+        "rationale": "A container running in the host's network namespace could access the local loopback device, and could access network traffic to and from other pods. There should be at least one admission control policy defined which does not permit containers to share the host network namespace. If you need to run containers which require access to the host's network namespaces, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined with spec.hostNetwork: true will not be permitted unless they are run under a specific policy.",
+        "audit": "To fetch hostNetwork from each pod. get pods -A -o=jsonpath=$'{range .items[*]}{@.metadata.name}: {@.spec.hostNetwork}\\n{end}'",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of hostNetwork containers. Default Value: By default, there are no restrictions on the creation of hostNetwork containers. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined with spec.hostNetwork: true will not be permitted unless they are run under a specific policy.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_host_network_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster.\n- For each namespace, check for the presence and enforcement of Pod Security Admission (PSA) policies or PodSecurityPolicies (if still in use) that restrict the use of `spec.hostNetwork: true` in pod specs.\n- Use the Kubernetes API or kubectl to:\n  - List all pods in all namespaces and inspect the `spec.hostNetwork` field.\n    - Command:  \n      ```\n      kubectl get pods --all-namespaces -o jsonpath=\"{range .items[*]}{.metadata.namespace}:{.metadata.name}:{.spec.hostNetwork}{'\\n'}{end}\"\n      ```\n    - Pass: No pods (except those explicitly allowed by policy) have `spec.hostNetwork: true`.\n  - List and inspect Pod Security Admission labels/annotations on each namespace:\n    - Command:\n      ```\n      kubectl get namespace --show-labels\n      ```\n    - Check for PSA labels such as `pod-security.kubernetes.io/enforce=restricted` or `pod-security.kubernetes.io/enforce-version=latest`.\n    - Pass: Namespaces with user workloads have `restricted` or stricter PSA policies enforced, which disallow `hostNetwork: true` except for explicitly allowed exceptions.\n  - If using PodSecurityPolicy (deprecated), check for policies that restrict `hostNetwork: true` and ensure they are bound to appropriate service accounts/roles.\n    - Command:\n      ```\n      kubectl get psp -o yaml\n      ```\n    - Pass: PSPs in use do not allow `hostNetwork: true` except for tightly scoped exceptions.\n- Fail: Any namespace lacking appropriate PSA enforcement or with pods running with `hostNetwork: true` outside of approved exceptions.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:38:21.374192",
+    "model": "gpt-4.1"
+}

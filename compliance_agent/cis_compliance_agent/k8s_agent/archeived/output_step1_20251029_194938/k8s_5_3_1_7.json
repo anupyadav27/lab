@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.7",
+    "unique_id": "k8s_5_3_1_7",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --profiling argument is set to false",
+    "input_row": {
+        "id": "3.1.7",
+        "unique_id": "k8s_5_3_1_7",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --profiling argument is set to false",
+        "description": "Disable profiling, if not needed.",
+        "rationale": "Profiling allows for the identification of specific performance bottlenecks. It generates a significant amount of program data that could potentially be exploited to uncover system and program details. If you are not experiencing any bottlenecks and do not need the profiler for troubleshooting purposes, it is recommended to turn it off to reduce the potential attack surface.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --profiling argument is set to false.",
+        "remediation": "Edit the deployment specs and set \"--profiling=false\": kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: Profiling information would not be available. Default Value: By default, profiling is enabled. References: 1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/  197 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "Profiling information would not be available. Default Value: By default, profiling is enabled.",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver/ 2. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 3. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/  197 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_federation_apiserver_profiling_disabled\n\n**AUTOMATION DETAILS:**\n- Query the Kubernetes API to identify the Deployment managing the federation-apiserver (commonly named federation-apiserver-deployment in the federation-system namespace).\n- Use kubectl or the Kubernetes API to retrieve the PodSpec for this Deployment.\n- Inspect the container args or command fields for the federation-apiserver container.\n- Verify that the argument --profiling=false is explicitly set.\n- Pass Criteria: Every running federation-apiserver container has --profiling=false set in its args/command.\n- Fail Criteria: Any federation-apiserver container is missing the --profiling argument or has it set to true (or not set at all, as default is true).\n- Example kubectl command:\n  ```\n  kubectl -n federation-system get deployment federation-apiserver-deployment -o json | jq '.spec.template.spec.containers[].args'\n  ```\n  or\n  ```\n  kubectl -n federation-system get pods -l app=federation-apiserver -o json | jq '.items[].spec.containers[].args'\n  ```\n- The automation should enumerate all relevant Deployments/Pods, check all containers, and report compliance status based on the presence and value of --profiling.",
+    "timestamp": "2025-10-29T21:55:21.270909",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.30",
+    "unique_id": "k8s_2_1_2_30",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --service-account-extend-token-expiration parameter is set to false",
+    "input_row": {
+        "id": "1.2.30",
+        "unique_id": "k8s_2_1_2_30",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --service-account-extend-token-expiration parameter is set to false",
+        "description": "By default Kubernetes extends service account token lifetimes to one year to aid in transition from the legacy token settings.",
+        "rationale": "This default setting is not ideal for security as it ignores other settings related to maximum token lifetime and means that a lost or stolen credential could be valid for an extended period of time. Impact: Disabling this setting means that the service account token expiry set in the cluster will be enforced, and service account tokens will expire at the end of that time frame.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --service-account-extend-token-expiration argument is set to false.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube-apiserver.yaml on the Control Plane node and set the --service-account-extend-token-expiration parameter to false. --service-account-extend-token-expiration=false Default Value: By default, this parameter is set to true References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Disabling this setting means that the service account token expiry set in the cluster will be enforced, and service account tokens will expire at the end of that time frame.",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_service_account_extend_token_expiration_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify the value of the `--service-account-extend-token-expiration` flag.\n- For clusters using static pod manifests (most kubeadm and self-hosted setups), inspect the `/etc/kubernetes/manifests/kube-apiserver.yaml` file for the presence and value of the `--service-account-extend-token-expiration` argument.\n- Alternatively, use `kubectl get pod -n kube-system -l component=kube-apiserver -o yaml` to retrieve the running pod spec and check the command/args section for the flag.\n- Pass Criteria: The flag `--service-account-extend-token-expiration` is explicitly set to `false`.\n- Fail Criteria: The flag is absent (defaults to `true`) or set to `true`.\n- Example kubectl command:\n  ```\n  kubectl get pod -n kube-system -l component=kube-apiserver -o jsonpath=\"{.items[*].spec.containers[*].command}\"\n  ```\n  or\n  ```\n  kubectl get pod -n kube-system -l component=kube-apiserver -o json | grep -- '--service-account-extend-token-expiration'\n  ```\n- The automated check parses the command/args array for the kube-apiserver container and confirms that `--service-account-extend-token-expiration=false` is present.",
+    "timestamp": "2025-10-29T20:24:05.561630",
+    "model": "gpt-4.1"
+}

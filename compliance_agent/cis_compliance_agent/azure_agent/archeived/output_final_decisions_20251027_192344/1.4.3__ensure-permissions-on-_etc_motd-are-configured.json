@@ -1,0 +1,37 @@
+{
+    "unique_id": "1.4.3__ensure-permissions-on-_etc_motd-are-configured",
+    "control_id": "1.4.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "1.4.3",
+        "unique_id": "1.4.3__ensure-permissions-on-/etc/motd-are-configured",
+        "title": "Ensure permissions on /etc/motd are configured",
+        "description": "The contents of the /etc/motd file are displayed to users after login and function as a message of the day for authenticated users.",
+        "rationale": "If the /etc/motd file does not have the correct ownership it could be modified by unauthorized users with incorrect or misleading information.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/motd Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following commands to set permissions on /etc/motd : # chown root:root /etc/motd # chmod u-x,go-wx /etc/motd References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "first_opinion": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Access the Azure portal and navigate to your Kubernetes cluster that hosts the Linux nodes.\n2. Use SSH to connect to one of the Linux nodes in the AKS cluster using an appropriate SSH key or credentials.\n3. Once connected, check the permissions on the `/etc/motd` file by executing the command:\n   ```\n   stat /etc/motd\n   ```\n4. Verify the output to confirm:\n   - Owner (Uid) and Group (Gid) are both `0` (root)\n   - Access permissions are `644` (read/write for owner, read for group and others)\n5. If the permissions or ownership are not correct, execute the following commands to fix them:\n   ```\n   sudo chown root:root /etc/motd\n   sudo chmod u-x,go-wx /etc/motd\n   ```\n6. Re-run the `stat /etc/motd` command to confirm the changes were successfully applied.\n7. Document the initial and corrected permissions as well as any actions taken for compliance verification."
+    },
+    "second_opinion": {
+        "model": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The classification as \"Manual\" is partially correct. While the manual steps are necessary for direct verification and correction, the initial compliance check could be automated using Azure capabilities.\n- **Azure APIs/CLI:** Azure does not provide direct APIs to check file permissions on Linux nodes within an AKS cluster. However, automation can be achieved using Azure CLI or Azure Automation Runbooks to execute scripts on the nodes. Tools like Azure Automation State Configuration or Azure Policy could potentially be used to enforce and verify compliance over time.\n\n**TECHNICAL ACCURACY:** 7\n\n- **Automation Details:** The assessment lacks automation details. While the manual steps are technically accurate, they do not leverage Azure's automation capabilities.\n- **Manual Steps Accuracy:** The manual steps are accurate and complete for verifying and correcting the permissions on the `/etc/motd` file.\n- **Program Name Convention:** The program name is not applicable here as the assessment does not involve a custom script or program.\n\n**IMPROVEMENTS:**\n\n- **Automation Suggestion:** Consider using Azure Automation or Azure CLI scripts to automate the verification process. For example, use a script executed via Azure CLI or a custom script in Azure Automation to check and set file permissions.\n- **Missing Considerations:** The assessment does not consider the scalability of checking multiple nodes in a large AKS cluster. A script could iterate over all nodes to ensure compliance across the entire cluster.\n- **Alternative Approach:** Implement Azure Policy to ensure that nodes are compliant with the desired state configuration, which could include file permissions.\n\n**CONFIDENCE:** MEDIUM\n\n- The manual steps are well-documented, but the lack of automation consideration and scalability in a cloud environment reduces confidence in the assessment's completeness.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Modify:** Incorporate automation into the compliance check process. Develop a script that can be executed via Azure CLI or Azure Automation to verify and correct file permissions across all nodes in an AKS cluster. This will enhance efficiency and scalability.\n- **Re-classify:** Consider re-classifying the approach to \"Automated\" with manual verification steps as a fallback, leveraging Azure's automation capabilities for initial compliance checks.",
+        "reviewed_at": "2025-10-26T15:13:35.752171"
+    },
+    "final_decision": {
+        "model": "gpt-4o",
+        "decision_maker": "Third AI - Final Authority",
+        "response": "**FINAL APPROACH:** Manual\n\n**JUSTIFICATION:** The task involves verifying and setting file permissions on the `/etc/motd` file on Linux nodes within an AKS cluster. This requires direct access to the file system of the nodes, which is not directly accessible through Azure APIs or CLI. While Azure Automation tools can execute scripts on nodes, the initial verification and correction of file permissions necessitate manual intervention due to the lack of direct API support for file-level operations on AKS nodes.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**MANUAL STEPS:**\n1. Access the Azure portal and navigate to your Kubernetes cluster that hosts the Linux nodes.\n2. Use SSH to connect to one of the Linux nodes in the AKS cluster using an appropriate SSH key or credentials.\n3. Once connected, check the permissions on the `/etc/motd` file by executing the command:\n   ```\n   stat /etc/motd\n   ```\n4. Verify the output to confirm:\n   - Owner (Uid) and Group (Gid) are both `0` (root)\n   - Access permissions are `644` (read/write for owner, read for group and others)\n5. If the permissions or ownership are not correct, execute the following commands to fix them:\n   ```\n   sudo chown root:root /etc/motd\n   sudo chmod u-x,go-wx /etc/motd\n   ```\n6. Re-run the `stat /etc/motd` command to confirm the changes were successfully applied.\n7. Document the initial and corrected permissions as well as any actions taken for compliance verification.\n\n**WHY NOT AUTOMATED:** Azure does not provide direct APIs or CLI commands to check or modify file permissions on individual files within AKS nodes. This operation requires SSH access to the node, which is inherently a manual process.\n\n---\n\n**DISAGREEMENTS RESOLVED:** The second AI opinion suggested partial automation but acknowledged the lack of direct Azure API support for this task. Given the need for SSH access to verify and modify file permissions, the manual approach is the most feasible solution.\n\n**SOURCE:** CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+        "decided_at": "2025-10-27T14:03:49.044017"
+    },
+    "metadata": {
+        "reviewed_file": "1.4.3__ensure-permissions-on-_etc_motd-are-configured.json",
+        "final_version": "1.0",
+        "three_model_consensus": true
+    }
+}

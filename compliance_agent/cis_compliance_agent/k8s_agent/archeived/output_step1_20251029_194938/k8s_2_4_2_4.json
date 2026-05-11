@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.4",
+    "unique_id": "k8s_2_4_2_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Verify that if defined, readOnlyPort is set to 0",
+    "input_row": {
+        "id": "4.2.4",
+        "unique_id": "k8s_2_4_2_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Verify that if defined, readOnlyPort is set to 0",
+        "description": "Disable the read-only port.",
+        "rationale": "The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster. Impact: Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --read-only-port argument exists and is set to 0. If the --read-only-port argument is not present, check that there is a Kubelet config file specified by --config. Check that if there is a readOnlyPort entry in the file, it is set to 0.",
+        "remediation": "If using a Kubelet config file, edit the file to set readOnlyPort to 0. If using command line arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. --read-only-port=0 Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/blob/6cedc0853faa118df0ba3d41b48b 993422ad3df6/staging/src/k8s.io/kubelet/config/v1beta1/types.go#L142 Additional Information: https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/blob/6cedc0853faa118df0ba3d41b48b 993422ad3df6/staging/src/k8s.io/kubelet/config/v1beta1/types.go#L142 Additional Information: https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_read_only_port_disabled\n\n**AUTOMATION DETAILS:**\n- Enumerate all nodes in the cluster using the Kubernetes API (`kubectl get nodes`).\n- For each node, retrieve the Kubelet configuration. This can be done by:\n  - Checking the `kubelet` process arguments on each node (requires access to node configuration, which may be exposed via the Node API or via DaemonSet running with host access).\n  - If the `--config` flag is used, retrieve the referenced Kubelet config file (typically `/var/lib/kubelet/config.yaml`), which can be accessed by deploying a privileged DaemonSet to read the file.\n- Validate that either:\n  - The `--read-only-port` flag is set to `0` in the kubelet process arguments, OR\n  - The `readOnlyPort` field in the Kubelet config file is set to `0`, OR\n  - The `--read-only-port` flag is not present (defaults to 0 in recent Kubernetes versions).\n- Pass Criteria: For every node, the Kubelet is configured so that the read-only port is either not set (and thus defaults to 0), or explicitly set to 0 in either the command-line arguments or the config file.\n- Fail Criteria: Any node where the read-only port is set to a value other than 0, or is enabled by omission in older Kubernetes versions.\n- Example check (via DaemonSet):\n  - Read `/var/lib/kubelet/config.yaml` and confirm `readOnlyPort: 0`\n  - Or parse the process args for `--read-only-port=0`\n- No human judgement required; all checks are deterministic and scriptable.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:30:58.937256",
+    "model": "gpt-4.1"
+}

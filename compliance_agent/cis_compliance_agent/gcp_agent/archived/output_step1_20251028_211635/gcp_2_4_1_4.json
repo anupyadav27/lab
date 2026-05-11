@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.4",
+    "unique_id": "gcp_2_4_1_4",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Ensure that default service accounts are not actively used",
+    "input_row": {
+        "id": "4.1.4",
+        "unique_id": "gcp_2_4_1_4",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Ensure that default service accounts are not actively used",
+        "description": "The default service account should not be used to ensure that rights granted to applications can be more easily audited and reviewed.",
+        "rationale": "Kubernetes provides a default service account which is used by cluster workloads where no specific service account is assigned to the pod. Where access to the Kubernetes API from a pod is required, a specific service account should be created for that pod, and rights granted to that service account. The default service account should be configured such that it does not provide a service account token and does not have any explicit rights assignments. Impact: All workloads which require access to the Kubernetes API will require an explicit service account to be created.",
+        "audit": "For each namespace in the cluster, review the rights assigned to the default service account and ensure that it has no roles or cluster roles bound to it apart from the defaults. Additionally ensure that the automountServiceAccountToken: false setting is in place for each default service account.",
+        "remediation": "Create explicit service accounts wherever a Kubernetes workload requires specific access to the Kubernetes API server. Modify the configuration of each default service account to include this value automountServiceAccountToken: false Default Value: By default the default service account allows for its service account token to be mounted in pods in its namespace. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 1",
+        "impact": "All workloads which require access to the Kubernetes API will require an explicit service account to be created.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nGiven the compliance control details, this audit involves checking the configuration of service accounts within Google Kubernetes Engine (GKE) environments. Specifically, we need to verify that the default service accounts in each namespace do not have any roles or cluster roles bound to them apart from the defaults and that the `automountServiceAccountToken` is set to `false`. This task can be achieved using GCP APIs and command-line tools.\n\n- GCP APIs and Google Cloud SDK (gcloud) can be used to list namespaces, access the roles assigned to service accounts, and examine the configuration of service accounts within a GKE cluster.\n- The `kubectl` CLI, which is part of Google Kubernetes management, allows for direct inspection of namespaces and service accounts.\n\nThe control is focused on checking the standard GKE service properties relating to access control and configuration settings, making it suitable for an automated approach.\n\n**PROGRAM NAME:** gcp_gke_service_account_default_usage_restricted\n\n**AUTOMATION DETAILS:**\n\nTo automate this check, perform the following steps:\n\n1. **Enumerate Namespaces:**\n   - Use `kubectl get namespaces` to list all namespaces in the GKE cluster.\n\n2. **Check Default Service Accounts:**\n   - For each namespace, use `kubectl get serviceaccount default -n <namespace>` to get the default service account details.\n   - Verify that the `automountServiceAccountToken` field is set to `false`.\n   - Use `kubectl describe serviceaccount default -n <namespace>` to ensure that there are no roles or cluster roles bound to the default service account other than defaults.\n\n3. **Pass/Fail Criteria:**\n   - Pass: The default service account in each namespace has `automountServiceAccountToken: false` and no additional roles bound beyond defaults.\n   - Fail: Any default service account has `automountServiceAccountToken: true` or has non-default roles bound.\n\nBy leveraging these commands, the program checks for compliance across all namespaces in the GKE cluster efficiently using automated means.",
+    "timestamp": "2025-10-28T21:53:10.238541",
+    "model": "gpt-4o"
+}

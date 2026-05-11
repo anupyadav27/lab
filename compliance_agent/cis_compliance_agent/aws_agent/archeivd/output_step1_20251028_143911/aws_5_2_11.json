@@ -1,0 +1,22 @@
+{
+    "control_id": "2.11",
+    "unique_id": "aws_5_2_11",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Ensure instances stopped for over 90 days are removed",
+    "input_row": {
+        "id": "2.11",
+        "unique_id": "aws_5_2_11",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Ensure instances stopped for over 90 days are removed",
+        "description": "Enable this rule to help with the baseline configuration of Amazon Elastic Compute Cloud (Amazon EC2) instances by checking whether Amazon EC2 instances have been stopped for more than the allowed number of days, according to your organization’s standards.",
+        "rationale": "",
+        "audit": "From the Console 1. Login to the EC2 console at https://console.aws.amazon.com/ec2/. 2. In the left pane, click Instances, click Instances. 3. Select the Instance for review. 4. Under the Details tab 5. Review the Launch time. If the Launch time of the selected Instance is greater than 90 days, the Instance has been offline and is considered outdated. 6. Repeat steps no. 3 – 5 to verify the Launch date for the other instances. Repeat all steps for the other regions. Refer to the remediation procedure below if any of the Launch times are over 90 days.",
+        "remediation": "From the Console 1. Login to the EC2 console at https://console.aws.amazon.com/ec2/. 2. In the left pane, click Instances, click Instances. 3. Select the Instance for that hasn't been used for over 90 days. 4. Under the Details tab 5. Click Instance state, click Terminate instance. 6. Click Terminate. 7.Repeat steps no. 3 – 6 the other instances with a launch date equal to or over 90 days. Repeat all steps for the other regions. References: 1. https://docs.aws.amazon.com/config/latest/developerguide/ec2-stopped- instance.html",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://docs.aws.amazon.com/config/latest/developerguide/ec2-stopped- instance.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\n- The control can be audited using AWS APIs to determine if EC2 instances have been in a stopped state for over 90 days.\n- AWS APIs/boto3 provides methods to list EC2 instances and their states, as well as the launch times, which allows us to perform this check programmatically.\n- This involves querying the EC2 service, which is well supported by AWS APIs, boto3 SDK methods, and AWS CLI commands.\n\n**PROGRAM NAME:** aws_ec2_instance_stopped_over_90_days\n\n**AUTOMATION DETAILS:**\n\n- **AWS API/Boto3 Methods:** Use `boto3.client('ec2').describe_instances()` to list all EC2 instances across all regions.\n- **Attributes to Check:** For each instance, retrieve the `LaunchTime` and `State` attributes.\n- **Logic for Compliance Check:**\n  - Filter instances with a state of 'stopped'.\n  - Calculate the difference between the current date and the instance's `LaunchTime`.\n  - Identify instances where this difference is greater than 90 days.\n- **Regions to Consider:** Scan through all available AWS regions as EC2 instances could exist in any region.\n- **Pass/Fail Criteria:** \n  - **Pass:** No instances have a `LaunchTime` indicating they have been stopped for over 90 days.\n  - **Fail:** One or more instances have a `LaunchTime` that shows they have been stopped for more than 90 days.\n\nBy automating this check, organizations can ensure compliance with the CIS Benchmark by regularly identifying non-compliant EC2 instances and taking action as required.",
+    "timestamp": "2025-10-28T15:38:21.489375",
+    "model": "gpt-4o"
+}

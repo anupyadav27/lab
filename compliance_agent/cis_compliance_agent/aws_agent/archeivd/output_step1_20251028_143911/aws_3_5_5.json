@@ -1,0 +1,22 @@
+{
+    "control_id": "5.5",
+    "unique_id": "aws_3_5_5",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure session Idle disconnect timeout is set to 10 minutes or less",
+    "input_row": {
+        "id": "5.5",
+        "unique_id": "aws_3_5_5",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure session Idle disconnect timeout is set to 10 minutes or less",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nGiven the control \"Ensure session Idle disconnect timeout is set to 10 minutes or less\" involves checking a specific configuration within an AWS service, it is appropriate to consider this check as automated. In AWS, many end-user compute services like WorkSpaces, AppStream, or other managed services have settings that can be configured via APIs. These settings typically include session timeout configurations that are managed through service specific API calls.\n\n**PROGRAM NAME:** aws_workspace_idle_disconnect_timeout_verified\n\n**AUTOMATION DETAILS:**\n\nTo automate the verification of the session idle disconnect timeout being set to 10 minutes or less for AWS WorkSpaces, the following could be implemented:\n\n1. **AWS API Calls/Boto3 SDK Methods:**\n   - Use the `boto3` library to interact with AWS WorkSpaces. Specifically, the `describe_workspaces` or similar API can be used to list available WorkSpaces.\n   - Check WorkSpaces configuration, specifically focusing on any session settings or policies that include idle timeouts.\n\n2. **Specific Resources to Enumerate:**\n   - Enumerate all AWS WorkSpaces within the account and region.\n   - Review the settings for each WorkSpace to ensure compliance with the idle disconnect timeout criteria.\n\n3. **Exact Configuration Properties/Settings to Validate:**\n   - Check the property that specifies the idle disconnect timeout.\n   - Validate that the value is set to 10 minutes (600 seconds) or less.\n\n4. **Clear Pass/Fail Criteria with Expected Values:**\n   - **Pass:** If the idle disconnect timeout is configured to 10 minutes or 600 seconds or less.\n   - **Fail:** If the idle disconnect timeout is set to more than 10 minutes or 600 seconds.\n\n5. **Example Code Snippet Using Boto3:**\n\n   ```python\n   import boto3\n\n   # Create a WorkSpaces client\n   client = boto3.client('workspaces')\n\n   # Describe current WorkSpaces\n   response = client.describe_workspaces()\n\n   # Iterate through WorkSpaces to check session timeout settings\n   for workspace in response.get('Workspaces', []):\n       # Assume we have a method to extract and validate the idle disconnect timeout for the workspace\n       timeout = check_workspace_idle_timeout(workspace['WorkspaceId'])\n       if timeout <= 600:\n           print(f\"Workspace {workspace['WorkspaceId']} is compliant with timeout: {timeout} seconds.\")\n       else:\n           print(f\"Workspace {workspace['WorkspaceId']} is non-compliant with timeout: {timeout} seconds.\")\n   ```\n\n   Note: The above pseudo-code might need adaptations depending on the actual API structure and how the idle timeout setting is stored or retrieved.\n\nIn this automated check, the program will effectively audit and ensure the compliance of session idle disconnect timeout across the AWS WorkSpaces, providing a consistent and efficient evaluation without manual intervention.",
+    "timestamp": "2025-10-28T15:21:03.031917",
+    "model": "gpt-4o"
+}

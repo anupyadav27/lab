@@ -1,0 +1,34 @@
+{
+    "unique_id": "2.1.13__ensure-managed-identities-are-configured",
+    "control_id": "2.1.13",
+    "source": null,
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The requirement to ensure that managed identities are configured can be satisfied through Azure APIs. Specifically, the control directly relates to properties that can be queried via Azure Resource Manager APIs.\n- The audit mentions Azure CLI commands that can verify the configuration of managed identities, further supporting an automated approach.\n- Standard Azure resource management operations related to identity configurations can be performed without requiring human intervention.\n\n**PROGRAM NAME:** azure_app_service_managed_identity_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n\n1. **APIs/CLI Commands to Use:**\n   - Azure Resource Manager APIs for managing App Service identities, specifically:\n     - `GET /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}?api-version=2021-03-01`\n   - Azure CLI commands:\n     - `az webapp show --resource-group <resource-group-name> --name <app-name>`\n\n2. **Specific Resources to Enumerate:**\n   - All App Services within a given subscription or resource group.\n\n3. **Exact Configuration Properties/Settings to Validate:**\n   - Check if `identity.type` is set to either `SystemAssigned` or includes `UserAssigned` in the identity object.\n\n4. **Clear Pass/Fail Criteria with Expected Values:**\n   - **Pass:** The property `identity.type` should be either:\n     - `\"type\": \"SystemAssigned\"` (indicating system-assigned identity is enabled) or \n     - `\"type\": \"UserAssigned\"` (indicating user-assigned identities are present).\n   - **Fail:** The `identity` property is either absent or its `type` is null or empty.\n\n5. **Example API Endpoint or CLI Command:**\n   - **API Endpoint:** \n     - `GET /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{appName}?api-version=2021-03-01`\n   - **Example CLI Command:**\n     - `az webapp show --resource-group <resource-group-name> --name <app-name> --query \"identity.type\"` \n\nThis approach will ensure that the compliance control of managing identities is effectively audited in an automated manner."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. Managed identities can be effectively audited using Azure APIs and CLI commands. Azure Resource Manager (ARM) APIs and Azure CLI provide the necessary capabilities to query and verify the configuration of managed identities without human intervention.\n\n**TECHNICAL ACCURACY:** 9\n- The automation details are technically accurate. The use of Azure Resource Manager APIs and Azure CLI commands to check the `identity.type` property is appropriate. The program name follows the convention: `azure_<service>_<resource>_<security_intent>`, which is clear and descriptive.\n- However, the description of the `identity.type` check could be expanded to include the possibility of both `SystemAssigned` and `UserAssigned` being present simultaneously, which is a valid configuration.\n\n**IMPROVEMENTS:**\n- The assessment could be improved by including a check for both `SystemAssigned` and `UserAssigned` identities being present simultaneously. This is a valid scenario and should be considered in the pass criteria.\n- Consider adding PowerShell cmdlets as an alternative method for environments where Azure CLI might not be available.\n- It would be beneficial to include a note on handling API rate limits and authentication methods for accessing the Azure APIs, ensuring the automation script is robust and secure.\n- Providing a sample script or pseudocode for the automation process could enhance clarity and implementation ease.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded, leveraging Azure's capabilities to automate the compliance check effectively. The technical details are sound, and the approach aligns with Azure's best practices for managing identities.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the pass criteria to explicitly mention that both `SystemAssigned` and `UserAssigned` can be present simultaneously. Consider adding PowerShell as an alternative method and include guidance on API authentication and rate limits.\n- The overall approach is solid, but these modifications will ensure comprehensive coverage and robustness of the automation process.",
+        "reviewed_at": "2025-10-26T15:17:25.385005"
+    },
+    "input_row": {
+        "id": "2.1.13",
+        "unique_id": "2.1.13__ensure-managed-identities-are-configured",
+        "title": "Ensure managed identities are configured",
+        "description": " c...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Settings, click Identity. 4. To add a system assigned managed identity: 1. In the System assigned pane, under Status, click On. 2. Click Save. 3. Click Yes. 5. To add a user assigned managed identity: 1. In the User assigned pane, click Add. 2. Use the filter box to search for a managed identity. 3. Select the identity. 4. Click Add. 6. Repeat steps 1-5 for each app requiring remediation. Remediate from Azure CLI For each web app requiring remediation, run the following command to assign a managed identity: az webapp identity assign --resource-group <resource-group-name> --name <app- name> Remediate from PowerShell For each web app requiring remediation, run the following command to assign a managed identity: Set-AzWebApp -AssignIdentity $True -ResourceGroupName <resource-group-name> - Name <app-name> Default Value: Managed identities are disabled by default for App Service apps. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-identity- management#im-1-use-centralized-identity-and-authentication-system 2. https://learn.microsoft.com/en-us/azure/app-service/overview-managed-identity 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/powershell/module/az.websites/get-azwebapp 5. https://learn.microsoft.com/en-us/powershell/module/az.websites/set-azwebapp CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "metadata": {
+        "original_file": "2.1.13.json",
+        "review_version": "1.0"
+    }
+}

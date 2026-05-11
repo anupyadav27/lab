@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.5",
+    "unique_id": "k8s_6_4_2_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --streaming-connection-idle-timeout argument is not set to 0",
+    "input_row": {
+        "id": "4.2.5",
+        "unique_id": "k8s_6_4_2_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --streaming-connection-idle-timeout argument is not set to 0",
+        "description": "Do not disable timeouts on streaming connections.",
+        "rationale": "Setting idle timeouts ensures that you are protected against Denial-of-Service attacks, inactive connections and running out of ephemeral ports. Note: By default, --streaming-connection-idle-timeout is set to 4 hours which might be too high for your environment. Setting this as appropriate would additionally ensure that such streaming connections are timed out after serving legitimate use cases. Impact: Long-lived connections could be interrupted.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --streaming-connection-idle-timeout argument is not set to 0. If the argument is not present, and there is a Kubelet config file specified by --config, check that it does not set streamingConnectionIdleTimeout to 0.",
+        "remediation": "If using a Kubelet config file, edit the file to set streamingConnectionIdleTimeout to a value other than 0. If using command line arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. --streaming-connection-idle-timeout=5m Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, --streaming-connection-idle-timeout is set to 4 hours. References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/pull/18552",
+        "profile_applicability": "•  Level 1 - Worker Node •  Level 2 - Worker Node",
+        "impact": "Long-lived connections could be interrupted.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/pull/18552"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The --streaming-connection-idle-timeout argument is a kubelet process flag or a field in the kubelet configuration file.\n- This setting is not exposed via the Kubernetes API, kubectl, or any standard Kubernetes resource. The kubelet configuration is not accessible through kubectl or the Kubernetes API; it requires access to the host OS to inspect process arguments or configuration files.\n- The audit procedure in the CIS Benchmark instructs to run OS-level commands (ps -ef | grep kubelet) and to check local files, confirming that this check cannot be performed via Kubernetes APIs or kubectl.\n- Therefore, this control requires host-level access and cannot be automated via Kubernetes-native interfaces.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes worker node.\n2. Run the following command to inspect the kubelet process arguments:\n   ```\n   ps -ef | grep kubelet\n   ```\n3. Check if the --streaming-connection-idle-timeout argument is present:\n   - If present, ensure it is NOT set to 0 (e.g., --streaming-connection-idle-timeout=0 is non-compliant).\n   - If absent, proceed to the next step.\n4. If the kubelet is started with a --config flag pointing to a configuration file, open that file (commonly /var/lib/kubelet/config.yaml or similar).\n5. In the kubelet config file, locate the streamingConnectionIdleTimeout field:\n   - Ensure streamingConnectionIdleTimeout is NOT set to 0 (e.g., streamingConnectionIdleTimeout: 0 is non-compliant).\n6. Confirm compliance if neither the process flag nor the config file sets the timeout to 0.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:12:47.196916",
+    "model": "gpt-4.1"
+}

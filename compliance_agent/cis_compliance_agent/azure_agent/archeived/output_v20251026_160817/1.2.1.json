@@ -1,0 +1,17 @@
+{
+    "id": "1.2.1",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "1.2.1",
+        "unique_id": "1.2.1__ensure-dnf-gpgcheck-is-globally-activated",
+        "title": "Ensure DNF gpgcheck is globally activated",
+        "description": "The gpgcheck option, found in the main section of the /etc/dnf/dnf.conf and individual /etc/yum.repos.d/* files, determines if an RPM package's signature is checked prior to its installation.",
+        "rationale": "It is important to ensure that an RPM's package signature is always checked prior to installation to ensure that the software is obtained from a trusted source.",
+        "audit": "Global configuration. Run the following command and verify that gpgcheck is set to 1: # grep ^gpgcheck /etc/dnf/dnf.conf gpgcheck=1 Configuration in /etc/yum.repos.d/ takes precedence over the global configuration. Run the following command and verify that there are no instances of entries starting with gpgcheck returned set to 0. Nor should there be any invalid (non-boolean) values. When dnf encounters such invalid entries they are ignored and the global configuration is applied. # grep -P \"^gpgcheck\\h*=\\h*[^1].*\\h*$\" /etc/yum.repos.d/*",
+        "remediation": "Edit /etc/dnf/dnf.conf and set gpgcheck=1 in the [main] section. Example: # sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' /etc/dnf/dnf.conf Edit any failing files in /etc/yum.repos.d/* and set all instances starting with gpgcheck to 1. Example: # find /etc/yum.repos.d/ -name \"*.repo\" -exec echo \"Checking:\" {} \\; -exec sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' {} \\; References: 1. NIST SP 800-53 Rev. 5: SI-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: SI-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Kubernetes Nodes:**\n   - Use Azure CLI or SSH into your Kubernetes cluster to access one of the nodes.\n   - Command to SSH into the node (replace with your specific node's IP):\n     ```\n     ssh user@<node-ip-address>\n     ```\n\n2. **Check DNF Configuration:**\n   - Open the DNF configuration file located at `/etc/dnf/dnf.conf` with a text editor such as `vim` or `nano`.\n   - Verify that the line containing `gpgcheck` reads:\n     ```\n     gpgcheck=1\n     ```\n\n3. **Verify Repository Configuration:**\n   - Check the repository configuration files in `/etc/yum.repos.d/` directory.\n   - Look for the `gpgcheck` entries by running the following command:\n     ```\n     grep -P \"^gpgcheck\\\\h*=\\\\h*[^1].*\\\\h*$\" /etc/yum.repos.d/*\n     ```\n   - Ensure there are no entries that have `gpgcheck` set to `0` or any invalid values.\n\n4. **Expected Secure Configuration:**\n   - All `gpgcheck` entries in `/etc/yum.repos.d/*` should be set to `1` or omitted entirely (in which case the global `gpgcheck` configuration will apply).\n\n5. **Confirm Compliance:**\n   - If all checks pass (global setting is `gpgcheck=1` and no non-compliant entries found in the repo files), the configuration is compliant with the specified control.\n   - Document the findings, noting any non-compliance for further remediation. If non-compliance is found, proceed to the remediation steps provided in the control.\n\nBy following these steps, you can assess compliance with the control regarding whether the DNF gpgcheck is globally activated."
+}

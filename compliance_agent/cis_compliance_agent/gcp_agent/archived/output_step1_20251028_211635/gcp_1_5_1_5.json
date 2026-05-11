@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.5",
+    "unique_id": "gcp_1_5_1_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH LogLevel is appropriate",
+    "input_row": {
+        "id": "5.1.5",
+        "unique_id": "gcp_1_5_1_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH LogLevel is appropriate",
+        "description": "INFO level is the basic level that only records login activity of SSH users. In many situations, such as Incident Response, it is important to determine when a particular user was active on a system. The logout record can eliminate those users who disconnected, which helps narrow the field. VERBOSE level specifies that login and logout activity as well as the key fingerprint for any SSH key used for login will be logged. This information is important for SSH key management, especially in legacy environments.",
+        "rationale": "SSH provides several logging levels with varying amounts of verbosity. DEBUG is specifically not recommended other than strictly for debugging SSH communications since it provides so much data that it is difficult to identify important security information.",
+        "audit": "Run the following command and verify that output matches: # sshd -T | grep loglevel LogLevel VERBOSE OR loglevel INFO",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: LogLevel VERBOSE OR LogLevel INFO Default Value: LogLevel INFO References: 1. https://www.ssh.com/ssh/sshd_config/",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n1. The control is specifically about checking the SSH LogLevel configuration in the `/etc/ssh/sshd_config` file on Container-Optimized OS instances.\n2. This requires accessing the instance to inspect the OS-level configuration file, which is not exposed or queryable via GCP APIs or the Google Cloud SDK (gcloud).\n3. The audit step explicitly mentions running a command on the instance using SSH, which reinforces the need for direct access to the VM to perform the check.\n4. GCP does not provide a direct API for checking the SSH server configuration settings on virtual machine instances, as these are specific to the OS level.\n\n**MANUAL STEPS:**\n\n1. **Access the VM Instance:**\n   - Use SSH to connect to the appropriate Google Cloud VM instance running Container-Optimized OS.\n   - Command: `gcloud compute ssh <INSTANCE_NAME> --zone=<ZONE>`\n\n2. **Verify SSH LogLevel Configuration:**\n   - Access the SSH configuration file by using a text editor, such as `vi` or `nano`, to open `/etc/ssh/sshd_config`.\n   - Command: `sudo vi /etc/ssh/sshd_config`\n\n3. **Check for Correct LogLevel:**\n   - Search for the `LogLevel` directive in the file.\n   - Ensure it is set to either `INFO` or `VERBOSE`.\n   - Use `/` to search inside `vi`: Type `/LogLevel` and press Enter.\n\n4. **Confirm Compliance:**\n   - If the LogLevel is set correctly to `INFO` or `VERBOSE`, the configuration is compliant.\n   - If not set or set to a different value like `DEBUG`, update the configuration to an appropriate level, then save and exit the file.\n\n5. **Restart SSH Service:**\n   - For the changes to take effect, restart the SSH service.\n   - Command: `sudo systemctl restart sshd`\n\nBy following these manual steps, you ensure that the SSH LogLevel on Container-Optimized OS instances complies with the CIS benchmark requirements.",
+    "timestamp": "2025-10-28T21:32:56.726566",
+    "model": "gpt-4o"
+}

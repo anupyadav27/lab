@@ -1,0 +1,17 @@
+{
+    "id": "1.1.2.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "1.1.2.2",
+        "unique_id": "1.1.2.2__ensure-nodev-option-set-on-/tmp-partition",
+        "title": "Ensure nodev option set on /tmp partition",
+        "description": "The nodev mount option specifies that the filesystem cannot contain special devices.",
+        "rationale": "Since the /tmp filesystem is not intended to support devices, set this option to ensure that users cannot create a block or character special devices in /tmp.",
+        "audit": "Verify that the nodev option is set for the /tmp mount. Run the following command to verify that the nodev mount option is set. Example: # findmnt -kn /tmp | grep nodev /tmp   tmpfs  tmpfs  rw,nosuid,nodev,noexec,relatime,seclabel",
+        "remediation": "Edit the /etc/fstab file and add nodev to the fourth field (mounting options) for the /tmp partition. Example: <device> /tmp    <fstype>     defaults,rw,nosuid,nodev,noexec,relatime  0 0 Run the following command to remount /tmp with the configured options: # mount -o remount /tmp References: 1. See the fstab(5) manual page for more information.",
+        "impact": "",
+        "reference": "1. See the fstab(5) manual page for more information.",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **SSH into the Node:**\n   - Access the Azure Kubernetes Service (AKS) node where the pod is running using SSH.\n   - Use the command: `az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>`\n   - Retrieve the node's SSH IP and log in using a method like `ssh <user>@<node-ip>`.\n\n2. **Verify the /tmp Mount Options:**\n   - Run the command: `findmnt -kn /tmp`\n   - This command will list the mount options for the /tmp directory.\n\n3. **Check for 'nodev' in the Output:**\n   - Validate that the output includes ‘nodev’ as one of the mount options.\n   - Example output should look like: `/tmp   tmpfs  tmpfs  rw,nosuid,nodev,noexec,relatime,seclabel`\n\n4. **Expected Secure Configuration:**\n   - Ensure that the output includes the ‘nodev’ designation confirming that the nodev option is set for /tmp.\n\n5. **Confirm Compliance:**\n   - If ‘nodev’ is present, the control is compliant.\n   - If ‘nodev’ is not present, report a compliance failure and proceed with remediation actions as necessary."
+}

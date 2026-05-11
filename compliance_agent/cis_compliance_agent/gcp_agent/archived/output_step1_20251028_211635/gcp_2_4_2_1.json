@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.1",
+    "unique_id": "gcp_2_4_2_1",
+    "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+    "title": "Ensure that the cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces.",
+    "input_row": {
+        "id": "4.2.1",
+        "unique_id": "gcp_2_4_2_1",
+        "source": "CIS GOOGLE KUBERNETES ENGINE (GKE) BENCHMARK V1.7.0 PDF",
+        "title": "Ensure that the cluster enforces Pod Security Standard Baseline profile or stricter for all namespaces.",
+        "description": "The Pod Security Standard Baseline profile defines a baseline for container security. You can enforce this by using the built-in Pod Security Admission controller.",
+        "rationale": "Without an active mechanism to enforce the Pod Security Standard Baseline profile, it is not possible to limit the use of containers with access to underlying cluster nodes, via mechanisms like privileged containers, or the use of hostPath volume mounts. Impact: Enforcing a baseline profile will limit the use of containers.",
+        "audit": "diff <(kubectl get namespace -l pod-security.kubernetes.io/enforce=baseline -o jsonpath='{range .items[ ]}{.metadata.name}{\"\\n\"}') <(kubectl get namespace -o jsonpath='{range .items[ ]}{.metadata.name}{\"\\n\"}')",
+        "remediation": "Ensure that Pod Security Admission is in place for every namespace which contains user workloads. Run the following command to enforce the Baseline profile in a namespace: kubectl label namespace pod-security.kubernetes.io/enforce=baseline Default Value: By default, Pod Security Admission is enabled but no policies are in place.",
+        "profile_applicability": "•  Level 1",
+        "impact": "Enforcing a baseline profile will limit the use of containers.",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThis control focuses on ensuring a standard security profile is enforced across Kubernetes namespaces. The audit process utilizes Kubernetes commands via `kubectl`, which is API-based and can be automated using scripting and integration with CI/CD pipelines in conjunction with GKE's APIs.\n\n**PROGRAM NAME:** gcp_gke_cluster_pod_security_standard_profile_enforced\n\n**AUTOMATION DETAILS:**\n- Use `kubectl` in combination with Google Cloud SDK (gcloud) to automate the audit process.\n- Execute the following command to list namespaces that have the baseline enforcement label:\n  ```bash\n  kubectl get namespace -l 'pod-security.kubernetes.io/enforce=baseline' -o jsonpath='{range .items[*]}{.metadata.name}{\"\\n\"}{end}'\n  ```\n- Compare the output of the above command with the list of all namespaces:\n  ```bash\n  kubectl get namespace -o jsonpath='{range .items[*]}{.metadata.name}{\"\\n\"}{end}'\n  ```\n- Ensure all namespaces required have the enforcement label for the baseline profile.\n- Use GCP CLI or Google Cloud API methods to further validate if the Pod Security Admission controller is enabled at the GKE cluster level.\n- Pass criteria: All namespaces with user workload should contain the label `pod-security.kubernetes.io/enforce=baseline`.\n- Continuous monitoring can be set up using GCP logging and alerts to notify of any namespace not adhering to the defined Pod Security Standard Baseline profile.",
+    "timestamp": "2025-10-28T21:55:06.121463",
+    "model": "gpt-4o"
+}

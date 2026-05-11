@@ -1,0 +1,17 @@
+{
+    "id": "4.6.3",
+    "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json",
+    "input_row": {
+        "id": "4.6.3",
+        "unique_id": "aks_4.6.3__the-default-namespace-should-not-be-used",
+        "title": "The default namespace should not be used",
+        "description": "Kubernetes provides a default namespace, where objects are placed if no namespace is specified for them. Placing objects in this namespace makes application of RBAC and other controls more difficult.",
+        "rationale": "Resources in a Kubernetes cluster should be segregated by namespace, to allow for security controls to be applied at that level and to make it easier to manage resources. Impact: None",
+        "audit": "Run this command to list objects in default namespace kubectl get all -n default The only entries there should be system managed resources such as the kubernetes service",
+        "remediation": "Ensure that namespaces are created to allow for appropriate segregation of Kubernetes resources and that all new resources are created in a specific namespace. Default Value: Unless a namespace is specific on object creation, the default namespace will be used References: 1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- posture-vulnerability-management#pv-3-establish-secure-configurations-for- compute-resources",
+        "impact": "None",
+        "reference": "1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- posture-vulnerability-management#pv-3-establish-secure-configurations-for- compute-resources",
+        "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The audit mentions a direct Kubernetes command (`kubectl get all -n default`) to identify resources in the default namespace.\n- This command can be mimicked using Azure's APIs or Azure CLI to query the namespaces and the resources within them, indicating that the audit can be automated.\n- The rationale discusses the importance of using specific namespaces for managing RBAC and other security controls, which can be validated through API checks.\n\n**PROGRAM NAME:** azure_aks_namespace_segregation_verified\n\n**AUTOMATION DETAILS:**\n- The automated program would check the namespaced resources within the Azure Kubernetes Service (AKS) clusters.\n- The Azure CLI command to check the namespaces and resources within each namespace:\n  ```bash\n  az aks get-credentials --resource-group <resource-group-name> --name <aks-cluster-name>\n  kubectl get all --all-namespaces\n  ```\n- The specific namespaces should be enumerated, focusing particularly on identifying any resources listed in the 'default' namespace.\n- Pass/Fail criteria:\n  - **Pass:** Only system managed resources (e.g., `kube-system`) are present in the default namespace.\n  - **Fail:** Any user-created resources are found in the default namespace.\n- Example API endpoint or command: The command to execute in the shell after logging in and obtaining credentials is above, which lists all resources across all namespaces. The results can be processed to check which resources are incorrectly placed in the default namespace."
+}

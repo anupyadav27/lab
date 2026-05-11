@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.16",
+    "unique_id": "k8s_1_1_1_16",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the scheduler.conf file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.16",
+        "unique_id": "k8s_1_1_1_16",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the scheduler.conf file ownership is set to root:root",
+        "description": "Ensure that the scheduler.conf file ownership is set to root:root.",
+        "rationale": "The scheduler.conf file is the kubeconfig file for the Scheduler. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G /etc/kubernetes/scheduler.conf Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root /etc/kubernetes/scheduler.conf Default Value: By default, scheduler.conf file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kubeadm/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kubeadm/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the file ownership of /etc/kubernetes/scheduler.conf on the control plane node.\n- This property (file ownership on the host OS) is not exposed via the Kubernetes API, kubectl, or any Kubernetes resource or configuration that can be queried remotely.\n- The audit procedure explicitly requires running a Linux stat or ls command on the node’s filesystem, which is not accessible via Kubernetes APIs.\n- Therefore, this check requires direct OS-level access (SSH or console) to the node.\n\n**MANUAL STEPS:**\n1. Log in to the Kubernetes control plane node (master node) via SSH or console access.\n2. Run the following command to check the ownership of the scheduler.conf file (adjust the path if your cluster uses a non-default location):\n   ```\n   stat -c %U:%G /etc/kubernetes/scheduler.conf\n   ```\n   or\n   ```\n   ls -l /etc/kubernetes/scheduler.conf\n   ```\n3. Verify that the output shows the file is owned by user root and group root (i.e., root:root).\n4. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/scheduler.conf\n   ```\n5. Confirm compliance by re-running the stat or ls command and ensuring the ownership is now root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T19:52:35.839864",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,17 @@
+{
+    "id": "2.2.9",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.9",
+        "unique_id": "2.2.9__ensure-a-tftp-server-is-not-installed",
+        "title": "Ensure a tftp server is not installed",
+        "description": "Trivial File Transfer Protocol (TFTP) is a simple protocol for exchanging files between two TCP/IP machines. TFTP servers allow connections from a TFTP Client for sending and receiving files.",
+        "rationale": "Unless there is a need to run the system as a TFTP server, it is recommended that the package be removed to reduce the potential attack surface. TFTP does not have built-in encryption, access control or authentication. This makes it very easy for an attacker to exploit TFTP to gain access to files Impact: TFTP is often used to provide files for network booting such as for PXE based installation of servers.",
+        "audit": "Run the following command to verify tftp-server is not installed: # rpm -q tftp-server package tftp-server is not installed",
+        "remediation": "Run the following command to remove tftp-server: # dnf remove tftp-server References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "TFTP is often used to provide files for network booting such as for PXE based installation of servers.",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure Portal**: Log in to the Azure portal (https://portal.azure.com).\n2. **Navigate to Azure Kubernetes Service (AKS)**: Go to the \"Kubernetes services\" section from the Azure services list.\n3. **Select the Desired AKS Cluster**: Click on the name of the AKS cluster you want to audit.\n4. **Open Cloud Shell or Command Line**: You can use Azure CLI in Cloud Shell or on your local command line if Azure CLI is installed and configured.\n5. **Connect to the AKS Cluster**: Use the command `az aks get-credentials --resource-group <your_resource_group> --name <your_cluster_name>` to connect to your AKS cluster.\n6. **SSH into the AKS Nodes**: Use the `ssh` command to access the AKS nodes. You might need the node's IP address and SSH key or password.\n7. **Check for TFTP Server Installation**: Run the command `rpm -q tftp-server` on each node to verify if the TFTP server is installed.\n8. **What to Verify**: You are looking for the output of the command. If the command returns `package tftp-server is not installed`, it indicates compliance.\n9. **Expected Secure Configuration**: The TFTP server package should not be installed on any node to minimize potential security risks.\n10. **How to Confirm Compliance**: If the output from step 7 confirms that the TFTP server is not installed on all nodes, document this as compliant. If it is found installed on any node, it should be reported as a compliance failure."
+}

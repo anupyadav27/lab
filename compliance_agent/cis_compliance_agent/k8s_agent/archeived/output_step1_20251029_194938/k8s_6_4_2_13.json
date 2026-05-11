@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.13",
+    "unique_id": "k8s_6_4_2_13",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that a limit is set on pod PIDs",
+    "input_row": {
+        "id": "4.2.13",
+        "unique_id": "k8s_6_4_2_13",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that a limit is set on pod PIDs",
+        "description": "Ensure that the Kubelet sets limits on the number of PIDs that can be created by pods running on the node.",
+        "rationale": "By default pods running in a cluster can consume any number of PIDs, potentially exhausting the resources available on the node. Setting an appropriate limit reduces the risk of a denial of service attack on cluster nodes. Impact: Setting this value will restrict the number of processes per pod. If this limit is lower than the number of PIDs required by a pod it will not operate.",
+        "audit": "Review the Kubelet's start-up parameters for the value of --pod-max-pids, and check the Kubelet configuration file for the PodPidsLimit . If neither of these values is set, then there is no limit in place.",
+        "remediation": "Decide on an appropriate level for this parameter and set it, either via the --pod-max- pids command line parameter or the PodPidsLimit configuration file setting. Default Value: By default the number of PIDs is not limited. References: 1. https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits 5 Policies This section contains recommendations for various Kubernetes policies which are important to the security of the environment. 5.1 RBAC and Service Accounts",
+        "profile_applicability": "•  Level 1 - Worker Node •  Level 2 - Worker Node",
+        "impact": "Setting this value will restrict the number of processes per pod. If this limit is lower than the number of PIDs required by a pod it will not operate.",
+        "references": "1. https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits 5 Policies This section contains recommendations for various Kubernetes policies which are important to the security of the environment. 5.1 RBAC and Service Accounts"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_pod_pids_limit_configured\n\n**AUTOMATION DETAILS:**\n- Query the Kubelet configuration on each worker node to verify that a limit on pod PIDs is set.\n- Specifically, check for the presence and value of either:\n  - The --pod-max-pids command-line flag in the Kubelet process arguments, or\n  - The PodPidsLimit field in the Kubelet configuration file (typically /var/lib/kubelet/config.yaml).\n- Automated methods:\n  - For clusters with access to node configurations (such as via DaemonSet or SSH), inspect the running Kubelet process with:  \n    `ps -ef | grep kubelet`  \n    and look for the `--pod-max-pids` flag.\n  - Alternatively, retrieve and parse the Kubelet config file (commonly mounted at /var/lib/kubelet/config.yaml) and check for the `podPidsLimit` field.\n  - In managed Kubernetes environments (e.g., GKE, EKS, AKS), use provider-specific APIs or tooling to retrieve the Kubelet configuration if direct node access is restricted.\n- Pass Criteria:\n  - At least one of the following is true for every worker node:\n    - The Kubelet is started with the `--pod-max-pids` flag set to a value greater than 0.\n    - The Kubelet configuration file contains `podPidsLimit` set to a value greater than 0.\n- Fail Criteria:\n  - Neither the command-line flag nor the configuration file field is set, or both are set to 0 or omitted, meaning there is no limit in place.\n- Example check (for config file):\n  - `kubectl get nodes -o name | xargs -I{} kubectl debug {} --image=busybox -- chroot /host cat /var/lib/kubelet/config.yaml | grep podPidsLimit`\n  - Or, for process args (if accessible):  \n    `ps -ef | grep kubelet | grep -- --pod-max-pids`\n- The check must be performed on all worker nodes to ensure cluster-wide compliance.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:14:14.895358",
+    "model": "gpt-4.1"
+}

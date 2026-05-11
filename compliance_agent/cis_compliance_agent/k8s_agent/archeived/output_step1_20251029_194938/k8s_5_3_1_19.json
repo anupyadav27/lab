@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.19",
+    "unique_id": "k8s_5_3_1_19",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate",
+    "input_row": {
+        "id": "3.1.19",
+        "unique_id": "k8s_5_3_1_19",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate",
+        "description": "Setup TLS connection on the federation API server.",
+        "rationale": "Federation API server communication contains sensitive parameters that should remain encrypted in transit. Configure the federation API server to serve only HTTPS traffic.",
+        "audit": "Run the following command: ps -ef | grep federation-apiserver Verify that the --tls-cert-file and --tls-private-key-file arguments exist and they are set as appropriate.",
+        "remediation": "Follow the Kubernetes documentation and set up the TLS connection on the federation apiserver. Then, edit the deployment specs and set \"--tls-cert-file=<path/to/tls- certificate-file>\" and \"--tls-private-key-file=<path/to/tls-key-file>\": kubectl edit deployments federation-apiserver-deployment -- namespace=federation-system Impact: TLS and client certificate authentication must be configured for your Kubernetes cluster deployment. Default Value: By default, --tls-cert-file and --tls-private-key-file arguments are not set. If HTTPS serving is enabled, and --tls-cert-file and --tls-private-key-file are not provided, a self-signed certificate and key are generated for the public address and saved to /var/run/kubernetes.  221 | P a g e References: 1. https://kubernetes.io/docs/admin/federation-apiserver 2. http://rootsquash.com/2016/05/10/securing-the-kubernetes-api/ 3. https://github.com/kelseyhightower/docker-kubernetes-tls-guide 4. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 5. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "profile_applicability": "•  Level 1",
+        "impact": "TLS and client certificate authentication must be configured for your Kubernetes cluster deployment. Default Value: By default, --tls-cert-file and --tls-private-key-file arguments are not set. If HTTPS serving is enabled, and --tls-cert-file and --tls-private-key-file are not provided, a self-signed certificate and key are generated for the public address and saved to /var/run/kubernetes.  221 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/federation-apiserver 2. http://rootsquash.com/2016/05/10/securing-the-kubernetes-api/ 3. https://github.com/kelseyhightower/docker-kubernetes-tls-guide 4. https://github.com/kubernetes/kubernetes/blob/master/federation/manifests/fe deration-apiserver-deployment.yaml 5. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_federation_apiserver_tls_cert_and_key_configured\n\n**AUTOMATION DETAILS:**\n- Query the Kubernetes API for the Deployment (or Pod, if not managed by a Deployment) running the federation-apiserver in the federation-system namespace.\n- Use the following kubectl command to retrieve the deployment spec:\n  ```\n  kubectl get deployment federation-apiserver-deployment -n federation-system -o json\n  ```\n- Inspect the `.spec.template.spec.containers[].command` or `.spec.template.spec.containers[].args` fields for the federation-apiserver container.\n- Validate that both `--tls-cert-file=<path>` and `--tls-private-key-file=<path>` arguments are present and set to non-empty values.\n- Pass Criteria: Both `--tls-cert-file` and `--tls-private-key-file` arguments are explicitly set for the federation-apiserver container.\n- Fail Criteria: Either argument is missing or set to an empty value, or not present in the container spec.\n- This check can be performed programmatically by parsing the deployment spec and searching for the required flags in the container's command/args.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:57:07.872748",
+    "model": "gpt-4.1"
+}

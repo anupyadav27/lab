@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_restrict_public_ip_access",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled"
+  ],
+  "changes_made": [
+    "Changed k8s_networkpolicy_restrict_public_ip_access to k8s_networkpolicy_no_public_ip_access for clarity"
+  ],
+  "review_notes": "The functions generally align with the control's focus on securing remote access in Kubernetes. However, the function name 'k8s_networkpolicy_restrict_public_ip_access' was slightly ambiguous and has been refined for clarity. The other functions are well-named and accurately map to Kubernetes security controls related to remote access.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider using 'no_public_ip_access' instead of 'restrict_public_ip_access' for clearer indication of the check's intent"
+  ],
+  "control_id": "CCCS AC-17",
+  "title": "CCCS AC-17: Remote Access",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_restrict_public_ip_access",
+    "k8s_service_type_loadbalancer_restricted",
+    "k8s_ingress_tls_enabled"
+  ],
+  "step1_reasoning": "The control CCCS AC-17 focuses on remote access, which in a Kubernetes context translates to ensuring that network access is properly restricted and secured. This involves setting up NetworkPolicies to deny ingress by default, restricting services from being exposed to the public internet via LoadBalancer without proper controls, and ensuring that any ingress traffic is secured with TLS. These measures align with the intent of preventing unauthorized remote access to Kubernetes resources."
+}

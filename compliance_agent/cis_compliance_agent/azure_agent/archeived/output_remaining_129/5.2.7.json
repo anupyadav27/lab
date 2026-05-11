@@ -1,0 +1,17 @@
+{
+    "id": "5.2.7",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.2.7",
+        "unique_id": "aks_5.2.7__ensure-ssh-root-login-is-disabled",
+        "title": "Ensure SSH root login is disabled",
+        "description": "The PermitRootLogin parameter specifies if the root user can log in using SSH. The default is prohibit-password.",
+        "rationale": "Disallowing root logins over SSH requires system admins to authenticate using their own individual account, then escalating to root. This limits opportunity for non- repudiation and provides a clear audit trail in the event of a security incident.",
+        "audit": "Run the following command: # sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep permitrootlogin Verify the output matches: permitrootlogin no Run the following command: # grep -Pis '^\\h*PermitRootLogin\\h+\"?(yes|prohibit-password|forced-commands- only)\"?\\b' /etc/ssh/sshd_config /etc/ssh/ssh_config.d/*.conf Nothing should be returned. Note: If Include locations besides, or in addition to /etc/ssh/sshd_config.d/*.conf and/or Match set statements are used in your environment, those locations should be checked for the correct configuration as well.",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter above any Include entries as follows: PermitRootLogin no Note: First occurrence of a option takes precedence, Match set statements withstanding. If Include locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a file in Include location. Default Value: PermitRootLogin without-password References: 1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: AC-6",
+        "impact": "",
+        "reference": "1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: AC-6",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Connect via SSH**: Use an SSH client to connect to the Azure Linux virtual machine where the Kubernetes node is running.\n   - Command: `ssh <username>@<vm-ip-address>`\n\n2. **Check SSH Configuration**: Run the command to view the SSH configuration.\n   - Command: `sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep permitrootlogin`\n\n3. **Verify Output**: Ensure the output indicates `permitrootlogin no`. If it shows any other value (e.g., yes, prohibit-password), it means root login is allowed.\n\n4. **Check Configuration Files**: Examine the SSHD configuration files for the `PermitRootLogin` directive.\n   - Command: `grep -Pis '^\\h*PermitRootLogin\\h+\\\"?(yes|prohibit-password|forced-commands-only)\\\"?\\b' /etc/ssh/sshd_config /etc/ssh/ssh_config.d/*.conf`\n   \n5. **Validate No Output**: Ensure that nothing is returned from the above command, which implies that the configurations are secure.\n\n6. **Expected Secure Configuration**: The `PermitRootLogin` parameter should be set to `no` in the sshd_config file.\n\n7. **Confirm Compliance**: If root login is disabled and there are no conflicting settings in the SSH configuration files, you can confirm compliance with this control."
+}

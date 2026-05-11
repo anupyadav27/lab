@@ -1,0 +1,22 @@
+{
+    "control_id": "2.3",
+    "unique_id": "k8s_1_2_3",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the --auto-tls argument is not set to true",
+    "input_row": {
+        "id": "2.3",
+        "unique_id": "k8s_1_2_3",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the --auto-tls argument is not set to true",
+        "description": "Do not use self-signed certificates for TLS.",
+        "rationale": "etcd is a highly-available key value store used by Kubernetes deployments for persistent storage of all of its REST API objects. These objects are sensitive in nature and should not be available to unauthenticated clients. You should enable the client authentication via valid certificates to secure the access to the etcd service. Impact: Clients will not be able to use self-signed certificates for TLS.",
+        "audit": "Run the following command on the etcd server node: ps -ef | grep etcd Verify that if the --auto-tls argument exists, it is not set to true.",
+        "remediation": "Edit the etcd pod specification file /etc/kubernetes/manifests/etcd.yaml on the master node and either remove the --auto-tls parameter or set it to false. --auto-tls=false Default Value: By default, --auto-tls is set to false. References: 1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#auto-tls",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Clients will not be able to use self-signed certificates for TLS.",
+        "references": "1. https://coreos.com/etcd/docs/latest/op-guide/security.html 2. https://kubernetes.io/docs/admin/etcd/ 3. https://coreos.com/etcd/docs/latest/op-guide/configuration.html#auto-tls"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_etcd_auto_tls_disabled\n\n**AUTOMATION DETAILS:**\n- Query the etcd Pod specification running on the control plane node(s), typically located at `/etc/kubernetes/manifests/etcd.yaml`, which is managed as a static Pod by the kubelet.\n- Use `kubectl` to retrieve the etcd Pod spec:\n  - `kubectl -n kube-system get pod -l component=etcd -o yaml`\n  - Or, if running as a static Pod and not managed by the kubelet API, directly inspect the manifest file on the node (requires host access, but the Pod spec is visible via the Kubernetes API if mirrored).\n- Parse the container command/args for the etcd process:\n  - Look for the presence of the `--auto-tls` flag.\n  - If present, ensure its value is set to `false`.\n  - If absent, this is compliant (default is `false`).\n- Pass Criteria: The etcd container command/args do NOT include `--auto-tls=true`.\n- Fail Criteria: The etcd container command/args include `--auto-tls=true`.\n- Example check using `kubectl`:\n  ```\n  kubectl -n kube-system get pod -l component=etcd -o jsonpath=\"{.items[*].spec.containers[*].command}\"\n  ```\n  or\n  ```\n  kubectl -n kube-system get pod -l component=etcd -o jsonpath=\"{.items[*].spec.containers[*].args}\"\n  ```\n  Then, programmatically search for `--auto-tls=true`.\n- This check is fully automatable as the etcd Pod spec and its arguments are exposed via the Kubernetes API.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:01:08.228601",
+    "model": "gpt-4.1"
+}

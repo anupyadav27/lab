@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.9",
+    "unique_id": "k8s_5_1_1_9",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --profiling argument is set to false",
+    "input_row": {
+        "id": "1.1.9",
+        "unique_id": "k8s_5_1_1_9",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --profiling argument is set to false",
+        "description": "Disable profiling, if not needed.",
+        "rationale": "Profiling allows for the identification of specific performance bottlenecks. It generates a significant amount of program data that could potentially be exploited to uncover system and program details. If you are not experiencing any bottlenecks and do not need the profiler for troubleshooting purposes, it is recommended to turn it off to reduce the potential attack surface.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --profiling argument is set to false.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_API_ARGS parameter to \"--profiling=false\": KUBE_API_ARGS=\"--profiling=false\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: Profiling information would not be available. Default Value: By default, profiling is enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/  29 | P a g e 2. https://github.com/kubernetes/community/blob/master/contributors/devel/profi ling.md",
+        "profile_applicability": "•  Level 1",
+        "impact": "Profiling information would not be available. Default Value: By default, profiling is enabled.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/  29 | P a g e 2. https://github.com/kubernetes/community/blob/master/contributors/devel/profi ling.md"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_profiling_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify the value of the `--profiling` flag.\n- In clusters using static pods (most modern Kubernetes distributions), retrieve the kube-apiserver Pod manifest, typically located in `/etc/kubernetes/manifests/kube-apiserver.yaml`, by running:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o yaml\n  ```\n- Inspect the `command` or `args` section of the kube-apiserver container spec for the presence of `--profiling=false`.\n- Alternatively, for clusters managed by a higher-level controller (e.g., kubeadm, managed Kubernetes), check the corresponding configuration resource (e.g., kubeadm config map, API server deployment spec).\n- Pass Criteria: The kube-apiserver is configured with `--profiling=false` (either explicitly set or present in the args/command).\n- Fail Criteria: The `--profiling` flag is set to `true` or is absent (default is enabled).\n- Example check logic:\n  - For each kube-apiserver pod:\n    - Extract the container args/command.\n    - Confirm `--profiling=false` is present.\n    - If not present or set to true, flag as non-compliant.",
+    "timestamp": "2025-10-29T21:39:29.339733",
+    "model": "gpt-4.1"
+}

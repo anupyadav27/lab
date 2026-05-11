@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.1",
+    "unique_id": "gcp_1_6_2_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure password fields are not empty",
+    "input_row": {
+        "id": "6.2.1",
+        "unique_id": "gcp_1_6_2_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure password fields are not empty",
+        "description": "An account with an empty password field means that anybody may log in as that user without providing a password.",
+        "rationale": "All accounts must have passwords or be locked to prevent the account from being used by an unauthorized user.",
+        "audit": "Run the following command and verify that no output is returned: # awk -F: '($2 == \"\" ) { print $1 \" does not have a password \"}' /etc/shadow",
+        "remediation": "If any accounts in the /etc/shadow file do not have a password, run the following command to lock the account until it can be determined why it does not have a password: # passwd -l <username> Also, check to see if the account is logged in and investigate what it is being used for to determine if it needs to be forced off.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control requires checking OS-level configurations related to user account password settings within the `/etc/shadow` file on a Google Container-Optimized OS instance. This operation necessitates SSH access to the instance to inspect and manage account configurations. Since this check involves interacting with OS-level configurations that are not exposed through GCP APIs or managed directly through the Google Cloud Console, it is best suited for a manual audit approach.\n\n**MANUAL STEPS:**\n\n1. **SSH Access**: Use SSH to access the Container-Optimized OS instance where the compliance needs to be verified.\n   - Command: `gcloud compute ssh <INSTANCE_NAME> --zone <ZONE>`\n\n2. **Check Password Fields**: Execute the following command to identify any accounts with empty password fields in the `/etc/shadow` file.\n   - Command: `awk -F: '($2 == \"\" ) { print $1 \" does not have a password \"}' /etc/shadow`\n   - **What to verify/validate**: Ensure that no user accounts are listed in the output, which would indicate that all accounts have passwords.\n\n3. **Expected Secure Configuration**: \n   - Expectation: No output should be returned from the command, confirming that no accounts have empty password fields.\n\n4. **Remediation Confirmation**: \n   - If any accounts appear in the output (indicating that they lack a password), use the following command to lock those accounts until further investigation:\n     - Command: `sudo passwd -l <username>`\n   - **Verification**: After remediation, re-run the check to confirm the account has been successfully locked or has a password set.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThis process requires manually accessing and inspecting configuration files at the OS level, which is not feasible through available GCP APIs, making a manual approach imperative.",
+    "timestamp": "2025-10-28T21:43:01.973841",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.13",
+    "unique_id": "k8s_3_4_2_13",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that a limit is set on pod PIDs",
+    "input_row": {
+        "id": "4.2.13",
+        "unique_id": "k8s_3_4_2_13",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that a limit is set on pod PIDs",
+        "description": "Ensure that the Kubelet sets limits on the number of PIDs that can be created by pods running on the node.",
+        "rationale": "By default pods running in a cluster can consume any number of PIDs, potentially exhausting the resources available on the node. Setting an appropriate limit reduces the risk of a denial of service attack on cluster nodes. Impact: Setting this value will restrict the number of processes per pod. If this limit is lower than the number of PIDs required by a pod it will not operate.",
+        "audit": "Review the Kubelet's start-up parameters for the value of --pod-max-pids, and check the Kubelet configuration file for the PodPidsLimit . If neither of these values is set, then there is no limit in place.",
+        "remediation": "Decide on an appropriate level for this parameter and set it, either via the --pod-max- pids command line parameter or the PodPidsLimit configuration file setting. Default Value: By default the number of PIDs is not limited. References: 1. https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits 4.3 kube-proxy Recommendations relating to the kube-proxy component.",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "Setting this value will restrict the number of processes per pod. If this limit is lower than the number of PIDs required by a pod it will not operate.",
+        "references": "1. https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits 4.3 kube-proxy Recommendations relating to the kube-proxy component."
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_pod_pids_limit_configured\n\n**AUTOMATION DETAILS:**\n- Query the Kubelet configuration on each worker node to verify that a limit is set for the maximum number of PIDs per pod.\n- Specifically, check for the presence and value of the following:\n  - The --pod-max-pids command-line flag in the Kubelet process arguments.\n  - The PodPidsLimit field in the Kubelet configuration file (typically /var/lib/kubelet/config.yaml).\n- Automation can be performed by:\n  - Using kubectl to identify the Kubelet configuration source for each node (e.g., via Node annotations or DaemonSet configuration if managed by a deployment tool).\n  - For clusters using the KubeletConfiguration API (dynamic config), retrieve the KubeletConfiguration object and check the podPidsLimit field.\n  - For clusters using static files, remotely access or collect the Kubelet config file from each node (requires node-level access or integration with configuration management).\n  - Alternatively, use tools like kube-bench or custom DaemonSets to collect and report the effective configuration.\n- Pass Criteria:\n  - At least one of the following is true for each Kubelet:\n    - --pod-max-pids is set to a value greater than 0.\n    - PodPidsLimit in the Kubelet configuration file is set to a value greater than 0.\n- Fail Criteria:\n  - Neither --pod-max-pids nor PodPidsLimit is set, or both are set to 0 or left unset (unlimited).\n- Example check (for dynamic Kubelet config):\n  - kubectl get kubeletconfig -A -o yaml | grep podPidsLimit\n- Example check (for static config via SSH or DaemonSet):\n  - grep podPidsLimit /var/lib/kubelet/config.yaml\n  - ps aux | grep kubelet | grep -- --pod-max-pids\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T21:01:07.375140",
+    "model": "gpt-4.1"
+}

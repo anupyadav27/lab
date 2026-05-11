@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.4",
+    "unique_id": "gcp_1_5_3_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure default user umask is 027 or more restrictive",
+    "input_row": {
+        "id": "5.3.4",
+        "unique_id": "gcp_1_5_3_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure default user umask is 027 or more restrictive",
+        "description": "The default umask determines the permissions of files created by users. The user creating the file has the discretion of making their files and directories readable by others via the chmod command. Users who wish to allow their files and directories to be readable by others by default may choose a different default umask by inserting the umask command into the standard shell configuration files ( .profile , .bashrc , etc.) in their home directories.",
+        "rationale": "Setting a very secure default value for umask ensures that users make a conscious choice about their file permissions. A default umask setting of 077 causes files and directories created by users to not be readable by any other user on the system. A umask of 027 would make files and directories readable by users in the same Unix group, while a umask of 022 would make files readable by every user on the system.",
+        "audit": "Run the following commands and verify all umask lines returned are 027 or more restrictive. # grep \"umask\" /etc/bash/bashrc umask 027 # grep \"umask\" /etc/profile /etc/profile.d/*.sh umask 027",
+        "remediation": "Edit the /etc/bash/bashrc, /etc/profile and /etc/profile.d/*.sh files (and the appropriate files for any other shell supported on your system) and add or edit any umask parameters as follows: umask 027 Additional Information: The audit and remediation in this recommendation apply to bash and shell. If other shells are supported on the system, it is recommended that their configuration files also are checked. Other methods of setting a default user umask exist however the shell configuration files are the last run and will override other settings if they exist therefor our recommendation is to configure in the shell configuration files. If other methods are in use in your environment they should be audited and the shell configs should be verified to not override.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control in question, \"Ensure default user umask is 027 or more restrictive,\" specifically refers to checking configuration files on the underlying operating system (OS) to verify the umask setting. This is an OS-level configuration related to file permission defaults, which requires access to the internal file system of the instance where Container Optimized OS is running. Given this requirement, it cannot be natively queried or modified via GCP APIs, Google Cloud SDK (gcloud), or GCP CLI commands. \n\nAs a consequence, the optimal audit approach is Manual because it requires inspecting specific configuration files on the operating system using SSH or equivalent access.\n\n**MANUAL STEPS:**\n1. **Gain SSH Access to the Instance:**\n   - Use SSH to log into the GCP instance running the Container Optimized OS. Ensure you have required permissions and access to perform this operation.\n\n2. **Check Default Umask Settings:**\n   - Execute the command `grep \"umask\" /etc/bash/bashrc` in the terminal.\n   - Verify that all umask lines returned are `027` or more restrictive.\n\n3. **Examine Additional Profile Files:**\n   - Execute the command `grep \"umask\" /etc/profile /etc/profile.d/*.sh`.\n   - Again, check that all umask lines are `027` or more restrictive.\n\n4. **Confirm Compliance:**\n   - Ensure that the umask values in all relevant files are set to `027` or stricter. If they are set to higher values like `022`, this would not be compliant.\n\n5. **Document Findings:**\n   - Record the current umask settings and any deviations from the required standard. Provide recommendations if the settings are more permissive than `027`.\n\nThis approach ensures a thorough validation of the umask settings at the operating system level, which is integral to maintaining secure file permission practices on the instance.",
+    "timestamp": "2025-10-28T21:39:49.929121",
+    "model": "gpt-4o"
+}

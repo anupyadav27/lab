@@ -1,0 +1,20 @@
+{
+    "id": "2.4.8",
+    "source": null,
+    "input_row": {
+        "id": "2.4.8",
+        "unique_id": "2.4.8__ensure-end-to-end-tls-encryption-is-enabled",
+        "title": "Ensure end-to-end TLS encryption is enabled",
+        "description": " run the following command t...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to enable end-to-end TLS encryption: az resource update --resource-group <resource-group-name> --name <function- app-name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" --set properties.endToEndEncryptionEnabled=true Default Value: By default, end-to-end TLS encryption is disabled. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-tls#end-to-end-tls- encryption 2. https://learn.microsoft.com/en-us/cli/azure/functionapp 3. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "Enabling end-to-end TLS encryption may introduce minimal latency and require additional configuration of certificates and HTTPS settings to ensure compatibility. Audit: Audit from Azure CLI Run the following command to list function apps: az functionapp list For each function app, run the following command to list deployment slots: az functionapp deployment slot list --resource-group <resource-group-name> -- name <function-app-name> For each deployment slot, ensure that endToEndEncryptionEnabled is set to true. Audit from Azure Policy If referencing a digital copy of this Benchmark, clicking a Policy ID will open a link to the associated Policy definition in Azure. If referencing a printed copy, you can search Policy IDs from this URL: https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Definitions • Policy ID: cbe0e5eb-fea9-491d-ab20-a62cf049c5ae - Name: 'Function app slots should enable end to end encryption'",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_functionapp_end_to_end_tls_encryption_enabled\n\n**AUTOMATION DETAILS:** \nThe automated program will check the following:\n\n1. **Enumeration of Function Apps:**\n   - Use Azure CLI command to list all Function Apps within specified resource groups:\n     ```bash\n     az functionapp list --query \"[].{name:name, resourceGroup:resourceGroup}\"\n     ```\n\n2. **List Deployment Slots:**\n   - For each Function App identified, list the deployment slots using:\n     ```bash\n     az functionapp deployment slot list --resource-group <resource-group-name> --name <function-app-name>\n     ```\n\n3. **Validation of TLS Encryption Setting:**\n   - For each deployment slot, check the property `endToEndEncryptionEnabled`:\n     - Example API/CLI command to check the property:\n       ```bash\n       az functionapp deployment slot show --resource-group <resource-group-name> --name <function-app-name> --slot <deployment-slot-name> --query \"properties.endToEndEncryptionEnabled\"\n       ```\n\n4. **Pass/Fail Criteria:**\n   - **Pass:** The property `endToEndEncryptionEnabled` must be `true`.\n   - **Fail:** If the property is `false` or not set.\n\nThis program will automate the compliance check for the end-to-end TLS encryption setting on Azure Function Apps and their deployment slots. The results of each evaluation can be logged and reported for compliance verification."
+}

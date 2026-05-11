@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.5",
+    "unique_id": "gcp_1_6_2_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure root is the only UID 0 account",
+    "input_row": {
+        "id": "6.2.5",
+        "unique_id": "gcp_1_6_2_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure root is the only UID 0 account",
+        "description": "Any account with UID 0 has superuser privileges on the system.",
+        "rationale": "This access must be limited to only the default root account and only from the system console. Administrative access must be through an unprivileged account using an approved mechanism as noted in Item 5.6 Ensure access to the su command is restricted.",
+        "audit": "Run the following command and verify that only \"root\" is returned: # awk -F: '($3 == 0) { print $1 }' /etc/passwd root",
+        "remediation": "Remove any users other than root with UID 0 or assign them a new UID if appropriate.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control \"Ensure root is the only UID 0 account\" requires verification of user accounts configuration on the operating system level within instances running Container-Optimized OS. This check involves examining the contents of the `/etc/passwd` file to determine user account details, specifically looking for accounts with UID 0. This is not a property exposed through GCP APIs or the Google Cloud SDK (gcloud) commands, as it pertains to OS-level configuration on individual compute instances. Therefore, it necessitates SSH access to each instance to manually execute the specified command and review the output. This aligns with situations that require human judgment and are not accessible through automated cloud service APIs.\n\n**MANUAL STEPS:**\n1. **Access the Instance:**\n   - Use SSH to connect to the GCP instance running Container-Optimized OS.\n   - Command: `gcloud compute ssh [INSTANCE_NAME] --zone [ZONE]`\n\n2. **Execute the UID Check:**\n   - Run the following command to list accounts with UID 0:  \n     `awk -F: '($3 == 0) { print $1 }' /etc/passwd`\n\n3. **Verification:**\n   - Verify that the output of the command is \"root\" only.\n   - If any other usernames are listed with UID 0, it indicates non-compliance.\n\n4. **Expected Secure Configuration:**\n   - Compliance is confirmed if only the \"root\" account is returned.\n\n5. **Confirm Compliance:**\n   - Document any deviations or non-compliance findings and take steps to remediate by removing unauthorized UID 0 accounts or changing their UID.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nSince this is an OS-level control requiring inspection and possible modification of the `/etc/passwd` file directly on the instances, it does not lend itself to automation via GCP APIs or cloud SDKs, which are designed to manage and report on cloud service configurations rather than internal OS user account details.",
+    "timestamp": "2025-10-28T21:43:57.526135",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.18",
+    "unique_id": "k8s_2_1_2_18",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate",
+    "input_row": {
+        "id": "1.2.18",
+        "unique_id": "k8s_2_1_2_18",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate",
+        "description": "Retain 10 or an appropriate number of old log files.",
+        "rationale": "Kubernetes automatically rotates the log files. Retaining old log files ensures that you would have sufficient log data available for carrying out any investigation or correlation. For example, if you have set file size of 100 MB and the number of old log files to keep as 10, you would approximate have 1 GB of log data that you could potentially use for your analysis. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --audit-log-maxbackup argument is set to 10 or as appropriate.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --audit-log-maxbackup parameter to 10 or to an appropriate value. --audit-log-maxbackup=10 Default Value: By default, auditing is not enabled. References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/ 3. https://github.com/kubernetes/enhancements/issues/22",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube- apiserver/ 2. https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/ 3. https://github.com/kubernetes/enhancements/issues/22"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_maxbackup_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification, typically located in the static Pod manifest at `/etc/kubernetes/manifests/kube-apiserver.yaml`, or via the Kubernetes API if the control plane is self-hosted.\n- Use the following command to retrieve the current configuration:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n  Or, if using static Pods (most common), inspect the manifest file directly:\n  ```\n  cat /etc/kubernetes/manifests/kube-apiserver.yaml\n  ```\n- Parse the command line arguments for the presence and value of `--audit-log-maxbackup`.\n- Validate that the `--audit-log-maxbackup` flag is set and its value is `10` or another organization-approved value.\n- **Pass Criteria:** The `--audit-log-maxbackup` flag is present and set to `10` or a documented, justified value.\n- **Fail Criteria:** The flag is missing, or set to a value less than `10`, or not aligned with organizational retention policy.\n- This check can be fully automated by parsing the kube-apiserver container arguments via the Kubernetes API or by reading the static Pod manifest file.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:21:25.308726",
+    "model": "gpt-4.1"
+}

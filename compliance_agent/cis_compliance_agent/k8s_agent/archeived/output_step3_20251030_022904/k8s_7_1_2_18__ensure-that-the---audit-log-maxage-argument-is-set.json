@@ -1,0 +1,33 @@
+{
+    "control_id": "1.2.18",
+    "unique_id": "k8s_7_1_2_18",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+    "input_row": {
+        "id": "1.2.18",
+        "unique_id": "k8s_7_1_2_18",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate",
+        "description": "Retain the logs for at least 30 days or as appropriate.",
+        "rationale": "Retaining logs for at least 30 days ensures that you can go back in time and investigate or correlate any events. Set your audit log retention period to 30 days or as per your business requirements. Impact: None",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --audit-log-maxage argument is set to 30 or as appropriate.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --audit-log-maxage parameter to 30 or as an appropriate number of days: --audit-log-maxage=30 Default Value: By default, auditing is not enabled. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/concepts/cluster-administration/audit/ 3. https://github.com/kubernetes/features/issues/22"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_audit_log_maxage_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification on all control plane nodes. This is typically located at `/etc/kubernetes/manifests/kube-apiserver.yaml` and is managed as a static Pod by the kubelet.\n- Use `kubectl` to retrieve the current configuration:\n  - Command: `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml`\n  - Alternatively, directly inspect the static Pod manifest file if accessible.\n- Parse the `command` or `args` section of the kube-apiserver container specification to locate the `--audit-log-maxage` flag.\n- Validate that the `--audit-log-maxage` flag is present and set to `30` or a value appropriate to organizational policy (minimum 30 recommended by CIS).\n- **Pass Criteria:** The kube-apiserver is running with the `--audit-log-maxage` flag set to `30` or greater.\n- **Fail Criteria:** The flag is missing, or set to a value less than `30`, or auditing is not enabled.\n- If multiple control plane nodes exist, repeat the check for each to ensure consistency.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:28:02.163454",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this audit as Automated is correct. The check can be performed using Kubernetes APIs and the `kubectl` CLI, which aligns with the automated approach.\n- The use of `kubectl` to retrieve the kube-apiserver configuration is appropriate for this task, as it allows for programmatic access to the necessary configuration details.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly correct. The use of `kubectl` to query the kube-apiserver Pod specification is valid, and parsing the `command` or `args` section for the `--audit-log-maxage` flag is a standard approach.\n- The command provided (`kubectl -n kube-system get pod -l component=kube-apiserver -o yaml`) is technically sound but might not directly show the static Pod manifest details. Instead, it shows the currently running Pod configuration, which may not always reflect the static Pod manifest.\n- The program name `k8s_api_server_audit_log_maxage_configured` is descriptive but could be more specific to include \"retention_period\" for clarity.\n\n**IMPROVEMENTS:**\n- It would be beneficial to include a step to directly access the static Pod manifest file (`/etc/kubernetes/manifests/kube-apiserver.yaml`) if possible, as this file contains the source configuration for the kube-apiserver.\n- Consider using `kubectl describe pod` to get a more detailed view of the running configuration, which might help in verifying if the static Pod manifest is being correctly applied.\n- The program name could be improved to `k8s_api_server_audit_log_retention_period_configured` to better reflect the specific check being performed.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-structured, and the use of Kubernetes APIs and CLI commands is appropriate for the task. The technical details are mostly accurate, and the approach is consistent with best practices.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the program name to `k8s_api_server_audit_log_retention_period_configured` for clarity. Consider adding a direct check of the static Pod manifest file to ensure the configuration is correctly set at the source.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T00:18:37.335813",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Automated\n\n**JUSTIFICATION:**\nBoth AI opinions agree that this compliance control can be automated using Kubernetes APIs and the `kubectl` CLI. The ability to query the kube-apiserver configuration programmatically supports an automated approach. The proposed program name is appropriate and descriptive, aligning with the requirement to check the `--audit-log-maxage` argument.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**PROGRAM NAME:** \nk8s_api_server_audit_log_maxage_configured\n\n**AUTOMATION DETAILS:**\n- Kubernetes Resource/Service: Pods\n- API/CLI Method: `kubectl`\n- Properties to Check: The `--audit-log-maxage` argument in the kube-apiserver container specification.\n- Pass Criteria: The `--audit-log-maxage` flag is set to `30` or a higher value as per organizational policy.\n- Fail Criteria: The flag is missing, set to a value less than `30`, or auditing is not enabled.",
+        "final_approach": "Automated",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T04:23:48.430523"
+    }
+}

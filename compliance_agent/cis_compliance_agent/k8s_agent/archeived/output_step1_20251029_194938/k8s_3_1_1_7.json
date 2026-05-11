@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.7",
+    "unique_id": "k8s_3_1_1_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Ensure that the etcd pod specification file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.7",
+        "unique_id": "k8s_3_1_1_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Ensure that the etcd pod specification file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the /etc/kubernetes/manifests/etcd.yaml file has permissions of 600 or more restrictive.",
+        "rationale": "The etcd pod specification file /etc/kubernetes/manifests/etcd.yaml controls various parameters that set the behavior of the etcd service in the master node. etcd is a highly-available key-value store which Kubernetes uses for persistent storage of all of its REST API object. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/manifests/etcd.yaml Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/manifests/etcd.yaml Default Value: By default, /etc/kubernetes/manifests/etcd.yaml file has permissions of 640. References: 1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://coreos.com/etcd 2. https://kubernetes.io/docs/admin/etcd/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires verification of the file permissions of /etc/kubernetes/manifests/etcd.yaml on the host filesystem.\n- Kubernetes APIs and kubectl do not expose host-level file permissions for manifest files.\n- The audit procedure explicitly requires running OS-level commands (e.g., stat) on the control plane node.\n- This check requires direct access to the node's filesystem, which is not available via Kubernetes APIs or kubectl.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where the etcd static pod is configured.\n2. Run the following command to check the permissions of the etcd manifest file:\n   ```\n   stat -c %a /etc/kubernetes/manifests/etcd.yaml\n   ```\n3. Verify that the output is 600 or more restrictive (e.g., 600, 400, 440, etc.).\n4. Confirm compliance: The file permissions must not allow group or other users to write or read the file beyond what is permitted for the owner (typically root). Only the owner should have read and write permissions.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T20:43:06.970752",
+    "model": "gpt-4.1"
+}

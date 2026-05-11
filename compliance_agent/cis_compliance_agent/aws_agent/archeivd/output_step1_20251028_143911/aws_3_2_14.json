@@ -1,0 +1,22 @@
+{
+    "control_id": "2.14",
+    "unique_id": "aws_3_2_14",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure WorkSpaces that are not being utilized are removed.",
+    "input_row": {
+        "id": "2.14",
+        "unique_id": "aws_3_2_14",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure WorkSpaces that are not being utilized are removed.",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Perform the following to remove unused WorkSpaces based on the output collected from the audit procedure From the Console: 1. Log in to WorkSpaces dashboard at https://console.aws.amazon.com/workspaces/. 2. In the left panel click WorkSpaces 3. Select the WorkSpace ID that you have identified as not being used. 4. Click Actions, Remove WorkSpaces 5. Confirm using the Audit that this is the WorkSpaces ID you should remove. 6. Click Remove WorkSpaces From the Command line: Note that running this command does not prompt you to confirm that you are removing the correct WorkSpaces ID. 1. Run terminate-workspaces command using the ID of the WorkSpaces instance from the Audit that you want to delete: aws workspaces terminate-workspaces --region us-east-1 --terminate-workspace-requests ws-0cgsl1k23 Default Value: By default, Workspaces are not deleted after a defined period of inactivity. References: 1. https://aws.amazon.com/workspaces/faqs/ 2. https://awscli.amazonaws.com/v2/documentation/api/latest/reference/workspace s/index.html#cli-aws-workspaces CIS Controls:",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control requires checking if WorkSpaces are being utilized, which can be assessed using AWS APIs. While the JSON input lacks specific auditing steps, the remediation and references indicate that AWS CLI and AWS APIs provide the necessary capabilities to query the status of each WorkSpace to determine utilization. The control does not require human judgment or visual inspection, as automated tools can verify usage.\n\n**PROGRAM NAME:** aws_workspaces_usage_check\n\n**AUTOMATION DETAILS:**\n- **API/CLI Usage:** Utilize the AWS SDK for Python (boto3) with the `workspaces` client to retrieve a list of WorkSpaces and their respective statuses.\n- **Key APIs:** Use `describe_workspaces()` to gather details on all WorkSpaces within an account or specific regions.\n- **Specific Configuration:** Check each WorkSpace `State` attribute; any WorkSpace with a state indicating \"AVAILABLE\" but shows inactivity or no recent connection attempts (historical usage patterns) might be considered unused.\n- **Pass/Fail Criteria:** \n  - **Pass:** All WorkSpaces show evidence of recent utilization or are in a \"STOPPED\" state if not actively used.\n  - **Fail:** Any WorkSpace is found in an \"AVAILABLE\" state with no recent activity or usage indicators.\n- **Recommendations:** Implement a strategy based on the AWS WorkSpaces billing thresholds (e.g., unused for a certain number of days) to automate the notification or termination process for unused WorkSpaces.\n\nThis automated approach enables regular checks of WorkSpace utilization status, allowing enterprises to ensure compliance with this CIS control by leveraging existing AWS tooling and best practices.",
+    "timestamp": "2025-10-28T15:17:22.362310",
+    "model": "gpt-4o"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.6.5",
+    "unique_id": "k8s_5_1_6_5",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Avoid using Kubernetes Secrets",
+    "input_row": {
+        "id": "1.6.5",
+        "unique_id": "k8s_5_1_6_5",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Avoid using Kubernetes Secrets",
+        "description": "Avoid using Kubernetes secret.",
+        "rationale": "Kubernetes objects of type secret are intended to hold sensitive information, such as passwords, OAuth tokens, and ssh keys. Its current implementation is very basic. It has plenty of risks as highlighted in the reference links including storing secrets as plaintext. Avoid using Kubernetes secrets until you have devised a mechanism to protect them using your own means.",
+        "audit": "Run the below command and review if there are any secret objects created in the cluster. kubectl get secrets Ensure that these secret objects are the ones you need and are adequately administered as per your requirements.",
+        "remediation": "Use other mechanisms such as vaults to manage your cluster secrets. Impact: You need to use other mechanisms for managing secrets in your cluster. Default Value: By default, Kubernetes automatically creates secrets which contain credentials for accessing the API and it automatically modifies your pods to use this type of secret. Please note that those default token secrets are automatically created and deleting them won't be of any use, because Kubernetes will just recreate them. References: 1. https://kubernetes.io/docs/concepts/configuration/secret/#risks 2. https://github.com/kubernetes/kubernetes/issues/10439  139 | P a g e 3. https://github.com/kubernetes/community/blob/master/contributors/design- proposals/secrets.md",
+        "profile_applicability": "•  Level 2",
+        "impact": "You need to use other mechanisms for managing secrets in your cluster. Default Value: By default, Kubernetes automatically creates secrets which contain credentials for accessing the API and it automatically modifies your pods to use this type of secret. Please note that those default token secrets are automatically created and deleting them won't be of any use, because Kubernetes will just recreate them.",
+        "references": "1. https://kubernetes.io/docs/concepts/configuration/secret/#risks 2. https://github.com/kubernetes/kubernetes/issues/10439  139 | P a g e 3. https://github.com/kubernetes/community/blob/master/contributors/design- proposals/secrets.md"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_secret_resource_presence_detected\n\n**AUTOMATION DETAILS:**\n- Use the Kubernetes API or kubectl to enumerate all Secret resources in all namespaces.\n- Command: kubectl get secrets --all-namespaces\n- For each Secret object, retrieve metadata (namespace, name, type).\n- Identify and list all Secret objects, including default service account tokens and user-created secrets.\n- Pass Criteria: No user-created Secret objects are present in the cluster (excluding default service account token secrets automatically created by Kubernetes).\n- Fail Criteria: Any user-created Secret objects are present in the cluster.\n- Note: Automated detection can enumerate all Secret resources, but distinguishing between default and user-created secrets may require checking the type field (e.g., kubernetes.io/service-account-token) and metadata.ownerReferences.\n- The program should output a list of all non-default Secret objects for further review.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:50:18.880429",
+    "model": "gpt-4.1"
+}

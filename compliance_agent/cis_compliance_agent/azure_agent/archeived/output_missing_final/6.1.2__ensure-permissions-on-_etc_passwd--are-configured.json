@@ -1,0 +1,17 @@
+{
+    "id": "6.1.2",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+    "input_row": {
+        "id": "6.1.2",
+        "unique_id": "6.1.2__ensure-permissions-on-/etc/passwd--are-configured",
+        "title": "Ensure permissions on /etc/passwd- are configured",
+        "description": " Uid is 0/root and ...\"",
+        "rationale": "The /etc/passwd- file contains backup user account information.",
+        "audit": "It is critical to ensure that the /etc/passwd- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command to verify /etc/passwd- is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd- /etc/passwd- 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/passwd-: # chmod u-x,go-wx /etc/passwd- # chown root:root /etc/passwd- Default Value: /etc/passwd- 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3. MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3. MP-2"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure portal:** Log in to the Azure portal and navigate to your virtual machine resource where you need to check the `/etc/passwd-` file.\n   \n2. **Connect to the virtual machine:** Use SSH to connect to the virtual machine. The command is typically: `ssh username@vm_public_ip`, replacing `username` and `vm_public_ip` with the appropriate values for your Azure VM.\n\n3. **Check permissions on the /etc/passwd- file:** Once connected to the virtual machine, run the following command in the terminal: `stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd-`. This command will display the permissions and ownership details of the `/etc/passwd-` file.\n\n4. **Verify the configuration:** Check the output to validate that:\n   - Permissions are set to `644` or more restrictive.\n   - User ID (Uid) is `0/root`.\n   - Group ID (Gid) is `0/root`.\n\n5. **Confirm compliance:** If the permissions and ownership match the expected secure configuration (permissions: `644`; Uid: `0/root`; Gid: `0/root`), the compliance requirement is met. If not, document the discrepancies for remediation.\n\n6. **Document findings:** Capture the output of the permission check and any discrepancies to include in your compliance report or audit documentation."
+}

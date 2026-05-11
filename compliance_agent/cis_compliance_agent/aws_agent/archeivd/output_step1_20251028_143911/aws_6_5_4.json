@@ -1,0 +1,22 @@
+{
+    "control_id": "5.4",
+    "unique_id": "aws_6_5_4",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure Automatic Updates and Patching are Enabled",
+    "input_row": {
+        "id": "5.4",
+        "unique_id": "aws_6_5_4",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure Automatic Updates and Patching are Enabled",
+        "description": "Enabling automatic updates and patching for Amazon ElastiCache ensures that your ElastiCache clusters run the latest software versions with important security fixes and enhancements.",
+        "rationale": "Automatic updates help the software be updated and address any vulnerabilities within the software that can help business with any potential exists that can impact the business and prevent any unauthorized access.",
+        "audit": "1. Sign in to the AWS Management Console • Sign in to the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the ElastiCache Console • Open the Amazon ElastiCache console by navigating to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/elasticache/. 3. Select the ElastiCache Cluster • Choose the ElastiCache cluster you want to enable automatic updates and patching. • Click on the cluster name to access its details page. 4. Enable Automatic Updates • Click on the Configuration tab on the cluster details page. • Scroll down to the Cluster details section. • Under Cluster maintenance and updates, click Modify. • In the Maintenance and updates dialog, find the Auto minor version upgrade option and select Enable. • Leave other settings unchanged or adjust them according to your requirements.  • Click Save to apply the changes. 5. Verify Automatic Updates Status • Wait for a few moments for the changes to take effect. • Refresh the cluster details page to see the updated configuration. • Verify that the \"Auto minor version upgrade\" setting is now enabled for the ElastiCache cluster.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control aims to ensure that Automatic Updates and Patching are enabled for Amazon ElastiCache clusters. This is a configuration setting within the ElastiCache service that can be queried via AWS APIs, using the boto3 SDK, or AWS CLI, thus making it possible to automate the audit. The setting specifically referred to is the \"Auto minor version upgrade\" which is a standard AWS service property that indicates whether the ElastiCache cluster will automatically upgrade to minor version upgrades. \n\n**PROGRAM NAME:** aws_elasticache_cluster_auto_minor_version_upgrade_enabled\n\n**AUTOMATION DETAILS:**\n- **AWS API Calls or boto3 SDK Methods to Use:**\n  - Use the `boto3` library to call the `describe_cache_clusters()` method.\n  \n- **AWS CLI Commands (if applicable):**\n  - `aws elasticache describe-cache-clusters --show-cache-node-info`\n\n- **Specific Resources to Enumerate:**\n  - Enumerate all ElastiCache clusters in the AWS account across all regions.\n\n- **Exact Configuration Properties/Settings to Validate:**\n  - For each cluster, check the `AutoMinorVersionUpgrade` property.\n\n- **Clear Pass/Fail Criteria with Expected Values:**\n  - **Pass:** If `AutoMinorVersionUpgrade` is set to `True` for the ElastiCache cluster.\n  - **Fail:** If `AutoMinorVersionUpgrade` is set to `False` for the ElastiCache cluster.\n\nBy implementing this automated approach, you ensure that all ElastiCache clusters have automatic updates enabled, thereby maintaining system security through up-to-date patching.",
+    "timestamp": "2025-10-28T15:54:30.425487",
+    "model": "gpt-4o"
+}

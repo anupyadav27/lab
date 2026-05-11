@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.2",
+    "unique_id": "k8s_4_1_2_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --token-auth-file parameter is not set",
+    "input_row": {
+        "id": "1.2.2",
+        "unique_id": "k8s_4_1_2_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --token-auth-file parameter is not set",
+        "description": "Do not use token based authentication.",
+        "rationale": "The token-based authentication utilizes static tokens to authenticate requests to the apiserver. The tokens are stored in clear-text in a file on the apiserver, and cannot be revoked or rotated without restarting the apiserver. Hence, do not use static token- based authentication. Impact: You will have to configure and use alternate authentication mechanisms such as certificates. Static token based authentication could not be used.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --token-auth-file argument does not exist. Alternative Audit Method kubectl get pod -nkube-system -lcomponent=kube-apiserver -o=jsonpath='{range .items[*]}{.spec.containers[*].command} {\"\\n\"}{end}' | grep '\\--token-auth- file' | grep -i false If the exit code is '1', then the control isn't present / failed",
+        "remediation": "Follow the documentation and configure alternate mechanisms for authentication. Then, edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the master node and remove the --token-auth- file=<filename> parameter. Default Value: By default, --token-auth-file argument is not set. References: 1. https://kubernetes.io/docs/admin/authentication/#static-token-file 2. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "You will have to configure and use alternate authentication mechanisms such as certificates. Static token based authentication could not be used.",
+        "references": "1. https://kubernetes.io/docs/admin/authentication/#static-token-file 2. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_token_auth_file_disabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver Pod specification in the kube-system namespace using the Kubernetes API or kubectl.\n- Use the following command to retrieve the command-line arguments for all kube-apiserver containers:\n  ```\n  kubectl get pod -n kube-system -l component=kube-apiserver -o=jsonpath='{range .items[*]}{.spec.containers[*].command}{\"\\n\"}{end}'\n  ```\n- Parse the output to check for the presence of the `--token-auth-file` flag.\n- Pass Criteria: The `--token-auth-file` argument is NOT present in any kube-apiserver container command.\n- Fail Criteria: The `--token-auth-file` argument IS present in any kube-apiserver container command.\n- This check can be fully automated as the kube-apiserver command-line arguments are exposed via the Kubernetes API and retrievable with kubectl.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:13:47.593599",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.2",
+    "unique_id": "k8s_2_1_1_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Ensure that the API server pod specification file ownership is set to root:root",
+    "input_row": {
+        "id": "1.1.2",
+        "unique_id": "k8s_2_1_1_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Ensure that the API server pod specification file ownership is set to root:root",
+        "description": "Ensure that the API server pod specification file ownership is set to root:root.",
+        "rationale": "The API server pod specification file controls various parameters that set the behavior of the API server. You should set its file ownership to maintain the integrity of the file. The file should be owned by root:root. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %U:%G /etc/kubernetes/manifests/kube-apiserver.yaml Verify that the ownership is set to root:root.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chown root:root /etc/kubernetes/manifests/kube-apiserver.yaml Default Value: By default, the kube-apiserver.yaml file ownership is set to root:root. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file ownership (user and group) of the kube-apiserver pod specification file on the host filesystem (e.g., /etc/kubernetes/manifests/kube-apiserver.yaml).\n- Kubernetes APIs and kubectl do not expose underlying host file ownership or permissions for manifest files.\n- The audit instructions explicitly require running OS-level commands (e.g., stat) on the control plane node, which is not possible via Kubernetes API or kubectl.\n- Therefore, this check requires in-guest OS access and cannot be automated via Kubernetes-native interfaces.\n\n**MANUAL STEPS:**\n1. SSH into the Kubernetes control plane node where the kube-apiserver is running.\n2. Identify the location of the kube-apiserver manifest file (commonly /etc/kubernetes/manifests/kube-apiserver.yaml).\n3. Run the following command to check the file ownership:\n   ```\n   stat -c %U:%G /etc/kubernetes/manifests/kube-apiserver.yaml\n   ```\n4. Verify that the output is:\n   ```\n   root:root\n   ```\n5. If the ownership is not root:root, remediate by running:\n   ```\n   chown root:root /etc/kubernetes/manifests/kube-apiserver.yaml\n   ```\n6. Confirm compliance by re-running the stat command and ensuring the ownership is set to root:root.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:15:21.194832",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n\n- The classification of the audit approach as Manual is correct. The Kubernetes API and `kubectl` do not provide direct access to the host filesystem to check file ownership or permissions of the manifest files. This task inherently requires OS-level access to the control plane node, which is outside the scope of Kubernetes-native interfaces.\n\n**TECHNICAL ACCURACY:** 9\n\n- The manual steps provided are technically accurate and complete. The use of the `stat` command to verify file ownership is appropriate for this context, and the remediation step using `chown` is correct.\n- The program name is not explicitly mentioned in the assessment. However, if it were to be named, it should follow a convention such as `k8s_apiserver_manifest_file_ownership_check` to clearly describe the check being performed.\n\n**IMPROVEMENTS:**\n\n- While the manual steps are accurate, the assessment could benefit from a brief mention of potential automation tools that could facilitate this process, such as configuration management tools (e.g., Ansible, Puppet) that can automate SSH access and file verification.\n- Consideration of security implications of SSH access, such as ensuring secure access methods and logging of access for audit purposes, could be included.\n- A better program name suggestion would be `k8s_apiserver_manifest_ownership_root_check` to clearly indicate the specific check for root ownership.\n\n**CONFIDENCE:** HIGH\n\n- The assessment is well-founded in its understanding of Kubernetes capabilities and limitations regarding file system access. The manual steps are clearly articulated and technically sound.\n\n**FINAL RECOMMENDATION:** Keep as-is\n\n- The assessment is accurate and appropriately classified as Manual. No changes are necessary, but additional context on potential automation tools and security considerations for SSH access could enhance the assessment.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-30T01:27:15.852852"
+}

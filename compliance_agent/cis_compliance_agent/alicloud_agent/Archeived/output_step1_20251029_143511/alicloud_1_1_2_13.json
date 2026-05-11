@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.13",
+    "unique_id": "alicloud_1_1_2_13",
+    "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+    "title": "Ensure that the admission control plugin NamespaceLifecycle is set",
+    "input_row": {
+        "id": "1.2.13",
+        "unique_id": "alicloud_1_1_2_13",
+        "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+        "title": "Ensure that the admission control plugin NamespaceLifecycle is set",
+        "description": "Reject\tcreating\tobjects\tin\ta\tnamespace\tthat\tis\tundergoing\ttermination.",
+        "rationale": "Setting\tadmission\tcontrol\tpolicy\tto\tNamespaceLifecycle\tensures\tthat\tobjects\tcannot\tbe created\tin\tnon-existent\tnamespaces,\tand\tthat\tnamespaces\tundergoing\ttermination\tare\tnot used\tfor\tcreating\tthe\tnew\tobjects.\tThis\tis\trecommended\tto\tenforce\tthe\tintegrity\tof\tthe namespace\ttermination\tprocess\tand\talso\tfor\tthe\tavailability\tof\tthe\tnewer\tobjects. Impact: None",
+        "audit": "Run\tthe\tfollowing\tcommand\ton\tthe\tmaster\tnode: ps -ef | grep kube-apiserver Verify\tthat\tthe\t--disable-admission-plugins\targument\tis\tset\tto\ta\tvalue\tthat\tdoes\tnot include\tNamespaceLifecycle.",
+        "remediation": "Edit\tthe\tAPI\tserver\tpod\tspecification\tfile\t/etc/kubernetes/manifests/kube- apiserver.yaml\ton\tthe\tmaster\tnode\tand\tset\tthe\t--disable-admission-plugins\tparameter to\tensure\tit\tdoes\tnot\tinclude\tNamespaceLifecycle. Default\tValue: By\tdefault,\tNamespaceLifecycle\tis\tset. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#namespacelifecycle 82\t|\tP a g e Additional\tInformation: This\tcontrol\tcannot\tbe\taudited\tand\tmodified\tin\tACK\tmanaged\tclusters. CIS\tControls: Version\t6 14\tControlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow Controlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow 83\t|\tP a g e",
+        "profile_applicability": "",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#namespacelifecycle 82\t|\tP a g e Additional\tInformation: This\tcontrol\tcannot\tbe\taudited\tand\tmodified\tin\tACK\tmanaged\tclusters. CIS\tControls: Version\t6 14\tControlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow Controlled\tAccess\tBased\ton\tthe\tNeed\tto\tKnow 83\t|\tP a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control requires checking the admission control settings within the configuration files of the Kubernetes master node. Specifically, it involves verifying the presence or absence of the `NamespaceLifecycle` plugin in the list of disabled plugins within the kube-apiserver. The audit instructions provided necessitate access to the master node to inspect running processes or configuration files, tasks which typically cannot be achieved through Alibaba Cloud APIs. Moreover, the control notes that it cannot be audited or modified within ACK managed clusters, which further restricts the potential for automation via cloud provider APIs or CLI tools.\n\n**MANUAL STEPS:**\n\n1. SSH into the master node where the Kubernetes API server is running.\n2. Execute the command `ps -ef | grep kube-apiserver` to list the current kube-apiserver processes and their arguments.\n3. Look for the `--disable-admission-plugins` argument in the output.\n4. Confirm that the `NamespaceLifecycle` plugin is not listed under `--disable-admission-plugins`.\n5. Additionally, inspect the `/etc/kubernetes/manifests/kube-apiserver.yaml` file directly (if applicable) for the same argument and carry out the same verification.\n6. Ensure that `NamespaceLifecycle` is not inadvertently disabled to meet compliance requirements.\n\n**SOURCE:** CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+    "timestamp": "2025-10-29T14:42:50.290174",
+    "model": "gpt-4o"
+}

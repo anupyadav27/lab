@@ -1,0 +1,22 @@
+{
+    "control_id": "4.3.1",
+    "unique_id": "k8s_1_4_3_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the kube-proxy metrics service is bound to localhost",
+    "input_row": {
+        "id": "4.3.1",
+        "unique_id": "k8s_1_4_3_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the kube-proxy metrics service is bound to localhost",
+        "description": "Do not bind the kube-proxy metrics port to non-loopback addresses.",
+        "rationale": "kube-proxy has two APIs which provided access to information about the service and can be bound to network ports. The metrics API service includes endpoints (/metrics and /configz) which disclose information about the configuration and operation of kube- proxy. These endpoints should not be exposed to untrusted networks as they do not support encryption or authentication to restrict access to the data they provide. Impact: 3rd party services which try to access metrics or configuration information related to kube-proxy will require access to the localhost interface of the node.",
+        "audit": "review the start-up flags provided to kube proxy ps -ef | grep -i kube-proxy Ensure that the --metrics-bind-address parameter is not set to a value other than 127.0.0.1. From the output of this command gather the location specified in the -- config parameter. Review any file stored at that location and ensure that it does not specify a value other than 127.0.0.1 for metricsBindAddress.",
+        "remediation": "Modify or remove any values which bind the metrics service to a non-localhost address Default Value: The default value is 127.0.0.1:10249 References: 1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "3rd party services which try to access metrics or configuration information related to kube-proxy will require access to the localhost interface of the node.",
+        "references": "1. https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The kube-proxy process and its startup flags (such as --metrics-bind-address) are not exposed via the Kubernetes API or kubectl. These are node-level process arguments or configuration files, typically managed outside of Kubernetes objects.\n- The audit procedure requires reviewing the process arguments on the node (e.g., via ps -ef | grep -i kube-proxy) and/or inspecting the kube-proxy configuration file on disk, which is not accessible via Kubernetes API or kubectl.\n- This check requires host-level access (SSH or equivalent) to the worker node to inspect running processes and configuration files.\n- Therefore, this control cannot be fully automated via Kubernetes APIs or kubectl and requires manual verification.\n\n**MANUAL STEPS:**\n1. SSH into each worker node running kube-proxy.\n2. Run the following command to list the kube-proxy process and its arguments:\n   ```\n   ps -ef | grep -i kube-proxy\n   ```\n3. Check the value of the --metrics-bind-address flag. Ensure it is set to 127.0.0.1 or is not set (defaults to 127.0.0.1:10249).\n4. If the --config flag is present, note the path to the configuration file.\n5. Open the referenced configuration file and check the value of the metricsBindAddress field. Ensure it is set to 127.0.0.1 or is not set (defaults to 127.0.0.1:10249).\n6. Confirm that the kube-proxy metrics service is not bound to any non-loopback (non-127.0.0.1) address.\n7. Repeat for all nodes running kube-proxy.\n8. Compliance is achieved if all kube-proxy instances bind the metrics service only to 127.0.0.1.",
+    "timestamp": "2025-10-29T20:07:24.735778",
+    "model": "gpt-4.1"
+}

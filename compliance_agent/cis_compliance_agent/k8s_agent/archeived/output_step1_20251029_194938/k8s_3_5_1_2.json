@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.2",
+    "unique_id": "k8s_3_5_1_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "title": "Minimize access to secrets",
+    "input_row": {
+        "id": "5.1.2",
+        "unique_id": "k8s_3_5_1_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.10 PDF",
+        "title": "Minimize access to secrets",
+        "description": "The Kubernetes API stores secrets, which may be service account tokens for the Kubernetes API or credentials used by workloads in the cluster. Access to these secrets should be restricted to the smallest possible group of users to reduce the risk of privilege escalation.",
+        "rationale": "Inappropriate access to secrets stored within the Kubernetes cluster can allow for an attacker to gain additional access to the Kubernetes cluster or external resources whose credentials are stored as secrets. Impact: Care should be taken not to remove access to secrets to system components which require this for their operation",
+        "audit": "Review the users who have get, list or watch access to secrets objects in the Kubernetes API.",
+        "remediation": "Where possible, remove get, list and watch access to secret objects in the cluster. Default Value: By default in a kubeadm cluster the following list of principals have get privileges on secret objects CLUSTERROLEBINDING                                    SUBJECT TYPE            SA-NAMESPACE cluster-admin                                         system:masters Group system:controller:clusterrole-aggregation-controller  clusterrole- aggregation-controller  ServiceAccount  kube-system system:controller:expand-controller                   expand-controller ServiceAccount  kube-system system:controller:generic-garbage-collector           generic-garbage- collector           ServiceAccount  kube-system system:controller:namespace-controller                namespace-controller ServiceAccount  kube-system system:controller:persistent-volume-binder            persistent-volume- binder            ServiceAccount  kube-system system:kube-controller-manager                        system:kube-controller- manager      User",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Care should be taken not to remove access to secrets to system components which require this for their operation",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_rbac_secret_access_restrictions_enforced\n\n**AUTOMATION DETAILS:**\n- Enumerate all ClusterRole and Role objects in the cluster using the Kubernetes API (kubectl get clusterroles, kubectl get roles --all-namespaces).\n- For each ClusterRole and Role, inspect the rules field for permissions (verbs) on the resource \"secrets\". Specifically, look for verbs: get, list, or watch.\n- Enumerate all ClusterRoleBinding and RoleBinding objects (kubectl get clusterrolebindings, kubectl get rolebindings --all-namespaces).\n- For each binding, map which users, groups, or service accounts are granted roles with get, list, or watch access to secrets.\n- Cross-reference the bindings to determine the effective set of principals (users, groups, service accounts) with get/list/watch access to secrets.\n- Compare the resulting list against the expected minimal set (system components only, as per CIS guidance).\n- Flag any additional principals (users, groups, or service accounts) with get/list/watch access to secrets beyond the documented system components.\n- **Pass Criteria:** Only required system components (e.g., system:masters, kube-controller-manager, specific kube-system service accounts) have get/list/watch access to secrets.\n- **Fail Criteria:** Any non-essential users, groups, or service accounts have get/list/watch access to secrets.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.10 PDF",
+    "timestamp": "2025-10-29T21:01:58.386916",
+    "model": "gpt-4.1"
+}

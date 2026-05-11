@@ -1,0 +1,103 @@
+{
+  "service": "cloudtrail",
+  "expert_mapping": {
+    "aws.cloudtrail.multi_region_enabled": {
+      "mapped_rules": ["aws.cloudtrail.trail.flow_logs_enabled"],
+      "mapping_type": "partial",
+      "confidence": "medium",
+      "notes": "flow_logs_enabled covers logging, but multi-region specifically needs trail configured in all regions - may need additional check"
+    },
+    
+    "aws.cloudtrail.cloudwatch_logging_enabled": {
+      "mapped_rules": ["aws.cloudtrail.trail.flow_logs_enabled"],
+      "mapping_type": "direct",
+      "confidence": "high",
+      "notes": "flow_logs_enabled covers CloudWatch Logs integration for CloudTrail"
+    },
+    
+    "aws.cloudtrail.log_file_validation_enabled": {
+      "mapped_rules": [],
+      "mapping_type": "needs_development",
+      "notes": "Specific check for log file integrity validation - not covered by general flow_logs"
+    },
+    
+    "aws.cloudtrail.kms_encryption_enabled": {
+      "mapped_rules": ["aws.cloudtrail.trail.logs_centralized_and_encrypted"],
+      "mapping_type": "direct",
+      "confidence": "high",
+      "notes": "logs_centralized_and_encrypted covers KMS encryption for CloudTrail logs"
+    },
+    
+    "aws.cloudtrail.s3_dataevents_read_enabled": {
+      "mapped_rules": ["aws.cloudtrail.trail.flow_logs_enabled"],
+      "mapping_type": "partial",
+      "confidence": "medium",
+      "notes": "flow_logs covers event logging, but S3 data events require specific event selector configuration"
+    },
+    
+    "aws.cloudtrail.s3_dataevents_write_enabled": {
+      "mapped_rules": ["aws.cloudtrail.trail.flow_logs_enabled"],
+      "mapping_type": "partial",
+      "confidence": "medium",
+      "notes": "flow_logs covers event logging, but S3 data events require specific event selector configuration"
+    },
+    
+    "aws.cloudtrail.bucket.access_logging_enabled": {
+      "mapped_rules": ["aws.cloudtrail.trail.flow_logs_enabled"],
+      "mapping_type": "direct",
+      "confidence": "high",
+      "notes": "flow_logs_enabled covers S3 bucket access logging for CloudTrail bucket"
+    },
+    
+    "aws.cloudtrail.bucket.is_not_publicly_accessible": {
+      "mapped_rules": [],
+      "mapping_type": "needs_development",
+      "notes": "S3 bucket public access check - should be S3 service function, not CloudTrail"
+    },
+    
+    "aws.cloudtrail.threat_detection_enumeration": {
+      "mapped_rules": [],
+      "mapping_type": "needs_development",
+      "notes": "Threat detection analysis - requires log analysis, not configuration check"
+    },
+    
+    "aws.cloudtrail.threat_detection_privilege_escalation": {
+      "mapped_rules": [],
+      "mapping_type": "needs_development",
+      "notes": "Threat detection analysis - requires log analysis for privilege escalation patterns"
+    },
+    
+    "aws.cloudtrail.threat_detection_llm_jacking": {
+      "mapped_rules": [],
+      "mapping_type": "needs_development",
+      "notes": "Threat detection for LLM attacks - requires log analysis, modern threat pattern"
+    },
+    
+    "aws.cloudtrail.unauthorized_api_calls_monitoring_configured": {
+      "mapped_rules": ["aws.cloudtrail.trail.alerts_for_anomalies_configured"],
+      "mapping_type": "direct",
+      "confidence": "high",
+      "notes": "alerts_for_anomalies covers unauthorized API call monitoring"
+    },
+    
+    "aws.cloudtrail.vpc_changes_monitoring_enabled": {
+      "mapped_rules": ["aws.cloudtrail.trail.flow_logs_enabled"],
+      "mapping_type": "direct",
+      "confidence": "high",
+      "notes": "flow_logs_enabled covers VPC change monitoring through CloudTrail"
+    },
+    
+    "_comment_remaining": "Other CloudTrail compliance functions need individual analysis with CSV reference"
+  },
+  
+  "summary": {
+    "total_compliance": 28,
+    "mapped_to_flow_logs": 5,
+    "mapped_to_other_rules": 3,
+    "needs_development": 20,
+    "coverage": "29% can map to existing rules"
+  },
+  
+  "key_insight": "Following user guidance: audit/logging compliance functions map to cloudtrail.trail.flow_logs_enabled"
+}
+

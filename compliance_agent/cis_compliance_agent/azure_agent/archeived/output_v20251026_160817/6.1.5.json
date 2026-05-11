@@ -1,0 +1,20 @@
+{
+    "id": "6.1.5",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+    "input_row": {
+        "id": "6.1.5",
+        "unique_id": "6.1.5__ensure-permissions-on-/etc/shadow-are-configured",
+        "title": "Ensure permissions on /etc/shadow are configured",
+        "description": " and Access is 0400 or more restrictive...\"",
+        "rationale": "The /etc/shadow file is used to store the information about user accounts that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "audit": "If attackers can gain read access to the /etc/shadow file, they can easily run a password cracking program against the hashed password to break it. Other security information that is stored in the /etc/shadow file (such as expiration) could also be useful to subvert the user accounts.",
+        "remediation": "Run the following command and verify Uid and Gid are 0/root , and Access is 0400 or more restrictive: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/shadow /etc/shadow 400 0/root 0/root",
+        "impact": "Run the following commands to set owner, group, and permissions on /etc/shadow: # chown root:root /etc/shadow # chmod u-wx,go-rwx /etc/shadow Default Value: /etc/shadow 400 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "null": [
+            "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Virtual Machine (VM) or Container:**\n   - If your target Azure resource is a VM or running a container, access it via SSH or Azure Bastion.\n\n2. **Check Permissions on the /etc/shadow File:**\n   - Execute the command: `stat -Lc \"%n %a %u/%U %g/%G\" /etc/shadow`\n   - This command will display the permissions, user ID, and group ID associated with the `/etc/shadow` file.\n\n3. **Verify Configuration:**\n   - Ensure that the output indicates the permissions of `/etc/shadow` is `0400` (readable only by the owner) and both the owner and group should indicate `root`.\n\n4. **Expected Secure Configuration:**\n   - Permissions: `0400`\n   - Owner: `root`\n   - Group: `root`\n\n5. **Confirm Compliance:**\n   - If the permissions do not match `0400` or the owner/group is not `root`, remediate the issue by running:\n     - `chown root:root /etc/shadow`\n     - `chmod u-wx,go-rwx /etc/shadow`\n   - After remediation, re-run the `stat` command to confirm that the changes have been applied correctly. Verify that the output reflects the expected secure configuration.\n\nBy following these steps, you will ensure that the permissions on the `/etc/shadow` file are correctly configured to maintain the security of user accounts."
+}

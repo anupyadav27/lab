@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.11",
+    "unique_id": "k8s_6_4_2_11",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Verify that the RotateKubeletServerCertificate argument is set to true",
+    "input_row": {
+        "id": "4.2.11",
+        "unique_id": "k8s_6_4_2_11",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Verify that the RotateKubeletServerCertificate argument is set to true",
+        "description": "Enable kubelet server certificate rotation.",
+        "rationale": "RotateKubeletServerCertificate causes the kubelet to both request a serving certificate after bootstrapping its client credentials and rotate the certificate as its existing credentials expire. This automated periodic rotation ensures that the there are no downtimes due to expired certificates and thus addressing availability in the CIA security triad. Note: This recommendation only applies if you let kubelets get their certificates from the API server. In case your kubelet certificates come from an outside authority/tool (e.g. Vault) then you need to take care of rotation yourself. Impact: None",
+        "audit": "Ignore this check if serverTLSBootstrap is true in the kubelet config file or if the --rotate- server-certificates parameter is set on kubelet Run the following command on each node: ps -ef | grep kubelet Verify that RotateKubeletServerCertificate argument exists and is set to true.",
+        "remediation": "Edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_CERTIFICATE_ARGS variable. --feature-gates=RotateKubeletServerCertificate=true Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, kubelet server certificate rotation is enabled. References: 1. https://github.com/kubernetes/kubernetes/pull/45059 2. https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration",
+        "profile_applicability": "•  Level 1 - Worker Node •  Level 2 - Worker Node",
+        "impact": "None",
+        "references": "1. https://github.com/kubernetes/kubernetes/pull/45059 2. https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The RotateKubeletServerCertificate setting is controlled via the kubelet configuration file (typically /var/lib/kubelet/config.yaml) or via command-line flags to the kubelet process.\n- This configuration is not exposed via the Kubernetes API or kubectl; kubelet configuration is not a Kubernetes API object and cannot be queried remotely via kubectl or the Kubernetes API.\n- The audit procedure in the CIS Benchmark instructs to check the process arguments or the kubelet config file directly on each node, which requires host-level access (SSH or equivalent).\n- Therefore, this check cannot be fully automated using Kubernetes APIs or kubectl and requires manual/host-level verification.\n\n**MANUAL STEPS:**\n1. SSH into each worker node in the Kubernetes cluster.\n2. Check the kubelet configuration file (commonly /var/lib/kubelet/config.yaml or /etc/kubernetes/kubelet.conf) for the following setting:\n   - `serverTLSBootstrap: true`\n   OR\n   - `featureGates: RotateKubeletServerCertificate=true`\n3. Alternatively, inspect the kubelet process arguments using:\n   - `ps -ef | grep kubelet`\n   - Confirm the presence of `--feature-gates=RotateKubeletServerCertificate=true` or `--rotate-server-certificates=true`.\n4. Ensure that either the configuration file or the process arguments enable kubelet server certificate rotation.\n5. If kubelet certificates are managed externally (not via the API server), document the alternative rotation process and exclude this check as per the CIS Benchmark note.\n6. Mark the node as compliant if certificate rotation is enabled via either method; otherwise, mark as non-compliant.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:13:51.619310",
+    "model": "gpt-4.1"
+}

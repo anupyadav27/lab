@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.4",
+    "unique_id": "gcp_1_5_1_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH Protocol is set to 2",
+    "input_row": {
+        "id": "5.1.4",
+        "unique_id": "gcp_1_5_1_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH Protocol is set to 2",
+        "description": "Older versions of SSH support two different and incompatible protocols: SSH1 and SSH2. SSH1 was the original protocol and was subject to security issues. SSH2 is more advanced and secure.",
+        "rationale": "SSH v1 suffers from insecurities that do not affect SSH v2.",
+        "audit": "Run the following command and verify that output matches: # grep ^Protocol /etc/ssh/sshd_config Protocol 2",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: Protocol 2 Additional Information: This command not longer exists in newer versions of SSH. This check is still being included for systems that may be running an older version of SSH. As of openSSH version 7.4 this parameter will not cause an issue when included.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires checking the configuration of the SSH daemon on individual GCP Compute Engine instances running Container Optimized OS.\n- The audit requires inspecting the `/etc/ssh/sshd_config` file to verify that the SSH Protocol is set to 2. This necessitates SSH access to the instance to manually review the file, something that cannot be performed via GCP APIs or the Google Cloud SDK.\n- SSH configurations are application-level details specific to the operating system's configuration on each instance and are not exposed through GCP APIs.\n\n**MANUAL STEPS:**\n1. **SSH into the Compute Engine Instance:**\n   - Use SSH to log in to the instance that runs Container Optimized OS.\n   - Example command: `gcloud compute ssh example-instance-name --project=your-project-id --zone=your-zone`\n\n2. **Verify SSH Protocol Version:**\n   - On the instance, use the following command to inspect the SSH daemon configuration file:\n     ```\n     grep ^Protocol /etc/ssh/sshd_config\n     ```\n   - Ensure the output is `Protocol 2`, indicating that the SSH server is configured to use version 2 of the protocol.\n\n3. **Expected Secure Configuration:**\n   - The configuration should explicitly specify `Protocol 2`. This is the secure version of the protocol and should be set to avoid potential vulnerabilities associated with SSH1.\n\n4. **Confirm Compliance:**\n   - If the configuration is set correctly, the instance is compliant with the CIS benchmark. If adjustments are needed, edit the `/etc/ssh/sshd_config` file to include `Protocol 2` and restart the SSH service to apply changes.",
+    "timestamp": "2025-10-28T21:32:33.527517",
+    "model": "gpt-4o"
+}

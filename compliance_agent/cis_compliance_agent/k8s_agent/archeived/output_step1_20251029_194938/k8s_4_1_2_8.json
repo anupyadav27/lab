@@ -1,0 +1,22 @@
+{
+    "control_id": "1.2.8",
+    "unique_id": "k8s_4_1_2_8",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the --authorization-mode argument includes RBAC",
+    "input_row": {
+        "id": "1.2.8",
+        "unique_id": "k8s_4_1_2_8",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the --authorization-mode argument includes RBAC",
+        "description": "Turn on Role Based Access Control.",
+        "rationale": "Role Based Access Control (RBAC) allows fine-grained control over the operations that different entities can perform on different objects in the cluster. It is recommended to use the RBAC authorization mode. Impact: When RBAC is enabled you will need to ensure that appropriate RBAC settings (including Roles, RoleBindings and ClusterRoleBindings) are configured to allow appropriate access.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-apiserver Verify that the --authorization-mode argument exists and is set to a value to include RBAC.",
+        "remediation": "Edit the API server pod specification file /etc/kubernetes/manifests/kube- apiserver.yaml on the Control Plane node and set the --authorization-mode parameter to a value that includes RBAC, for example: --authorization-mode=Node,RBAC Default Value: By default, RBAC authorization is not enabled. References: 1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "When RBAC is enabled you will need to ensure that appropriate RBAC settings (including Roles, RoleBindings and ClusterRoleBindings) are configured to allow appropriate access.",
+        "references": "1. https://kubernetes.io/docs/reference/access-authn-authz/rbac/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_authorization_mode_rbac_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify that the --authorization-mode flag includes \"RBAC\".\n- For clusters using static pods (common in kubeadm and many managed distributions), retrieve the API server manifest file from the kube-system namespace:\n  - Use: `kubectl -n kube-system get pod -l component=kube-apiserver -o json`\n  - Inspect the `spec.containers[].command` or `spec.containers[].args` fields for the presence of `--authorization-mode` and ensure \"RBAC\" is included in its value (e.g., `--authorization-mode=Node,RBAC`).\n- For clusters where the API server is not deployed as a pod (rare), this check may require access to the process arguments on the control plane node.\n- Pass Criteria: The `--authorization-mode` flag exists and its value contains \"RBAC\" (case-sensitive).\n- Fail Criteria: The `--authorization-mode` flag is missing, or its value does not include \"RBAC\".\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:14:49.676498",
+    "model": "gpt-4.1"
+}

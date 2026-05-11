@@ -1,0 +1,33 @@
+{
+    "control_id": "1.1.15",
+    "unique_id": "k8s_1_1_1_15",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that the scheduler.conf file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.15",
+        "unique_id": "k8s_1_1_1_15",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that the scheduler.conf file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the scheduler.conf file has permissions of 600 or more restrictive.",
+        "rationale": "The scheduler.conf file is the kubeconfig file for the Scheduler. You should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the following command (based on the file location on your system) on the Control Plane node. For example, stat -c %a /etc/kubernetes/scheduler.conf Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 /etc/kubernetes/scheduler.conf Default Value: By default, scheduler.conf has permissions of 640. References: 1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of the file permissions of /etc/kubernetes/scheduler.conf on the control plane node. File permissions are an OS-level property and are not exposed via the Kubernetes API, kubectl, or any Kubernetes controller configuration. The audit procedure specifically instructs to use the stat command on the host OS, which requires direct access to the underlying node filesystem. There is no Kubernetes-native method to retrieve or validate the permissions of this file remotely via the Kubernetes API.\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Run the following command to check the permissions of the scheduler.conf file (adjust the path if your configuration uses a different location):\n   ```\n   stat -c %a /etc/kubernetes/scheduler.conf\n   ```\n3. Verify that the output is 600 or a more restrictive value (e.g., 400).\n4. If the permissions are 600 or more restrictive, the node is compliant. If the permissions are less restrictive (e.g., 640, 644, 666), remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/scheduler.conf\n   ```\n5. Repeat for all control plane nodes in the cluster.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T19:52:26.254270",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Manual is correct. The permissions of the `scheduler.conf` file are an OS-level attribute and cannot be accessed or verified through Kubernetes APIs, kubectl, or any Kubernetes CLI commands. The Kubernetes API does not expose file system-level details such as file permissions, which necessitates direct access to the node's file system to perform this check.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and complete. The use of the `stat` command to check file permissions is appropriate, and the remediation step using `chmod` is correct. The steps are clear and provide a straightforward method to ensure compliance.\n- The naming convention for the program is not applicable in this context as it pertains to manual checks rather than an automated script or program. However, the description of the check is clear and descriptive.\n\n**IMPROVEMENTS:**\n- The assessment could include a note on ensuring secure SSH access to the nodes, as this is a critical part of performing the manual check securely.\n- Consideration of using configuration management tools like Ansible, Puppet, or Chef to automate the permission checks and remediation across multiple nodes could be suggested as an improvement for operational efficiency.\n- The assessment could mention maintaining a log of compliance checks for audit purposes, which can be beneficial for tracking and reporting compliance status over time.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-aligned with the constraints of the Kubernetes environment and accurately reflects the necessity of a manual approach for this specific control.\n\n**FINAL RECOMMENDATION:**\n- Keep as-is. The manual approach is justified, and the steps provided are accurate and complete for ensuring compliance with the control.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:55:38.633812",
+    "step3_final_decision": {
+        "decision_text": "**FINAL APPROACH:** Manual\n\n**JUSTIFICATION:**\nBoth AI opinions unanimously agree that this control requires a manual approach due to the nature of file permissions being an OS-level attribute that cannot be accessed via Kubernetes APIs or CLI commands. The audit steps provided are clear and appropriate for verifying compliance directly on the control plane nodes.\n\n**CONFIDENCE:** HIGH\n\n---\n\n**MANUAL STEPS:**\n1. SSH into each Kubernetes control plane node.\n2. Run the following command to check the permissions of the scheduler.conf file (adjust the path if your configuration uses a different location):\n   ```\n   stat -c %a /etc/kubernetes/scheduler.conf\n   ```\n3. Verify that the output is 600 or a more restrictive value (e.g., 400).\n4. If the permissions are less than 600 (e.g., 640, 644, 666), remediate by running:\n   ```\n   chmod 600 /etc/kubernetes/scheduler.conf\n   ```\n5. Repeat for all control plane nodes in the cluster.\n\n**WHY NOT AUTOMATED:**\nThis control cannot be automated via Kubernetes APIs because file permissions are not exposed through the Kubernetes API, and the check requires direct access to the underlying node's file system.\n\n---\n\n**DISAGREEMENTS RESOLVED:**\nThere were no disagreements between the two AI opinions; both agreed on the manual approach and provided consistent reasoning based on the limitations of Kubernetes API capabilities.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "final_approach": "Manual",
+        "confidence": "HIGH",
+        "program_name": "",
+        "model": "gpt-4o-mini",
+        "timestamp": "2025-10-30T03:12:28.653354"
+    }
+}

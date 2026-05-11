@@ -1,0 +1,20 @@
+{
+    "id": "2.2.11",
+    "source": null,
+    "input_row": {
+        "id": "2.2.11",
+        "unique_id": "2.2.11__ensure-incoming-client-certificates-are-enabled-and-required-(if-in-use)",
+        "title": "Ensure incoming client certificates are enabled and required (if in use)",
+        "description": "...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Configuration. 6. In the General settings pane, under Incoming client certificates, set Client certificate mode to Required. 7. Click Save. 8. Click Continue. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to enable and require incoming client certificates: az resource update --resource-group <resource-group-name> --name <app- name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" -- set properties.clientCertEnabled=true --set properties.clientCertMode=Required Default Value: By default, incoming client certificates are disabled. References: 1. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- identity-management#im-4-authenticate-server-and-services 2. https://learn.microsoft.com/en-gb/azure/app-service/app-service-web-configure- tls-mutual-auth 3. https://learn.microsoft.com/en-us/cli/azure/webapp 4. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_app_service_client_certificates_enabled_required\n\n**AUTOMATION DETAILS:** \nThe automated program would check the following:\n\n- **Azure Resource Manager APIs or Azure CLI commands to use:** \n   - Azure CLI command to check the current settings for incoming client certificates:\n     ```bash\n     az webapp show --resource-group <resource-group-name> --name <app-name>\n     ```\n   - To check the deployment slot:\n     ```bash\n     az webapp deployment slot show --resource-group <resource-group-name> --name <app-name> --slot <deployment-slot-name>\n     ```\n\n- **Specific resources to enumerate:** \n   - App Services and their respective deployment slots within specified resource groups.\n\n- **Exact configuration properties/settings to validate:** \n   - The following properties need to be checked in the output:\n     - `clientCertEnabled` should be `true`\n     - `clientCertMode` should be `Required`\n\n- **Clear Pass/Fail criteria with expected values:**\n   - Pass: \n     - `clientCertEnabled` is `true`\n     - `clientCertMode` is equal to `Required`\n   - Fail: \n     - Any other value for `clientCertEnabled` or `clientCertMode`.\n\n- **Example API endpoint or CLI command:** \n   - The above CLI commands serve as the method for querying the resource properties; the expected output will show the settings, which can then be evaluated against the compliance requirements."
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "7.4",
+    "unique_id": "aws_6_7_4",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+    "title": "Ensure Encryption in Transit is Enabled",
+    "input_row": {
+        "id": "7.4",
+        "unique_id": "aws_6_7_4",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1.0.0",
+        "title": "Ensure Encryption in Transit is Enabled",
+        "description": "",
+        "rationale": "Amazon Database DB uses SSL/TLS to encrypt data during transit. To secure your data in transit the individual should identify their client application and what is supported by TLS to configure it correctly.",
+        "audit": "1. Sign into the AWS Management Console • Sign into the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the Amazon DocumentDB Console • Navigate to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/docdb/. 3. Select the DocumentDB Cluster • Choose the Amazon DocumentDB cluster for which you want to enable encryption in transit. • Click on the cluster name to access its details page. • In the cluster details page, navigate to the \"Configuration\" section. 4. Enable Encryption in Transit • Under the Network & Security section. • Click on the Edit button or Modify option to configure the encryption settings. • Enable the option for encryption in transit by choosing the appropriate setting. • Note that encryption in transit uses SSL/TLS to secure communications between your applications and the DocumentDB cluster. 5. Save the Configuration • Click on the \"Save\" button to apply the encryption in transit configuration. • DocumentDB will automatically handle the SSL/TLS encryption for network traffic between clients and the cluster.  6. Validate Encryption in Transit • Test the connectivity to your DocumentDB cluster from your applications or clients. • Ensure that the communication is established securely using SSL/TLS encryption. 7. Monitor and Maintain Encryption in Transit • Regularly monitor the encryption in transit configuration for your DocumentDB cluster. • Stay informed about updates or changes in SSL/TLS protocols and encryption standards. • Keep your client applications current to ensure they support the latest encryption protocols.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- Ensuring encryption in transit for Amazon DocumentDB instances is a technical configuration that can be checked using AWS APIs.\n- This type of check is related to standard AWS service properties for security (encryption), which typically can be accessed and verified through API calls.\n- Boto3 provides methods that can be used to describe DocumentDB cluster configurations, including checking if TLS/SSL is configured for data in transit.\n- The audit process described involves verifying configuration settings, which are standard properties for AWS services and hence accessible via AWS APIs.\n\n**PROGRAM NAME:** aws_docdb_cluster_encryption_in_transit_enabled\n\n**AUTOMATION DETAILS:**\n- Use the boto3 SDK to interact with the Amazon DocumentDB service.\n- Utilize the `describe_db_clusters()` function from the boto3 DocumentDB client to retrieve cluster configurations.\n- Enumerate all DocumentDB clusters within the account and the specified region.\n- Verify that the `EnableCloudwatchLogsExports` field includes `export_audit_logs` and `audit` settings to ensure proper logging, as part of enforcing encryption in transit.\n- Specifically check if the `TlsEnabled` field is true within the returned DocumentDB cluster configurations.\n- Pass criteria: The cluster should have TLS/SSL enabled, indicated by the `TlsEnabled` field being set to true.\n- Fail criteria: The `TlsEnabled` field is absent or set to false, which indicates encryption in transit is not enabled.",
+    "timestamp": "2025-10-28T15:58:20.801470",
+    "model": "gpt-4o"
+}

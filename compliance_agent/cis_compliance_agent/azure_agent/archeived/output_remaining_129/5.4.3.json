@@ -1,0 +1,17 @@
+{
+    "id": "5.4.3",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.4.3",
+        "unique_id": "aks_5.4.3__ensure-password-hashing-algorithm-is-sha-512",
+        "title": "Ensure password hashing algorithm is SHA-512",
+        "description": "The commands below change password encryption from md5 to sha512 (a much stronger hashing algorithm). All existing accounts will need to perform a password change to upgrade the stored hashes to the new algorithm. Note: • These changes only apply to accounts configured on the local system. • Additional module options may be set, recommendation only covers those listed here.",
+        "rationale": "The SHA-512 algorithm provides much stronger hashing than MD5, thus providing additional protection to the system by increasing the level of effort for an attacker to successfully determine passwords.",
+        "audit": "Run the following command to verify the sha512 option is included: # grep -P '^\\h*password\\h+([^#\\n\\r]+)?\\h+pam_unix\\.so\\h+([^#\\n\\r]+\\h+)?sha512\\b' /etc/pam.d/system-auth /etc/pam.d/system-password Output should be similar to: /etc/pam.d/system-auth:password    sufficient    pam_unix.so sha512 shadow try_first_pass use_authtok /etc/pam.d/system-password:password    sufficient    pam_unix.so sha512 shadow try_first_pass use_authtok",
+        "remediation": "Edit the /etc/pam.d/system-password and /etc/pam.d/system-auth files to include sha512 option and remove the md5 option for pam_unix.so: password sufficient pam_unix.so sha512 Note: • Any system accounts that need to be expired should be carefully done separately by the system administrator to prevent any potential problems. • If it is determined that the password algorithm being used is not SHA-512, once it is changed, it is recommended that all user ID's be immediately expired and forced to change their passwords on next login, In accordance with local site policies. Default Value: sha512 References: 1. NIST SP 800-53 Rev. 5: IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Access the node where the Kubernetes cluster is running using SSH.\n2. Navigate to the `/etc/pam.d/` directory.\n3. Open the `system-auth` file and the `system-password` file using a text editor (e.g., `nano`, `vi`).\n4. Verify that the lines for the password hashing algorithm include `sha512` and do not include `md5`. The lines should look like:\n   ```\n   password sufficient pam_unix.so sha512 shadow try_first_pass use_authtok\n   ```\n5. Make sure that all existing system accounts are either expired or prompted to change their passwords upon their next login if the hashing algorithm was changed from md5 to sha512.\n6. Confirm that any modifications made adhere to local site policies regarding password changes.\n7. Document any findings or necessary actions based on your review of the configuration files for compliance purposes."
+}

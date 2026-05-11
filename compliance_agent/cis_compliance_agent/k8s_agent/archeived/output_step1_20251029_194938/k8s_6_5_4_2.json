@@ -1,0 +1,22 @@
+{
+    "control_id": "5.4.2",
+    "unique_id": "k8s_6_5_4_2",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Consider external secret storage",
+    "input_row": {
+        "id": "5.4.2",
+        "unique_id": "k8s_6_5_4_2",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Consider external secret storage",
+        "description": "Consider the use of an external secrets storage and management system, instead of using Kubernetes Secrets directly, if you have more complex secret management needs. Ensure the solution requires authentication to access secrets, has auditing of access to and use of secrets, and encrypts secrets. Some solutions also make it easier to rotate secrets.",
+        "rationale": "Kubernetes supports secrets as first-class objects, but care needs to be taken to ensure that access to secrets is carefully limited. Using an external secrets provider can ease the management of access to secrets, especially where secrests are used across both Kubernetes and non-Kubernetes environments. Impact: None",
+        "audit": "Review your secrets management implementation.",
+        "remediation": "Refer to the secrets management options offered by your cloud provider or a third-party secrets management solution. Default Value: By default, no external secret management is configured.",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "None",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control (\"Consider external secret storage\") is guidance to consider the use of an external secrets management system (such as HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, etc.) instead of native Kubernetes Secrets for complex secret management needs. The audit requires reviewing the organization's secret management implementation to determine if an external solution is in use, if it requires authentication, supports auditing, and encrypts secrets. There is no Kubernetes API object, field, or configuration flag that definitively indicates whether external secret management is in use, as these solutions are typically integrated at the application or deployment level, often via sidecars, CSI drivers, or custom controllers. This cannot be reliably or fully determined via kubectl or the Kubernetes API alone; it requires human review of deployment patterns, documentation, and possibly third-party integrations.\n\n**MANUAL STEPS:**\n1. Review cluster documentation and deployment manifests to identify if an external secrets management system (e.g., Vault, AWS Secrets Manager, Azure Key Vault, Google Secret Manager) is integrated with Kubernetes workloads.\n2. Inspect workload manifests (Deployments, StatefulSets, etc.) for usage of external secrets integrations, such as CSI Secret Store drivers, external-secrets.io CRDs, or sidecar containers that fetch secrets from external providers.\n3. Verify that the external secrets solution requires authentication to access secrets, provides auditing capabilities, and ensures secrets are encrypted at rest and in transit.\n4. Confirm that Kubernetes Secrets are not used directly for sensitive data unless protected by additional controls (e.g., encryption at rest, RBAC restrictions).\n5. Document the findings and determine if the external secrets management solution meets organizational requirements for authentication, auditing, and encryption.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:20:49.138322",
+    "model": "gpt-4.1"
+}

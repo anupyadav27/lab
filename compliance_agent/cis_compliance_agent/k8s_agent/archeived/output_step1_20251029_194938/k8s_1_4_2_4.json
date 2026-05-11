@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.4",
+    "unique_id": "k8s_1_4_2_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Verify that the --read-only-port argument is set to 0",
+    "input_row": {
+        "id": "4.2.4",
+        "unique_id": "k8s_1_4_2_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Verify that the --read-only-port argument is set to 0",
+        "description": "Disable the read-only port.",
+        "rationale": "The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster. Impact: Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --read-only-port argument exists and is set to 0. If the --read-only-port argument is not present, check that there is a Kubelet config file specified by --config. Check that if there is a readOnlyPort entry in the file, it is set to 0.",
+        "remediation": "If using a Kubelet config file, edit the file to set readOnlyPort to 0. If using command line arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. --read-only-port=0 Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service Default Value: By default, --read-only-port is set to 10255/TCP. However, if a config file is specified by --config the default value for readOnlyPort is 0. References: 1. https://kubernetes.io/docs/admin/kubelet/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_read_only_port_disabled\n\n**AUTOMATION DETAILS:**\n\n- Enumerate all nodes in the cluster.\n- For each node, determine how the kubelet is configured:\n  - If the kubelet is started with a config file (via the --config flag), retrieve the referenced config file (typically via node file inspection or via a DaemonSet that mounts the file as read-only).\n    - Parse the config file and verify that the `readOnlyPort` field is set to `0`.\n  - If the kubelet is started with command-line arguments, retrieve the process arguments (using a privileged DaemonSet or via node agent).\n    - Verify that the `--read-only-port` flag is present and set to `0`. If the flag is absent, the default may apply (10255 for CLI, 0 for config file).\n- Pass Criteria:\n  - For every node, either:\n    - The kubelet config file sets `readOnlyPort: 0`, OR\n    - The kubelet command-line includes `--read-only-port=0`.\n- Fail Criteria:\n  - Any node where `readOnlyPort` is not set to `0` in the config file, or `--read-only-port` is not set to `0` in the command-line arguments, or is absent and defaults to an insecure value.\n- Example automation steps:\n  - Deploy a privileged DaemonSet that inspects `/var/lib/kubelet/config.yaml` and/or the kubelet process arguments.\n  - Parse and report the value of `readOnlyPort` for each node.\n  - Aggregate results and flag any non-compliant nodes.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:05:21.874574",
+    "model": "gpt-4.1"
+}

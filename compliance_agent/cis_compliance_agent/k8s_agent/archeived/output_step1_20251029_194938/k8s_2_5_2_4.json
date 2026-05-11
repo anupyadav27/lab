@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.4",
+    "unique_id": "k8s_2_5_2_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Minimize the admission of containers wishing to share the host IPC namespace",
+    "input_row": {
+        "id": "5.2.4",
+        "unique_id": "k8s_2_5_2_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Minimize the admission of containers wishing to share the host IPC namespace",
+        "description": "Do not generally permit containers to be run with the hostIPC flag set to true.",
+        "rationale": "A container running in the host's IPC namespace can use IPC to interact with processes outside the container. There should be at least one admission control policy defined which does not permit containers to share the host IPC namespace. If you need to run containers which require hostIPC, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined with spec.hostIPC: true will not be permitted unless they are run under a specific policy.",
+        "audit": "To fetch hostIPC from each pod. get pods -A -o=jsonpath=$'{range .items[*]}{@.metadata.name}: {@.spec.hostIPC}\\n{end}'",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of hostIPC containers. Default Value: By default, there are no restrictions on the creation of hostIPC containers. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined with spec.hostIPC: true will not be permitted unless they are run under a specific policy.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_host_ipc_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all Pods across all namespaces using the Kubernetes API (core/v1) or via `kubectl get pods -A -o json`.\n- For each Pod, inspect the `.spec.hostIPC` field.\n- Identify any Pods where `spec.hostIPC: true`.\n- Additionally, check for the presence and configuration of Pod Security Admission (PSA) policies or PodSecurityPolicies (if still in use) that restrict the use of `hostIPC: true`. Specifically, verify that the \"baseline\" or \"restricted\" Pod Security Standards are enforced, as these disallow `hostIPC: true` by default.\n- Pass Criteria:\n  - No Pods in user namespaces have `spec.hostIPC: true` unless explicitly permitted by a narrowly scoped policy.\n  - Pod Security Admission or equivalent policies are in place in all relevant namespaces to restrict `hostIPC: true`.\n- Example kubectl command to enumerate offending pods:\n  ```\n  kubectl get pods --all-namespaces -o jsonpath=\"{range .items[?(@.spec.hostIPC==true)]}{.metadata.namespace}/{.metadata.name}{'\\n'}{end}\"\n  ```\n- To check Pod Security Admission enforcement (Kubernetes v1.23+), inspect namespace labels:\n  ```\n  kubectl get ns --show-labels | grep pod-security.kubernetes.io\n  ```\n  Ensure labels like `pod-security.kubernetes.io/enforce=baseline` or `restricted` are present.\n- For legacy PodSecurityPolicy (if still enabled), enumerate policies and their `hostIPC` settings:\n  ```\n  kubectl get psp -o yaml | grep hostIPC\n  ```\n- Fail Criteria:\n  - Any Pod in a user namespace is found with `spec.hostIPC: true` and no restrictive policy is enforced.\n  - Namespaces lack Pod Security Admission labels or equivalent controls to prevent `hostIPC: true`.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:38:09.843488",
+    "model": "gpt-4.1"
+}

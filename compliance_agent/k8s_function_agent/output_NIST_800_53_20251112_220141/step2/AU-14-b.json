@@ -1,0 +1,28 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_audit_policy_captures_metadata",
+    "k8s_audit_networkpolicy_changes_logged"
+  ],
+  "changes_made": [
+    "Renamed k8s_networkpolicy_changes_logged to k8s_audit_networkpolicy_changes_logged for consistency with audit resource"
+  ],
+  "review_notes": "The functions generally map well to Kubernetes audit logging capabilities, which are relevant to session auditing. However, the function related to network policy changes should be categorized under audit to reflect its purpose in logging changes, rather than under network policy itself.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Ensure all audit-related functions are prefixed with 'k8s_audit_' to maintain consistency and clarity."
+  ],
+  "control_id": "AU-14-b",
+  "title": "Session Audit - Develop, integrate, and use session...",
+  "step1_functions": [
+    "k8s_audit_logging_enabled",
+    "k8s_audit_log_retention_configured",
+    "k8s_audit_policy_captures_metadata",
+    "k8s_networkpolicy_changes_logged"
+  ],
+  "step1_reasoning": "The control AU-14-b focuses on session auditing, which in Kubernetes can be mapped to audit logging capabilities. Kubernetes Audit Logs can track API server requests, which is equivalent to auditing sessions. Ensuring audit logging is enabled and properly configured aligns with the control's requirements. Additionally, monitoring changes to NetworkPolicies can be considered part of session auditing as it relates to tracking network access changes."
+}

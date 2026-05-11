@@ -1,0 +1,22 @@
+{
+    "control_id": "1.3.5",
+    "unique_id": "k8s_6_1_3_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "title": "Ensure that the --root-ca-file argument is set as appropriate",
+    "input_row": {
+        "id": "1.3.5",
+        "unique_id": "k8s_6_1_3_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+        "title": "Ensure that the --root-ca-file argument is set as appropriate",
+        "description": "Allow pods to verify the API server's serving certificate before establishing connections.",
+        "rationale": "Processes running within pods that need to contact the API server must verify the API server's serving certificate. Failing to do so could be a subject to man-in-the-middle attacks. Providing the root certificate for the API server's serving certificate to the controller manager with the --root-ca-file argument allows the controller manager to inject the trusted bundle into pods so that they can verify TLS connections to the API server. Impact: You need to setup and maintain root certificate authority file.",
+        "audit": "Run the following command on the Control Plane node: ps -ef | grep kube-controller-manager Verify that the --root-ca-file argument exists and is set to a certificate bundle file containing the root certificate for the API server's serving certificate.",
+        "remediation": "Edit the Controller Manager pod specification file /etc/kubernetes/manifests/kube- controller-manager.yaml on the Control Plane node and set the --root-ca-file parameter to the certificate bundle file`. --root-ca-file=<path/to/file> Default Value: By default, --root-ca-file is not set. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager/ 2. https://github.com/kubernetes/kubernetes/issues/11000",
+        "profile_applicability": "•  Level 1 - Master Node •  Level 2 - Master Node",
+        "impact": "You need to setup and maintain root certificate authority file.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager/ 2. https://github.com/kubernetes/kubernetes/issues/11000"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_controller_manager_root_ca_file_configured\n\n**AUTOMATION DETAILS:**\n- Query the kube-controller-manager Pod specification, typically located in the static Pod manifest at `/etc/kubernetes/manifests/kube-controller-manager.yaml`, using the Kubernetes API or by inspecting the running Pod's command/args.\n- Use the following kubectl command to retrieve the current configuration:\n  ```\n  kubectl -n kube-system get pod -l component=kube-controller-manager -o json\n  ```\n- Parse the `spec.containers[].command` or `spec.containers[].args` fields for the presence of the `--root-ca-file` argument.\n- Validate that:\n  - The `--root-ca-file` argument is present.\n  - The value points to a valid certificate bundle file (typically a `.crt` or `.pem` file).\n- Pass Criteria: The kube-controller-manager is running with the `--root-ca-file` argument set to a valid file path.\n- Fail Criteria: The `--root-ca-file` argument is missing or set to an empty value.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.7.1 PDF",
+    "timestamp": "2025-10-29T22:07:02.315422",
+    "model": "gpt-4.1"
+}

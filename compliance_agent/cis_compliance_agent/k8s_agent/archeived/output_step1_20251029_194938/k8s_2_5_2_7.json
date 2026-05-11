@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.7",
+    "unique_id": "k8s_2_5_2_7",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "Minimize the admission of root containers",
+    "input_row": {
+        "id": "5.2.7",
+        "unique_id": "k8s_2_5_2_7",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "Minimize the admission of root containers",
+        "description": "Do not generally permit containers to be run as the root user.",
+        "rationale": "Containers may run as any Linux user. Containers which run as the root user, whilst constrained by Container Runtime security features still have a escalated likelihood of container breakout. Ideally, all containers should run as a defined non-UID 0 user. There should be at least one admission control policy defined which does not permit root containers. If you need to run root containers, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods with containers which run as the root user will not be permitted.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that each policy restricts the use of root containers by setting MustRunAsNonRoot or MustRunAs with the range of UIDs not including 0.",
+        "remediation": "Create a policy for each namespace in the cluster, ensuring that either MustRunAsNonRoot or MustRunAs with the range of UIDs not including 0, is set. Default Value: By default, there are no restrictions on the use of root containers and if a User is not specified in the image, the container will run as root. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "Pods with containers which run as the root user will not be permitted.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_root_containers_restricted\n\n**AUTOMATION DETAILS:**\n- Enumerate all namespaces in the cluster using the Kubernetes API (`kubectl get namespaces`).\n- For each namespace, check for the presence of Pod Security Admission (PSA) labels (`pod-security.kubernetes.io/enforce`, `pod-security.kubernetes.io/audit`, `pod-security.kubernetes.io/warn`) or legacy PodSecurityPolicy (PSP) objects if still in use.\n- If using PSA, ensure the enforced policy level is at least `baseline` or `restricted`, both of which require containers not to run as root unless explicitly allowed.\n- If using PSP, enumerate all PodSecurityPolicy objects (`kubectl get psp -o yaml`) and check for the `runAsUser` field:\n    - Ensure `runAsUser.rule` is set to either `MustRunAsNonRoot` or `MustRunAs` with a UID range that does not include 0.\n- For each namespace, verify that either:\n    - The PSA enforced policy is `baseline` or `restricted`, OR\n    - The default PSP assigned to the namespace enforces `MustRunAsNonRoot` or `MustRunAs` (excluding UID 0).\n- Pass Criteria: Every namespace must have a policy (via PSA or PSP) that restricts the admission of containers running as root (UID 0).\n- Example kubectl commands:\n    - `kubectl get namespace --show-labels`\n    - `kubectl get psp -o yaml`\n    - `kubectl get psp <psp-name> -o yaml | grep runAsUser`\n- Fail if any namespace allows pods to be created without such a restriction, or if the default policy permits root containers.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "timestamp": "2025-10-29T20:38:36.770592",
+    "model": "gpt-4.1"
+}

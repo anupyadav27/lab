@@ -1,0 +1,22 @@
+{
+    "control_id": "2.4",
+    "unique_id": "aws_3_2_4",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure WorkSpaces are deployed in their own virtual private cloud (VPC)",
+    "input_row": {
+        "id": "2.4",
+        "unique_id": "aws_3_2_4",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure WorkSpaces are deployed in their own virtual private cloud (VPC)",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control \"Ensure WorkSpaces are deployed in their own virtual private cloud (VPC)\" involves checking whether AWS WorkSpaces are hosted within dedicated VPCs. This can be verified through AWS API calls or the use of the boto3 SDK, as WorkSpaces and VPC configurations are well-documented and accessible via AWS APIs.\n\nGiven that AWS offers specific APIs to describe WorkSpaces and their configurations, including the VPC they are associated with, this control can be audited programmatically.\n\n**PROGRAM NAME:** aws_workspaces_vpc_dedicated_check\n\n**AUTOMATION DETAILS:**\nTo implement an automated audit for this compliance check:\n1. **Enumerate WorkSpaces**: Use the boto3 SDK to call `describe_workspaces()` to list all WorkSpaces in the account.\n2. **Check VPC Configuration**: For each WorkSpace, use `describe_workspaces_connection_status()` and `describe_vpcs()` to retrieve the VPC ID and its configuration.\n3. **Validation Logic**: Ensure that each VPC dedicated to WorkSpaces does not host other services or resources unless explicitly allowed by the organizational policy.\n4. **Pass/Fail Criteria**:\n   - **Pass**: The WorkSpace is deployed in a VPC that is dedicated and only hosts WorkSpaces.\n   - **Fail**: The WorkSpace shares a VPC with other unrelated services or resources without being dedicated as per organizational policy.\n\nBy leveraging these methods, we can automate the evaluation of whether each WorkSpace is deployed in its own VPC, fulfilling the CIS AWS compliance requirement effectively.",
+    "timestamp": "2025-10-28T15:14:37.053705",
+    "model": "gpt-4o"
+}

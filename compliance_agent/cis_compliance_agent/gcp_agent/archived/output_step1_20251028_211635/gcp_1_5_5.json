@@ -1,0 +1,22 @@
+{
+    "control_id": "5.5",
+    "unique_id": "gcp_1_5_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure access to the su command is restricted",
+    "input_row": {
+        "id": "5.5",
+        "unique_id": "gcp_1_5_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure access to the su command is restricted",
+        "description": "The su command allows a user to run a command or shell as another user. The program has been superseded by sudo , which allows for more granular control over privileged access. Normally, the su command can be executed by any user. By uncommenting the pam_wheel.so statement in /etc/pam.d/su , the su command will only allow users in the wheel group to execute su .",
+        "rationale": "Restricting the use of su , and using sudo in its place, provides system administrators better control of the escalation of user privileges to execute privileged commands. The sudo utility also provides a better logging and audit mechanism, as it can log each command executed via sudo , whereas su can only record that a user executed the su program.",
+        "audit": "Run the following command and verify output includes matching line: # grep pam_wheel.so /etc/pam.d/su auth required pam_wheel.so use_uid Run the following command and verify users in wheel group match site policy: # grep wheel /etc/group wheel:!:10:root,<user list>",
+        "remediation": "Add the following line to the /etc/pam.d/su file: auth required pam_wheel.so use_uid Create a comma separated list of users in the wheel statement in the /etc/group file: wheel:!:10:root,<user list> /etc is stateless on Container-Optimized OS. Therefore, /etc cannot be used to make these changes persistent across reboots. The steps mentioned above needs to be performed after every boot.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control focuses on restricting access to the `su` command by modifying the `/etc/pam.d/su` file, which is an OS-level configuration check. This requires examining specific files on the Container-Optimized OS (COS), ensuring the presence of certain lines and configurations. These checks often involve accessing the shell of a running instance or container, which cannot be reliably automated via GCP APIs or the Google Cloud SDK as they are specific to the operating system's file configuration. \n\n**DECISION CRITERIA:**\n- OS-level configurations, such as those within `/etc/pam.d/su`, are typically not exposed through GCP APIs or SDKs.\n- Requires manual inspection of configuration files to verify entries related to `pam_wheel.so`.\n- No relevant GCP CLI commands or SDK methods available for this specific check.\n- The audit instructions involve using standard Linux utilities (`grep`) rather than GCP-derived methods.\n\n**MANUAL STEPS:**\n1. **Access the Instance:**\n   - Log into the GCP instance running Container-Optimized OS using SSH.\n\n2. **Verify `pam_wheel.so` Configuration:**\n   - Run the following command to check if the `pam_wheel.so` is enabled:\n     ```bash\n     grep pam_wheel.so /etc/pam.d/su\n     ```\n   - **Expected Output:** Ensure the output shows:\n     ```\n     auth required pam_wheel.so use_uid\n     ```\n\n3. **Check Wheel Group Configuration:**\n   - Run the command to verify users in the wheel group:\n     ```bash\n     grep wheel /etc/group\n     ```\n   - **Expected Configuration:** Users who should have `su` access should be listed alongside:\n     ```\n     wheel:!:10:root,<user list>\n     ```\n\n4. **Confirm Consistency Across Boots:**\n   - Note that `/etc` is stateless on COS. Ensure configuration is reapplied upon instance restart, potentially by utilizing startup scripts as COS does not persist these changes by default.\n\nNo program name or automation detail is provided as the audit approach determined is manual.",
+    "timestamp": "2025-10-28T21:40:32.788202",
+    "model": "gpt-4o"
+}

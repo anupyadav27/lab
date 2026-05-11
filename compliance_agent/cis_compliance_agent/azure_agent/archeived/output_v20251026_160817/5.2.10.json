@@ -1,0 +1,17 @@
+{
+    "id": "5.2.10",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "5.2.10",
+        "unique_id": "5.2.10__ensure-ssh-permituserenvironment-is-disabled",
+        "title": "Ensure SSH PermitUserEnvironment is disabled",
+        "description": "The PermitUserEnvironment option allows users to present environment options to the SSH daemon.",
+        "rationale": "Permitting users the ability to set environment variables through the SSH daemon could potentially allow users to bypass security controls (e.g. setting an execution path that has SSH executing trojan'd programs)",
+        "audit": "Run the following command: # sshd -T -C user=root -C host=\"$(hostname)\" -C addr=\"$(grep $(hostname) /etc/hosts | awk '{print $1}')\" | grep permituserenvironment Verify the output matches: permituserenvironment no Run the following command and verify the output: # grep -Pis '^\\h*PermitUserEnvironment\\h+\"?yes\"?\\b' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf Nothing should be returned. Note: If Include locations besides, or in addition to /etc/ssh/sshd_config.d/*.conf are used in your environment, those locations should be checked for the correct configuration as well.",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter above any Include entries as follows: PermitUserEnvironment no Note: First occurrence of a option takes precedence. If Include locations are enabled, used, and order of precedence is understood in your environment, the entry may be created in a file in Include location. Default Value: PermitUserEnvironment no References: 1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5 MITRE ATT&CK Mappings: Techniques / Sub- techniques Tactics Mitigations T1021, T1021.000 TA0008 M1042",
+        "impact": "",
+        "reference": "1. SSHD_CONFIG(5) 2. NIST SP 800-53 Rev. 5: CM-1,CM-2, CM-6, CM-7, IA-5 MITRE ATT&CK Mappings: Techniques / Sub- techniques Tactics Mitigations T1021, T1021.000 TA0008 M1042",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the SSH configuration:**\n   - Use SSH to connect to the Linux server where the SSH daemon is running.\n   \n2. **Verify the PermitUserEnvironment setting:**\n   - Run the command: `sshd -T | grep permituserenvironment`.\n   - This command will show the current status of the PermitUserEnvironment option.\n\n3. **Check the SSH configuration files:**\n   - Run the command: `grep -Pis '^\\h*PermitUserEnvironment\\h+\\\"?yes\\\"?\\b' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf`.\n   - This command checks whether any configuration files enable the PermitUserEnvironment option.\n\n4. **Expected secure configuration:**\n   - The output from the first command should return: `permituserenvironment no`.\n   - The second command should return no output, indicating that PermitUserEnvironment is not set to \"yes\" in any configuration file.\n\n5. **Confirm compliance:**\n   - If the expected outputs are achieved, the SSH configuration is compliant with this control. If not, remediation is necessary by updating the SSH configuration files as stated in the remediation section of the control."
+}

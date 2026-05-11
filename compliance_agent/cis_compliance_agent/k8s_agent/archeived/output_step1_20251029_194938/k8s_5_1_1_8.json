@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.8",
+    "unique_id": "k8s_5_1_1_8",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the --secure-port argument is not set to 0",
+    "input_row": {
+        "id": "1.1.8",
+        "unique_id": "k8s_5_1_1_8",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the --secure-port argument is not set to 0",
+        "description": "Do not disable the secure port.",
+        "rationale": "The secure port is used to serve https with authentication and authorization. If you disable it, no https traffic is served and all traffic is served unencrypted.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --secure-port argument is either not set or is set to an integer value between 1 and 65535.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and either remove the -- secure-port argument from the KUBE_API_ARGS parameter or set it to a different desired port. Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: You need to set the apiserver up with the right TLS certificates. Default Value: By default, port 6443 is used as the secure port. References: 1. https://kubernetes.io/docs/admin/kube-apiserver/   27 | P a g e",
+        "profile_applicability": "•  Level 1",
+        "impact": "You need to set the apiserver up with the right TLS certificates. Default Value: By default, port 6443 is used as the secure port.",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/   27 | P a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_secure_port_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify the value of the --secure-port flag.\n- This can be accomplished by:\n  - Inspecting the kube-apiserver Pod specification if running as a static Pod (commonly found at /etc/kubernetes/manifests/kube-apiserver.yaml) using kubectl or direct file inspection.\n  - Using kubectl to retrieve the kube-apiserver Pod in the kube-system namespace (if managed by a Pod) and examining the command/args section for the --secure-port flag.\n  - If running as a systemd service, this check would require host access, but in most modern Kubernetes deployments, the API server is managed as a Pod.\n- Example kubectl command:\n  ```\n  kubectl -n kube-system get pods -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].command}'\n  ```\n  or\n  ```\n  kubectl -n kube-system get pods -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].args}'\n  ```\n- Parse the output to find the --secure-port argument.\n- **Pass Criteria:** The --secure-port argument is either not set (defaults to 6443) or is set to an integer value between 1 and 65535 (inclusive), and is not set to 0.\n- **Fail Criteria:** The --secure-port argument is explicitly set to 0, which disables the secure port.\n- This check can be fully automated using Kubernetes API or kubectl, without requiring host-level access.\n\n**SOURCE:** CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "timestamp": "2025-10-29T21:39:21.042998",
+    "model": "gpt-4.1"
+}

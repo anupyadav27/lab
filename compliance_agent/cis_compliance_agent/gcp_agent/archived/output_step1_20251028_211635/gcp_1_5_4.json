@@ -1,0 +1,22 @@
+{
+    "control_id": "5.4",
+    "unique_id": "gcp_1_5_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure root login is restricted to system console",
+    "input_row": {
+        "id": "5.4",
+        "unique_id": "gcp_1_5_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure root login is restricted to system console",
+        "description": "The file /etc/securetty contains a list of valid terminals that may be logged in directly as root.",
+        "rationale": "Since the system console has special properties to handle emergency situations, it is important to ensure that the console is in a physically secure location and that unauthorized consoles have not been defined.",
+        "audit": "# cat /etc/securetty",
+        "remediation": "Remove entries for any consoles that are not in a physically secure location.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control requires checking the contents of the file `/etc/securetty` on each instance running Container-Optimized OS to ensure root login is restricted to the system console. This involves accessing the operating system configuration files, which cannot be verified through GCP APIs or the Google Cloud SDK without direct access to the instance. Therefore, SSH access to inspect OS-level configurations is required.\n\n**MANUAL STEPS:**\n1. **Access the Instance:**\n   - Use SSH to log into the instance running Container-Optimized OS. This requires appropriate permissions and access to the GCP console or using the `gcloud compute ssh` command.\n\n2. **Verify `/etc/securetty`:**\n   - Execute `cat /etc/securetty` to view the file contents. This file should list terminals permitted for direct root login.\n   \n3. **Check for Compliance:**\n   - Ensure that the entries in `/etc/securetty` are limited to terminals that correspond to secure, physically controlled consoles.\n   \n4. **Expected Secure Configuration:**\n   - The file should only contain entries for terminals that are verified to be in secure locations—commonly it should be `/dev/console` or only those necessary for secure, emergency use.\n\n5. **Confirm Compliance:**\n   - Verify that any console entries that are not physically secured or necessary are removed from `/etc/securetty`.\n\nGiven the need for this configuration file check, it falls outside the scope of automated API checks and requires a manual process.",
+    "timestamp": "2025-10-28T21:40:16.987558",
+    "model": "gpt-4o"
+}

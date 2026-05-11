@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2",
+    "unique_id": "aws_3_5_2",
+    "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+    "title": "Ensure a VPC Endpoint is set for AppStream",
+    "input_row": {
+        "id": "5.2",
+        "unique_id": "aws_3_5_2",
+        "source": "CIS AWS END USER COMPUTE SERVICES BENCHMARK V1.2.0",
+        "title": "Ensure a VPC Endpoint is set for AppStream",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThe control, \"Ensure a VPC Endpoint is set for AppStream,\" can be fully verified using AWS APIs. This involves checking if an appropriate VPC Endpoint is configured for the AppStream service in the AWS account. The VPC Endpoint is a network interface that enables private connectivity between VPCs and supported AWS services without requiring an internet gateway or NAT device. \n\nGiven that VPC Endpoints are identifiable AWS configurations, they can be queried through various AWS SDKs, particularly `boto3`, to determine if the endpoint exists for AppStream.\n\n**PROGRAM NAME:** aws_vpc_endpoint_appstream_configured\n\n**AUTOMATION DETAILS:**\n\nThe automated program would perform the following checks:\n\n- **AWS API Calls and boto3 SDK Methods:**\n  - Use `boto3.client('ec2')` to access the EC2 client.\n  - Utilize the `describe_vpc_endpoints()` method to list VPC endpoints.\n  \n- **AWS CLI Commands (if applicable):**\n  - `aws ec2 describe-vpc-endpoints --filters \"Name=service-name,Values=*.appstream2\" --query \"VpcEndpoints[*].VpcEndpointId\"`\n  \n- **Resources to Enumerate:**\n  - Enumerate VPC Endpoints across all regions within the AWS account.\n  \n- **Configuration Properties/Settings to Validate:**\n  - Check for a VPC Endpoint with a `ServiceName` that matches `com.amazonaws.<region>.appstream2`.\n  - Ensure that the endpoint is in an 'available' state.\n\n- **Clear Pass/Fail Criteria with Expected Values:**\n  - **Pass:** A VPC Endpoint exists for the AppStream service in the specified region and is in 'available' state.\n  - **Fail:** No VPC Endpoint exists for the AppStream service, or it is not in a functional 'available' state.\n\nThis automated check provides a reliable means to verify the presence of a VPC Endpoint for AppStream, ensuring secure and efficient network configurations are in place without relying on internet traffic.",
+    "timestamp": "2025-10-28T15:20:21.266745",
+    "model": "gpt-4o"
+}

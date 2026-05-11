@@ -1,0 +1,26 @@
+{
+  "review_status": "APPROVE_WITH_CHANGES",
+  "k8s_applicable": true,
+  "validated_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_service_type_not_nodeport",
+    "k8s_ingress_tls_enabled"
+  ],
+  "changes_made": [],
+  "review_notes": "The functions generally map well to Kubernetes security controls relevant to PCI DSS 2.2.6, which focuses on restricting public access. The naming conventions are mostly followed, but minor improvements can enhance clarity.",
+  "agreement_with_step1": true,
+  "technical_concerns": [],
+  "naming_improvements": [
+    "Consider using 'k8s_service_nodeport_disabled' instead of 'k8s_service_type_not_nodeport' for clarity and consistency with the pattern of indicating a specific action or state."
+  ],
+  "control_id": "2.2.6",
+  "title": "Requirement 2.2.6",
+  "step1_functions": [
+    "k8s_networkpolicy_default_deny_ingress",
+    "k8s_networkpolicy_default_deny_egress",
+    "k8s_service_type_not_nodeport",
+    "k8s_ingress_tls_enabled"
+  ],
+  "step1_reasoning": "The PCI DSS control 2.2.6 involves ensuring that systems are not publicly accessible unless necessary. In Kubernetes, this can be mapped to ensuring that network policies are in place to deny ingress and egress by default, preventing unauthorized access. Additionally, services should not be exposed using NodePort, and ingress should have TLS enabled to secure connections."
+}

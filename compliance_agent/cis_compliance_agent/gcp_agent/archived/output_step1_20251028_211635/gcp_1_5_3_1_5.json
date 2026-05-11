@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.1.5",
+    "unique_id": "gcp_1_5_3_1_5",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure all users last password change date is in the past",
+    "input_row": {
+        "id": "5.3.1.5",
+        "unique_id": "gcp_1_5_3_1_5",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure all users last password change date is in the past",
+        "description": "All users should have a password change date in the past.",
+        "rationale": "If a users recorded password change date is in the future then they could bypass any set password expiration.",
+        "audit": "Run the following command and verify nothing is returned # for usr in $(cut -d: -f1 /etc/shadow); do [[ $(chage --list $usr | grep '^Last password change' | cut -d: -f2) > $(date) ]] && echo \"$usr :$(chage -- list $usr | grep '^Last password change' | cut -d: -f2)\"; done",
+        "remediation": "Investigate any users with a password change date in the future and correct them. Locking the account, expiring the password, or resetting the password manually may be appropriate.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- The control requires checking the last password change date for all user accounts in the `/etc/shadow` file on Google Container-Optimized OS (COS) instances.\n- This type of check involves accessing operating system-level configurations, which typically require SSH access to the instance.\n- The audit command provided in the description is designed to be run directly on the instance to verify user configurations in the OS.\n- Since GCP APIs and the Google Cloud SDK (gcloud) do not provide direct methods to query OS-level user password information, this necessitates a manual approach.\n\n**MANUAL STEPS:**\n\n1. **Access Google Container-Optimized OS Instance**\n   - SSH into the instance running Container-Optimized OS by using the following command:\n     ```bash\n     gcloud compute ssh <INSTANCE_NAME> --zone=<ZONE>\n     ```\n   - Replace `<INSTANCE_NAME>` with the name of your Compute Engine instance and `<ZONE>` with the appropriate zone.\n\n2. **Verify User Password Change Dates**\n   - Execute the audit command provided in the control to check each user's last password change date:\n     ```bash\n     for usr in $(cut -d: -f1 /etc/shadow); do \n       [[ $(chage --list $usr | grep '^Last password change' | cut -d: -f2) > $(date) ]] && \n       echo \"$usr :$(chage --list $usr | grep '^Last password change' | cut -d: -f2)\"; \n     done\n     ```\n   - This command loops through every user in the `/etc/shadow` file, checks their last password change date, and compares it to the current date.\n\n3. **Review and Remediate**\n   - Confirm that no output is returned, indicating all users have a password change date in the past.\n   - If any users have a password change date in the future, investigate why and correct it manually by editing the `/etc/shadow` file or using `chage` commands to set an appropriate password change date.\n\n4. **Expected Secure Configuration**\n   - All user last password change dates should precede the current date, ensuring no unauthorized password expiration bypass.\n\n5. **Confirm Compliance**\n   - Compliance is achieved when all accounts on the instance have a past password change date, confirming adherence to the security policy outlined.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:39:07.008283",
+    "model": "gpt-4o"
+}

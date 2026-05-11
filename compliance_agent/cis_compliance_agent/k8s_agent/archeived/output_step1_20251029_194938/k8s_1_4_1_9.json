@@ -1,0 +1,22 @@
+{
+    "control_id": "4.1.9",
+    "unique_id": "k8s_1_4_1_9",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "If the kubelet config.yaml configuration file is being used validate permissions set to 600 or more restrictive",
+    "input_row": {
+        "id": "4.1.9",
+        "unique_id": "k8s_1_4_1_9",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "If the kubelet config.yaml configuration file is being used validate permissions set to 600 or more restrictive",
+        "description": "Ensure that if the kubelet refers to a configuration file with the --config argument, that file has permissions of 600 or more restrictive.",
+        "rationale": "The kubelet reads various parameters, including security settings, from a config file specified by the --config argument. If this file is specified you should restrict its file permissions to maintain the integrity of the file. The file should be writable by only the administrators on the system. Impact: None",
+        "audit": "Automated AAC auditing has been modified to allow CIS-CAT to input a variable for the <PATH>/<FILENAME> of the kubelet config yaml file. Please set $kubelet_config_yaml=<PATH> based on the file location on your system for example: export kubelet_config_yaml=/var/lib/kubelet/config.yaml To perform the audit manually: Run the below command (based on the file location on your system) on the each worker node. For example, stat -c %a /var/lib/kubelet/config.yaml Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the following command (using the config file location identied in the Audit step) chmod 600 /var/lib/kubelet/config.yaml Default Value: By default, the /var/lib/kubelet/config.yaml file as set up by kubeadm has permissions of 600. References: 1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the file system permissions (mode 600 or more restrictive) on the kubelet config.yaml file as referenced by the --config flag.\n- Kubernetes APIs and kubectl do not expose host file system permissions or allow querying of file/directory modes for files outside of Kubernetes-managed volumes.\n- The audit instructions explicitly require running stat or similar commands directly on the worker node OS, which is not possible via Kubernetes API or kubectl.\n- Therefore, this check requires direct OS-level access and cannot be automated via Kubernetes-native interfaces.\n\n**MANUAL STEPS:**\n1. Identify the kubelet configuration file path by checking the kubelet process arguments for the --config flag (commonly /var/lib/kubelet/config.yaml).\n2. SSH into each worker node in the cluster.\n3. Run the following command to check the file permissions:\n   ```\n   stat -c %a /var/lib/kubelet/config.yaml\n   ```\n   (Replace the path if your kubelet config is elsewhere.)\n4. Verify that the output is 600 or more restrictive (i.e., 600, 400, or 000).\n5. Confirm that only the file owner (typically root) has read/write access, and no other users have permissions.\n6. Repeat for all worker nodes in the cluster.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:04:29.650324",
+    "model": "gpt-4.1"
+}

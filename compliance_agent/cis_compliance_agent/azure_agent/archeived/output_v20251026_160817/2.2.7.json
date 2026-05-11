@@ -1,0 +1,20 @@
+{
+    "id": "2.2.7",
+    "source": null,
+    "input_row": {
+        "id": "2.2.7",
+        "unique_id": "2.2.7__ensure-'https-only'-is-set-to-'on'",
+        "title": "Ensure 'HTTPS Only' is set to 'On'",
+        "description": "...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment slots. 4. Click the name of a deployment slot. 5. Under Settings, click Configuration. 6. In the General settings tab, under Platform settings, next to HTTPS Only, select the radio button next to On. 7. Click Save. 8. Click Continue. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation.  Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to enable HTTPS Only: az resource update --resource-group <resource-group-name> --name <app- name>/slots/<deployment-slot-name> --resource-type \"Microsoft.Web/sites\" -- set properties.httpsOnly=true Remediate from PowerShell For each deployment slot requiring remediation, run the following command to enable HTTPS Only: Set-AzWebAppSlot -ResourceGroupName <resource-group-name> -Name <app-name> - Slot <deployment-slot-name> -HttpsOnly $true Default Value: HTTPS Only is disabled by default. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-security#https-and- certificates 2. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- data-protection#dp-3-encrypt-sensitive-data-in-transit 3. https://techcommunity.microsoft.com/t5/azure-paas-blog/enable-https-setting-on- azure-app-service-using-azure-policy/ba-p/3286603 4. https://learn.microsoft.com/en-us/cli/azure/webapp 5. https://learn.microsoft.com/en-us/powershell/module/az.websites/get- azwebappslot 6. https://learn.microsoft.com/en-us/powershell/module/az.websites/set- azwebappslot 7. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "### AUDIT APPROACH: Automated\n\n### PROGRAM NAME:\nazure_app_service_https_only_enabled\n\n### AUTOMATION DETAILS:\nThe automated program will check the following:\n\n1. **Azure Resource Manager API/CLI to Use:**\n   - Azure CLI Command: \n     ```bash\n     az webapp show --name <app-name> --resource-group <resource-group-name> --query \"httpsOnly\"\n     ```\n   - Alternatively, use the Azure REST API endpoint:\n     ```\n     GET https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.Web/sites/{app-name}?api-version=2021-01-15\n     ```\n\n2. **Specific Resources to Enumerate:**\n   - Enumerate all App Services and their respective deployment slots within the given subscription or resource group where the check is to be performed.\n\n3. **Exact Configuration Properties/Settings to Validate:**\n   - The property to check is the `httpsOnly` setting of the App Service deployment slot.\n\n4. **Clear Pass/Fail Criteria with Expected Values:**\n   - **Pass:** The `httpsOnly` property should have a value of `true`.\n   - **Fail:** The `httpsOnly` property should have a value of `false` or be unset.\n\n5. **Example API Endpoint or CLI Command:**\n   - Using the example CLI command above, the audit will evaluate whether the response returns `true` for the `httpsOnly` property. This can be integrated into a script to run across multiple resources. If the setting is not enabled, it will log that the resource is non-compliant.\n\nThis automated approach ensures a systematic verification of the HTTPS settings for App Services, enabling quick compliance checks across multiple deployments."
+}

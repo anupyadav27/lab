@@ -1,0 +1,34 @@
+{
+    "unique_id": "2.2.5__ensure-'ftp-state'-is-set-to-'ftps-only'-or-'disabled'",
+    "control_id": "2.2.5",
+    "source": null,
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe information regarding the control indicates that it can be fully verified via Azure Resource Manager APIs. The presence of Azure CLI commands for remediation implies that the property can indeed be queried and confirmed programmatically. Furthermore, the requirements regarding the FTP state being set to 'FTPS Only' or 'Disabled' are standard configurations accessible through Azure APIs.\n\n**PROGRAM NAME:** azure_app_service_ftp_state_verified\n\n**AUTOMATION DETAILS:**\nThe automated program will check the FTP state configuration for App Services and their deployment slots within a specified subscription or resource group.\n\n- **Azure APIs/CLI Commands:**\n  - Azure Resource Manager API endpoint: `GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{appName}/slots/{slotName}/config?api-version=2021-02-01`\n  - Azure CLI command: `az webapp show --name <app-name> --resource-group <resource-group-name> --query \"deploymentID.slots[*].properties.ftpsState\"`\n\n- **Specific Resources to Enumerate:**\n  - App Services and their deployment slots in a specified subscription or resource group.\n\n- **Exact Configuration Properties/Settings to Validate:**\n  - The property to validate is `ftpsState`, which should be either `FtpsOnly` or `Disabled`.\n\n- **Pass/Fail Criteria:**\n  - **Pass**: The `ftpsState` value is set to either `FtpsOnly` or `Disabled`.\n  - **Fail**: The `ftpsState` value is set to anything other than `FtpsOnly` or `Disabled`.\n\n- **Example API Endpoint or CLI Command:**\n  - REST API Command: \n    ```\n    GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{appName}/slots/{slotName}/config?api-version=2021-02-01\n    ```\n  - Corresponding Azure CLI Command:\n    ```\n    az webapp show --name <app-name> --resource-group <resource-group-name> --query \"ftpsState\"\n    ```"
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** AGREE\n- The classification of the audit approach as Automated is correct. The control can indeed be verified using Azure Resource Manager APIs and Azure CLI commands. The `ftpsState` property for Azure App Services is accessible programmatically, making automation feasible and efficient.\n\n**TECHNICAL ACCURACY:** 8\n- The automation details are mostly accurate. The REST API endpoint and Azure CLI command provided are correct for querying the `ftpsState` property. However, there is a minor inconsistency in the CLI command example; it should directly query the `ftpsState` property rather than using `deploymentID.slots[*].properties.ftpsState`.\n- The program name `azure_app_service_ftp_state_verified` is generally in line with naming conventions, though it could be slightly improved for clarity.\n\n**IMPROVEMENTS:**\n- **CLI Command Correction:** The CLI command should be corrected to directly query the `ftpsState` property:\n  ```\n  az webapp show --name <app-name> --resource-group <resource-group-name> --query \"ftpsState\"\n  ```\n- **Program Name Suggestion:** Consider renaming the program to `azure_app_service_ftp_state_check` for better clarity and alignment with the intent of checking the state.\n- **API Version Consideration:** Ensure that the API version used (`2021-02-01`) is the latest or most appropriate for the task, as newer versions may offer additional features or improvements.\n- **Error Handling and Logging:** Include considerations for error handling and logging within the automated script to ensure robustness and traceability.\n\n**CONFIDENCE:** HIGH\n- The assessment is well-founded, and the use of Azure APIs and CLI for automation is appropriate. The technical details are mostly correct, with minor improvements needed.\n\n**FINAL RECOMMENDATION:**\n- **Modify:** Correct the CLI command to directly query the `ftpsState` and consider renaming the program for clarity. Additionally, verify that the API version is up-to-date and incorporate error handling and logging practices into the automation script.",
+        "reviewed_at": "2025-10-26T16:11:16.888742"
+    },
+    "input_row": {
+        "id": "2.2.5",
+        "unique_id": "2.2.5__ensure-'ftp-state'-is-set-to-'ftps-only'-or-'disabled'",
+        "title": "Ensure 'FTP state' is set to 'FTPS only' or 'Disabled'",
+        "description": "...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Deployment, click Deployment Slots. 4. Click the name of a deployment slot. 5. Under Settings, click Configuration. 6. In the General settings pane, under Platform settings, set FTP state to FTPS only or Disabled. 7. Click Save. 8. Click Continue. 9. Repeat steps 1-8 for each app and deployment slot requiring remediation. Remediate from Azure CLI For each deployment slot requiring remediation, run the following command to set FTPS state to FtpsOnly or Disabled: az resource update --name web --resource-group <resource-group-name> -- namespace Microsoft.Web --resource-type config --parent sites/<app- name>/slots/<deployment-slot-name> --set properties.ftpsState=<FtpsOnly|Disabled> Default Value: By default, FTP state is set to FTPS only. References: 1. https://learn.microsoft.com/en-us/azure/app-service/deploy-ftp 2. https://learn.microsoft.com/en-us/azure/app-service/overview-security 3. https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/create-or-update- configuration#ftpsstate 4. https://learn.microsoft.com/en-us/cli/azure/webapp 5. https://learn.microsoft.com/en-us/cli/azure/resource 6. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- data-protection#dp-4-encrypt-sensitive-information-in-transit 7. https://learn.microsoft.com/en-us/security/benchmark/azure/security-controls-v3- posture-vulnerability-management#pv-7-rapidly-and-automatically-remediate- software-vulnerabilities CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "metadata": {
+        "original_file": "2.2.5.json",
+        "review_version": "1.0"
+    }
+}

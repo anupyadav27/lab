@@ -1,0 +1,31 @@
+{
+    "unique_id": "2.2.15__ensure-nis-server-is-not-installed",
+    "control_id": "2.2.15",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Command Execution**: Connect to the Azure Kubernetes Service (AKS) node via SSH. Use the command: `ssh {node_admin_user}@{node_ip_address}` replacing `{node_admin_user}` with your AKS administrator username and `{node_ip_address}` with the IP address of the node.\n  \n2. **Package Verification**: Once logged in, run the command: `rpm -q ypserv` to check if the `ypserv` package is installed on the AKS node.\n\n3. **Verification of Absence**: Ensure that the command output does not return an installed version of the `ypserv` package. If the output indicates that `ypserv` is installed, further actions are required.\n\n4. **Remediation Confirmation**: If `ypserv` is found to be installed, run the command: `dnf remove ypserv` to remove the package. After removal, rerun the `rpm -q ypserv` command to confirm that it has been successfully uninstalled. The output should indicate that `ypserv` is not installed.\n\n5. **Expected Secure Configuration**: A compliant AKS node should have `ypserv` not listed as an installed package. This mitigates vulnerabilities associated with the Network Information Service.\n\n6. **Compliance Confirmation**: Document that the `ypserv` package is not installed after performing the above steps to confirm compliance with security policies as outlined in the CIS Azure Linux Benchmark."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n\n- **Manual vs Automated Classification:** The classification as \"Manual\" is partially correct. While the current steps involve manual SSH access to each AKS node, this task can be automated using Azure capabilities.\n- **Azure API/CLI Capabilities:** This check can be automated using Azure CLI or PowerShell scripts. Azure provides the capability to execute commands on AKS nodes using Azure CLI extensions or Azure Automation. Additionally, Azure Policy can be used to enforce compliance by auditing installed packages on nodes.\n\n**TECHNICAL ACCURACY:** 6\n\n- **Automation Details:** The assessment lacks automation details, which is a significant gap. Azure CLI or PowerShell scripts could be used to automate the verification of installed packages across AKS nodes.\n- **Manual Steps Accuracy:** The manual steps are technically accurate for checking and removing the `ypserv` package. However, they are not scalable for environments with multiple nodes.\n- **Naming Convention:** The assessment does not mention a specific program name following the convention `azure_<service>_<resource>_<security_intent>`. This should be included for clarity and consistency.\n\n**IMPROVEMENTS:**\n\n- **Automation Suggestions:** Implement a script using Azure CLI or PowerShell to iterate over all AKS nodes and check for the `ypserv` package. This can be integrated with Azure Automation or Azure DevOps for continuous compliance checks.\n- **Azure Policy:** Consider using Azure Policy to define and enforce a policy that audits the presence of the `ypserv` package on AKS nodes.\n- **Security Context:** Provide context on why the removal of `ypserv` enhances security, specifically in the context of AKS and potential vulnerabilities associated with NIS.\n\n**CONFIDENCE:** MEDIUM\n\n- The manual steps are accurate but not ideal for large-scale environments. The lack of automation and Azure-specific solutions reduces confidence in the assessment's completeness.\n\n**FINAL RECOMMENDATION:** Modify\n\n- **Re-classify:** Re-classify the assessment to include both manual and automated approaches. Highlight the potential for automation using Azure CLI, PowerShell, and Azure Policy.\n- **Enhance Documentation:** Include detailed steps for automating the compliance check and remediation process using Azure tools.\n- **Policy Integration:** Suggest integrating Azure Policy for continuous compliance monitoring and enforcement.",
+        "reviewed_at": "2025-10-26T16:39:41.544537"
+    },
+    "input_row": {
+        "id": "2.2.15",
+        "unique_id": "2.2.15__ensure-nis-server-is-not-installed",
+        "title": "Ensure NIS server is not installed",
+        "description": "The ypserv package provides the Network Information Service (NIS). This service, formally known as Yellow Pages, is a client-server directory service protocol for distributing system configuration files. The NIS server is a collection of programs that allow for the distribution of configuration files.",
+        "rationale": "The NIS service is inherently an insecure system that has been vulnerable to DOS attacks, buffer overflows and has poor authentication for querying NIS maps. NIS generally has been replaced by such protocols as Lightweight Directory Access Protocol (LDAP). It is recommended that the ypserv package be removed, and if required a more secure services be used.",
+        "audit": "Run the following command to verify ypserv is not installed: # rpm -q ypserv package ypserv is not installed",
+        "remediation": "Run the following command to remove ypserv: # dnf remove ypserv References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "2.2.15__ensure-nis-server-is-not-installed.json",
+        "review_version": "1.0"
+    }
+}

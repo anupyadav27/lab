@@ -1,0 +1,22 @@
+{
+    "control_id": "6.1.6",
+    "unique_id": "gcp_1_6_1_6",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/shadow- are configured",
+    "input_row": {
+        "id": "6.1.6",
+        "unique_id": "gcp_1_6_1_6",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/shadow- are configured",
+        "description": "The /etc/shadow- file is used to store backup information about user accounts that is critical to the security of those accounts, such as the hashed password and other security information.",
+        "rationale": "It is critical to ensure that the /etc/shadow- file is protected from unauthorized access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "audit": "Run the following command and verify verify Uid is 0/root, Gid is 0/root or <gid>/shadow, and Access is 640 or more restrictive: # stat /etc/shadow- Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the one of the following chown commands as appropriate and the chmod to set permissions on /etc/shadow- : # chown root:root /etc/shadow- # chown root:shadow /etc/shadow- # chmod o-rwx,g-rw /etc/shadow-",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control relates to the permissions set on the `/etc/shadow-` file which exists at the OS level of instances running Container-Optimized OS (COS). Ensuring the file permission is correctly configured requires accessing the file system of an instance. Currently, GCP APIs do not provide direct methods to check file permissions within the instance file system; therefore, an API-based automated approach like using Google Cloud SDK (gcloud) or GCP CLI cannot verify this configuration. The audit instructions provided indicate the use of command-line operations (`stat`) that require SSH access to the instances. \n\nAs this requires manual verification through SSH access to the instance and command execution on the host OS, it falls under the domain of OS-level checks, which are typically non-automatable through CSPM tools and GCP APIs.\n\n**MANUAL STEPS:**\n\n1. **Access the Instance:**\n   - Use SSH to access the GCP VM instance running Container-Optimized OS.\n   - Ensure you have the necessary permissions and access to perform SSH.\n\n2. **Check the File Permissions:**\n   - Run the command: `stat /etc/shadow-` on the instance.\n   - Verify the file permissions and ownership.\n\n3. **What to Verify/Validate:**\n   - Confirm the file permissions for `/etc/shadow-` are set to `640` or more restrictive.\n   - Ensure that the owner (`Uid`) is `0/root`.\n   - Confirm the group (`Gid`) is either `0/root` or belongs to the `shadow` group.\n\n4. **Expected Secure Configuration:**\n   - File Permissions: `0640`\n   - Owner: `root`\n   - Group: `root` or `shadow`\n\n5. **How to Confirm Compliance:**\n   - If the permissions match the expected configuration, the instance is compliant with this control.\n   - Any deviation from the expected permissions should be remedied by adjusting the `chown` and `chmod` commands as mentioned in the remediation field.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:42:16.764375",
+    "model": "gpt-4o"
+}

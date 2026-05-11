@@ -1,0 +1,31 @@
+{
+    "unique_id": "1.2.2__ensure-tdnf-gpgcheck-is-globally-activated",
+    "control_id": "1.2.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Azure portal:** Log in to the Azure portal.\n2. **Navigate to the Kubernetes cluster:** Go to the Azure Kubernetes Service (AKS) resource in your subscription and select the cluster you wish to validate.\n3. **Connect via SSH:** Initiate an SSH connection to any of the nodes in your AKS cluster. This generally involves running a command similar to:\n   ```\n   az aks install-cli\n   az aks get-credentials --resource-group <resource_group> --name <cluster_name>\n   ssh <node_user>@<node_ip_address>\n   ```\n4. **Verify TDNF configuration:** Once logged into the node, check the global TDNF configuration by running:\n   ```\n   grep ^gpgcheck /etc/tdnf/tdnf.conf\n   ```\n5. **Check repository configurations:** Ensure that your TDNF configuration in the repository files is set correctly by running:\n   ```\n   grep -P \"^gpgcheck\\\\h*=\\\\h*[^1\\\\n\\\\r]\\\\b\" /etc/yum.repos.d/*\n   ```\n6. **Expected secure configuration:** Ensure that the output of the first command shows `gpgcheck=1` and that no output is present for the second command (indicating that all `gpgcheck` settings in repository files are set to 1).\n7. **Confirm compliance:** If both conditions are met (global config set to 1 and no repo configurations set to 0), the control can be considered compliant."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** DISAGREE\n\n- **Manual vs Automated Classification:** The classification as a manual audit is not entirely correct. While the manual steps are detailed, this check can be automated using Azure CLI and potentially custom scripts or Azure Policy for compliance checks.\n- **Azure APIs/CLI Capabilities:** Azure CLI can be used to automate the retrieval of node information and configuration checks. Specifically, Azure CLI can be used to connect to AKS nodes and execute scripts that check the TDNF configuration. Additionally, Azure Policy can be leveraged to enforce and audit configurations across AKS nodes.\n\n**TECHNICAL ACCURACY:** 6\n\n- **Automation Details:** The manual steps are technically correct but lack automation details that could streamline the process.\n- **Manual Steps Accuracy:** The steps provided are accurate for a manual check but do not leverage Azure's automation capabilities.\n- **Program Naming Convention:** The naming convention for the program is not explicitly mentioned, but it should follow a structured format like `azure_aks_node_security_check`.\n\n**IMPROVEMENTS:**\n\n- **Automation Potential:** Consider using Azure CLI scripts to automate the SSH connection and configuration checks. This could be done by scripting the SSH commands and configuration checks into a script that runs on all nodes.\n- **Azure Policy:** Implement Azure Policy to ensure that the `gpgcheck` setting is enforced across all nodes, providing a more scalable and automated compliance check.\n- **Missing Considerations:** The assessment does not consider the potential for using Azure Monitor or Log Analytics to track configuration changes or non-compliance over time.\n\n**CONFIDENCE:** MEDIUM\n\n- **Reasoning:** While the manual steps are correct, the lack of automation and use of Azure's capabilities limits the confidence in the assessment's completeness and efficiency.\n\n**FINAL RECOMMENDATION:**\n\n- **Re-classify:** Re-classify the audit approach to Automated. Develop a script using Azure CLI to automate the SSH connection and configuration checks. Additionally, consider using Azure Policy to enforce and monitor compliance.\n- **Modify:** Update the assessment to include automation scripts and Azure Policy configurations to ensure a more efficient and scalable compliance check process.",
+        "reviewed_at": "2025-10-26T14:22:50.939462"
+    },
+    "input_row": {
+        "id": "1.2.2",
+        "unique_id": "1.2.2__ensure-tdnf-gpgcheck-is-globally-activated",
+        "title": "Ensure TDNF gpgcheck is globally activated",
+        "description": "The gpgcheck option, found in the main section of the /etc/tdnf/tdnf.conf and individual /etc/yum.repos.d/* files, determines if an RPM package's signature is checked prior to its installation.",
+        "rationale": "It is important to ensure that an RPM's package signature is always checked prior to installation to ensure that the software is obtained from a trusted source.",
+        "audit": "Global configuration. Run the following command and verify that gpgcheck is set to 1: # grep ^gpgcheck /etc/tdnf/tdnf.conf gpgcheck=1 Configuration in /etc/yum.repos.d/ takes precedence over the global configuration. Run the following command and verify that there are no instances of entries starting with gpgcheck returned set to 0. Nor should there be any invalid (non-boolean) values. When dnf encounters such invalid entries they are ignored and the global configuration is applied. # grep -P \"^gpgcheck\\h*=\\h*[^1\\n\\r]\\b\" /etc/yum.repos.d/*",
+        "remediation": "Edit /etc/dnf/dnf.conf and set gpgcheck=1 in the [main] section. Example: # sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' /etc/tdnf/tdnf.conf Edit any failing files in /etc/yum.repos.d/* and set all instances starting with gpgcheck to 1. Example: # find /etc/yum.repos.d/ -name \"*.repo\" -exec echo \"Checking:\" {} \\; -exec sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' {} \\; References: 1. NIST SP 800-53 Rev. 5: - SI-2",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: - SI-2",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "metadata": {
+        "original_file": "1.2.2.json",
+        "review_version": "1.0"
+    }
+}

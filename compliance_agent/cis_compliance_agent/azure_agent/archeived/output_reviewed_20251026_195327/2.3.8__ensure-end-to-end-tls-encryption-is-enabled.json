@@ -1,0 +1,34 @@
+{
+    "unique_id": "2.3.8__ensure-end-to-end-tls-encryption-is-enabled",
+    "control_id": "2.3.8",
+    "source": null,
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** azure_function_app_end_to_end_tls_encryption_enabled\n\n**AUTOMATION DETAILS:** \nThis automated program will check the end-to-end TLS encryption setting on all Azure Function Apps within a specified subscription and resource group. \n\n1. **Azure CLI Commands:**\n   - List all function apps: \n     ```\n     az functionapp list --query \"[].{name:name, resourceGroup:resourceGroup}\"\n     ```\n   - For each function app, retrieve the end-to-end TLS encryption setting:\n     ```\n     az functionapp show --resource-group <resource-group-name> --name <function-app-name> --query endToEndEncryptionEnabled\n     ```\n\n2. **Resources to Enumerate:**\n   - Function Apps within specified subscriptions or resource groups.\n\n3. **Configuration Properties/Settings to Validate:**\n   - The property to verify is `endToEndEncryptionEnabled`.\n\n4. **Pass/Fail Criteria:**\n   - The test will pass if the commands return `true` for the `endToEndEncryptionEnabled` property for each function app. \n   - It will fail if the value is `false` or if the property is not found.\n\n5. **Example API Endpoint or CLI Command:**\n   - Azure CLI command: \n     ```\n     az functionapp show --resource-group <resource-group-name> --name <function-app-name> --query endToEndEncryptionEnabled\n     ```"
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n- The classification of the audit approach as Automated is partially correct. While the use of Azure CLI commands can automate the checking process, the specific property `endToEndEncryptionEnabled` does not exist for Azure Function Apps. Instead, Azure Function Apps use TLS settings at the App Service level, and the correct property to check would be related to HTTPS-only settings. Therefore, while the approach is automated, the specific implementation details are incorrect.\n- This check can indeed be performed using Azure APIs/CLI, but the correct property must be targeted.\n\n**TECHNICAL ACCURACY:** 4\n- The automation details are technically incorrect as they reference a non-existent property `endToEndEncryptionEnabled` for Azure Function Apps.\n- The program name follows the convention but does not accurately reflect the security intent due to the incorrect property.\n- The CLI commands are correctly structured but target the wrong property.\n\n**IMPROVEMENTS:**\n- The assessment should target the `httpsOnly` property of the Azure Function App, which ensures that only HTTPS traffic is allowed.\n- The correct CLI command to check this setting would be:\n  ```\n  az functionapp show --resource-group <resource-group-name> --name <function-app-name> --query httpsOnly\n  ```\n- The pass/fail criteria should be updated to reflect that the `httpsOnly` property must return `true`.\n- Consider checking for custom domains and ensuring they have TLS/SSL bindings configured.\n- Ensure that the automation script handles potential exceptions or errors, such as missing permissions or non-existent resources.\n\n**CONFIDENCE:** MEDIUM\n- While the approach is generally feasible through automation, the incorrect property significantly impacts the accuracy of the assessment.\n\n**FINAL RECOMMENDATION:**\n- Modify: Update the assessment to target the correct property (`httpsOnly`) for Azure Function Apps. Ensure that the automation script accurately reflects the security intent of ensuring end-to-end TLS encryption by focusing on HTTPS traffic enforcement.\n- Re-classify: While the approach remains Automated, the specific implementation details need correction to align with Azure's actual capabilities and properties.",
+        "reviewed_at": "2025-10-26T15:16:00.448905"
+    },
+    "input_row": {
+        "id": "2.3.8",
+        "unique_id": "2.3.8__ensure-end-to-end-tls-encryption-is-enabled",
+        "title": "Ensure end-to-end TLS encryption is enabled",
+        "description": " run the following command to e...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure CLI For each function app requiring remediation, run the following command to enable end- to-end TLS encryption: az resource update --resource-group <resource-group-name> --name <function- app-name> --resource-type \"Microsoft.Web/sites\" --set properties.endToEndEncryptionEnabled=true Default Value: By default, end-to-end TLS encryption is disabled. References: 1. https://learn.microsoft.com/en-us/azure/app-service/overview-tls#end-to-end-tls- encryption 2. https://learn.microsoft.com/en-us/cli/azure/functionapp 3. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "reference": "Enabling end-to-end TLS encryption may introduce minimal latency and require additional configuration of certificates and HTTPS settings to ensure compatibility. Audit: Audit from Azure CLI Run the following command to list function apps: az functionapp list For each function app, run the following command to get the end-to-end TLS encryption setting: az functionapp show --resource-group <resource-group-name> --name <function- app-name> --query endToEndEncryptionEnabled Ensure that the command returns true. Audit from Azure Policy If referencing a digital copy of this Benchmark, clicking a Policy ID will open a link to the associated Policy definition in Azure. If referencing a printed copy, you can search Policy IDs from this URL: https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Definitions • Policy ID: 387140f1-6da9-4741-bcee-3b5edcdfd9ec - Name: 'Function apps should enable end to end encryption'",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "metadata": {
+        "original_file": "2.3.8.json",
+        "review_version": "1.0"
+    }
+}

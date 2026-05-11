@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2",
+    "unique_id": "ibm_1_4_2",
+    "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "title": "Ensure IBM Cloud Databases are only accessible via HTTPS or TLS Connections",
+    "input_row": {
+        "id": "4.2",
+        "unique_id": "ibm_1_4_2",
+        "source": "CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+        "title": "Ensure IBM Cloud Databases are only accessible via HTTPS or TLS Connections",
+        "description": "The IBM Cloud Databases services can only be connected to over TLS or HTTPS connections. This behavior is by default and is non-configurable. Customers are provided self-signed certificates and most appropriately configure driver or application to utilize these certificates and encryption in motion. To connect to the database with a self-signed certificate for TLS, follow the following steps Via UI 1. Driver you use to connect needs to be able to support encryption. 2. Copy the certificate information from the Connections panel or the Base64 field of the connection information on the IBM Cloud Databases UI. 3. If needed, decode the Base64 string into text. 4. Save the certificate to a file. (You can use the Name that is provided or your own file name). 5. Provide the path to the certificate to the driver or client. 6. Connect to database Via CLI 1. ibmcloud login 2. ibmcloud cdb 3. ibmcloud cdb deployment-ca-cert \"CRN\" 4. Copy and save the command's output (it will be text decoded from Base64) to a file and provide the file's path to the driver.",
+        "rationale": "IBM Cloud databases are typically used by our customers to store business-critical data. When these kinds of data are uploaded or accessed, it is highly recommended and required to keep the channel encrypted to ensure data cannot be accessed by a bad actor or incorrect entity Impact: Any lack in protecting this data in motion using strong encryption could result in a bad actor accessing the data and possibly causing damage to the relevant organizations.",
+        "audit": "",
+        "remediation": "There is no remediation procedure available on database side. If client side is having issues connecting to the database, the client must ensure that they are using TLS 1.2> or HTTPS from application or client library. Default Value: Only encrypted communication to the database is accepted.",
+        "profile_applicability": "•  Level 1",
+        "impact": "Any lack in protecting this data in motion using strong encryption could result in a bad actor accessing the data and possibly causing damage to the relevant organizations.",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nThe control to ensure IBM Cloud Databases are only accessible via HTTPS or TLS connections can be verified using the IBM Cloud CLI. The description implies that this security requirement is enforced by default and is non-configurable, focusing on encrypted communication in transit.\n\n**PROGRAM NAME:** ibm_cloud_databases_encryption_in_transit_verified\n\n**AUTOMATION DETAILS:**\n- Use IBM Cloud CLI to confirm SSL/TLS configuration for database connections.\n- IBM Cloud CLI commands:\n  - `ibmcloud login` to access IBM Cloud resources.\n  - `ibmcloud cdb deployment-ca-cert \"CRN\"` will retrieve the certificate to verify that TLS is applied.\n- Validate that a valid TLS certificate is issued and required for database connections.\n- Enumerate all IBM Cloud Databases instances across the environment.\n- Pass/Fail Criteria:\n  - Pass: Database connections require encryption via TLS/HTTPS.\n  - Fail: Any instance allowing non-encrypted connections would not meet compliance.\n- Expected Outcome: All databases should be configured with TLS/HTTPS encryption, confirming compliance with CIS benchmarks.\n\n**SOURCE:** CIS IBM CLOUD FOUNDATIONS BENCHMARK V1.1.0",
+    "timestamp": "2025-10-29T16:06:07.088882",
+    "model": "gpt-4o"
+}

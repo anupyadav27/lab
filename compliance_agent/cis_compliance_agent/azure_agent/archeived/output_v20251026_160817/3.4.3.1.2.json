@@ -1,0 +1,17 @@
+{
+    "id": "3.4.3.1.2",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "3.4.3.1.2",
+        "unique_id": "3.4.3.1.2__ensure-nftables-is-not-installed-with-iptables",
+        "title": "Ensure nftables is not installed with iptables",
+        "description": "nftables is a subsystem of the Linux kernel providing filtering and classification of network packets/datagrams/frames and is the successor to iptables.",
+        "rationale": "Running both iptables and nftables may lead to conflict.",
+        "audit": "Run the following commend to verify that nftables is not installed: # rpm -q nftables package nftables is not installed",
+        "remediation": "Run the following command to remove nftables: # dnf remove nftables References: 1. NIST SP 800-53 Rev. 5: CM-7, CA-9",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7, CA-9",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. SSH into your Azure Kubernetes Service (AKS) node.\n   - Use the Azure CLI command to connect to the AKS cluster:\n     ```bash\n     az aks get-credentials --name <aks-cluster-name> --resource-group <resource-group-name>\n     ``` \n2. Verify that nftables is not installed by running the command:\n   ```bash\n   rpm -q nftables\n   ```\n   - This command checks if the nftables package is installed on the node.\n\n3. If nftables is installed, you will see the package version. If not installed, the output will indicate that the package is not found.\n\n4. If you find that nftables is installed, you need to remove it using the following command:\n   ```bash\n   dnf remove nftables\n   ```\n\n5. Confirm compliance by ensuring that nftables is no longer installed by re-running the command from step 2. The expected output should state that the package is not found.\n\n6. Document your findings and any remediation actions taken for compliance records."
+}

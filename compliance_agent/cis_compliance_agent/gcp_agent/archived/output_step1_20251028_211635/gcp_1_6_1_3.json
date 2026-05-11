@@ -1,0 +1,22 @@
+{
+    "control_id": "6.1.3",
+    "unique_id": "gcp_1_6_1_3",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure permissions on /etc/group are configured",
+    "input_row": {
+        "id": "6.1.3",
+        "unique_id": "gcp_1_6_1_3",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure permissions on /etc/group are configured",
+        "description": "The /etc/group file contains a list of all the valid groups defined in the system. The command below allows read/write access for root and read access for everyone else.",
+        "rationale": "The /etc/group file needs to be protected from unauthorized changes by non- privileged users, but needs to be readable as this information is used with many non- privileged programs.",
+        "audit": "Run the following command and verify Uid and Gid are both 0/root and Access is 644 : # stat /etc/group Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)",
+        "remediation": "Run the following command to set permissions on /etc/group : # chown root:root /etc/group # chmod 644 /etc/group",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control relates to the file permissions for \"/etc/group\" on Google Container-Optimized OS, which is an OS-level configuration. Verifying the permissions on system files such as \"/etc/group\" requires accessing the underlying operating system of a running instance. As this check involves validating file ownership and permissions on the OS itself, it necessitates secure shell (SSH) access to the instance to manually execute the relevant command (`stat /etc/group`). Thus, this cannot be automated using GCP APIs or the Google Cloud SDK, as they do not provide functionality for examining internal file system permissions directly.\n\n**MANUAL STEPS:**\n1. **Access the Instance:**\n   - Use SSH to access the instance running Google Container-Optimized OS where the file check is to be performed.\n   - Example command: `gcloud compute ssh <instance-name> --zone=<zone>`\n\n2. **Verify File Permissions:**\n   - Run the command: `stat /etc/group`\n   - Check that the output shows `Access: (0644/-rw-r--r--)` and both `Uid` and `Gid` are `0/root`.\n\n3. **Expected Secure Configuration:**\n   - The permissions should display that the file is owned by `root` with read and write permissions (`rw-`) only for the owner and read (`r--`) permissions for others.\n   - Verify that no other users have write permissions to this file.\n\n4. **Confirm Compliance:**\n   - Ensure that the file permissions meet the expected values to confirm the system is compliant with the specified CIS benchmark.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:41:21.438500",
+    "model": "gpt-4o"
+}

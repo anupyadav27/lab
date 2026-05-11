@@ -1,0 +1,22 @@
+{
+    "control_id": "3.5",
+    "unique_id": "aws_1_3_5",
+    "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "title": "Enable Encryption at Rest",
+    "input_row": {
+        "id": "3.5",
+        "unique_id": "aws_1_3_5",
+        "source": "CIS AWS DATABASE SERVICES BENCHMARK V1",
+        "title": "Enable Encryption at Rest",
+        "description": "This helps ensure that the data is kept secure and protected when at rest. The user must choose from two key options which then determine when the data is encrypted at rest.",
+        "rationale": "Impact: If an unauthorized user steals the data, it would be unreadable for them because a key would be required to decrypt the message into plaintext.",
+        "audit": "1. Sign into the AWS Management Console • Sign into the AWS Management Console at https://console.aws.amazon.com/ with your AWS account credentials. 2. Open the Amazon RDS Console • Navigate to the service using the Find Services search bar or by directly accessing the console at https://console.aws.amazon.com/rds/. 3. Select the RDS Instance • Choose the Amazon RDS instance you want to enable encryption at rest. • Click on the instance name to access its details page. • In the instance details page, navigate to the Configuration or Encryption & Security section. 4. Enable Encryption at Rest • Under the Encryption or Encryption at Rest section • Click on the Modify button or the Enable option to enable encryption at rest. • Choose the desired encryption option, either AWS managed keys (default) or Customer managed keys using AWS Key Management Service (KMS). • If selecting AWS managed keys, you do not need to perform additional configuration steps. • If selecting Customer managed keys you will need to specify the KMS key you want to use for encryption.  • Select the appropriate KMS key or create a new KMS key if necessary. • Click Continue or Save to apply the changes. 5. Monitor the Encryption Status • After enabling encryption at rest, monitor the encryption status of your RDS instance. • In the RDS console, check the Encryption or Encryption at Rest section to ensure that encryption is enabled, and the status is In Progress or Enabled. 6. Verify Encryption at Rest • Validate that data at rest is encrypted by accessing the RDS instance and examining the database files. • Confirm that the data is stored in an encrypted format.",
+        "remediation": "References: 1. https://aws.amazon.com/products/databases/",
+        "profile_applicability": "•  Level 1",
+        "impact": "If an unauthorized user steals the data, it would be unreadable for them because a key would be required to decrypt the message into plaintext.",
+        "references": "1. https://aws.amazon.com/products/databases/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** aws_rds_instance_encryption_at_rest_enabled\n\n**AUTOMATION DETAILS:**\n- **AWS API Calls / boto3 SDK:**  \n  - Use `boto3` RDS client: `describe_db_instances()` to enumerate all RDS instances in each region.\n  - For each DB instance returned, inspect the property: `StorageEncrypted`. (Boolean: `True` means encrypted at rest is enabled.)\n- **AWS CLI Equivalent:**  \n  - `aws rds describe-db-instances --query \"DBInstances[*].{DBInstanceIdentifier:DBInstanceIdentifier,StorageEncrypted:StorageEncrypted}\"`\n- **Resources to Enumerate:**  \n  - All Amazon RDS DB Instances across all AWS regions.\n- **Configuration Properties/Settings:**  \n  - Check if the field `StorageEncrypted` is `True` for each RDS instance.\n  - Optionally, validate which KMS key is being used by examining `KmsKeyId` (if using a customer-managed key).\n- **Pass Criteria:**  \n  - The RDS instance has `StorageEncrypted: True` (encryption at rest is enabled).\n- **Fail Criteria:**  \n  - The RDS instance has `StorageEncrypted: False` (encryption at rest is NOT enabled).\n- **Notes:**  \n  - RDS encryption at rest cannot be enabled on an existing, unencrypted DB instance; a snapshot and restore to a new, encrypted instance is required if encryption must be added after creation.\n  - This check applies to all DB engines supported by Amazon RDS: MySQL, PostgreSQL, MariaDB, Oracle, and SQL Server.\n\n**SOURCE:** CIS AWS DATABASE SERVICES BENCHMARK V1",
+    "timestamp": "2025-10-29T19:02:15.315628",
+    "model": "gpt-4.1"
+}

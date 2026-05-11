@@ -1,0 +1,17 @@
+{
+    "id": "2.2.5",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.5",
+        "unique_id": "2.2.5__ensure-a-dhcp-server-is-not-installed",
+        "title": "Ensure a dhcp server is not installed",
+        "description": "The Dynamic Host Configuration Protocol (DHCP) is a service that allows machines to be dynamically assigned IP addresses.",
+        "rationale": "Unless a system is specifically set up to act as a DHCP server, it is recommended that the dhcp-server package be removed to reduce the potential attack surface.",
+        "audit": "Run the following command to verify dhcp-server is not installed: # rpm -q dhcp-server package dhcp-server is not installed",
+        "remediation": "Run the following command to remove dhcp: # dnf remove dhcp-server References: 1. dhcpd(8) Additional Information: NIST SP 800-53 Rev. 5: • CM-7",
+        "impact": "",
+        "reference": "1. dhcpd(8) Additional Information: NIST SP 800-53 Rev. 5: • CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. Connect to the Azure Kubernetes Service (AKS) cluster using the Azure CLI or Azure Cloud Shell.\n2. Check the nodes in your AKS cluster:\n   - Use the command: `kubectl get nodes`\n   - This will display the nodes in the AKS.\n3. SSH into each of the nodes:\n   - Use the command: `az aks ssh --resource-group <your-resource-group> --name <your-aks-cluster>`\n4. Verify if the `dhcp-server` package is installed:\n   - Run the command: `rpm -q dhcp-server`\n5. Confirm that the output states that the package is not installed. If it is installed, proceed to remediation.\n6. Verify that the command worked by confirming no output is returned or a message that states the package is not installed.\n\n**Expected secure configuration:**\n- The `dhcp-server` package should NOT be installed on any node in the AKS cluster.\n\n**How to confirm compliance:**\n- If the command outputs a message indicating that the package is not installed, the control is compliant. If the package is installed, the control is non-compliant."
+}

@@ -1,0 +1,17 @@
+{
+    "id": "6.2.6",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "6.2.6",
+        "unique_id": "6.2.6__ensure-no-duplicate-group-names-exist",
+        "title": "Ensure no duplicate group names exist",
+        "description": "Although the groupadd program will not let you create a duplicate group name, it is possible for an administrator to manually edit the /etc/group file and change the group name.",
+        "rationale": "If a group is assigned a duplicate group name, it will create and have access to files with the first GID for that group in /etc/group . Effectively, the GID is shared, which is a security problem.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash cut -d: -f1 /etc/group | sort | uniq -d | while read -r x; do echo \"Duplicate group name ${x} in /etc/group\" done",
+        "remediation": "Based on the results of the audit script, establish unique names for the user groups. File group ownerships will automatically reflect the change as long as the groups have unique GIDs. References: 1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Access the Kubernetes cluster nodes via SSH:**\n   - Connect to the Kubernetes node (if you have the necessary access). Depending on your setup, you may use a command such as `ssh user@node-ip`.\n   \n2. **Check the `/etc/group` file:**\n   - Once logged in, run the command `cat /etc/group | cut -d: -f1 | sort | uniq -d` to identify any duplicate group names.\n\n3. **Validate the output:**\n   - Review the output for any duplicate group names. If the command returns any values, that indicates duplicate group names exist.\n\n4. **Expected secure configuration:**\n   - No output messages should appear, indicating there are no duplicate group names in the `/etc/group` file.\n\n5. **Confirm compliance:**\n   - If duplicates are found, the groups must be renamed to ensure that each group has a unique name. This can involve administrative changes in the configuration to ensure compliance with security best practices. Group ownerships will be adjusted automatically if GIDs are unique, reducing the security risk associated with shared GIDs."
+}

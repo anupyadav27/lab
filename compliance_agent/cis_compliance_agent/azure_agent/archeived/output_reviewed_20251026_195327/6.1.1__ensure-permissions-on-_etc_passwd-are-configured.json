@@ -1,0 +1,31 @@
+{
+    "unique_id": "6.1.1__ensure-permissions-on-_etc_passwd-are-configured",
+    "control_id": "6.1.1",
+    "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+    "original_assessment": {
+        "model": "gpt-4o-mini",
+        "response": "Based on the provided control analysis, this control focuses on file system permissions specific to `/etc/passwd`, which is not a resource property that can be verified directly via Azure APIs. Azure operates on a different level, not providing direct access to underlying file systems associated with VMs or containers without SSH access.\n\nConsidering the points in the decision process:\n1. The control relates to file permissions which require a file system check rather than a resource property that can be queried.\n2. There is no indication the audit can be performed via Azure Resource Manager APIs or any CLI commands relevant to Azure resources.\n3. Human judgment is required to access and verify the file permissions on `/etc/passwd`, which is only available through SSH or direct access to the file system, making it more suited for a manual review.\n\nThus, the optimal audit approach is Manual.\n\n**MANUAL STEPS:**\n1. Connect to the relevant Azure virtual machine using SSH: `ssh user@<VM_IP_Address>`\n2. Execute the command to check the permissions on `/etc/passwd`: `stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd`\n3. Verify the output for the following criteria:\n   - File mode should be 644 or more restrictive.\n   - User ID should be 0/root.\n   - Group ID should be 0/root.\n4. The expected secure configuration for `/etc/passwd` is:\n   - Permissions: `644`\n   - Owner: `root`\n   - Group: `root`\n5. Confirm compliance by ensuring that the output of the stat command meets the expected values as described above. If it does not, follow the remediation steps to adjust the settings accordingly."
+    },
+    "review": {
+        "model": "gpt-4o",
+        "reviewer": "gpt-4o",
+        "response": "**APPROACH VALIDATION:** PARTIALLY_AGREE\n- The classification as Manual is largely correct because Azure does not provide direct APIs to check file system permissions within a VM. However, there are some automation possibilities that can be considered. For example, using Azure Automation or Azure Runbooks to execute scripts that perform these checks across multiple VMs could automate the process to some extent.\n- Azure APIs/CLI do not provide direct access to file system permissions, but Azure Automation or Azure Monitor could be leveraged to automate the execution of scripts that check these permissions.\n\n**TECHNICAL ACCURACY:** 8\n- The manual steps provided are technically accurate and complete for checking the permissions on `/etc/passwd`.\n- The program name convention is not applicable here as this is a manual process description rather than an automated script or program.\n\n**IMPROVEMENTS:**\n- Consider mentioning the use of Azure Automation or Azure Runbooks to automate the SSH connection and permission checking process. This would not eliminate the need for manual verification but could streamline the process across multiple VMs.\n- Include a note on ensuring that the SSH access is secure and follows best practices, such as using key-based authentication and limiting access to specific IPs.\n- Discuss the potential use of Azure Security Center to monitor VM configurations and alert on deviations from expected security settings, although it may not directly check file permissions.\n\n**CONFIDENCE:** MEDIUM\n- While the assessment is largely accurate, the potential for partial automation using Azure services like Automation or Runbooks is not explored, which affects the completeness of the approach.\n\n**FINAL RECOMMENDATION:**\n- Modify: Include a discussion on using Azure Automation or Runbooks to automate the execution of the permission checks. This would not change the classification to fully automated but would enhance the efficiency of the manual process. Additionally, consider adding a section on securing SSH access and leveraging Azure Security Center for broader security monitoring.",
+        "reviewed_at": "2025-10-26T16:45:33.981029"
+    },
+    "input_row": {
+        "id": "6.1.1",
+        "unique_id": "6.1.1__ensure-permissions-on-/etc/passwd-are-configured",
+        "title": "Ensure permissions on /etc/passwd are configured",
+        "description": " Uid is 0/root and G...\"",
+        "rationale": "The /etc/passwd file contains user account information that is used by many system utilities and therefore must be readable for these utilities to operate.",
+        "audit": "It is critical to ensure that the /etc/passwd file is protected from unauthorized write access. Although it is protected by default, the file permissions could be changed either inadvertently or through malicious actions.",
+        "remediation": "Run the following command to verify /etc/passwd is mode 644 or more restrictive, Uid is 0/root and Gid is 0/root: # stat -Lc \"%n %a %u/%U %g/%G\" /etc/passwd /etc/passwd 644 0/root 0/root",
+        "impact": "Run the following commands to remove excess permissions, set owner, and set group on /etc/passwd: # chmod u-x,go-wx /etc/passwd # chown root:root /etc/passwd Default Value: /etc/passwd 644 0/root 0/root References: 1. NIST SP 800-53 Rev. 5: AC-3, MP-2",
+        "reference": "",
+        "source": "1. NIST SP 800-53 Rev. 5: AC-3, MP-2"
+    },
+    "metadata": {
+        "original_file": "6.1.1__ensure-permissions-on-_etc_passwd-are-configured.json",
+        "review_version": "1.0"
+    }
+}

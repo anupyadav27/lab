@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.9",
+    "unique_id": "gcp_1_6_2_9",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure users own their home directories",
+    "input_row": {
+        "id": "6.2.9",
+        "unique_id": "gcp_1_6_2_9",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure users own their home directories",
+        "description": "The user home directory is space defined for the particular user to set local environment variables and to store personal files.",
+        "rationale": "Since the user is accountable for files stored in the user home directory, the user must be the owner of the directory.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash grep -E -v '^(halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'\"$(which nologin)\"'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do if [ ! -d \"$dir\" ]; then echo \"The home directory ($dir) of user $user does not exist.\" else owner=$(stat -L -c \"%U\" \"$dir\") if [ \"$owner\" != \"$user\" ]; then echo \"The home directory ($dir) of user $user is owned by $owner.\" fi fi done",
+        "remediation": "Change the ownership of any home directories that are not owned by the defined user to the correct user. Additional Information: On some distributions the /sbin/nologin should be replaced with /usr/sbin/nologin.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThis control focuses on ensuring users own their home directories, which involves verifying file system ownership and permission settings. Since this check pertains to OS-level file system attributes and requires direct examination of user home directories on instances, such as those running on Google Container-Optimized OS (COS), it involves accessing the operating system via SSH. GCP APIs do not provide the capability to perform or automate file system checks directly through the cloud service platform. Therefore, this control is best audited through manual inspection and scripting on the actual instance.\n\n**MANUAL STEPS:**\n\n1. **SSH into the Instance:**\n   - Use the Google Cloud Console or `gcloud` command-line tool to SSH into each relevant instance running Container-Optimized OS.\n   - Example command: `gcloud compute ssh <INSTANCE_NAME> --zone=<ZONE>`\n\n2. **Run the Audit Script:**\n   - Execute the provided audit script on the instance to check the ownership of home directories:\n     ```bash\n     #!/bin/bash\n     grep -E -v '^(halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'$(which nologin)'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do\n         if [ ! -d \"$dir\" ]; then\n             echo \"The home directory ($dir) of user $user does not exist.\"\n         else\n             owner=$(stat -L -c \"%U\" \"$dir\")\n             if [ \"$owner\" != \"$user\" ]; then\n                 echo \"The home directory ($dir) of user $user is owned by $owner.\"\n             fi\n         fi\n     done\n     ```\n   - Verify the output ensures that no home directories report being owned by someone other than the user.\n\n3. **Validate Home Directory Ownership:**\n   - Ensure each user's home directory is owned by the user themselves. Any discrepancies should be documented for remediation.\n\n4. **Remediation Steps:**\n   - If any home directories are not correctly owned, correct them using the `chown` command to change the ownership:\n     ```bash\n     sudo chown <USER>:<USER> <HOME_DIRECTORY_PATH>\n     ```\n   - Replace `<USER>` and `<HOME_DIRECTORY_PATH>` with the respective username and home directory path.\n\n5. **Expected Secure Configuration:**\n   - All user home directories should be owned by their respective users. No unauthorized ownership should be present.\n\nThis manual approach provides assurances that the file-level permission settings meet the security benchmark requirements but requires hands-on validation per instance, given the lack of direct GCP API support for compliance automation in this domain.",
+    "timestamp": "2025-10-28T21:45:02.790442",
+    "model": "gpt-4o"
+}

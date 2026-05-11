@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.21",
+    "unique_id": "gcp_1_5_1_21",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH MaxStartups is configured",
+    "input_row": {
+        "id": "5.1.21",
+        "unique_id": "gcp_1_5_1_21",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH MaxStartups is configured",
+        "description": "The MaxStartups parameter specifies the maximum number of concurrent unauthenticated connections to the SSH daemon.",
+        "rationale": "To protect a system from denial of service due to a large number of pending authentication connection attempts, use the rate limiting function of MaxStartups to protect availability of sshd logins and prevent overwhelming the daemon.",
+        "audit": "Run the following command and verify that output MaxStartups is 10:30:60 or matches site policy: # sshd -T | grep -i maxstartups # maxstartups 10:30:60",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameter as follows: maxstartups 10:30:60",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n- This control requires verification of the OS-level SSH configuration specifically within the `/etc/ssh/sshd_config` file on GCP VM instances running Container Optimized OS. \n- Checking the `MaxStartups` parameter necessitates SSH access to the instance and text inspection of the configuration file. \n- The `audit` field mentions using SSH to extract the configuration, indicating a process typically beyond what GCP APIs or `gcloud` can perform remotely without accessing the instance.\n- Therefore, it's outside the capabilities of automated tools using the GCP API or SDK, which target higher-level configuration settings rather than OS-level details on compute instances.\n\n**MANUAL STEPS:** \n1. **Access the GCP Console** and select the VM instances running Container Optimized OS that you need to audit.\n2. **SSH into the VM Instance**: Use the GCP console SSH feature or a terminal to access the instances.\n3. **Verify Configuration**:\n   - On the instance, execute the command: `sudo sshd -T | grep -i maxstartups`.\n   - Check if the output returns: `maxstartups 10:30:60`.\n4. **Expected secure configuration**: The output should display `maxstartups 10:30:60` or match your organization's site policy for `MaxStartups`.\n5. **Confirm Compliance**: If the configuration matches the expected secure configuration, the instance is compliant with this control.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:36:48.022682",
+    "model": "gpt-4o"
+}

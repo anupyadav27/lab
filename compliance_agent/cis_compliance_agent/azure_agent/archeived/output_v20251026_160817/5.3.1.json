@@ -1,0 +1,17 @@
+{
+    "id": "5.3.1",
+    "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json",
+    "input_row": {
+        "id": "5.3.1",
+        "unique_id": "5.3.1__ensure-kubernetes-secrets-are-encrypted",
+        "title": "Ensure Kubernetes Secrets are encrypted",
+        "description": "Encryption at Rest is a common security requirement. In Azure, organizations can encrypt data at rest without the risk or cost of a custom key management solution. Organizations have the option of letting Azure completely manage Encryption at Rest. Additionally, organizations have various options to closely manage encryption or encryption keys.",
+        "rationale": "",
+        "audit": "",
+        "remediation": "References: 1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-5-encrypt-sensitive-data-at-rest",
+        "impact": "",
+        "reference": "1. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2-data- protection#dp-5-encrypt-sensitive-data-at-rest",
+        "source": "CIS_AZURE_KUBERNETES_SERVICE_(AKS)_BENCHMARK_V1.5.0_PDF_updated_20250825_190857.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nBased on the analysis of the control and the checks it entails, the following criteria confirm an Automated approach:\n- It concerns encryption settings for Kubernetes Secrets, which are exposed through Azure APIs.\n- Azure has built-in functionalities to manage encryption settings for AKS clusters.\n- The required checks can be validated without needing manual intervention or SSH access to nodes, thereby making this control verifiable via Azure Resource Manager APIs.\n\n**PROGRAM NAME:** azure_aks_secrets_encryption_enabled\n\n**AUTOMATION DETAILS:**\nThe automated program would check the following:\n- Utilize Azure Resource Manager APIs or Azure CLI commands to query the encryption settings for Kubernetes Secrets.\n- Enumerate the necessary resources such as AKS clusters within specific subscriptions or resource groups.\n\n**Steps for validation:**\n1. Use the Azure CLI command:\n   ```bash\n   az aks show --resource-group <resource-group-name> --name <aks-cluster-name> --query \"enableEncryptionAtRest\"\n   ```\n2. Verify the `enableEncryptionAtRest` setting for the AKS cluster.\n3. **Pass Criteria:** The value of `enableEncryptionAtRest` should return `true` indicating that encryption is enabled for secrets stored within the AKS.\n4. Expected configuration property:\n   - Check the `privateCluster` property and ensure any secrets stored in AKS utilize Azure's Key Vault integration or managed identity as an additional layer, maintaining compliance with encryption standards.\n\nBy executing the above API query, the compliance status regarding the encryption of Kubernetes Secrets can be effectively assessed."
+}

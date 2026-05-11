@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.16",
+    "unique_id": "gcp_1_5_1_16",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure SSH Idle Timeout Interval is configured",
+    "input_row": {
+        "id": "5.1.16",
+        "unique_id": "gcp_1_5_1_16",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure SSH Idle Timeout Interval is configured",
+        "description": "The two options ClientAliveInterval and ClientAliveCountMax control the timeout of ssh sessions. When the ClientAliveInterval variable is set, ssh sessions that have no activity for the specified length of time are terminated. When the ClientAliveCountMax variable is set, sshd will send client alive messages at every ClientAliveInterval interval. When the number of consecutive client alive messages are sent with no response from the client, the ssh session is terminated. For example, if the ClientAliveInterval is set to 15 seconds and the ClientAliveCountMax is set to 3, the client ssh session will be terminated after 45 seconds of idle time.",
+        "rationale": "Having no timeout value associated with a connection could allow an unauthorized user access to another user's ssh session (e.g. user walks away from their computer and doesn't lock the screen). Setting a timeout value at least reduces the risk of this happening.. While the recommended setting is 300 seconds (5 minutes), set this timeout value based on site policy. The recommended setting for ClientAliveCountMax is 0. In this case, the client session will be terminated after 5 minutes of idle time and no keepalive messages will be sent.",
+        "audit": "Run the following commands and verify ClientAliveInterval is between 1 and 300 and ClientAliveCountMax is 3 or less: # sshd -T | grep clientaliveinterval ClientAliveInterval 300 # sshd -T | grep clientalivecountmax ClientAliveCountMax 0",
+        "remediation": "Edit the /etc/ssh/sshd_config file to set the parameters according to site policy: ClientAliveInterval 300 ClientAliveCountMax 0 Default Value: ClientAliveInterval 420 ClientAliveCountMax 3",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- **Manual:** This control requires verifying OS-level configurations, specifically the SSH daemon parameters (`ClientAliveInterval` and `ClientAliveCountMax`) on the individual instances running the Google Container Optimized OS. This kind of inspection often requires SSH access to the instances to inspect specific config files or run commands on the operating system, which is beyond the scope of what's queryable via GCP APIs or the Google Cloud SDK.\n\n**MANUAL STEPS:**\n\n1. **Access the GCP Console or use SSH:** Connect to the relevant instance running Google Container Optimized OS that you need to verify. Ensure you have the necessary permissions for SSH access.\n\n2. **Locate the SSH configuration file:** Open the `/etc/ssh/sshd_config` file using a text editor, such as vi or nano. This file contains the configuration settings for SSH Daemon.\n\n3. **Verify `ClientAliveInterval`:** Check that the `ClientAliveInterval` setting is configured within the permissible range of 1 to 300 seconds. The ideal setting as per the CIS benchmark is 300 seconds.\n\n4. **Verify `ClientAliveCountMax`:** Ensure the `ClientAliveCountMax` setting is configured to 0 as recommended by CIS. This ensures the session is terminated after the specified idle time without sending keepalive messages.\n\n5. **Expected Secure Configuration:**\n   - The `sshd_config` should contain: `ClientAliveInterval 300` and `ClientAliveCountMax 0`.\n\n6. **Confirm Compliance:** After verifying and possibly adjusting the configuration, restart the SSH service on the instance to apply changes and confirm they are in effect using `sshd -T` commands:\n   - Run `sshd -T | grep clientaliveinterval` and check for `ClientAliveInterval`.\n   - Run `sshd -T | grep clientalivecountmax` and check for `ClientAliveCountMax`.\n\nBy undertaking these steps, you ensure that the SSH timeout configurations comply with the CIS benchmark requirements for enhanced security.",
+    "timestamp": "2025-10-28T21:35:38.437019",
+    "model": "gpt-4o"
+}

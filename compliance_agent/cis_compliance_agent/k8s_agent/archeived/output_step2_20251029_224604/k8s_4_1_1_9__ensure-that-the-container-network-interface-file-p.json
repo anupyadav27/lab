@@ -1,0 +1,25 @@
+{
+    "control_id": "1.1.9",
+    "unique_id": "k8s_4_1_1_9",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Ensure that the Container Network Interface file permissions are set to 600 or more restrictive",
+    "input_row": {
+        "id": "1.1.9",
+        "unique_id": "k8s_4_1_1_9",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Ensure that the Container Network Interface file permissions are set to 600 or more restrictive",
+        "description": "Ensure that the Container Network Interface files have permissions of 600 or more restrictive.",
+        "rationale": "Container Network Interface provides various networking options for overlay networking. You should consult their documentation and restrict their respective file permissions to maintain the integrity of those files. Those files should be writable by only the administrators on the system. Impact: None",
+        "audit": "Run the below command (based on the file location on your system) on the Control Plane node. For example, stat -c %a <path/to/cni/files> Verify that the permissions are 600 or more restrictive.",
+        "remediation": "Run the below command (based on the file location on your system) on the Control Plane node. For example, chmod 600 <path/to/cni/files> Default Value: NA References: 1. https://kubernetes.io/docs/concepts/cluster-administration/networking/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/concepts/cluster-administration/networking/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires verification of file permissions on the Container Network Interface (CNI) configuration files (e.g., files in /etc/cni/net.d/). These files reside on the host filesystem of the control plane node(s) and are not exposed or queryable via the Kubernetes API, kubectl, or any Kubernetes-native resource or configuration. The audit command provided in the control (\"stat -c %a <path/to/cni/files>\") is a direct OS-level command and cannot be executed or validated through Kubernetes APIs or kubectl. Therefore, this check requires direct host/OS access.\n\n---\n\n**MANUAL STEPS:**\n\n1. SSH into each Kubernetes control plane node.\n2. Identify the directory containing the CNI configuration files (commonly /etc/cni/net.d/).\n3. For each file in the CNI configuration directory, run:\n   - `stat -c %a <path/to/cni/file>`\n4. Verify that the permissions for each file are set to 600 or more restrictive (i.e., only the file owner has read and write permissions, and no permissions are granted to group or others).\n5. Confirm compliance if all CNI configuration files have permissions of 600 or more restrictive. If any file has less restrictive permissions, this is a finding.",
+    "timestamp": "2025-10-29T21:11:25.259735",
+    "model": "gpt-4.1",
+    "step2_review": "**APPROACH VALIDATION:** AGREE\n- The classification of this control as \"Manual\" is correct. The Container Network Interface (CNI) configuration files reside on the host filesystem and are not accessible through Kubernetes APIs, kubectl, or any Kubernetes-native resources. Therefore, direct OS-level access is required to verify file permissions, making an automated approach via Kubernetes impractical for this specific control.\n\n**TECHNICAL ACCURACY:** 9\n- The manual steps provided are technically accurate and complete for verifying the file permissions of CNI configuration files. The use of the `stat` command is appropriate for checking file permissions at the OS level. However, the program naming convention was not explicitly mentioned, which could be improved for clarity and consistency.\n\n**IMPROVEMENTS:**\n- **Program Naming:** The assessment could benefit from a more descriptive program name following a convention such as `k8s_cni_file_permissions_check`. This would make it clear what the script or program is intended to do.\n- **Documentation:** Including a brief note on why this cannot be automated via Kubernetes APIs would enhance understanding for future audits.\n- **Automation Consideration:** While direct automation via Kubernetes is not possible, consider using configuration management tools (e.g., Ansible, Puppet) to automate the SSH and permission-checking process across multiple nodes.\n\n**CONFIDENCE:** HIGH\n- Given the nature of the control and the technical details provided, I am confident in the assessment's accuracy and completeness.\n\n**FINAL RECOMMENDATION:**\n- **Keep as-is** with a minor suggestion to enhance documentation and naming conventions for clarity. The manual approach is justified, and the steps are accurate. However, consider documenting the limitations of Kubernetes API in this context for future reference.",
+    "review_model": "gpt-4o",
+    "review_timestamp": "2025-10-29T23:07:31.463863"
+}

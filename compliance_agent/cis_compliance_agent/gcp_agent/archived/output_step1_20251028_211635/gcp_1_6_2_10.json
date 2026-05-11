@@ -1,0 +1,22 @@
+{
+    "control_id": "6.2.10",
+    "unique_id": "gcp_1_6_2_10",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure users' dot files are not group or world writable",
+    "input_row": {
+        "id": "6.2.10",
+        "unique_id": "gcp_1_6_2_10",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure users' dot files are not group or world writable",
+        "description": "While the system administrator can establish secure permissions for users' \"dot\" files, the users can easily override these.",
+        "rationale": "Group or world-writable user configuration files may enable malicious users to steal or modify other users' data or to gain another user's system privileges.",
+        "audit": "Run the following script and verify no results are returned: #!/bin/bash grep -E -v '^(halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != \"'\"$(which nologin)\"'\" && $7 != \"/bin/false\") { print $1 \" \" $6 }' | while read user dir; do if [ ! -d \"$dir\" ]; then echo \"The home directory ($dir) of user $user does not exist.\" else for file in $dir/.[A-Za-z0-9]*; do if [ ! -h \"$file\" -a -f \"$file\" ]; then fileperm=$(ls -ld $file | cut -f1 -d\" \") if [ $(echo $fileperm | cut -c6)  != \"-\" ]; then echo \"Group Write permission set on file $file\" fi if [ $(echo $fileperm | cut -c9)  != \"-\" ]; then echo \"Other Write permission set on file $file\" fi fi done fi done",
+        "remediation": "Making global modifications to users' files without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user dot file permissions and determine the action to be taken in accordance with site policy. Additional Information: On some distributions the /sbin/nologin should be replaced with /usr/sbin/nologin.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The control specifically calls for verification of the permissions set on users' dot files, which are files located within individual user's home directories on systems running Container Optimized OS.\n- The audit script provided involves checking file permissions directly on the operating system level by iterating over user directories and their files, something that requires system-level access.\n- This level of detail is not typically exposed via GCP APIs, Google Cloud SDK, or GCP CLI, as it pertains to file permissions at the operating system layer within specific instances.\n- No mention of Google Cloud SDK (gcloud) or GCP CLI commands in the audit field confirms the need for system access.\n\n**MANUAL STEPS:**\n1. **Access the Compute Engine instance**: Use SSH to log into each relevant Container Optimized OS instance where users' home directories might exist.\n2. **Navigate to User Directories**: Run the provided shell script or navigate manually to `/home` or equivalent directories to locate user home directories.\n3. **Verify File Permissions**: For each user's dot files (e.g., `.bashrc`, `.profile`), check the file permissions using the `ls -ld` command.\n4. **Expected Secure Configuration**: Ensure that the files are not group or world writable by verifying that the file permission string does not show write permissions for group (`chmod g-w`) or others (`chmod o-w`).\n5. **Confirm Compliance**: Report any dot files with group or world writable permissions and modify them as necessary to ensure compliance with the least privilege principle.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0\n\nThis manual approach ensures a thorough review of file permissions directly on the OS, considering the intricacies and specificity required for such a task.",
+    "timestamp": "2025-10-28T21:45:17.330026",
+    "model": "gpt-4o"
+}

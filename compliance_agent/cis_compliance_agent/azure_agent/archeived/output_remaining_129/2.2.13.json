@@ -1,0 +1,17 @@
+{
+    "id": "2.2.13",
+    "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json",
+    "input_row": {
+        "id": "2.2.13",
+        "unique_id": "aks_2.2.13__ensure-http-proxy-server-is-not-installed",
+        "title": "Ensure HTTP Proxy Server is not installed",
+        "description": "Squid is a standard proxy server used in many distributions and environments.",
+        "rationale": "Unless a system is specifically set up to act as a proxy server, it is recommended that the squid package be removed to reduce the potential attack surface. Note: Several HTTP proxy servers exist. These should be checked and removed unless required.",
+        "audit": "Run the following command to verify squid is not installed: # rpm -q squid package squid is not installed",
+        "remediation": "Run the following command to remove the squid package: # dnf remove squid References: 1. NIST SP 800-53 Rev. 5: CM-7",
+        "impact": "",
+        "reference": "1. NIST SP 800-53 Rev. 5: CM-7",
+        "source": "CIS_AKS_OPTIMIZED_AZURE_LINUX_BENCHMARK_V1.0.0_updated_20250825_190750.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Manual\n\n**MANUAL STEPS:**\n1. **Step:** SSH into the Kubernetes node.\n   - **Path:** Use an SSH client to connect to the node's IP address or DNS name.\n   \n2. **Step:** Check if Squid is installed by running the command:\n   - `rpm -q squid`\n   \n3. **Step:** Validate the output.\n   - If the command returns \"package squid is not installed,\" it confirms that Squid is not present on the node.\n   \n4. **Step:** If Squid is installed, you need to remove it.\n   - **Command:** Run `dnf remove squid` to uninstall Squid from the node.\n   \n5. **Step:** Confirm compliance by re-running the first command (`rpm -q squid`) to ensure it is no longer installed. \n   - The expected output should again be \"package squid is not installed.\"\n\nThis process ensures that the HTTP Proxy Server (Squid) is not present on the AKS nodes, thus reducing the attack surface."
+}

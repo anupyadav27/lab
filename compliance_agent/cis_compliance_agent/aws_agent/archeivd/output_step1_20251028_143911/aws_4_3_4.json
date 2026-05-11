@@ -1,0 +1,22 @@
+{
+    "control_id": "3.4",
+    "unique_id": "aws_4_3_4",
+    "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+    "title": "Ensure controlling Network access to EFS Services",
+    "input_row": {
+        "id": "3.4",
+        "unique_id": "aws_4_3_4",
+        "source": "CIS AWS STORAGE SERVICES BENCHMARK V1",
+        "title": "Ensure controlling Network access to EFS Services",
+        "description": "It’s important that you secure access to your resources on your AWS VPC network. There are several ways to ensure that you control what traffic is accessing your resources. Some of which include tightening down network layer security using a Security Group and a NACL within the VPC console. You can also tighten down Security Groups within your EC2 console and by using AWS IAM. Maintaining network security is a high priority to ensure that no unauthorized users can access the data stored on your EFS service.",
+        "rationale": "Maintaining network security is a best practice essential for keeping your data safe and secure. Impact: Failing to maintain network security can lead to significant vulnerabilities, exposing your data to unauthorized access, breaches, and potential data loss. This can result in severe financial, operational, and reputational damage to your organization.",
+        "audit": "",
+        "remediation": "Implement network security access controls. References: 1. https://docs.aws.amazon.com/efs/latest/ug/NFS-access-control-efs.html",
+        "profile_applicability": "•  Level 2",
+        "impact": "Failing to maintain network security can lead to significant vulnerabilities, exposing your data to unauthorized access, breaches, and potential data loss. This can result in severe financial, operational, and reputational damage to your organization.",
+        "references": "1. https://docs.aws.amazon.com/efs/latest/ug/NFS-access-control-efs.html"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\nControlling network access to EFS services involves configuring Security Groups and Network ACLs (NACLs) within a VPC. Both Security Groups and NACLs are standard AWS resources that can be analyzed via AWS APIs, boto3 SDK, and AWS CLI. These configurations are essential aspects of AWS's networking capabilities, allowing us to automate the verification of network access controls.\n\n**PROGRAM NAME:** aws_efs_filesystem_network_access_control_configured\n\n**AUTOMATION DETAILS:**\n- **AWS API Calls and boto3 Methods:**\n  - Use `boto3.client('efs')` to list all EFS file systems using `describe_file_systems()`.\n  - For each EFS file system, utilize `describe_mount_target_security_groups()` to retrieve the security groups associated with each mount target.\n  - Use `boto3.client('ec2')` to describe security groups and NACLs:\n    - `describe_security_groups()` to review inbound and outbound rules in the security groups.\n    - `describe_network_acls()` to check applicable NACL rules within the VPC.\n\n- **AWS CLI Commands (if applicable):**\n  - `aws efs describe-file-systems` to list all EFS file systems.\n  - `aws efs describe-mount-target-security-groups` to view associated security groups for each file system.\n  - `aws ec2 describe-security-groups` and `aws ec2 describe-network-acls` to examine configurations.\n\n- **Specific Resources to Enumerate:**\n  - All EFS file systems across all AWS regions.\n  - Security Groups and NACLs associated with each EFS mount target.\n\n- **Configuration Properties/Settings to Validate:**\n  - Ensure Security Groups associated with EFS allow only authorized and secure connections (e.g., specific IPs, protocols, ports).\n  - Verify NACLs provide additional control and protection, ensuring they do not inadvertently allow unauthorized access.\n\n- **Pass/Fail Criteria:**\n  - **Pass:** Security Groups and NACLs are configured to restrict access to only trusted IP ranges, use secure protocols, and have least privilege configurations.\n  - **Fail:** Security Groups or NACLs allow unrestricted access or use insecure configurations.\n\nBy following these steps, the audit can ensure that all network access control to EFS services is appropriately restricted according to best practices and CIS standards.",
+    "timestamp": "2025-10-28T15:26:27.547211",
+    "model": "gpt-4o"
+}

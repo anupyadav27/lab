@@ -1,0 +1,22 @@
+{
+    "control_id": "4.2.4",
+    "unique_id": "k8s_4_4_2_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Verify that if defined, readOnlyPort is set to 0",
+    "input_row": {
+        "id": "4.2.4",
+        "unique_id": "k8s_4_4_2_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Verify that if defined, readOnlyPort is set to 0",
+        "description": "Disable the read-only port.",
+        "rationale": "The Kubelet process provides a read-only API in addition to the main Kubelet API. Unauthenticated access is provided to this read-only API which could possibly retrieve potentially sensitive information about the cluster. Impact: Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "audit": "Run the following command on each node: ps -ef | grep kubelet Verify that the --read-only-port argument exists and is set to 0. If the --read-only-port argument is not present, check that there is a Kubelet config file specified by --config. Check that if there is a readOnlyPort entry in the file, it is set to 0.",
+        "remediation": "If using a Kubelet config file, edit the file to set readOnlyPort to 0. If using command line arguments, edit the kubelet service file /etc/kubernetes/kubelet.conf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable. --read-only-port=0 Based on your system, restart the kubelet service. For example: systemctl daemon-reload systemctl restart kubelet.service References: 1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/blob/6cedc0853faa118df0ba3d41b48b 993422ad3df6/staging/src/k8s.io/kubelet/config/v1beta1/types.go#L142 Additional Information: https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/",
+        "profile_applicability": "•  Level 1 - Worker Node",
+        "impact": "Removal of the read-only port will require that any service which made use of it will need to be re-configured to use the main Kubelet API.",
+        "references": "1. https://kubernetes.io/docs/admin/kubelet/ 2. https://github.com/kubernetes/kubernetes/blob/6cedc0853faa118df0ba3d41b48b 993422ad3df6/staging/src/k8s.io/kubelet/config/v1beta1/types.go#L142 Additional Information: https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_kubelet_read_only_port_disabled\n\n**AUTOMATION DETAILS:**\n- Enumerate all nodes in the cluster using the Kubernetes API (kubectl get nodes).\n- For each node, retrieve the Kubelet configuration source:\n  - If the Kubelet is configured via a config file (referenced by --config flag in the kubelet process), fetch and parse the KubeletConfiguration file (typically located at /var/lib/kubelet/config.yaml or as specified in the node's systemd unit).\n    - Check that the readOnlyPort field is either absent (default is 0/disabled) or explicitly set to 0.\n  - If the Kubelet is configured via command-line flags, inspect the running process arguments (e.g., via the Node's systemd unit or process list) for the --read-only-port flag.\n    - Confirm that --read-only-port is either not present (default is 0/disabled) or explicitly set to 0.\n- Pass Criteria:\n  - For every node, the Kubelet's readOnlyPort is either not defined or set to 0 (disabled).\n- Fail Criteria:\n  - Any node has readOnlyPort set to a value other than 0, or the --read-only-port flag is set to a non-zero value.\n- Example CLI commands:\n  - To check via process: `ps -ef | grep kubelet` and inspect for `--read-only-port`\n  - To check via config file: `cat /var/lib/kubelet/config.yaml | grep readOnlyPort`\n- Note: This check requires access to the node's OS or a privileged DaemonSet to inspect Kubelet process arguments or configuration files, as this information is not exposed via the Kubernetes API or kubectl by default. In managed Kubernetes services, this may require integration with the provider's node management APIs or using a privileged DaemonSet to collect the necessary data.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:27:04.343270",
+    "model": "gpt-4.1"
+}

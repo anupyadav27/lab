@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.3",
+    "unique_id": "aws_5_2_1_3",
+    "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+    "title": "Ensure Only Approved Amazon Machine Images (AMIs) are Used",
+    "input_row": {
+        "id": "2.1.3",
+        "unique_id": "aws_5_2_1_3",
+        "source": "CIS AWS COMPUTE SERVICES BENCHMARK V1.1.0",
+        "title": "Ensure Only Approved Amazon Machine Images (AMIs) are Used",
+        "description": "Ensure that all base AMIs utilized are approved for use by your organization.",
+        "rationale": "An approved AMI is a base EC2 machine image that is a pre-configured OS configured to run your application. Using approved AMIs helps enforce consistency and security.",
+        "audit": "Perform the following to confirm only approved AMIs are being used. From the Console: 1. Login to the EC2 console at https://console.aws.amazon.com/ec2/. 2. In the left pane click on Images. 3. Then choose AMIs 4. Confirm that Owned by me is selected 5. Review the list of AMIs. 6. Confirm that the AMIs listed are all approved for use 7. In the left pane click on Instances 8. Then choose Instances 9. Select the EC2 instance for review. 10. In the Details tab review: AMI Name AMI location 11. Confirm that the AMI name matches an approved AMI and the AMI location is within your account. 12. Repeat steps 9 – 11 to verify the AMI is approved Repeat the process for all other regions. If any of the AMIs are not approved refer to the remediation below.",
+        "remediation": "Perform the following to remove unauthorized AMIs.  From the Console: 1. Login to the EC2 console at https://console.aws.amazon.com/ec2/. 2. In the left pane click on Images. 3. Then choose AMIs 4. Confirm that Owned by me is selected 5. Review the list of AMIs. 6. Confirm that the AMIs listed are all approved for use 7. If an AMI is listed that is not approved select it. 8. Click on Actions and choose Deregister After all unauthorized AMIs have been De-registered review all EC2 instances. 1. Click on Instances 2. Then choose Instances 3. Select the EC2 instance for review. 4. In the Details tab review: AMI Name AMI location] 5. If this information is listed as not available this instance was built with an unauthorized AMI. 6. Follow organization steps to secure this instance and replace it with an instance built from an approved AMI if applicable. 7. Repeat steps 3 – 6 to verify all instance have been created with approved AMIs Repeat the process for all other regions.",
+        "profile_applicability": "•  Level 1",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n\nThe control can be verified using the AWS SDK or AWS CLI by retrieving the AMI IDs associated with running EC2 instances and comparing these against a list of approved AMI IDs maintained by the organization. This functionality can be achieved through AWS APIs, specifically by using the EC2-related API calls to enumerate instances and retrieve their AMI data.\n\n**PROGRAM NAME:** aws_ec2_instance_ami_approval_verified\n\n**AUTOMATION DETAILS:**\n\n1. **AWS API Calls or boto3 SDK Methods:**\n   - Use `boto3.client('ec2')` to create an EC2 client.\n   - Use `client.describe_instances()` to list all EC2 instances across all regions.\n   - For each instance, retrieve the `ImageId` which represents the AMI ID.\n\n2. **AWS CLI Commands (if applicable):**\n   - `aws ec2 describe-instances --query \"Reservations[*].Instances[*].[InstanceId,ImageId]\"` to list all instances with their AMI IDs.\n\n3. **Specific Resources to Enumerate:**\n   - Enumerate all EC2 instances in all regions within the AWS account to ensure no region is missed.\n\n4. **Configuration Properties/Settings to Validate:**\n   - Retrieve and verify each EC2 instance's `ImageId` against a predefined list of approved AMI IDs. This list should be managed and updated by the organization's security team.\n\n5. **Pass/Fail Criteria:**\n   - **Pass:** All instances use AMI IDs that are present in the list of approved AMI IDs.\n   - **Fail:** Any instance is found with an AMI ID not in the approved list.\n\nThis approach ensures that only instances running approved AMIs are detected, allowing for prompt remediation if unauthorized AMIs are discovered.",
+    "timestamp": "2025-10-28T15:34:58.803354",
+    "model": "gpt-4o"
+}

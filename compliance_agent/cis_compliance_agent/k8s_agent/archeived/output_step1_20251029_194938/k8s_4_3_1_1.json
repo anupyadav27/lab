@@ -1,0 +1,22 @@
+{
+    "control_id": "3.1.1",
+    "unique_id": "k8s_4_3_1_1",
+    "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "title": "Client certificate authentication should not be used for users",
+    "input_row": {
+        "id": "3.1.1",
+        "unique_id": "k8s_4_3_1_1",
+        "source": "CIS KUBERNETES BENCHMARK V1.11 PDF",
+        "title": "Client certificate authentication should not be used for users",
+        "description": "Kubernetes provides the option to use client certificates for user authentication. However as there is no way to revoke these certificates when a user leaves an organization or loses their credential, they are not suitable for this purpose. It is not possible to fully disable client certificate use within a cluster as it is used for component to component authentication.",
+        "rationale": "With any authentication mechanism the ability to revoke credentials if they are compromised or no longer required, is a key control. Kubernetes client certificate authentication does not allow for this due to a lack of support for certificate revocation. Impact: External mechanisms for authentication generally require additional software to be deployed.",
+        "audit": "Review user access to the cluster and ensure that users are not making use of Kubernetes client certificate authentication.",
+        "remediation": "Alternative mechanisms provided by Kubernetes such as the use of OIDC should be implemented in place of client certificates. Default Value: Client certificate authentication is enabled by default. Additional Information: The lack of certificate revocation was flagged up as a high risk issue in the recent Kubernetes security audit. Without this feature, client certificate authentication is not suitable for end users.",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "External mechanisms for authentication generally require additional software to be deployed.",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThis control requires reviewing how users authenticate to the Kubernetes cluster and ensuring that client certificate authentication is not used for user access. Kubernetes does not expose a direct API or kubectl command to enumerate which users are authenticating via client certificates, nor does it maintain a user directory or authentication logs accessible via the Kubernetes API. Authentication methods are typically enforced externally (e.g., via API server flags, external identity providers), and user certificates may be distributed and managed outside of Kubernetes itself. Therefore, verifying that no users are using client certificates for authentication requires manual review of user access provisioning, authentication configuration, and potentially external identity provider settings.\n\n**MANUAL STEPS:**\n1. Identify all users with access to the Kubernetes cluster.\n   - Review your organization's access management documentation or identity provider configuration.\n2. Review the Kubernetes API server authentication configuration.\n   - On each control plane node, inspect the API server startup arguments (e.g., --client-ca-file) and authentication webhook or OIDC settings.\n   - Confirm that OIDC or another revocable authentication mechanism is enabled for user authentication.\n3. Examine how kubeconfig files are provisioned to users.\n   - Check if user kubeconfig files reference client certificate/key pairs (client-certificate, client-key fields).\n   - Ensure that user kubeconfigs do not contain client certificate authentication credentials.\n4. If an external identity provider (e.g., OIDC, LDAP) is used, verify that all user access is provisioned through this mechanism and not via client certificates.\n5. Confirm with cluster administrators and access management teams that client certificate authentication is not used for user accounts.\n6. Document all findings and ensure that any discovered use of client certificate authentication for users is remediated by migrating to an alternative authentication method (e.g., OIDC).\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.11 PDF",
+    "timestamp": "2025-10-29T21:22:30.747694",
+    "model": "gpt-4.1"
+}

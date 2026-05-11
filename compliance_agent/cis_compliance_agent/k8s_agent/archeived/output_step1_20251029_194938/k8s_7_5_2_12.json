@@ -1,0 +1,22 @@
+{
+    "control_id": "5.2.12",
+    "unique_id": "k8s_7_5_2_12",
+    "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "title": "Minimize the admission of HostPath volumes",
+    "input_row": {
+        "id": "5.2.12",
+        "unique_id": "k8s_7_5_2_12",
+        "source": "CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+        "title": "Minimize the admission of HostPath volumes",
+        "description": "Do not generally admit containers which make use of hostPath volumes.",
+        "rationale": "A container which mounts a hostPath volume as part of its specification will have access to the filesystem of the underlying cluster node. The use of hostPath volumes may allow containers access to privileged areas of the node filesystem. There should be at least one admission control policy defined which does not permit containers to mount hostPath volumes. If you need to run containers which require hostPath volumes, this should be defined in a separate policy and you should carefully check to ensure that only limited service accounts and users are given permission to use that policy. Impact: Pods defined which make use of hostPath volumes will not be permitted unless they are run under a spefific policy.",
+        "audit": "List the policies in use for each namespace in the cluster, ensure that each policy disallows the admission of containers with hostPath volumes.",
+        "remediation": "Add policies to each namespace in the cluster which has user workloads to restrict the admission of containers which use hostPath volumes. Default Value: By default, there are no restrictions on the creation of hostPath volumes. References: 1. https://kubernetes.io/docs/concepts/security/pod-security-standards/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "Pods defined which make use of hostPath volumes will not be permitted unless they are run under a spefific policy.",
+        "references": "1. https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_pod_security_hostpath_volumes_restricted\n\n**AUTOMATION DETAILS:**\n\n- **Objective:** Ensure that all namespaces with user workloads have policies in place that restrict the admission of pods using hostPath volumes.\n- **Kubernetes API Objects to Query:**\n  - PodSecurityPolicies (if enabled, legacy)\n  - Pod Security Admission (PSA) labels on namespaces (current standard)\n  - Any third-party admission controllers (e.g., OPA/Gatekeeper policies) that restrict hostPath usage\n- **kubectl/Kubernetes CLI Commands:**\n  1. **List all namespaces and check for Pod Security Admission labels:**\n     ```sh\n     kubectl get namespaces --show-labels\n     ```\n     - Look for `pod-security.kubernetes.io/enforce`, `audit`, or `warn` labels set to `restricted`.\n  2. **Check for PodSecurityPolicy objects (if PSP is enabled):**\n     ```sh\n     kubectl get podsecuritypolicies -o yaml\n     ```\n     - Inspect `.spec.volumes` and `.spec.allowedHostPaths`. A secure policy should either not include `hostPath` in `.spec.volumes` or have an empty `.spec.allowedHostPaths`.\n  3. **Check for OPA/Gatekeeper constraints (if in use):**\n     ```sh\n     kubectl get constraints\n     ```\n     - Look for constraints that deny or restrict `hostPath` usage in pod specs.\n  4. **Enumerate all pods (optional, for detection of violations):**\n     ```sh\n     kubectl get pods --all-namespaces -o json | jq '.items[].spec.volumes[]? | select(.hostPath != null)'\n     ```\n     - This identifies any currently running pods using hostPath volumes.\n- **Configuration Properties/Settings to Validate:**\n  - For PSA: Namespaces must have `pod-security.kubernetes.io/enforce: restricted` (or equivalent) label, which blocks hostPath by default.\n  - For PSP: Policies must not allow `hostPath` volumes except in tightly scoped, explicitly justified cases.\n  - For OPA/Gatekeeper: Constraints must exist that deny `hostPath` usage unless explicitly allowed for specific workloads.\n- **Pass/Fail Criteria:**\n  - **Pass:** Every namespace with user workloads has a policy (PSA, PSP, or OPA/Gatekeeper) that denies admission of pods with `hostPath` volumes, or only allows them in tightly controlled, explicitly justified cases.\n  - **Fail:** Any namespace lacks such a policy, or policies allow unrestricted use of `hostPath` volumes.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.8.0 PDF",
+    "timestamp": "2025-10-29T22:44:39.843907",
+    "model": "gpt-4.1"
+}

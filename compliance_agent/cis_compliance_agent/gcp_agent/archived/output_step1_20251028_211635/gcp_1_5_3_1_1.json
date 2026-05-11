@@ -1,0 +1,22 @@
+{
+    "control_id": "5.3.1.1",
+    "unique_id": "gcp_1_5_3_1_1",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure password expiration is 365 days or less",
+    "input_row": {
+        "id": "5.3.1.1",
+        "unique_id": "gcp_1_5_3_1_1",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure password expiration is 365 days or less",
+        "description": "The PASS_MAX_DAYS parameter in /etc/login.defs allows an administrator to force passwords to expire once they reach a defined age. It is recommended that the PASS_MAX_DAYS parameter be set to less than or equal to 365 days.",
+        "rationale": "The window of opportunity for an attacker to leverage compromised credentials or successfully compromise credentials via an online brute force attack is limited by the age of the password. Therefore, reducing the maximum age of a password also reduces an attacker's window of opportunity.",
+        "audit": "Run the following command and verify PASS_MAX_DAYS conforms to site policy (no more than 365 days): # grep PASS_MAX_DAYS /etc/login.defs PASS_MAX_DAYS 365 Run the following command and Review list of users and PASS_MAX_DAYS to verify that all users' PASS_MAX_DAYS conforms to site policy (no more than 365 days): # grep -E '^[^:]+:[^!*]' /etc/shadow | cut -d: -f1,5 <user>:<PASS_MAX_DAYS>",
+        "remediation": "Set the PASS_MAX_DAYS parameter to conform to site policy in /etc/login.defs : PASS_MAX_DAYS 365 Modify user parameters for all users with a password set to match: # chage --maxdays 365 <user> Additional Information: You can also check this setting in /etc/shadow directly. The 5th field should be 365 or less for all users with a password. Note: A value of -1 will disable password expiration. Additionally the password expiration must be greater than the minimum days between password changes or users will be unable to change their password.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\nThe control requires checking the PASS_MAX_DAYS parameter within the `/etc/login.defs` file and ensuring user parameters in `/etc/shadow` conform to the policy. This involves accessing the OS-level configuration on instances running the Container Optimized OS. Currently, there is no direct method via GCP APIs, Google Cloud SDK (gcloud), or GCP CLI to automate such checks as they require SSH access to the instance to read and verify OS-level settings.\n\n**MANUAL STEPS:**\n1. SSH into the GCP instance running Container Optimized OS.\n   - Use the Google Cloud Console or Compute Engine to open an SSH session to the instance.\n\n2. Check the `/etc/login.defs` file for `PASS_MAX_DAYS`.\n   - Run the command: `grep PASS_MAX_DAYS /etc/login.defs`\n   - Verify that the value is set to 365 or less.\n\n3. Review user password settings in `/etc/shadow`.\n   - Run the command: `grep -E '^[^:]+:[^!*]' /etc/shadow | cut -d: -f1,5`\n   - Ensure that the `PASS_MAX_DAYS` for each user is set to 365 or less.\n\n4. Confirm the compliance:\n   - If both checks confirm that `PASS_MAX_DAYS` is 365 or less, the instance complies with the policy.\n\n**SOURCE:** CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "timestamp": "2025-10-28T21:38:12.058379",
+    "model": "gpt-4o"
+}

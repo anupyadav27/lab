@@ -1,0 +1,22 @@
+{
+    "control_id": "2.1.4",
+    "unique_id": "gcp_1_2_1_4",
+    "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+    "title": "Ensure rsync service is not enabled",
+    "input_row": {
+        "id": "2.1.4",
+        "unique_id": "gcp_1_2_1_4",
+        "source": "CIS GOOGLE CONTAINER OPTIMIZED OS BENCHMARK V1.2.0",
+        "title": "Ensure rsync service is not enabled",
+        "description": "The rsyncd service can be used to synchronize files between systems over network links.",
+        "rationale": "The rsyncd service presents a security risk as it uses unencrypted protocols for communication.",
+        "audit": "Run the following command to verify rsyncd is not enabled: # systemctl is-enabled rsyncd disabled Verify result is not \"enabled\".",
+        "remediation": "Run the following command to disable rsyncd : # systemctl --now disable rsyncd /etc is stateless on Container-Optimized OS. Therefore, the steps mentioned above needs to be performed after every boot. Additional Information: Additional methods of disabling a service exist. Consult your distribution documentation for appropriate methods. On some distributions the rsync service is known as rsync, not rsyncd.",
+        "profile_applicability": "",
+        "impact": "",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\n- The control is about ensuring that the rsync service is not enabled on instances running Google Container-Optimized OS.\n- The audit process involves running a command (`systemctl is-enabled rsyncd`) directly on the operating system of the instance, which implies it requires SSH access to verify the service status.\n- This check involves OS-level configuration, which is not exposed via GCP APIs or CLI.\n- The Google Cloud SDK or GCP CLI does not provide direct methods to verify or disable system services like rsyncd at the instance level.\n- As such, this compliance control requires a manual audit process because it involves checking system-level services directly on the OS with human judgment, which is not possible via APIs.\n\n**MANUAL STEPS:**\n\n1. SSH into the Google Compute Engine instances running Container-Optimized OS where the compliance needs to be verified.\n2. Run the command `systemctl is-enabled rsyncd` to check the status of the rsyncd service.\n3. Verify the output of the command.\n   - Expected secure configuration: The output should be `disabled`.\n4. If the service is enabled, execute `systemctl --now disable rsyncd` to disable the service.\n5. Document the verification process and the state of the service on all relevant instances for compliance reporting.",
+    "timestamp": "2025-10-28T21:24:55.497959",
+    "model": "gpt-4o"
+}

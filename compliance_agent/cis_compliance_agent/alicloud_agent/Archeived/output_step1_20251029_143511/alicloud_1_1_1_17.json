@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.17",
+    "unique_id": "alicloud_1_1_1_17",
+    "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+    "title": "Ensure that the controller-manager.conf file permissions are set to 644 or more restrictive",
+    "input_row": {
+        "id": "1.1.17",
+        "unique_id": "alicloud_1_1_1_17",
+        "source": "CIS ALIBABA CLOUD CONTAINER SERVICE FOR KUBERNETES (ACK) BENCHMARK V1.0.0",
+        "title": "Ensure that the controller-manager.conf file permissions are set to 644 or more restrictive",
+        "description": "Ensure\tthat\tthe\tcontroller-manager.conf\tfile\thas\tpermissions\tof\t644\tor\tmore\trestrictive.",
+        "rationale": "The\tcontroller-manager.conf\tfile\tis\tthe\tkubeconfig\tfile\tfor\tthe\tController\tManager.\tYou should\trestrict\tits\tfile\tpermissions\tto\tmaintain\tthe\tintegrity\tof\tthe\tfile.\tThe\tfile\tshould\tbe writable\tby\tonly\tthe\tadministrators\ton\tthe\tsystem. Impact: None",
+        "audit": "Run\tthe\tfollowing\tcommand\t(based\ton\tthe\tfile\tlocation\ton\tyour\tsystem)\ton\tthe\tmaster node.\tFor\texample, stat -c %a /etc/kubernetes/controller-manager.conf Verify\tthat\tthe\tpermissions\tare\t644\tor\tmore\trestrictive.",
+        "remediation": "Run\tthe\tbelow\tcommand\t(based\ton\tthe\tfile\tlocation\ton\tyour\tsystem)\ton\tthe\tmaster\tnode. For\texample, chmod 644 /etc/kubernetes/controller-manager.conf Default\tValue: By\tdefault,\tcontroller-manager.conf\thas\tpermissions\tof\t640. References: 1. https://kubernetes.io/docs/admin/kube-controller-manager/ 48\t|\tP a g e Additional\tInformation: This\tcontrol\tcannot\tbe\taudited\tand\tmodified\tin\tACK\tmanaged\tclusters. CIS\tControls: Version\t6 5.1\tMinimize\tAnd\tSparingly\tUse\tAdministrative\tPrivileges Minimize\tadministrative\tprivileges\tand\tonly\tuse\tadministrative\taccounts\twhen\tthey\tare required.\tImplement\tfocused\tauditing\ton\tthe\tuse\tof\tadministrative\tprivileged\tfunctions\tand monitor\tfor\tanomalous\tbehavior. Version\t7 5.1\tEstablish\tSecure\tConfigurations Maintain\tdocumented,\tstandard\tsecurity\tconfiguration\tstandards\tfor\tall\tauthorized operating\tsystems\tand\tsoftware. 49\t|\tP a g e",
+        "profile_applicability": "",
+        "impact": "None",
+        "references": "1. https://kubernetes.io/docs/admin/kube-controller-manager/ 48\t|\tP a g e Additional\tInformation: This\tcontrol\tcannot\tbe\taudited\tand\tmodified\tin\tACK\tmanaged\tclusters. CIS\tControls: Version\t6 5.1\tMinimize\tAnd\tSparingly\tUse\tAdministrative\tPrivileges Minimize\tadministrative\tprivileges\tand\tonly\tuse\tadministrative\taccounts\twhen\tthey\tare required.\tImplement\tfocused\tauditing\ton\tthe\tuse\tof\tadministrative\tprivileged\tfunctions\tand monitor\tfor\tanomalous\tbehavior. Version\t7 5.1\tEstablish\tSecure\tConfigurations Maintain\tdocumented,\tstandard\tsecurity\tconfiguration\tstandards\tfor\tall\tauthorized operating\tsystems\tand\tsoftware. 49\t|\tP a g e"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Manual\n\n**APPROACH DECISION:**\n\nThe control in question involves verifying the file permissions of the `controller-manager.conf` file on Kubernetes master nodes. The audit instructions provided specify the use of the `stat` command on the file located on the master node's file system. This requires SSH access to the node to run a local command, indicating that this is an OS-level check that cannot be performed via Alibaba Cloud APIs, Aliyun CLI, or Alibaba Cloud CLI. Furthermore, the control notes that in managed ACK clusters, this configuration \"cannot be audited and modified\", reinforcing the need for a manual approach.\n\n**MANUAL STEPS:**\n\n1. **SSH Access:**\n   - Gain SSH access to the Kubernetes master node where the `controller-manager.conf` file is located.\n\n2. **Permission Check:**\n   - Execute the command: `stat -c %a /etc/kubernetes/controller-manager.conf`.\n\n3. **Verification:**\n   - Verify that the output shows `644` or a more restrictive permission (`640`, etc.).\n\n4. **Expected Secure Configuration:**\n   - If the permissions are not `644` or more restrictive, the configuration is non-compliant. Permissions should be adjusted to `644` using the command `chmod 644 /etc/kubernetes/controller-manager.conf`.\n\n5. **Confirm Compliance:**\n   - Re-run the `stat` command to ensure that the permissions have been set correctly as `644` or more restrictive.",
+    "timestamp": "2025-10-29T14:38:35.411930",
+    "model": "gpt-4o"
+}

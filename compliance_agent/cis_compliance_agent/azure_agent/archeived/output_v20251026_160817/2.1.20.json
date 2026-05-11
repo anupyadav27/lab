@@ -1,0 +1,17 @@
+{
+    "id": "2.1.20",
+    "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json",
+    "input_row": {
+        "id": "2.1.20",
+        "unique_id": "2.1.20__ensure-all-traffic-is-routed-through-the-virtual-network",
+        "title": "Ensure all traffic is routed through the virtual network",
+        "description": "",
+        "rationale": "",
+        "audit": "",
+        "remediation": "Remediate from Azure Portal 1. Go to App Services. 2. Click the name of an app. 3. Under Settings, click Networking. 4. Under Outbound traffic configuration, next to Virtual network integration, click the virtual network and subnet name. 5. Under Application routing, check the box next to Outbound internet traffic. 6. Click Apply. 7. Repeat steps 1-6 for each app requiring remediation. Remediate from Azure CLI For each app requiring remediation, run the following command to route all traffic through the virtual network: az resource update --resource-group <resource-group-name> --name <app-name> - -resource-type \"Microsoft.Web/sites\" --set properties.vnetRouteAllEnabled=true Default Value: For apps integrated with a virtual network, all traffic is routed through the virtual network by default. References: 1. https://learn.microsoft.com/en-us/azure/app-service/configure-vnet-integration- routing#configure-application-routing 2. https://learn.microsoft.com/en-us/cli/azure/webapp 3. https://learn.microsoft.com/en-us/cli/azure/resource CIS Controls:",
+        "impact": "",
+        "reference": "",
+        "source": "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**  \n- The audit can be automated because the relevant configurations can be verified using Azure Resource Manager (ARM) APIs or Azure CLI commands related to App Services and their networking properties. The audit mentions specific commands that can be utilized directly to check the routing settings.\n\n**PROGRAM NAME:**  \nazure_appservice_traffic_routed_through_vnet\n\n**AUTOMATION DETAILS:**  \nThe automated program would check the following:\n\n- **Azure Resource Manager APIs or Azure CLI commands to use:**\n  - Azure CLI command: \n    ```bash\n    az webapp show --name <app-name> --resource-group <resource-group-name> --query properties.vnetRouteAllEnabled\n    ```\n  \n- **Specific resources to enumerate:**\n  - All App Services within specified subscriptions or resource groups. \n\n- **Exact configuration properties/settings to validate:**\n  - The property `properties.vnetRouteAllEnabled` should be checked for each App Service.\n\n- **Clear Pass/Fail criteria with expected values:**\n  - Pass: `properties.vnetRouteAllEnabled` is `true` (indicating all traffic is routed through the virtual network).\n  - Fail: `properties.vnetRouteAllEnabled` is `false` (indicating that not all traffic is routed through the virtual network).\n\n- **Example API endpoint or CLI command:**\n  - CLI command to check an individual app: \n    ```bash\n    az webapp show --name myApp --resource-group myResourceGroup --query properties.vnetRouteAllEnabled\n    ```\n  \nThe program would iterate over all relevant App Services to determine if they comply with the control, reporting on any discrepancies found."
+}

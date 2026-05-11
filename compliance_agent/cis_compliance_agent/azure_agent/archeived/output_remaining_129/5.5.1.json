@@ -1,0 +1,17 @@
+{
+    "id": "5.5.1",
+    "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json",
+    "input_row": {
+        "id": "5.5.1",
+        "unique_id": "aks_5.5.1__manage-kubernetes-rbac-users-with-azure-ad",
+        "title": "Manage Kubernetes RBAC users with Azure AD",
+        "description": "Azure Kubernetes Service (AKS) can be configured to use Azure Active Directory (AD) for user authentication. In this configuration, you sign in to an AKS cluster using an Azure AD authentication token. You can also configure Kubernetes role-based access control (Kubernetes RBAC) to limit access to cluster resources based a user's identity or group membership.",
+        "rationale": "Kubernetes RBAC and AKS help you secure your cluster access and provide only the minimum required permissions to developers and operators.",
+        "audit": "",
+        "remediation": "References: 1. https://docs.microsoft.com/en-us/azure/aks/azure-ad-rbac 2. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- privileged-access#pa-7-follow-just-enough-administration-least-privilege-principle",
+        "impact": "",
+        "reference": "1. https://docs.microsoft.com/en-us/azure/aks/azure-ad-rbac 2. https://docs.microsoft.com/security/benchmark/azure/security-controls-v2- privileged-access#pa-7-follow-just-enough-administration-least-privilege-principle",
+        "source": "CIS AZURE KUBERNETES SERVICE (AKS) BENCHMARK V1.7.0 PDF_updated_20250825_190647.json"
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**  \nThe audit approach is determined to be Automated due to the capability to verify RBAC settings and Azure AD configurations using the Azure Resource Manager APIs or Azure CLI.\n\n**PROGRAM NAME:**  \nazure_aks_rbac_azure_ad_enabled\n\n**AUTOMATION DETAILS:**  \nThe automated program would check the following:\n\n- **Azure Resource Manager APIs or Azure CLI commands to use:**  \n  Use Azure CLI or the Azure SDK to query AKS clusters for Azure AD integration and RBAC settings.\n  \n- **Specific resources to enumerate:**  \n  The program should enumerate through:\n  - Subscriptions\n  - Resource Groups\n  - AKS Clusters\n\n- **Exact configuration properties/settings to validate:**  \n  The program should verify:\n  - The presence of Azure AD integration with the AKS cluster\n  - Role Assignments within Kubernetes RBAC\n\n- **Clear Pass/Fail criteria with expected values:**\n  - **Pass:** Azure AD integration is configured, and RBAC role assignments provide minimum necessary permissions based on user identity/group membership.\n  - **Fail:** Azure AD integration is not configured or RBAC settings assign excessive permissions.\n\n- **Example API endpoint or CLI command:**  \n  To check Azure AD integration, use:\n  ```\n  az aks show --resource-group <resource-group-name> --name <aks-cluster-name> --query \"aadProfile\"\n  ```\n  To evaluate RBAC settings, review managed identities and role assignments using:\n  ```\n  kubectl get clusterrolebindings\n  ```"
+}

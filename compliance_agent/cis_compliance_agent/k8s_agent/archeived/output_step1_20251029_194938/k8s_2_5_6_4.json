@@ -1,0 +1,22 @@
+{
+    "control_id": "5.6.4",
+    "unique_id": "k8s_2_5_6_4",
+    "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+    "title": "The default namespace should not be used",
+    "input_row": {
+        "id": "5.6.4",
+        "unique_id": "k8s_2_5_6_4",
+        "source": "CIS KUBERNETES BENCHMARK V1.11.1 PDF",
+        "title": "The default namespace should not be used",
+        "description": "Kubernetes provides a default namespace, where objects are placed if no namespace is specified for them. Placing objects in this namespace makes application of RBAC and other controls more difficult.",
+        "rationale": "Resources in a Kubernetes cluster should be segregated by namespace, to allow for security controls to be applied at that level and to make it easier to manage resources. Impact: None",
+        "audit": "Run this command to list objects in default namespace kubectl get $(kubectl api-resources --verbs=list --namespaced=true -o name | paste -sd, -) --ignore-not-found -n default The only entries there should be system managed resources such as the kubernetes service",
+        "remediation": "Ensure that namespaces are created to allow for appropriate segregation of Kubernetes resources and that all new resources are created in a specific namespace. Default Value: Unless a namespace is specific on object creation, the default namespace will be used",
+        "profile_applicability": "•  Level 2 - Master Node",
+        "impact": "None",
+        "references": ""
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_namespace_default_namespace_usage_restricted\n\n**AUTOMATION DETAILS:**\n- Query the Kubernetes API to enumerate all namespaced resource types using `kubectl api-resources --verbs=list --namespaced=true -o name`.\n- For each namespaced resource type, list all objects in the `default` namespace using:\n  ```\n  kubectl get <resource> -n default\n  ```\n  or, to aggregate:\n  ```\n  kubectl get $(kubectl api-resources --verbs=list --namespaced=true -o name | paste -sd, -) --ignore-not-found -n default\n  ```\n- Identify all resources present in the `default` namespace.\n- Exclude system-managed resources (e.g., the `kubernetes` service of type `Service`).\n- Pass Criteria: Only system-managed resources (such as the default `kubernetes` service) exist in the `default` namespace; no user-created Deployments, Pods, Services, ConfigMaps, Secrets, etc. are present.\n- Fail Criteria: Any user-created resource (other than the default `kubernetes` service) is found in the `default` namespace.\n- The program should output a list of non-system resources found in the `default` namespace for remediation.",
+    "timestamp": "2025-10-29T20:42:04.473077",
+    "model": "gpt-4.1"
+}

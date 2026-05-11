@@ -1,0 +1,22 @@
+{
+    "control_id": "5.1.5",
+    "unique_id": "k8s_1_5_1_5",
+    "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "title": "Ensure that default service accounts are not actively used.",
+    "input_row": {
+        "id": "5.1.5",
+        "unique_id": "k8s_1_5_1_5",
+        "source": "CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+        "title": "Ensure that default service accounts are not actively used.",
+        "description": "The default service account should not be used to ensure that rights granted to applications can be more easily audited and reviewed.",
+        "rationale": "Kubernetes provides a default service account which is used by cluster workloads where no specific service account is assigned to the pod. Where access to the Kubernetes API from a pod is required, a specific service account should be created for that pod, and rights granted to that service account. The default service account should be configured such that it does not provide a service account token and does not have any explicit rights assignments. Impact: All workloads which require access to the Kubernetes API will require an explicit service account to be created.",
+        "audit": "For each namespace in the cluster, review the rights assigned to the default service account and ensure that it has no roles or cluster roles bound to it apart from the defaults. Additionally ensure that the automountServiceAccountToken: false setting is in place for each default service account.",
+        "remediation": "Create explicit service accounts wherever a Kubernetes workload requires specific access to the Kubernetes API server. Modify the configuration of each default service account to include this value automountServiceAccountToken: false Default Value: By default the default service account allows for its service account token to be mounted in pods in its namespace. References: 1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/",
+        "profile_applicability": "•  Level 1 - Master Node",
+        "impact": "All workloads which require access to the Kubernetes API will require an explicit service account to be created.",
+        "references": "1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-service- account/"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_service_account_default_usage_restricted\n\n**AUTOMATION DETAILS:**\nThe automated program will perform the following checks using the Kubernetes API or kubectl:\n\n1. **Enumerate all namespaces:**\n   - Use `kubectl get namespaces` or Kubernetes API `/api/v1/namespaces`.\n\n2. **For each namespace, inspect the default service account:**\n   - Use `kubectl get serviceaccount default -n <namespace> -o yaml` or API `/api/v1/namespaces/<namespace>/serviceaccounts/default`.\n\n3. **Check that the default service account does NOT have automountServiceAccountToken enabled:**\n   - Inspect the `automountServiceAccountToken` field on the default service account object.\n   - Pass if `automountServiceAccountToken: false` is set (either explicitly on the service account or inherited from the namespace).\n\n4. **Check for RBAC bindings to the default service account:**\n   - Use `kubectl get rolebinding,clusterrolebinding --all-namespaces -o yaml` or API `/apis/rbac.authorization.k8s.io/v1/rolebindings` and `/apis/rbac.authorization.k8s.io/v1/clusterrolebindings`.\n   - For each binding, check if `subjects` includes:\n     - `kind: ServiceAccount`\n     - `name: default`\n     - `namespace: <namespace>`\n   - Pass if the default service account is NOT bound to any non-default roles/clusterroles (i.e., only default permissions).\n\n5. **Pass/Fail Criteria:**\n   - **Pass:** In every namespace, the default service account has `automountServiceAccountToken: false` and is not bound to any non-default RBAC roles or clusterroles.\n   - **Fail:** If any namespace's default service account has `automountServiceAccountToken: true` (or unset and inherited as true) OR is bound to any non-default RBAC roles/clusterroles.\n\n**SOURCE:** CIS KUBERNETES BENCHMARK V1.9.0 PDF",
+    "timestamp": "2025-10-29T20:08:16.366458",
+    "model": "gpt-4.1"
+}

@@ -1,0 +1,22 @@
+{
+    "control_id": "1.1.13",
+    "unique_id": "k8s_5_1_1_13",
+    "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+    "title": "Ensure that the admission control policy is set to DenyEscalatingExec",
+    "input_row": {
+        "id": "1.1.13",
+        "unique_id": "k8s_5_1_1_13",
+        "source": "CIS KUBERNETES 1.6 BENCHMARK V1.0.0 ARCHIVE",
+        "title": "Ensure that the admission control policy is set to DenyEscalatingExec",
+        "description": "Deny execution of exec and attach commands in privileged pods.",
+        "rationale": "Setting admission control policy to DenyEscalatingExec denies exec and attach commands to pods that run with escalated privileges that allow host access. This includes pods that run as privileged, have access to the host IPC namespace, and have access to the host PID namespace.",
+        "audit": "Run the following command on the master node: ps -ef | grep kube-apiserver Verify that the --admission-control argument is set to a value that includes DenyEscalatingExec.",
+        "remediation": "Edit the /etc/kubernetes/apiserver file on the master node and set the KUBE_ADMISSION_CONTROL parameter to \"--admission- control=...,DenyEscalatingExec,...\": KUBE_ADMISSION_CONTROL=\"--admission-control=...,DenyEscalatingExec,...\" Based on your system, restart the kube-apiserver service. For example: systemctl restart kube-apiserver.service Impact: exec and attach commands will not work in privileged pods. Default Value: By default, DenyEscalatingExec is not set.  37 | P a g e References: 1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#denyescalatingexec",
+        "profile_applicability": "•  Level 1",
+        "impact": "exec and attach commands will not work in privileged pods. Default Value: By default, DenyEscalatingExec is not set.  37 | P a g e",
+        "references": "1. https://kubernetes.io/docs/admin/kube-apiserver/ 2. https://kubernetes.io/docs/admin/admission-controllers/#denyescalatingexec"
+    },
+    "step1_initial_assessment": "**AUDIT APPROACH:** Automated\n\n**PROGRAM NAME:** k8s_api_server_admission_plugin_denyescalatingexec_enabled\n\n**AUTOMATION DETAILS:**\n- Query the kube-apiserver configuration to verify that the DenyEscalatingExec admission plugin is enabled.\n- This can be checked by inspecting the command-line arguments or the configuration manifest of the kube-apiserver for the presence of the DenyEscalatingExec plugin in the `--admission-control` or `--enable-admission-plugins` flag.\n- Automated steps:\n  1. Use `kubectl -n kube-system get pod -l component=kube-apiserver -o yaml` to retrieve the kube-apiserver pod spec (for clusters using static pods).\n  2. Inspect the `spec.containers.args` field for either:\n     - `--admission-control=...,DenyEscalatingExec,...` (legacy clusters)\n     - `--enable-admission-plugins=...,DenyEscalatingExec,...` (modern clusters)\n  3. Alternatively, for clusters using systemd or other process managers, retrieve the kube-apiserver manifest from `/etc/kubernetes/manifests/kube-apiserver.yaml` and check the command arguments.\n- Pass Criteria: DenyEscalatingExec is present in the admission plugins list.\n- Fail Criteria: DenyEscalatingExec is absent from the admission plugins list.\n- Example command:\n  ```\n  kubectl -n kube-system get pod -l component=kube-apiserver -o jsonpath='{.items[*].spec.containers[*].args}' | grep DenyEscalatingExec\n  ```\n- If DenyEscalatingExec is found in the output, the control is compliant. If not, it is non-compliant.",
+    "timestamp": "2025-10-29T21:40:06.786983",
+    "model": "gpt-4.1"
+}

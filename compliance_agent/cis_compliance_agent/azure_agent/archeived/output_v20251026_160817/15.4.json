@@ -1,0 +1,20 @@
+{
+    "id": "15.4",
+    "source": null,
+    "input_row": {
+        "id": "15.4",
+        "unique_id": "15.4__ensure-private-endpoints-are-considered-for-batch-accounts",
+        "title": "Ensure Private endpoints are considered for Batch accounts",
+        "description": " click...\"",
+        "rationale": "",
+        "audit": "",
+        "remediation": "",
+        "impact": "Remediate from Azure Portal 1. Navigate to your Batch account 2. Under the Settings drop down, click Networking 3. Click the Private access tab 4. Click + Private endpoint 5. Configure: • Virtual network and subnet • DNS integration (auto-approved recommended) • Target subresource: batchAccount Remediate from Azure CLI az network private-endpoint create \\ --name batch-pe \\ --resource-group <rg> \\ --vnet-name <vnet> \\ --subnet <subnet> \\ --private-connection-resource-id /subscriptions/<sub- id>/resourceGroups/<rg>/providers/Microsoft.Batch/batchAccounts/<account> \\ --group-id batchAccount \\ --connection-name batch-connection Default Value: Private endpoints are not configured by default. References: 1. https://docs.microsoft.com/en-us/azure/batch/private-connectivity CIS Controls:",
+        "reference": "",
+        "source": "",
+        "null": [
+            "CIS_MICROSOFT_AZURE_COMPUTE_SERVICES_BENCHMARK_V2.0.0_updated_20250825_190920.json"
+        ]
+    },
+    "gpt_response": "**AUDIT APPROACH:** Automated\n\n**APPROACH DECISION:**\n- The control can be verified via Azure APIs as it pertains to private endpoints being configured for Batch accounts. \n- The remediation section includes CLI commands, indicating an automated means to validate the configuration.\n- The implementation of private endpoints is a standard property that can be queried through Azure Resource Manager APIs.\n\n**PROGRAM NAME:** azure_batch_private_endpoint_configured\n\n**AUTOMATION DETAILS:**\n- Use Azure Resource Manager APIs or Azure CLI commands to check for the configuration of private endpoints on Batch accounts.\n- Resources to enumerate include Batch accounts within specified subscriptions and resource groups.\n- The automated program will validate the following specific configuration properties/settings:\n  - Presence of private endpoint connections associated with the Batch account.\n  - Valid configurations for the virtual network, subnet, and DNS integration.\n  - Specific checks using the Azure CLI command:\n    ```bash\n    az network private-endpoint show --name <private-endpoint-name> --resource-group <resource-group-name>\n    ```\n- **Pass/Fail criteria**:\n  - Pass: The Batch account has at least one configured private endpoint with valid parameters (vnet, subnet, DNS integration).\n  - Fail: The Batch account does not have any private endpoint or the parameters do not match the expected secure configuration.\n- An example API endpoint to verify configuration would be:\n  ```\n  GET https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Batch/batchAccounts/{batch-account-name}/privateLinkResources?api-version=2021-06-01\n  ```"
+}
